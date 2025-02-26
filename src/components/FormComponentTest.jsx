@@ -1,21 +1,23 @@
 'use client';
 
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import GenreInput from './FormComponents/GenreInput';
 import AgeInput from './FormComponents/AgeInput';
 import PlotInput from './FormComponents/PlotInput';
 import KeywordInput from './FormComponents/KeywordInput';
+import CharactersInput from './FormComponents/CharactersInput';
 
 const FormComponentTest = () => {
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      title: '',  // 제목 초기값
-      genre: [],  // 장르 초기값을 빈 배열로 설정
-      age : [],
-      plot : '',
-      keywords : [],
+      title: '',  
+      genre: [],  
+      age: [],
+      plot: '',
+      keywords: [],
+      characters: [{ name: '', role: '', description: '' }], // ✅ 인물 초기값 추가
     }
   });
 
@@ -25,23 +27,20 @@ const FormComponentTest = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-      {/* TitleInput 컴포넌트 */}
       <TitleInput control={control} error={errors.title} />
-      
-      {/* GenreInput과 AgeInput을 한 줄로 배치하기 위한 div */}
+
       <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
-        {/* GenreInput 컴포넌트 */}
         <GenreInput control={control} error={errors.genre} />
-        
-        {/* AgeInput 컴포넌트 */}
         <AgeInput control={control} error={errors.age} />
       </div>
 
       <PlotInput control={control} error={errors.plot} />
 
       <KeywordInput control={control} error={errors.keywords} />
-      
-      {/* 제출 버튼 */}
+
+      {/* ✅ CharactersInput 추가됨 */}
+      <CharactersInput control={control} error={errors.characters} />
+
       <button type="submit" style={{ padding: '10px', backgroundColor: '#4A90E2', color: 'white', borderRadius: '5px' }}>
         제출
       </button>
