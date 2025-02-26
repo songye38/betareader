@@ -5,13 +5,13 @@ import React, { useState } from 'react';
 
 import EpisodeTab from './EpisodeTab';
 import Button1 from './Buttons/Button1';
+import { create } from 'zustand'; // default -> named import로 수정
+import useStore from '@/store/useStore';
+
 
 const SidebarComponent = () => {
-  // 탭 상태를 관리
-  const [tabs, setTabs] = useState([
-    { label: '설정집', selected: false },
-    { label: '1화', selected: true }
-  ]);
+
+   const { tabs, addTab } = useStore();
 
   // "원고 추가하기" 버튼 클릭 시 호출되는 함수
   const handleAddTab = () => {
@@ -88,7 +88,7 @@ const SidebarComponent = () => {
       </div>
 
       {/* 원고 추가하기 버튼 */}
-      <Button1 onClick={handleAddTab} />
+      <Button1 onClick={() => addTab('새 원고')} />
     </div>
   );
 };
