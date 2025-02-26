@@ -22,9 +22,10 @@ const STATUSES = {
 
 
 
-const Button1 = () => {
+const Button1 = ({onClick}) => {
   return (
     <button
+      onClick={onClick}
       style={{
         display: 'flex',
         width: '12rem',
