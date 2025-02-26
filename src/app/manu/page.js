@@ -1,12 +1,6 @@
-
-
 import EpisodeFormComponent from "@/components/EpisodeFormComponent";
 import SidebarComponent from "@/components/SidebarComponent";
 
-
-
-
-// pages/manu.js
 const ManuscriptPage = () => {
     return (
       <div style={{

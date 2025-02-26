@@ -4,9 +4,14 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import EpisodeInput from './FormComponents/EpisodeInput';
+import useStore from '@/store/useStore'; // Zustand 스토어 사용
 
 
 const EpisodeFormComponent = () => {
+
+    const { tabs } = useStore(); // Zustand에서 상태 가져오기
+    const selectedTab = tabs.find(tab => tab.selected); // 선택된 탭 찾기
+
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       title: '',  
@@ -30,7 +35,7 @@ const EpisodeFormComponent = () => {
             wordWrap: 'break-word',
         }}
         >
-        1화
+        {selectedTab.label}
     </div>
         <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
         <TitleInput control={control} error={errors.title} />
