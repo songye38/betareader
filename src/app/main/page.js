@@ -1,7 +1,7 @@
 
 import SidebarComponent from "@/components/SidebarComponent";
 import MainComponent from "@/components/MainComponent";
-import FormComponentTest from "@/components/FormComponentTest";
+import SettingFormComponent from "@/components/SettingFormComponent";
 
 // pages/main.js
 const MainPage = () => {
@@ -14,8 +14,7 @@ const MainPage = () => {
         gap: '16px',            // 두 컴포넌트 간의 간격 (선택적)
       }}>
         <SidebarComponent />
-        <FormComponentTest />
-        {/* <MainComponent /> */}
+        <SettingFormComponent />
       </div>
       
     );

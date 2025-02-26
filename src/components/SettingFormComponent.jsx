@@ -9,7 +9,7 @@ import PlotInput from './FormComponents/PlotInput';
 import KeywordInput from './FormComponents/KeywordInput';
 import CharactersInput from './FormComponents/CharactersInput';
 
-const FormComponentTest = () => {
+const SettingFormComponent = () => {
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       title: '',  
@@ -48,4 +48,4 @@ const FormComponentTest = () => {
   );
 };
 
-export default FormComponentTest;
+export default SettingFormComponent;
