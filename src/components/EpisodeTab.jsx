@@ -13,7 +13,7 @@ const EpisodeTab = ({ label = '설정집', selected = false }) => {
         gap: '0.625rem',
         background: selected
           ? 'var(--neutral-700, #3A3D46)' // 선택된 탭의 배경색
-          : 'var(--neutral-800, #2C2D34)', // 기본 배경색
+          : 'var(--neutral-800, #1E1F24)', // 기본 배경색
         cursor: 'pointer',
       }}
     >

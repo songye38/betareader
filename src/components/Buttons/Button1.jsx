@@ -26,6 +26,8 @@ const Button1 = () => {
         fontSize: '14px',
         lineHeight: '19.6px',
         wordWrap: 'break-word',
+        position : 'absolute',
+        bottom : '22px',
       }}
     >
       {/* SVG Icon */}
