@@ -1,8 +1,13 @@
 import React from 'react';
 
 
-// 아이콘 주소와 타입, 상태를 미리 정의
-//보류
+//원고 추가 버튼
+
+
+
+
+
+
 const ICONS = {
   ADD: '/plus_icon.svg',
   WRITE: '/write_icon.svg',
