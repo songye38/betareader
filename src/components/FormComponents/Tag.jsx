@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Tag = ({ children }) => {
+const Tag = ({ children, onDelete }) => {
   return (
     <div
       style={{
@@ -12,7 +12,6 @@ const Tag = ({ children }) => {
         paddingRight: 8,
         background: '#3A3D46',
         borderRadius: 50,
-        // border: '1px #4A4E5B solid',
         justifyContent: 'flex-start',
         alignItems: 'center',
         gap: 6,
@@ -31,7 +30,14 @@ const Tag = ({ children }) => {
       >
         {children}
       </div>
-      <img src="/close_icon.svg" alt="Profile" width={16} height={16} />
+      <img
+        src="/close_icon.svg"
+        alt="Delete"
+        width={16}
+        height={16}
+        style={{ cursor: 'pointer' }}
+        onClick={onDelete}  // 아이콘 클릭 시 onDelete 함수 실행
+      />
     </div>
   );
 };
