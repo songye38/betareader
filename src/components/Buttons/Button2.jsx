@@ -1,28 +1,7 @@
 import React from 'react';
 
 
-// 아이콘 주소와 타입, 상태를 미리 정의
-//보류
-const ICONS = {
-  ADD: '/plus_icon.svg',
-  WRITE: '/write_icon.svg',
-};
-
-const TYPES = {
-  PRIMARY: 'primary',
-  NEUTRAL: 'neutral',
-  WHITE: 'white',
-};
-
-const STATUSES = {
-  DEFAULT: 'default',
-  HOVER: 'hover',
-  DISABLED : 'disabled',
-};
-
-
-
-const Button1 = () => {
+const Button2 = () => {
   return (
     <button
       style={{
@@ -42,19 +21,17 @@ const Button1 = () => {
         fontSize: '14px',
         lineHeight: '19.6px',
         wordWrap: 'break-word',
-        position : 'absolute',
-        bottom : '22px',
       }}
     >
       {/* SVG Icon */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img src="/plus_icon.svg" alt="Profile" width={24} height={24} />
+        <img src="/write_icon.svg" alt="Profile" width={24} height={24} />
       </div>
 
       {/* Text */}
-      <span>원고지 추가</span>
+      <span>입력 시작하기</span>
     </button>
   );
 };
 
-export default Button1;
+export default Button2;
