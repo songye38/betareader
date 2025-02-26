@@ -1,8 +1,9 @@
 import React from 'react';
 
-const EpisodeTab = ({ label = '설정집', selected = false }) => {
+const EpisodeTab = ({ label = '설정집', selected = false, onClick }) => {
   return (
     <div
+      onClick={onClick} // 클릭 이벤트를 처리
       style={{
         display: 'flex',
         width: '13.75rem',

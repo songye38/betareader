@@ -2,15 +2,23 @@ import { create } from 'zustand';
 
 const useStore = create((set) => ({
   tabs: [
-    { label: '설정집', selected: false },
-    { label: '1화', selected: true },
+    { id: 1, label: '설정집', selected: true },
+    // 기본 탭에는 고유한 id를 추가합니다
   ],
   addTab: (newTab) =>
     set((state) => ({
-      tabs: state.tabs.map((tab) => ({
-        ...tab,
-        selected: false, // 기존 탭들의 selected를 모두 false로 설정
-      })).concat({ ...newTab, selected: true }), // 새 탭을 추가하면서 `selected: true`로 설정
+      tabs: [
+        ...state.tabs.map((tab) => ({ ...tab, selected: false })),
+        { ...newTab, selected: true, id: Date.now() }, // 고유 id 생성
+      ],
+    })),
+  setSelectedTab: (id) =>
+    set((state) => ({
+      tabs: state.tabs.map((tab) =>
+        tab.id === id
+          ? { ...tab, selected: true }
+          : { ...tab, selected: false }
+      ),
     })),
 }));
 
