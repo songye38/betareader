@@ -129,7 +129,7 @@ const DropdownInput = ({ error, onDropdownChange }) => {
                   transition: "background-color 0.3s", // 배경색 변경 애니메이션
                 }}
                 onClick={() => handleOptionSelect(option)}
-                onMouseEnter={(e) => e.target.style.backgroundColor = "#383838"} // hover 시 배경색 변경
+                onMouseEnter={(e) => e.target.style.backgroundColor = "#3A407A"} // hover 시 배경색 변경
                 onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"} // hover 종료 시 배경색 복원
               >
                 {option}
