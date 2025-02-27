@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import 'react-toastify/dist/ReactToastify.css';
 import "./globals.css";
 import Navbar from "@/components/NavBar";
-import { ToastContainer,Bounce } from 'react-toastify';
+import { ToastContainer,Bounce ,removalReason} from 'react-toastify';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
           {/* ToastContainer 추가 */}
           <ToastContainer 
             position="top-right"
-            autoClose={5000}
+            autoClose={1200}
             hideProgressBar={false}
             newestOnTop={true}
             closeButton={true}
@@ -36,6 +36,7 @@ export default function RootLayout({ children }) {
             pauseOnFocusLoss
             draggable
             transition={Bounce}
+            removalReason 
           />
       </body>
     </html>
