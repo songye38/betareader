@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import EpisodeInput from './FormComponents/EpisodeInput';
 import useStore from '@/store/useStore'; // Zustand 스토어 사용
+import DropdownInput from './FormComponents/DropdownInput';
 
 
 const EpisodeFormComponent = () => {
@@ -16,6 +17,8 @@ const EpisodeFormComponent = () => {
     defaultValues: {
       title: '',  
       episode : '',
+      dropdown : [],
+
     }
   });
 
@@ -38,8 +41,9 @@ const EpisodeFormComponent = () => {
         {selectedTab.label}
     </div>
         <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-        <TitleInput control={control} error={errors.title} />
+        <TitleInput control={control} error={errors.title} showLabel={false} />
         <EpisodeInput control={control} error={errors.episode} />
+        <DropdownInput control={control} error={errors.dropdown}/>
 
 
         <button type="submit" style={{ padding: '10px', backgroundColor: '#4A90E2', color: 'white', borderRadius: '5px' }}>

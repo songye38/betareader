@@ -27,7 +27,8 @@ const SettingFormComponent = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-      <TitleInput control={control} error={errors.title} />
+      <TitleInput control={control} error={errors.title} showLabel={true} />
+
 
       <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
         <GenreInput control={control} error={errors.genre} />
