@@ -41,9 +41,11 @@ const EpisodeFormComponent = () => {
         {selectedTab.label}
     </div>
         <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-        <TitleInput control={control} error={errors.title} showLabel={false} />
+            <div style={{display:'flex',flexDirection:'row',gap:'12px'}}>
+                <TitleInput control={control} error={errors.title} showLabel={false} />
+                <DropdownInput control={control} error={errors.dropdown}/>
+            </div>
         <EpisodeInput control={control} error={errors.episode} />
-        <DropdownInput control={control} error={errors.dropdown}/>
 
 
         <button type="submit" style={{ padding: '10px', backgroundColor: '#4A90E2', color: 'white', borderRadius: '5px' }}>

@@ -7,7 +7,7 @@ const EpisodeInput = ({ control, error }) => {
   return (
     <div
       style={{
-        width: 959,
+        width: 850,
         height: 'auto', // 높이를 'auto'로 변경하여 텍스트 길이에 맞게 조정됩니다.
         paddingLeft: 28,
         paddingRight: 28,
