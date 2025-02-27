@@ -2,9 +2,10 @@
 
 import React from 'react';
 
-const CheckCommentBtn = ({ disabled }) => {
+const CheckCommentBtn = ({ disabled,onClick }) => {
   return (
     <div
+    onClick={onClick} // onClick 핸들러 전달
       style={{
         width: '288px',
         height: '100%',

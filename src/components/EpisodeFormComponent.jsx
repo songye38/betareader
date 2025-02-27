@@ -7,6 +7,7 @@ import EpisodeInput from './FormComponents/EpisodeInput';
 import useStore from '@/store/useStore'; // Zustand 스토어 사용
 import DropdownInput from './FormComponents/DropdownInput';
 import CheckCommentBtn from './Buttons/CheckCommentBtn';
+import { toast,Slide } from 'react-toastify'; // react-toastify에서 toast 임포트
 
 const EpisodeFormComponent = () => {
   const { tabs } = useStore(); // Zustand에서 상태 가져오기
@@ -40,6 +41,27 @@ const EpisodeFormComponent = () => {
 
   // 폼이 유효한지 여부 확인
   const isFormValid = titleValue && episodeValue && dropdownValue !== '';
+
+  // CheckCommentBtn 클릭 시 토스트 메시지 표시
+  const handleButtonClick = () => {
+    if (isFormValid) {
+      // 폼이 유효하면 성공 메시지 표시
+      toast.success("폼이 성공적으로 제출되었습니다!");
+    } else {
+      // 폼이 유효하지 않으면 에러 메시지 표시
+      toast.error("폼을 모두 작성해주세요!", {
+        position: "bottom-center", // 토스트 위치
+        autoClose: 1200, // 1.2
+        hideProgressBar: true, // 진행바 숨기기
+        closeButton: true, // 닫기 버튼 추가
+        theme: "dark", // 다크 테마
+        draggable: false, // 드래그 가능
+        pauseOnHover: true, // 마우스 오버 시 일시 정지
+        limit : 0,
+        transition: Slide,
+      });
+    }
+  };
 
   console.log("title", titleValue);
   console.log("episodeValue", episodeValue);
@@ -85,7 +107,7 @@ const EpisodeFormComponent = () => {
             }}
           >
             {/* isValid 대신 isFormValid 사용 */}
-            <CheckCommentBtn disabled={!isFormValid} />
+            <CheckCommentBtn disabled={!isFormValid} onClick={handleButtonClick} />
           </div>
         </form>
       </FormProvider>

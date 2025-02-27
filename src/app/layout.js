@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import 'react-toastify/dist/ReactToastify.css';
 import "./globals.css";
 import Navbar from "@/components/NavBar";
+import { ToastContainer,Bounce } from 'react-toastify';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +25,18 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Navbar />
           {children}
+          {/* ToastContainer 추가 */}
+          <ToastContainer 
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeButton={true}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            transition={Bounce}
+          />
       </body>
     </html>
   );
