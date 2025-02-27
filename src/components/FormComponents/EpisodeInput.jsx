@@ -30,7 +30,7 @@ const EpisodeInput = ({ control, error }) => {
           <textarea
             {...field}
             placeholder="제목을 입력해주세요."
-            rows={10} // 기본 4행 크기로 설정
+            rows={13} // 기본 4행 크기로 설정
             style={{
               width: '100%',
               padding: '10px',
