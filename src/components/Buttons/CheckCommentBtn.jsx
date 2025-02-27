@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const CheckCommentBtn = () => {
+const CheckCommentBtn = ({ disabled }) => {
   return (
     <div
       style={{
@@ -18,7 +18,8 @@ const CheckCommentBtn = () => {
         alignItems: 'center',
         gap: 8,
         display: 'inline-flex',
-        cursor: 'pointer' // 클릭할 수 있다는 느낌을 주기 위해 cursor 추가
+        opacity: disabled ? 0.5 : 1, // 비활성화 상태일 때 opacity 조정
+        cursor: disabled ? 'not-allowed' : 'pointer', // 비활성화 시 커서 변경
       }}
     >
       <div
