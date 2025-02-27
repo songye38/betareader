@@ -9,6 +9,8 @@ const RecentEpiSet = () => {
         flexDirection:'column',
         gap:'24px',
         padding:'24px',
+        backgroundColor:'#1E1F24',
+        borderRadius:'32px',
     }}>
         <div 
             style={{
