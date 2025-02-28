@@ -8,6 +8,7 @@ import AgeInput from './FormComponents/AgeInput';
 import PlotInput from './FormComponents/PlotInput';
 import KeywordInput from './FormComponents/KeywordInput';
 import CharactersInput from './FormComponents/CharactersInput';
+import SettingSaveBtn from './Buttons/SettingSaveBtn';
 
 const SettingFormComponent = () => {
   const { control, handleSubmit, formState: { errors, isValid }, watch } = useForm({
@@ -85,7 +86,8 @@ const SettingFormComponent = () => {
       />
 
       {/* 버튼은 기본적으로 disabled 상태 */}
-      <button 
+      <SettingSaveBtn disabled={!formIsValid} />
+      {/* <button 
         type="submit" 
         style={{
           padding: '10px',
@@ -97,7 +99,7 @@ const SettingFormComponent = () => {
         disabled={!formIsValid} // formIsValid가 true일 때만 버튼이 활성화
       >
         제출
-      </button>
+      </button> */}
     </form>
   );
 };
