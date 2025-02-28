@@ -87,19 +87,6 @@ const SettingFormComponent = () => {
 
       {/* 버튼은 기본적으로 disabled 상태 */}
       <SettingSaveBtn disabled={!formIsValid} />
-      {/* <button 
-        type="submit" 
-        style={{
-          padding: '10px',
-          backgroundColor: formIsValid ? '#4A90E2' : '#A3C8FF', // formIsValid가 true일 때만 원래 색상, 아니면 비활성화된 색상
-          color: 'white',
-          borderRadius: '5px',
-          cursor: formIsValid ? 'pointer' : 'not-allowed', // 버튼 비활성화 상태에서는 커서도 변경
-        }} 
-        disabled={!formIsValid} // formIsValid가 true일 때만 버튼이 활성화
-      >
-        제출
-      </button> */}
     </form>
   );
 };
