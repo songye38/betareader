@@ -1,5 +1,6 @@
 import React from 'react';
-import RecentEpi from './RecentEpi';
+import RecentEpiItem from './RecentEpiItem';
+import AddEpiItem from './AddEpiItem';
 
 const RecentEpiSet = () => {
   return (
@@ -25,11 +26,12 @@ const RecentEpiSet = () => {
       최근 작성한 원고
       </div>
       <div style={{display:'flex',flexDirection:'row',gap:'24px'}}>
-        <RecentEpi />
-        <RecentEpi />
-        <RecentEpi />
-        <RecentEpi />
+        <RecentEpiItem />
+        <RecentEpiItem />
+        <RecentEpiItem />
+        <RecentEpiItem />
       </div>
+      <AddEpiItem />
     
 
     </div>

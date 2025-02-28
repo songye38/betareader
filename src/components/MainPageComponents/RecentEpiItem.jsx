@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-const RecentEpi = () => {
+const RecentEpiItem = () => {
   return (
     <div 
       style={{
@@ -112,4 +112,4 @@ const RecentEpi = () => {
   );
 };
 
-export default RecentEpi;
+export default RecentEpiItem;
