@@ -1,6 +1,6 @@
 // pages/main.js
 import RecentEpiSet from "@/components/MainPageComponents/RecentEpiSet";
-import AddManuItem from "@/components/MainPageComponents/AddManuItem";
+import AllManuSet from "@/components/MainPageComponents/AllManuSet";
 
 const MainPage = () => {
     return (
@@ -16,8 +16,8 @@ const MainPage = () => {
 
       >
         <RecentEpiSet />
-        <RecentEpiSet />
-        <AddManuItem />
+        <AllManuSet />
+
       </div>
     );
 };
