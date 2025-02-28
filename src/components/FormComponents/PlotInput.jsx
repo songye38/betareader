@@ -6,9 +6,9 @@ import { Controller } from 'react-hook-form';
 const PlotInput = ({ control, error }) => {
   return (
     <div style={{ width: 959, height: 210, paddingLeft: 28, paddingRight: 28, paddingTop: 24, paddingBottom: 24, background: '#1E1F24', borderRadius: 20, overflow: 'hidden', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 16, display: 'inline-flex' }}>
-      
-      <div style={{ color: 'white', fontSize: 24, fontFamily: 'Pretendard', fontWeight: '700', lineHeight: '33.60px', wordWrap: 'break-word' }}>
-        플룻
+      <div style={{display:'flex',flexDirection:'row'}}>
+        <div style={{ color: 'white', fontSize: 24, fontFamily: 'Pretendard', fontWeight: '700', lineHeight: '33.60px', wordWrap: 'break-word' }}>플룻</div>
+        <div style={{ color: '#8A94FF', fontSize: 24, fontFamily: 'Pretendard', fontWeight: '700', lineHeight: '33.60px', wordWrap: 'break-word' }}>*</div>
       </div>
       
       <Controller

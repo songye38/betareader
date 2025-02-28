@@ -11,7 +11,10 @@ const GenreInput = ({ control, error }) => {
 
   return (
     <div style={{ width: 621, height: 170, paddingLeft: 28, paddingRight: 28, paddingTop: 20, paddingBottom: 20, background: '#1E1F24', borderRadius: 20, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 16, display: 'inline-flex' }}>
-      <div style={{ color: 'white', fontSize: 24, fontFamily: 'Pretendard', fontWeight: '700', lineHeight: '33.60px', wordWrap: 'break-word' }}>장르</div>
+      <div style={{display:'flex',flexDirection:'row'}}>
+        <div style={{ color: 'white', fontSize: 24, fontFamily: 'Pretendard', fontWeight: '700', lineHeight: '33.60px', wordWrap: 'break-word' }}>장르</div>
+        <div style={{ color: '#8A94FF', fontSize: 24, fontFamily: 'Pretendard', fontWeight: '700', lineHeight: '33.60px', wordWrap: 'break-word' }}>*</div>
+      </div>
       
       <Controller
         name="genre"
