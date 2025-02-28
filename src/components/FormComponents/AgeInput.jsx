@@ -85,6 +85,7 @@ const AgeInput = ({ control, error }) => {
                   onClick={() => {
                     setSelectedCategory(ageCategory); // 선택된 카테고리 상태 업데이트
                     field.onChange(ageCategory); // react-hook-form 상태 업데이트
+                    console.log('현재 선택된 연��대:', ageCategory); // 선택된 연��대를 �����에 ��기
                   }}
                   style={{
                     width: 20,
