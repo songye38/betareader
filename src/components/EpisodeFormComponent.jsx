@@ -1,72 +1,78 @@
 'use client';
 
-import { useState } from 'react'; // useState 추가
+import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import EpisodeInput from './FormComponents/EpisodeInput';
-import useStore from '@/store/useStore'; // Zustand 스토어 사용
+import useStore from '@/store/useStore';
 import DropdownInput from './FormComponents/DropdownInput';
 import CheckCommentBtn from './Buttons/CheckCommentBtn';
-import { toast,Slide } from 'react-toastify'; // react-toastify에서 toast 임포트
+import { toast, Slide } from 'react-toastify';
 
 const EpisodeFormComponent = () => {
-  const { tabs } = useStore(); // Zustand에서 상태 가져오기
-  const selectedTab = tabs.find(tab => tab.selected); // 선택된 탭 찾기
+  const { tabs } = useStore();
+  const selectedTab = tabs.find(tab => tab.selected);
 
-  // react-hook-form에서 필요한 메서드와 상태값을 받기
-  const { control, handleSubmit, formState: { errors, isValid }, watch } = useForm({
+  const methods = useForm({
     defaultValues: {
       title: '',
       episode: '',
-      dropdown: '', // 드롭다운의 기본 값은 빈 문자열
+      dropdown: '', 
     },
-    mode: 'onChange', // onChange 모드로 설정하여 입력 시마다 유효성 검사
+    mode: 'onChange',
   });
 
-  // 상위 컴포넌트에서 드롭다운 값을 관리할 상태 추가
-  const [dropdownValue, setDropdownValue] = useState(''); 
+  const { control, handleSubmit, formState: { errors }, watch, setValue } = methods;
+
+  // 드롭다운 값 변경 핸들러 -> react-hook-form 상태에 업데이트
+  const handleDropdownChange = (value) => {
+    setValue('dropdown', value);
+  };
 
   const onSubmit = (data) => {
-    console.log('Form Data: ', data);
+    console.log('📌 Form Data:', data);
   };
 
-  // watch를 사용하여 각 필드의 값을 실시간으로 추적
+  // 각 필드의 값 추적
   const titleValue = watch('title');
   const episodeValue = watch('episode');
+  const dropdownValue = watch('dropdown');
 
-  // 드롭다운 값이 변경될 때 처리하는 함수
-  const handleDropdownChange = (value) => {
-    setDropdownValue(value); // 드롭다운에서 선택된 값을 상태에 저장
-  };
-
-  // 폼이 유효한지 여부 확인
+  // 유효성 검사
   const isFormValid = titleValue && episodeValue && dropdownValue !== '';
 
-  // CheckCommentBtn 클릭 시 토스트 메시지 표시
+  // 버튼 클릭 시 동작
   const handleButtonClick = () => {
     if (isFormValid) {
-      // 폼이 유효하면 성공 메시지 표시
-      toast.success("폼이 성공적으로 제출되었습니다!");
+      toast.success("폼이 성공적으로 제출되었습니다!", {
+        position: "bottom-center",
+        autoClose: 1200,
+        hideProgressBar: true,
+        closeButton: true,
+        theme: "dark",
+        draggable: false,
+        pauseOnHover: true,
+        transition: Slide,
+      });
+      handleSubmit(onSubmit)();  // 폼 제출 실행
     } else {
-      // 폼이 유효하지 않으면 에러 메시지 표시
       toast.error("폼을 모두 작성해주세요!", {
-        position: "bottom-center", // 토스트 위치
-        autoClose: 1200, // 1.2
-        hideProgressBar: true, // 진행바 숨기기
-        closeButton: true, // 닫기 버튼 추가
-        theme: "dark", // 다크 테마
-        draggable: false, // 드래그 가능
-        pauseOnHover: true, // 마우스 오버 시 일시 정지
-        limit : 0,
+        position: "bottom-center",
+        autoClose: 1200,
+        hideProgressBar: true,
+        closeButton: true,
+        theme: "dark",
+        draggable: false,
+        pauseOnHover: true,
         transition: Slide,
       });
     }
   };
 
-  console.log("title", titleValue);
-  console.log("episodeValue", episodeValue);
-  console.log("dropdownValue", dropdownValue);
-  console.log("isFormValid", isFormValid);
+  // console.log("✅ title:", titleValue);
+  // console.log("✅ episode:", episodeValue);
+  // console.log("✅ dropdown:", dropdownValue);
+  // console.log("✅ isFormValid:", isFormValid);
 
   return (
     <div>
@@ -77,21 +83,20 @@ const EpisodeFormComponent = () => {
           fontFamily: 'Pretendard',
           fontWeight: '600',
           lineHeight: '50.4px',
-          wordWrap: 'break-word',
         }}
       >
         {selectedTab.label}
       </div>
 
-      {/* FormProvider로 감싸기 */}
-      <FormProvider {...{ control, handleSubmit, errors, watch }}>
+      <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
           <div style={{ display: 'flex', flexDirection: 'row', gap: '12px' }}>
             <TitleInput control={control} error={errors.title} showLabel={false} />
-            {/* DropdownInput에 handleDropdownChange를 전달 */}
-            <DropdownInput error={errors.dropdown} onDropdownChange={handleDropdownChange} />
+            <DropdownInput control={control} error={errors.dropdown} onDropdownChange={handleDropdownChange} />
           </div>
-          <EpisodeInput error={errors.episode} />
+          
+          {/* EpisodeInput에 control 추가! */}
+          <EpisodeInput control={control} error={errors.episode} />
 
           <div
             style={{
@@ -106,7 +111,6 @@ const EpisodeFormComponent = () => {
               display: 'inline-flex',
             }}
           >
-            {/* isValid 대신 isFormValid 사용 */}
             <CheckCommentBtn disabled={!isFormValid} onClick={handleButtonClick} />
           </div>
         </form>
