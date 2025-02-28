@@ -1,6 +1,16 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 
 const CommentComponent = () => {
+  // 하트 클릭 상태를 관리하는 useState
+  const [isLiked, setIsLiked] = useState(false);
+
+  // 하트 클릭 시 상태를 토글하는 함수
+  const toggleLike = () => {
+    setIsLiked(!isLiked);
+  };
+
   return (
     <div style={{ width: '80%', height: '100%', display: 'flex', flexDirection: 'row', position: 'relative' }}>
       {/* 프로필 이미지 */}
@@ -74,7 +84,7 @@ const CommentComponent = () => {
           </div>
         </div>
 
-        {/* SVG Icon */}
+        {/* SVG 하트 아이콘 */}
         <div data-svg-wrapper>
           <svg
             width="36"
@@ -82,12 +92,16 @@ const CommentComponent = () => {
             viewBox="0 0 36 36"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            onClick={toggleLike} // 클릭 시 상태 토글
+            style={{
+              cursor: 'pointer', // 클릭 가능한 영역으로 보이게 하기 위해 커서 변경
+            }}
           >
             <rect width="36" height="36" rx="12" fill="#3A3D46" />
             <path
               d="M18.4999 12.5574C16.3666 7.26298 8.8999 7.82689 8.8999 14.5938C8.8999 21.3607 18.4999 27 18.4999 27C18.4999 27 28.0999 21.3607 28.0999 14.5938C28.0999 7.82689 20.6332 7.26298 18.4999 12.5574Z"
-              fill="#5E6CFF"
-              stroke="#5E6CFF"
+              fill={isLiked ? "transparent" : "#5E6CFF"} // isLiked 상태에 따라 색상 변경
+              stroke={isLiked ? "#5E6CFF" : "transparent"} // isLiked
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
