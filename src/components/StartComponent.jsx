@@ -37,7 +37,7 @@ const StartComponent = () => {
                 wordWrap: 'break-word',
             }}
             >
-            ‘웹소설 1’의 원고집 시작하기
+            ‘웹소설 1’ 작성 시작하기
             </div>
 
             {/* 두 번째 텍스트 */}
