@@ -1,37 +1,33 @@
-'use client';
-
 import React from 'react';
 import EpisodeTab from './EpisodeTab';
 import Button1 from './Buttons/Button1';
 import useStore from '@/store/useStore'; // Zustand 스토어 사용
-import { useRouter } from 'next/router'; // useRouter 추가
 
 const SidebarComponent = () => {
-  const { tabs, addTab, setSelectedTab } = useStore(); // useStore에서 상태와 함수 가져오기
+  const { tabs, addTab, setSelectedTab, selectedTab } = useStore(); // Zustand 상태 가져오기
 
-  const router = useRouter(); // useRouter 훅 사용
-  const { userId, ManuscriptId } = router.query; 
-
-  // "원고 추가하기" 버튼 클릭 시 호출되는 함수
+  // "원고 추가하기" 버튼 클릭 시 새로운 탭 추가
   const handleAddTab = () => {
-    const newTab = { label: '새 원고', selected: false };
-    addTab(newTab); // 새 탭을 추가하면서 selected: true로 설정됨
+    const { currentManuscriptId, addTab, setSelectedTab, incrementManuscriptId } = useStore.getState();
+    const newTabId = Date.now(); // 현재 시간을 기반으로 고유 ID 생성
+    const newManuscriptId = currentManuscriptId; // 원고 ID로 사용
+  
+    // 새 탭 추가 데이터
+    const newTab = { 
+      id: newTabId, // 고유 탭 ID
+      label: `${newManuscriptId}화`, // 원고 ID와 연결된 이름
+      manuscriptId: newManuscriptId, // 원고 ID
+    };
+  
+    // 새 탭 추가 및 selectedTab 설정
+    addTab(newTab);
+    setSelectedTab(newTabId);  // 탭 ID를 사용하여 selectedTab 업데이트
+  
+    // 원고 ID 증가
+    incrementManuscriptId(); // 원고 ID 증가
   };
-
-  // 탭 클릭 시 선택 상태 변경 함수
-  const handleTabClick = (id, label) => {
-    setSelectedTab(id); // id를 전달하여 상태 업데이트
-
-    // URL을 해당 페이지로 이동
-    if (label === 'setting') {
-      router.push(`/${userId}/${ManuscriptId}/setting`); // userId와 Manuscript을 포함한 URL
-    } else if (label === 'start') {
-      router.push(`/${userId}/${ManuscriptId}/start`); // userId와 Manuscript을 포함한 URL
-    } else {
-      router.push(`/${userId}/${ManuscriptId}/${id}`); // userId, Manuscript, epiId를 포함한 URL
-    }
-  };
-
+  
+  
   return (
     <div
       style={{
@@ -91,11 +87,12 @@ const SidebarComponent = () => {
             {/* 탭 렌더링 */}
             {tabs.map((tab) => (
               <EpisodeTab
-                key={tab.id} // 고유 id로 key 설정
-                label={tab.label}
-                selected={tab.selected}
-                onClick={() => handleTabClick(tab.id, tab.label)} // id를 전달하여 선택된 탭을 처리
-              />
+              key={tab.id} // 각 탭의 id를 key로 설정
+              id={tab.id} // id 전달
+              label={tab.label}
+              selected={selectedTab === tab.id} // 선택 여부 확인
+              onClick={() => setSelectedTab(tab.id)} // 선택된 탭 변경
+            />
             ))}
           </div>
         </div>

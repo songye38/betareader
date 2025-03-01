@@ -1,7 +1,14 @@
 import React from 'react';
-import Button2 from './Buttons/Button2';
+import StartSettingBtn from './Buttons/StartSettingBtn';
+import useStore from '@/store/useStore'; // Zustand 스토어 사용
+
 
 const StartComponent = () => {
+    const { addTab } = useStore(); // useStore에서 addTab 함수 가져오기
+    const handleAddTab = () => {
+        const newTab = { key : 0, label: '설정집', selected: true }; // 새로운 탭의 기본 정보
+        addTab(newTab); // 새 탭을 추가
+      };
   return (
     <div style={{
         width : '100%',
@@ -114,7 +121,7 @@ const StartComponent = () => {
             설정(제목, 장르 등)을 입력해주세요
             </div>
         </div>
-        <Button2 />
+        <StartSettingBtn  onClick={handleAddTab}/>
         </div>
         
     </div>

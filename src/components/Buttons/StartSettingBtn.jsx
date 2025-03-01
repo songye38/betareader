@@ -1,9 +1,11 @@
 import React from 'react';
 
 
-const Button2 = () => {
+const StartSettingBtn = ({onClick}) => {
+  console.log("버튼이 눌렸습니다.");
   return (
     <button
+      onClick = {onClick}
       style={{
         display: 'flex',
         width: '12rem',
@@ -34,4 +36,4 @@ const Button2 = () => {
   );
 };
 
-export default Button2;
+export default StartSettingBtn;

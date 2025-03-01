@@ -1,17 +1,20 @@
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
-  tabs: [
-    { id: 1, label: '설정집', selected: true },
-    // 기본 탭에는 고유한 id를 추가합니다
-  ],
+  tabs: [], // 초기 탭 목록
+  selectedTab: null, // 현재 선택된 탭 ID
+  currentManuscriptId: 1, // 원고 ID 초기값
+
+  // 새 탭 추가 함수
   addTab: (newTab) =>
     set((state) => ({
       tabs: [
-        ...state.tabs.map((tab) => ({ ...tab, selected: false })),
-        { ...newTab, selected: true, id: Date.now() }, // 고유 id 생성
+        ...state.tabs.map((tab) => ({ ...tab, selected: false })), // 기존 탭 선택 해제
+        { ...newTab, selected: true }, // 새 탭 추가 및 선택
       ],
     })),
+
+  // 선택된 탭 변경 함수
   setSelectedTab: (id) =>
     set((state) => ({
       tabs: state.tabs.map((tab) =>
@@ -19,6 +22,13 @@ const useStore = create((set) => ({
           ? { ...tab, selected: true }
           : { ...tab, selected: false }
       ),
+      selectedTab: id, // 선택된 탭 ID 업데이트
+    })),
+
+  // 원고 ID 증가 함수
+  incrementManuscriptId: () =>
+    set((state) => ({
+      currentManuscriptId: state.currentManuscriptId + 1,
     })),
 }));
 

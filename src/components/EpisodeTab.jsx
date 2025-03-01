@@ -1,9 +1,7 @@
-import React from 'react';
-
-const EpisodeTab = ({ label = '설정집', selected = false, onClick }) => {
+const EpisodeTab = ({ id, label, selected, onClick }) => {
   return (
     <div
-      onClick={onClick} // 클릭 이벤트를 처리
+      onClick={() => onClick(id)} // 클릭할 때 id 전달
       style={{
         display: 'flex',
         width: '13.75rem',

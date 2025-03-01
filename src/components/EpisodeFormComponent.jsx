@@ -13,6 +13,8 @@ const EpisodeFormComponent = () => {
   const { tabs } = useStore();
   const selectedTab = tabs.find(tab => tab.selected);
 
+  console.log("selectedTab",selectedTab);
+
   const methods = useForm({
     defaultValues: {
       title: '',
@@ -68,11 +70,6 @@ const EpisodeFormComponent = () => {
       });
     }
   };
-
-  // console.log("✅ title:", titleValue);
-  // console.log("✅ episode:", episodeValue);
-  // console.log("✅ dropdown:", dropdownValue);
-  // console.log("✅ isFormValid:", isFormValid);
 
   return (
     <div>
