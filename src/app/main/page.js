@@ -1,6 +1,7 @@
 // pages/main.js
 import RecentEpiSet from "@/components/MainPageComponents/RecentEpiSet";
 import AllManuSet from "@/components/MainPageComponents/AllManuSet";
+import AddManuPopup from "@/components/Popups/AddManuPopup";
 
 const MainPage = () => {
     return (
@@ -17,6 +18,7 @@ const MainPage = () => {
       >
         <RecentEpiSet />
         <AllManuSet />
+        <AddManuPopup />
 
       </div>
     );

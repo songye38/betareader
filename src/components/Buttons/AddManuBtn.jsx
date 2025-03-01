@@ -1,8 +1,9 @@
 const AddManuBtn = () => {
+
     return (
       <div
         style={{
-          width: 177,
+          width: 'auto',
           height: 52,
           paddingLeft: 20,
           paddingRight: 20,
@@ -29,7 +30,7 @@ const AddManuBtn = () => {
             wordWrap: "break-word",
           }}
         >
-          원고집 만들기
+          새 연재물 만들기
         </div>
       </div>
     );
