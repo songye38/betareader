@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from "next/router";
 import { useForm, FormProvider } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import EpisodeInput from './FormComponents/EpisodeInput';
@@ -12,6 +13,11 @@ import { toast, Slide } from 'react-toastify';
 const EpisodeFormComponent = () => {
   const { tabs } = useStore();
   const selectedTab = tabs.find(tab => tab.selected);
+
+  const router = useRouter();
+  const { userId, manuscriptId } = router.query; // URL 파라미터에서 값 추출
+
+  console.log("현재 라우터는?", userId,manuscriptId)
 
   console.log("selectedTab",selectedTab);
 
@@ -31,9 +37,25 @@ const EpisodeFormComponent = () => {
     setValue('dropdown', value);
   };
 
+
   const onSubmit = (data) => {
-    console.log('📌 Form Data:', data);
+    
+    // selectedTab에서 id를 가져옵니다.
+    const episodeId = selectedTab ? selectedTab.id : null;
+  
+    // 데이터를 합침
+    const combinedData = {
+      ...data, // 기존 form 데이터
+      userId, // 추가된 userId
+      manuscriptId, // 추가된 manuscriptId
+      episodeId, // 추가된 selectedTab.id
+    };
+  
+    console.log('📌 Combined Form Data:', combinedData);
+  
+    // 이 데이터로 서버 요청 등을 진행할 수 있습니다.
   };
+  
 
   // 각 필드의 값 추적
   const titleValue = watch('title');
@@ -80,6 +102,7 @@ const EpisodeFormComponent = () => {
           fontFamily: 'Pretendard',
           fontWeight: '600',
           lineHeight: '50.4px',
+          paddingBottom:'12px',
         }}
       >
         {selectedTab.label}

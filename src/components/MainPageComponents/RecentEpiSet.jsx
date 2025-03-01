@@ -5,7 +5,7 @@ import AddEpiItem from './AddEpiItem';
 const RecentEpiSet = () => {
   return (
     <div style={{
-        width : '95%',
+        width : '1152px',
         display:'flex',
         flexDirection:'column',
         gap:'24px',
@@ -25,13 +25,17 @@ const RecentEpiSet = () => {
             >
       최근 작성한 원고
       </div>
+      {/* 아이템이 있으면 표시하고 없으면 문구를 표시한다. -> 이건 나중에 백엔드랑 연결 */}
       <div style={{display:'flex',flexDirection:'row',gap:'24px'}}>
         <RecentEpiItem />
         <RecentEpiItem />
         <RecentEpiItem />
         <RecentEpiItem />
       </div>
-      <AddEpiItem />
+
+
+      {/* 추가하는 버튼은 없앤다. */}
+      {/* <AddEpiItem /> */}
     
 
     </div>
