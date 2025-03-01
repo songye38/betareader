@@ -1,8 +1,16 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist,Geist_Mono,Poppins } from "next/font/google";
 import 'react-toastify/dist/ReactToastify.css';
 import "./globals.css";
 import Navbar from "@/components/NavBar";
 import { ToastContainer,Bounce ,removalReason} from 'react-toastify';
+
+
+
+const poppins = Poppins({ 
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], 
+  subsets: ['latin'],
+  display: 'swap'
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +30,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.className}`}>
         <Navbar />
           {children}
           {/* ToastContainer 추가 */}

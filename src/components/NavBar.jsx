@@ -1,4 +1,11 @@
 import React from 'react';
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({ 
+  weight: ['800'], 
+  subsets: ['latin'],
+  display: 'swap'
+});
 
 const Navbar = () => {
   return (
@@ -13,7 +20,7 @@ const Navbar = () => {
         </div>
 
         {/* 제목 */}
-        <div style={{ color: 'white', fontSize: 22, fontFamily: 'Inconsolata', fontWeight: '400', lineHeight: '30.80px', wordWrap: 'break-word' }}>
+        <div className={poppins.className} style={{ color: 'white', fontSize: 20, fontWeight: '800', lineHeight: '30.80px', wordWrap: 'break-word' }}>
           BetaReader
         </div>
       </div>
