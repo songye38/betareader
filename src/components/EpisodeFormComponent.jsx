@@ -105,7 +105,7 @@ const EpisodeFormComponent = () => {
           paddingBottom:'12px',
         }}
       >
-        {selectedTab.label}
+        {selectedTab ? selectedTab.label : '선택된 탭이 없습니다.'} {/* selectedTab이 없으면 대체 텍스트 표시 */}
       </div>
 
       <FormProvider {...methods}>
