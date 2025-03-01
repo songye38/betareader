@@ -21,10 +21,10 @@ const UserPage = ({ userId, manuscriptId }) => {
       <SidebarComponent /> {/* Sidebar 내부에서 Zustand의 상태 관리 */}
       <div style={{ flex: 1, padding: "20px" }}>
         {/* selectedTab 값에 따라 다른 컴포넌트 렌더링 */}
-        {selectedTab ? (
+        {selectedTab != null ? (
             <EpisodeFormComponent />
             ) : (
-            <div>선택된 탭이 없습니다.</div>
+            <StartComponent />
             )}
       </div>
     </div>
