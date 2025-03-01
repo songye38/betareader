@@ -1,32 +1,6 @@
 import React from 'react';
 
 
-//원고 추가 버튼
-
-
-
-
-
-
-const ICONS = {
-  ADD: '/plus_icon.svg',
-  WRITE: '/write_icon.svg',
-};
-
-const TYPES = {
-  PRIMARY: 'primary',
-  NEUTRAL: 'neutral',
-  WHITE: 'white',
-};
-
-const STATUSES = {
-  DEFAULT: 'default',
-  HOVER: 'hover',
-  DISABLED : 'disabled',
-};
-
-
-
 const Button1 = ({onClick}) => {
   return (
     <button

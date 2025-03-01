@@ -1,7 +1,5 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 import { useForm, FormProvider } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import EpisodeInput from './FormComponents/EpisodeInput';
@@ -11,16 +9,17 @@ import CheckCommentBtn from './Buttons/CheckCommentBtn';
 import { toast, Slide } from 'react-toastify';
 
 const EpisodeFormComponent = () => {
-  const { tabs } = useStore();
-  const selectedTab = tabs.find(tab => tab.selected);
+  const [selectedTab] = useState(null);
+  //const tabs = useStore((state) => state.tabs); // Zustand의 상태를 구독
+  const selectedTabFromStore = useStore.getState().tabs.find(tab => tab.selected);
+
+  console.log("selectedTabFromStore",selectedTabFromStore);
 
   const router = useRouter();
   const { userId, manuscriptId } = router.query; // URL 파라미터에서 값 추출
 
-  console.log("현재 라우터는?", userId,manuscriptId)
 
-  console.log("selectedTab",selectedTab);
-
+  // 폼 관련 코드
   const methods = useForm({
     defaultValues: {
       title: '',
@@ -32,40 +31,28 @@ const EpisodeFormComponent = () => {
 
   const { control, handleSubmit, formState: { errors }, watch, setValue } = methods;
 
-  // 드롭다운 값 변경 핸들러 -> react-hook-form 상태에 업데이트
+  // 드롭다운 값 변경 핸들러
   const handleDropdownChange = (value) => {
     setValue('dropdown', value);
   };
 
-
   const onSubmit = (data) => {
-    
-    // selectedTab에서 id를 가져옵니다.
     const episodeId = selectedTab ? selectedTab.id : null;
-  
-    // 데이터를 합침
     const combinedData = {
-      ...data, // 기존 form 데이터
-      userId, // 추가된 userId
-      manuscriptId, // 추가된 manuscriptId
-      episodeId, // 추가된 selectedTab.id
+      ...data,
+      userId,
+      manuscriptId,
+      episodeId,
     };
-  
     console.log('📌 Combined Form Data:', combinedData);
-  
-    // 이 데이터로 서버 요청 등을 진행할 수 있습니다.
   };
-  
 
-  // 각 필드의 값 추적
   const titleValue = watch('title');
   const episodeValue = watch('episode');
   const dropdownValue = watch('dropdown');
 
-  // 유효성 검사
   const isFormValid = titleValue && episodeValue && dropdownValue !== '';
 
-  // 버튼 클릭 시 동작
   const handleButtonClick = () => {
     if (isFormValid) {
       toast.success("폼이 성공적으로 제출되었습니다!", {
@@ -105,7 +92,7 @@ const EpisodeFormComponent = () => {
           paddingBottom:'12px',
         }}
       >
-        {selectedTab ? selectedTab.label : '선택된 탭이 없습니다.'} {/* selectedTab이 없으면 대체 텍스트 표시 */}
+        {selectedTabFromStore ? selectedTabFromStore.label : '선택된 탭이 없습니다.'} {/* selectedTab이 없으면 대체 텍스트 표시 */}
       </div>
 
       <FormProvider {...methods}>
@@ -115,7 +102,6 @@ const EpisodeFormComponent = () => {
             <DropdownInput control={control} error={errors.dropdown} onDropdownChange={handleDropdownChange} />
           </div>
           
-          {/* EpisodeInput에 control 추가! */}
           <EpisodeInput control={control} error={errors.episode} />
 
           <div

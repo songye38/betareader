@@ -2,7 +2,6 @@ import React from 'react';
 
 
 const StartSettingBtn = ({onClick}) => {
-  console.log("버튼이 눌렸습니다.");
   return (
     <button
       onClick = {onClick}

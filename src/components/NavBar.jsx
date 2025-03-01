@@ -16,7 +16,7 @@ const Navbar = () => {
   return (
     <div style={{ width: 1440, height: 60, paddingLeft: 24, paddingRight: 24, paddingTop: 10, paddingBottom: 10, justifyContent: 'center', alignItems: 'center', gap: 1162, display: 'inline-flex',zIndex:10 }}>
       {/* 왼쪽 부분 (로고 및 텍스트) */}
-      <div style={{ alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', gap: 13, display: 'inline-flex'}} onClick={() => router.push('/')}>
+      <div style={{ alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', gap: 13, display: 'inline-flex', cursor: 'pointer'}} onClick={() => router.push('/')}>
         <div data-svg-wrapper style={{ position: 'relative' }}>
             {/* 로고가 들어가야 함 -> 나중에 대체하기  */}
           <svg width="39" height="35" viewBox="0 0 39 35" fill="none" xmlns="http://www.w3.org/2000/svg">
