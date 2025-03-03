@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useState,useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import EpisodeInput from './FormComponents/EpisodeInput';
@@ -11,6 +12,7 @@ const EpisodeFormComponent = () => {
   const selectedTabFromStore = useStore.getState().tabs.find(tab => tab.selected);
   const router = useRouter();
   const { userId, manuscriptId } = router.query; // URL 파라미터에서 값 추출
+  const [isSaving, setIsSaving] = useState(false); //자동저장을 위한 기능
   
   // 폼 관련 코드
   const methods = useForm({
@@ -81,6 +83,36 @@ const EpisodeFormComponent = () => {
       });
     }
   };
+
+    // 자동 저장을 위한 debounce
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        if (isFormValid && !isSaving) {
+          setIsSaving(true);
+          //TODO 여기에 자동 저장을 처리하는 함수 호출 (예: 로컬스토리지나 서버에 데이터 저장)
+
+
+          localStorage.setItem('episodeForm', JSON.stringify({
+            title: titleValue,
+            episode: episodeValue,
+            dropdown: dropdownValue,
+          }));
+          toast.info("자동 저장되었습니다.", {
+            position: "bottom-center",
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeButton: true,
+            theme: "dark",
+            draggable: false,
+            pauseOnHover: true,
+            transition: Slide,
+          });
+          setIsSaving(false);
+        }
+      }, 2000); // NOTE 2초마다 자동 저장
+  
+      return () => clearTimeout(timeout); // 컴포넌트 언마운트 시 타이머 클리어
+    }, [titleValue, episodeValue, dropdownValue, isSaving, isFormValid]);
 
   return (
     <div>
