@@ -1,9 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import { ToastContainer, toast, Slide } from 'react-toastify';
+import { useRouter } from 'next/router';
 import 'react-toastify/dist/ReactToastify.css'; // 토스트 스타일 import
 
 const CommentHeaderComponent = () => {
+  const router = useRouter();
   // 북마크 상태 관리 (false: 빈 북마크, true: 채워진 북마크)
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -14,37 +16,10 @@ const CommentHeaderComponent = () => {
 
     const successToastId = "bookmark-added-toast"; // 북마크 추가에 대한 고유 ID
     const infoToastId = "bookmark-removed-toast"; // 북마크 제거에 대한 고유 ID
+  };
 
-    // 기존 토스트 메시지 닫기 (모든 토스트를 닫음)
-    // toast.dismiss(); // 모든 토스트 닫기
-
-    // // 새로운 북마크 상태에 따른 토스트 메시지 표시
-    // if (newBookmarkStatus) {
-    //   toast.success('북마크에 추가되었습니다!', {
-    //     toastId: successToastId, // 고유한 ID를 설정하여 중복 방지
-    //     position: "bottom-center", // 토스트 위치
-    //     autoClose: 1200, // 1.2초 후 자동으로 사라짐
-    //     hideProgressBar: true, // 진행바 숨기기
-    //     closeButton: true, // 닫기 버튼 추가
-    //     theme: "dark", // 다크 테마
-    //     draggable: false, // 드래그 가능
-    //     pauseOnHover: false, // 마우스 오버 시 일시 정지
-    //     limit: 1, // 최대 1개 토스트만 표시
-    //     transition: Slide, // 슬라이드 효과
-    //   });
-    // } else {
-    //   toast.info('북마크에서 제거되었습니다.', {
-    //     toastId: infoToastId, // 고유한 ID를 설정하여 중복 방지
-    //     position: "bottom-center", 
-    //     autoClose: 1200,
-    //     hideProgressBar: true,
-    //     closeOnClick: true,
-    //     pauseOnHover: false,
-    //     limit: 1, // 최대 1개 토스트만 표시
-    //     transition: Slide, // 슬라이드 효과
-    //     theme: "dark", // 다크 테마
-    //   });
-    // }
+  const handleGoBack = () => {
+    router.back();  // 브라우저의 뒤로가기 기능을 호출
   };
 
   return (
@@ -73,7 +48,7 @@ const CommentHeaderComponent = () => {
       }}>
           
         {/* 뒤로가기 아이콘 */}
-        <img src="/back_icon.svg" alt="Profile" width={24} height={24}/>
+        <img src="/back_icon.svg" alt="Profile" width={24} height={24} onClick={handleGoBack}/>
 
         {/* 텍스트 섹션 */}
         <div

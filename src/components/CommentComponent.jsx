@@ -1,14 +1,13 @@
-'use client';
-
 import React, { useState } from 'react';
 
-const CommentComponent = () => {
-  // 하트 클릭 상태를 관리하는 useState
-  const [isLiked, setIsLiked] = useState(false);
+const CommentComponent = ({ id, onHeartClick, isHearted,name,text }) => {
+  const [isLiked, setIsLiked] = useState(isHearted);
 
-  // 하트 클릭 시 상태를 토글하는 함수
   const toggleLike = () => {
-    setIsLiked(!isLiked);
+    console.log("토글된 id는?",id);
+    const newHeartedState = !isLiked;
+    setIsLiked(newHeartedState);
+    onHeartClick(id, newHeartedState); // 부모 컴포넌트에 하트 상태를 전달
   };
 
   return (
@@ -20,10 +19,10 @@ const CommentComponent = () => {
         width={32}
         height={52}
         style={{
-          position: 'absolute', // 절대 위치로 설정
-          top: 10, // 세로 위치 조정
-          left: 30, // 좌측 여백 조정 (필요시)
-          zIndex: 2, // 두 번째 요소와 겹치게 하기 위해 zIndex 설정
+          position: 'absolute',
+          top: 10,
+          left: 30,
+          zIndex: 2,
         }}
       />
 
@@ -67,7 +66,7 @@ const CommentComponent = () => {
               wordWrap: 'break-word',
             }}
           >
-            Name
+            {name}
           </div>
           {/* Text */}
           <div
@@ -80,7 +79,7 @@ const CommentComponent = () => {
               wordWrap: 'break-word',
             }}
           >
-            TextText
+            {text}
           </div>
         </div>
 
@@ -100,8 +99,8 @@ const CommentComponent = () => {
             <rect width="36" height="36" rx="12" fill="#3A3D46" />
             <path
               d="M18.4999 12.5574C16.3666 7.26298 8.8999 7.82689 8.8999 14.5938C8.8999 21.3607 18.4999 27 18.4999 27C18.4999 27 28.0999 21.3607 28.0999 14.5938C28.0999 7.82689 20.6332 7.26298 18.4999 12.5574Z"
-              fill={isLiked ? "transparent" : "#5E6CFF"} // isLiked 상태에 따라 색상 변경
-              stroke={isLiked ? "#5E6CFF" : "transparent"} // isLiked
+              fill={isLiked ? "#5E6CFF" : "transparent"} // isLiked 상태에 따라 채워짐
+              stroke={isLiked ? "transparent" : "#5E6CFF"} // isLiked 상태에 따라 경계선
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"

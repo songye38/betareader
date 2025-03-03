@@ -9,16 +9,10 @@ import CheckCommentBtn from './Buttons/CheckCommentBtn';
 import { toast, Slide } from 'react-toastify';
 
 const EpisodeFormComponent = () => {
-  const [selectedTab] = useState(null);
-  //const tabs = useStore((state) => state.tabs); // Zustand의 상태를 구독
   const selectedTabFromStore = useStore.getState().tabs.find(tab => tab.selected);
-
-  console.log("selectedTabFromStore",selectedTabFromStore);
-
   const router = useRouter();
   const { userId, manuscriptId } = router.query; // URL 파라미터에서 값 추출
-
-
+  
   // 폼 관련 코드
   const methods = useForm({
     defaultValues: {
@@ -37,14 +31,22 @@ const EpisodeFormComponent = () => {
   };
 
   const onSubmit = (data) => {
-    const episodeId = selectedTab ? selectedTab.id : null;
+    const episodeId = selectedTabFromStore ? selectedTabFromStore.id : null;
     const combinedData = {
       ...data,
       userId,
       manuscriptId,
       episodeId,
     };
-    console.log('📌 Combined Form Data:', combinedData);
+
+    const epiId = episodeId;
+
+    // 라우팅 경로 수정
+    if (userId && episodeId && manuscriptId && epiId) {
+      router.push(`/${userId}/${manuscriptId}/${epiId}/comment`);
+    } else {
+      toast.error("필수 정보가 누락되었습니다. 모든 정보를 확인해주세요.");
+    }
   };
 
   const titleValue = watch('title');
@@ -65,7 +67,8 @@ const EpisodeFormComponent = () => {
         pauseOnHover: true,
         transition: Slide,
       });
-      handleSubmit(onSubmit)();  // 폼 제출 실행
+      // 폼 제출 실행
+      handleSubmit(onSubmit)();
     } else {
       toast.error("폼을 모두 작성해주세요!", {
         position: "bottom-center",
