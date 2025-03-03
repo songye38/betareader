@@ -5,6 +5,9 @@ import StartSettingBtn from './Buttons/StartSettingBtn';
 
 const StartComponent = () => {
     const { setIsSettingCreated,setSelectedItemType } = useStore();
+    //주석추가
+
+    console.log("hellloworld");
 
     const handleButtonClick = () => {
         // 버튼 클릭 시 설정집이 생성되었다고 상태를 true로 설정
