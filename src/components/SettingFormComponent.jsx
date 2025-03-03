@@ -30,10 +30,12 @@ const SettingFormComponent = () => {
   // };
 
   const onSubmit = async (data) => {
+
+    console.log("최종 설정집 data",data);
     // 데이터를 서버에 맞게 변환
     const requestData = {
       title: data.title,
-      topic: data.plot,  // 'plot' -> 'topic'으로 이름 변경
+      topic: data.plot,  // topic은 필요없다. 
       plot: data.plot,
       genre: data.genre[0],  // genre가 배열로 되어있으므로 첫 번째 값만 사용
       ageGroup: data.ageCategory,  // 'ageCategory' -> 'ageGroup'으로 이름 변경
