@@ -5,7 +5,7 @@ const MyPageModal = () => {
     <div 
       style={{
         width: 345,
-        height: 336,
+        height: 'auto',
         padding: 32,
         background: '#2C2D34',
         borderRadius: 24,
@@ -34,16 +34,17 @@ const MyPageModal = () => {
                 </div>
         </div>
         <div style={{
-            display: 'inline-block',  // 이미지의 크기만큼 부모 요소 크기 설정
-            alignItems: 'center',      // 수직 중앙 정렬
-            justifyContent: 'center',  // 수평 중앙 정렬
-            padding: '6px',           // 아이콘과 border 사이의 간격
-            border: '1px solid #636466', // border 설정 (원하는 색상, 두께로 조정 가능)
-            borderRadius: '12px',      // 둥근 테두리 (원 모양으로 만들기 위한 설정)
-            boxSizing: 'border-box'   // border가 이미지 크기에 영향을 미치지 않도록 설정
-            }}>
+            display: 'inline-flex',          // flexbox로 변경
+            alignItems: 'center',           // 수직 중앙 정렬
+            justifyContent: 'center',       // 수평 중앙 정렬
+            padding: '6px',                 // 아이콘과 border 사이의 간격
+            border: '1px solid #636466',    // border 설정 (원하는 색상, 두께로 조정 가능)
+            borderRadius: '12px',           // 둥근 테두리 (원 모양으로 만들기 위한 설정)
+            boxSizing: 'border-box'         // border가 이미지 크기에 영향을 미치지 않도록 설정
+        }}>
             <img src="/write_icon.svg" alt="Profile" width={24} height={24} />
         </div>
+
 
 
       </div>
