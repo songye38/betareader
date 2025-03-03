@@ -3,9 +3,6 @@ import RecentEpiSet from "@/components/MainPageComponents/RecentEpiSet";
 import AllManuSet from "@/components/MainPageComponents/AllManuSet";
 import AddManuPopup from "@/components/Popups/AddManuPopup";
 import UploadingEpi from "@/components/Modal/UploadingEpi";
-import MyPageModal from "@/components/Modal/MyPageModal";
-import BookmarkItem from "@/components/MyPage/BookmarkItem";
-import MyManuItem from "@/components/MyPage/MyManuItem";
 
 const MainPage = () => {
     return (
@@ -15,7 +12,6 @@ const MainPage = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-        //   height: "100vh",
           gap:'32px',
         }}
 
@@ -24,9 +20,6 @@ const MainPage = () => {
         <AllManuSet />
         <AddManuPopup />
         <UploadingEpi />
-        <MyPageModal />
-        <BookmarkItem />
-        <MyManuItem />
 
       </div>
     );

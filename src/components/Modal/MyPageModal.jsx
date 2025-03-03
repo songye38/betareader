@@ -1,6 +1,12 @@
 import React from 'react';
+import { useRouter } from 'next/router'; // useRouter import
 
-const MyPageModal = () => {
+const MyPageModal = ({onClose}) => {
+    const router = useRouter(); // useRouter 훅 사용
+    const handleNavigation = (path) => {
+        router.push(path); // 경로 이동
+        onClose(); // 모달 닫기
+    };
   return (
     <div 
       style={{
@@ -53,6 +59,7 @@ const MyPageModal = () => {
       {/* 연재물 설정 */}
       <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
         <div 
+            onClick={() => handleNavigation('/mypage/manus')}
             style={{
             alignSelf: 'stretch',
             paddingLeft: 13,
@@ -80,8 +87,11 @@ const MyPageModal = () => {
             연재물 설정
             </div>
         </div>
+
+
         {/* 북마크 */}
         <div 
+            onClick={() => handleNavigation('/mypage/bookmarks')}
             style={{
             alignSelf: 'stretch',
             paddingLeft: 13,
