@@ -17,7 +17,10 @@ const MainPage = () => {
 
       >
         <RecentEpiSet />
-        <AllManuSet />
+        {/* TODO : 서버에서 가져온 값으로 바꾸기 */}
+
+        {/* 일단 지금은 하드코딩 해놨고 나중에는 적합한 값을 넣어주어야 함 */}
+        <AllManuSet userId={1} manuscriptId={1}/>
         <AddManuPopup />
         <UploadingEpi />
 

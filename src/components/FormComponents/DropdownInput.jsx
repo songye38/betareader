@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+// FIXME : 직접 입력하는 칸이 조금 넓어서 다른 요소와 구분된다. 바꿀 수 있다면 바꾸자 
+
 const options = ["프롤로그", "에피소드", "에필로그", "직접 입력"];
 
 const DropdownInput = ({ error, onDropdownChange }) => {

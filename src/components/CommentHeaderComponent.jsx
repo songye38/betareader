@@ -13,9 +13,6 @@ const CommentHeaderComponent = () => {
   const handleBookmarkClick = () => {
     const newBookmarkStatus = !isBookmarked; // 새로운 북마크 상태 계산
     setIsBookmarked(newBookmarkStatus); // 북마크 상태 반전
-
-    const successToastId = "bookmark-added-toast"; // 북마크 추가에 대한 고유 ID
-    const infoToastId = "bookmark-removed-toast"; // 북마크 제거에 대한 고유 ID
   };
 
   const handleGoBack = () => {
@@ -48,7 +45,7 @@ const CommentHeaderComponent = () => {
       }}>
           
         {/* 뒤로가기 아이콘 */}
-        <img src="/back_icon.svg" alt="Profile" width={24} height={24} onClick={handleGoBack}/>
+        <img src="/back_icon.svg" alt="Profile" width={24} height={24} onClick={handleGoBack} style={{cursor:'pointer'}}/>
 
         {/* 텍스트 섹션 */}
         <div

@@ -1,7 +1,13 @@
-const AddManuBtn = () => {
+import { useRouter } from "next/router";
+const AddManuBtn = ({userId,manuscriptId}) => {
+  const router = useRouter(); // useRouter ��� 사용
+  const handleClick = () => {
+    router.push(`/${userId}/${manuscriptId}`); // 해당 경로로 이동
+  };
 
     return (
       <div
+      onClick={handleClick}
         style={{
           width: 'auto',
           height: 52,
