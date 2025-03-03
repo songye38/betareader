@@ -23,17 +23,18 @@ const manus = ({ userId, manuscriptId }) => {
         }}></div>
         
         <div style={{
+            width:'956px',
             color: 'white', 
             fontSize: 24, 
             fontFamily: 'Pretendard', 
             fontWeight: '700', 
             lineHeight: '33.60px', 
-            textAlign: 'center' // 중앙 정렬
+            textAlign: 'left' // 중앙 정렬
         }}>
             연재물 설정
         </div>
     </div>
-    
+    {/* 만약 작성한 글이 없다면 "아직 작성한 연재물이 없어요." 문구 표시해줘야 한다.  */}
     <div style={{display:"flex",flexDirection:'column',gap:'24px'}}>
         <MyManuItem />
         <MyManuItem />

@@ -21,13 +21,8 @@ const Navbar = () => {
   return (
     <div style={{ width: 1440, height: 60, paddingLeft: 24, paddingRight: 24, paddingTop: 10, paddingBottom: 10, justifyContent: 'center', alignItems: 'center', gap: 1162, display: 'inline-flex', zIndex: 10 }}>
       {/* 왼쪽 부분 (로고 및 텍스트) */}
-      <div style={{ alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', gap: 13, display: 'inline-flex', cursor: 'pointer' }} onClick={() => router.push('/')}>
-        <div data-svg-wrapper style={{ position: 'relative' }}>
-          {/* 로고가 들어가야 함 -> 나중에 대체하기  */}
-          <svg width="39" height="35" viewBox="0 0 39 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="39" height="35" fill="#5E6CFF" />
-          </svg>
-        </div>
+      <div style={{ alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', gap: 2, display: 'inline-flex', cursor: 'pointer' }} onClick={() => router.push('/')}>
+      <img src="/final_logo.svg" alt="Profile" width={39} height={35} />
 
         {/* 제목 */}
         <div className={poppins.className} style={{ color: 'white', fontSize: 20, fontWeight: '800', lineHeight: '30.80px', wordWrap: 'break-word' }}>
@@ -61,9 +56,9 @@ const Navbar = () => {
         {isModalOpen && (
           <div style={{
             position: 'absolute', // 드롭다운 아이콘을 기준으로 절대 위치
-            top: '40px', // 아이콘 바로 아래에 위치
+            top: '60px', // 아이콘 바로 아래에 위치
             right: '0',
-            zIndex: 20, // 모달이 다른 요소 위에 올 수 있도록
+            zIndex: 100, // 모달이 다른 요소 위에 올 수 있도록
           }}>
             <MyPageModal onClose={toggleModal} />
           </div>

@@ -23,12 +23,13 @@ const bookmarks = ({ userId, manuscriptId }) => {
             }}></div>
             
             <div style={{
+                width:'956px',
                 color: 'white', 
                 fontSize: 24, 
                 fontFamily: 'Pretendard', 
                 fontWeight: '700', 
                 lineHeight: '33.60px', 
-                textAlign: 'center' // 중앙 정렬
+                textAlign: 'left' // 중앙 정렬
             }}>
                 북마크 관리
             </div>

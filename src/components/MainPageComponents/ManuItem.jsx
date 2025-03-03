@@ -18,72 +18,106 @@ const ManuItem = () => {
           cursor : 'pointer',
         }}
       >
-        <div
-          style={{
-            justifyContent: "flex-start",
-            alignItems: "center",
-            gap: 16,
-            display: "flex",
-          }}
-        >
-          <img src="/book_icon.svg" alt="Profile" width={24} height={24} />
+        <div style={{display:'flex',flexDirection:'row',width:'85%'}}>
           <div
             style={{
-              color: "white",
-              fontSize: 20,
-              fontFamily: "Pretendard",
-              fontWeight: "600",
-              lineHeight: "28px",
-              wordWrap: "break-word",
+              width:'80%',
+              justifyContent: "flex-start",
+              alignItems: "center",
+              gap: 16,
+              display: "flex",
             }}
           >
-             {/* 제목이 들어온다.  */}
-            악역에게 꽃길을 깔아주려 합니다
-          </div>
-        </div>
-        <div
-          style={{
-            justifyContent: "flex-start",
-            alignItems: "center",
-            gap: 8,
-            display: "flex",
-          }}
-        >
-          <div
-            style={{
-              color: "#D9DEEE",
-              fontSize: 16,
-              fontFamily: "Pretendard",
-              fontWeight: "500",
-              lineHeight: "22.40px",
-              wordWrap: "break-word",
-            }}
-          >
-            {/* 해당 원고집 안에 있는 총 원고의 개수   */}
-            10개의 원고지
+            <img src="/book_icon.svg" alt="Profile" width={24} height={24} />
+            <div
+              style={{
+                color: 'white',
+                fontSize: 20,
+                fontFamily: 'Pretendard',
+                fontWeight: '600',
+                lineHeight: '28px',
+                wordWrap: 'break-word',
+                whiteSpace: 'nowrap',      // 한 줄로 유지
+                overflow: 'hidden',        // 넘치는 텍스트 숨김
+                textOverflow: 'ellipsis',  // 넘칠 경우 말줄임표(...) 적용
+                // maxWidth: '200px'          // 최대 너비 설정 (원하는 크기로 조정)
+              }}
+            >
+              {/* 제목이 들어온다.  */}
+              악역에게 꽃길을 깔아주려 합니다. 길이가 매우 길어지면 어떨까요? 궁금합니다.하하하하하하
+            </div>
           </div>
           <div
             style={{
-              width: 2,
-              height: 2,
-              background: "#BFC3D3",
-              borderRadius: 9999,
-            }}
-          />
-          <div
-            style={{
-              color: "#8A94FF",
-              fontSize: 16,
-              fontFamily: "Pretendard",
-              fontWeight: "700",
-              lineHeight: "22.40px",
-              wordWrap: "break-word",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              gap: 8,
+              display: "flex",
             }}
           >
-            {/* 작성 시점에 관한 것 아마 보이기도 하고 안보이기도 하고  */}
-            최근 작성
+            <div
+              style={{
+                width:'auto',
+                color: "#D9DEEE",
+                fontSize: 16,
+                fontFamily: "Pretendard",
+                fontWeight: "500",
+                lineHeight: "22.40px",
+                wordWrap: "break-word",
+              }}
+            >
+              {/* 해당 원고집 안에 있는 총 원고의 개수   */}
+              10개의 원고지
+            </div>
+            <div
+              style={{
+                width: 2,
+                height: 2,
+                background: "#BFC3D3",
+                borderRadius: 9999,
+              }}
+            />
+            <div
+              style={{
+                width:'auto',
+                color: "#8A94FF",
+                fontSize: 16,
+                fontFamily: "Pretendard",
+                fontWeight: "700",
+                lineHeight: "22.40px",
+                wordWrap: "break-word",
+              }}
+            >
+              {/* 작성 시점에 관한 것 아마 보이기도 하고 안보이기도 하고  */}
+              최근 작성
+            </div>
           </div>
-        </div>
+          </div>
+          <div>
+            {/* 버튼 추가하기 */}
+            <button
+              style={{
+                width: 'auto',
+                height: 36,
+                padding: '8px 20px 8px 16px',
+                background: '#4A4E5B',
+                borderRadius: 12,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 4,
+                border: 'none',
+                color: 'white',
+                fontSize: 14,
+                fontFamily: 'Pretendard',
+                fontWeight: 500,
+                lineHeight: '19.6px',
+                cursor: 'pointer',
+              }}
+            >
+              원고지 입력
+            </button>
+          </div>
       </div>
     );
   };

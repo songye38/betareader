@@ -48,7 +48,7 @@ const MyPageModal = ({onClose}) => {
             borderRadius: '12px',           // 둥근 테두리 (원 모양으로 만들기 위한 설정)
             boxSizing: 'border-box'         // border가 이미지 크기에 영향을 미치지 않도록 설정
         }}>
-            <img src="/write_icon.svg" alt="Profile" width={24} height={24} />
+            <img src="/write_icon.svg" alt="Profile" width={24} height={24} onClick={() => handleNavigation('/mypage/profile')} />
         </div>
 
 
@@ -57,7 +57,7 @@ const MyPageModal = ({onClose}) => {
 
       {/* Menu Items */}
       {/* 연재물 설정 */}
-      <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+      <div style={{display:'flex',flexDirection:'column',gap:'12px'}} >
         <div 
             onClick={() => handleNavigation('/mypage/manus')}
             style={{
@@ -70,7 +70,8 @@ const MyPageModal = ({onClose}) => {
             justifyContent: 'flex-start',
             alignItems: 'center',
             gap: 10,
-            display: 'inline-flex'
+            display: 'inline-flex',
+            cursor:'pointer'
             }}
         >
             <img src="/book_icon.svg" alt="Profile" width={24} height={24} />
@@ -102,7 +103,8 @@ const MyPageModal = ({onClose}) => {
             justifyContent: 'flex-start',
             alignItems: 'center',
             gap: 10,
-            display: 'inline-flex'
+            display: 'inline-flex',
+            cursor:'pointer'
             }}
         >
             <img src="/bookmark_default.svg" alt="Profile" width={24} height={24} />
@@ -131,7 +133,8 @@ const MyPageModal = ({onClose}) => {
             justifyContent: 'flex-start',
             alignItems: 'center',
             gap: 10,
-            display: 'inline-flex'
+            display: 'inline-flex',
+            cursor:'pointer'
             }}
         >
             <img src="/logout_icon.svg" alt="Profile" width={24} height={24} />

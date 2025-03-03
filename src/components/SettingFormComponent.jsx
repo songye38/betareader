@@ -10,7 +10,9 @@ import KeywordInput from './FormComponents/KeywordInput';
 import CharactersInput from './FormComponents/CharactersInput';
 import SettingSaveBtn from './Buttons/SettingSaveBtn';
 
+
 const SettingFormComponent = () => {
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const methods = useForm({
     defaultValues: {
       title: '',
@@ -51,7 +53,7 @@ const SettingFormComponent = () => {
     console.log('📌 Data to send:', requestData);
   
     try {
-      const response = await fetch('http://175.106.97.51:8080/novels', {
+      const response = await fetch(`${API_BASE_URL}/novels`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
