@@ -19,6 +19,7 @@ const RecentEpiItem = () => {
         justifyContent: 'space-between', 
         alignItems: 'flex-end', 
         display: 'inline-flex',
+        cursor : 'pointer',
       }}
     >
       {/* 상단 내용: 제목과 시간 */}

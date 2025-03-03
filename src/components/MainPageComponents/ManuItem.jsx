@@ -15,6 +15,7 @@ const ManuItem = () => {
           justifyContent: "space-between",
           alignItems: "center",
           display: "inline-flex",
+          cursor : 'pointer',
         }}
       >
         <div

@@ -1,59 +1,46 @@
 import React from 'react';
-import { flushSync } from "react-dom";
-import EpisodeTab from './EpisodeTab';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Button1 from './Buttons/Button1';
 import useStore from '@/store/useStore'; // Zustand 스토어 사용
-import SettingTab from './SettingTab';
+import { MyTabs } from './MyTabs';
 
 const SidebarComponent = () => {
-  const { tabs, addTab, setSelectedTab, selectedTab,isSettingCreated,setIsSettingTabClicked ,setSelectedItemType} = useStore(); // Zustand 상태 가져오기
+  const router = useRouter();
+  const { manuscripts, addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useStore();
 
   const handleAddTab = () => {
-    const { currentManuscriptId, addTab, setSelectedTab, incrementManuscriptId, setSelectedItemType } = useStore.getState();
-    const newTabId = Date.now(); // 현재 시간을 기반으로 고유 ID 생성
-    const newManuscriptId = currentManuscriptId; // 원고 ID로 사용
+    const newTabId = Date.now(); // 고유한 ID 생성
+    const newEpisodeId = currentManuscriptId; // 현재 원고 ID 사용
   
-    // 새 탭 추가 데이터
     const newTab = {
-      id: newTabId, // 고유 탭 ID
-      label: `${newManuscriptId}화`, // 원고 ID와 연결된 이름
-      manuscriptId: newManuscriptId, // 원고 ID
-      selected: true, // 새 탭을 기본으로 선택되게 설정
+      type: 'episode',
+      id: newTabId,
+      label: `${newEpisodeId}화`,
+      EpisodeId: newEpisodeId,
+      selected: true,
     };
   
-    // 새 탭 추가 및 선택 탭 설정
-    addTab(newTab);
-    setSelectedTab(newTabId);  // 탭 ID를 사용하여 selectedTab 업데이트
-    console.log("sidebar에서 새로운 탭 추가 setSelectedTab",selectedTab);
-    setIsSettingTabClicked(false);
-
-    // useStore.setState((state) => ({
-    //   selectedTab: newTabId // 동기적으로 selectedTab 설정
-    // }));
-    flushSync(() => {
-      setSelectedTab(newTabId);
+    addTab(newTab); // Zustand 상태 업데이트
+    
+    // 현재 탭이 새로 추가된 탭과 다를 경우에만 선택
+    if (newTabId !== selectedTab) {
+      setSelectedTab(newTabId); // 새 탭을 활성화
+    }
+  
+    // 탭을 추가한 후, URL을 해당 탭 ID로 업데이트
+    router.push({
+      pathname: router.pathname, // 현재 경로 유지
+      query: { ...router.query, tab: newTabId }, // tab 파라미터를 새로운 탭 ID로 업데이트
     });
   
-    console.log("selectedTab 업데이트 완료 (동기적):", useStore.getState().selectedTab);
-  
-
-    console.log("set state",selectedTab)
-  
-    // 원고 ID 증가
-    incrementManuscriptId(); // 원고 ID 증가
-  
-    setSelectedItemType('episode'); // 새 탭을 EpisodeFormComponent로 설정
-
-
-
+    incrementManuscriptId(); // 다음 원고 ID 증가
   };
   
-
-  const handleTabClick=()=>{
-    setIsSettingTabClicked(true);
-    setSelectedTab(null);
-    setSelectedItemType('setting');
-  }
+  useEffect(() => {
+    console.log('Tabs changed:', tabs); // tabs 상태 변경 시 콘솔 출력
+  }, [tabs]);
+  
   
   return (
     <div
@@ -85,6 +72,7 @@ const SidebarComponent = () => {
         <div
           style={{
             width: '220px',
+            height:'100%',
             display: 'flex',
             flexDirection: 'column',
             gap: '28px',
@@ -103,38 +91,25 @@ const SidebarComponent = () => {
           >
             '웹소설1'의 원고집
           </div>
-          {isSettingCreated && <SettingTab onClick={handleTabClick} selected={setSelectedTab} />}
+          {/* {isSettingCreated && <SettingTab onClick={handleTabClick} selected={setSelectedTab} />} */}
 
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               gap: '6px',
-              height:'340px',
               overflow:'scroll',
             }}
           >
             {/* 탭 렌더링 */}
-            {tabs.map((tab) => (
-              <EpisodeTab
-              key={tab.id} // 각 탭의 id를 key로 설정
-              id={tab.id} // id 전달
-              label={tab.label}
-              type = 'episode'
-              selected={selectedTab === tab.id} // 선택 여부 확인
-              // onClick={() => setSelectedTab(tab.id)} // 선택된 탭 변경
-              onClick={() => {
-                setSelectedTab(tab.id); // 탭 선택
-                setSelectedItemType('episode');
-              }}
-            />
-            ))}
+
+            <MyTabs />
           </div>
         </div>
       </div>
 
       {/* 원고 추가하기 버튼 */}
-      <Button1 onClick={handleAddTab} />
+      <Button1 onClick={handleAddTab} type={'down'} />
     </div>
   );
 };

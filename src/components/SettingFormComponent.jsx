@@ -25,9 +25,75 @@ const SettingFormComponent = () => {
 
   const { control, handleSubmit, formState: { errors, isValid }, watch, setValue } = methods;
 
-  const onSubmit = (data) => {
-    console.log('Form Data: ', data);
+  // const onSubmit = (data) => {
+  //   console.log('Form Data: ', data);
+  // };
+
+  const onSubmit = async (data) => {
+    // 데이터를 서버에 맞게 변환
+    const requestData = {
+      title: data.title,
+      topic: data.plot,  // 'plot' -> 'topic'으로 이름 변경
+      plot: data.plot,
+      genre: data.genre[0],  // genre가 배열로 되어있으므로 첫 번째 값만 사용
+      ageGroup: data.ageCategory,  // 'ageCategory' -> 'ageGroup'으로 이름 변경
+      keywords: data.newKeywords,
+      authorId: 0,  // 예시로 0으로 설정, 실제 값은 로그인한 사용자 ID 등으로 대체 필요
+      characters: data.characters.map((character) => ({
+        role: character.role,
+        name: character.name,
+        introduction: character.description, // 'description' -> 'introduction'으로 이름 변경
+      })),
+    };
+  
+    console.log('📌 Data to send:', requestData);
+  
+    try {
+      const response = await fetch('http://175.106.97.51:8080/novels', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),  // 데이터를 JSON 형식으로 변환하여 보냄
+      });
+  
+      // HTTP 상태 코드가 2xx인 경우는 성공, 아니면 에러 처리
+      if (!response.ok) {
+        const errorData = await response.json();  // 서버에서 에러 메시지 받기
+        throw new Error(`소설 저장에 실패했습니다: ${errorData.message || '알 수 없는 오류'}`);
+      }
+  
+      const responseData = await response.json();  // 응답 데이터를 JSON으로 파싱
+      console.log('📌 Response Data:', responseData);  // 응답 데이터 확인
+  
+      // 성공적으로 저장되었을 때 처리
+      toast.success('소설이 성공적으로 저장되었습니다!', {
+        position: 'bottom-center',
+        autoClose: 1200,
+        hideProgressBar: true,
+        closeButton: true,
+        theme: 'dark',
+        draggable: false,
+        pauseOnHover: true,
+        transition: Slide,
+      });
+  
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('소설 저장 중 오류가 발생했습니다. 다시 시도해주세요.', {
+        position: 'bottom-center',
+        autoClose: 1200,
+        hideProgressBar: true,
+        closeButton: true,
+        theme: 'dark',
+        draggable: false,
+        pauseOnHover: true,
+        transition: Slide,
+      });
+    }
   };
+  
+  
 
   // 실시간으로 필드 값 추적
   const title = watch('title');

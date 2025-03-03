@@ -1,37 +1,33 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import SidebarComponent from "@/components/SidebarComponent"; // 사이드바
-import SettingFormComponent from "@/components/SettingFormComponent"; // 설정 폼
-import EpisodeFormComponent from "@/components/EpisodeFormComponent"; // 원고 폼
-import StartComponent from "@/components/StartComponent";
-import useStore from "@/store/useStore"; // Zustand 사용
+import useStore from '@/store/useStore'; // Zustand 스토어 사용
+import StartComponent from "@/components/StartComponent"; // 시작 페이지
+import SettingFormComponent from "@/components/SettingFormComponent"; // 설정 폼 컴포넌트
+import EpisodeFormComponent from "@/components/EpisodeFormComponent"; // 에피소드 폼 컴포넌트
 
 const UserPage = ({ userId, manuscriptId }) => {
-  const { selectedTab,selectedItemType} = useStore(); // Zustand에서 selectedTab 가져오기
+  const { activeTab, selectedTab } = useStore((state) => state); // Zustand에서 activeTab과 setActiveTab을 가져오기
   const router = useRouter();
 
-  // 상태 저장할 state 정의
-  const [currentTab, setCurrentTab] = useState(selectedTab);
+  console.log("selectedTab: " , selectedTab);
 
-  const renderComponent = () => {
-    switch (selectedItemType) {
-      case 'episode':
-        return <EpisodeFormComponent />;
-      case 'setting':
-        return <SettingFormComponent />;
-      case null:
-      default:
-        return <StartComponent />;
+  // 조건부 렌더링을 위한 컴포넌트
+  const renderContent = () => {
+    if (!selectedTab) {
+      return <StartComponent />;  // selectedTab이 없을 때는 StartComponent 렌더링
+    }
+    
+    if (selectedTab === 'settings') {
+      return <SettingFormComponent />;  // 'settings'일 때는 SettingFormComponent 렌더링
+    } else {
+      return <EpisodeFormComponent />;  // 그 외의 경우는 EpisodeFormComponent 렌더링
     }
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <SidebarComponent /> {/* Sidebar 내부에서 Zustand의 상태 관리 */}
-      <div style={{ flex: 1, padding: "20px" }}>
-        {/* isSettingCreated 값에 따라 설정 폼 또는 시작 컴포넌트 렌더링 */}
-        {renderComponent()}
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'row',gap:'24px' }}>
+      <SidebarComponent />
+      {renderContent()}
     </div>
   );
 };

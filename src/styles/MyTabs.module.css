@@ -1,0 +1,50 @@
+.tabs {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    height:450px;
+    overflow: scroll;
+  }
+  
+  .tabsList {
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    gap: 12px; /* 탭 간격 추가 */
+  }
+  
+  .tabTrigger {
+    display: flex;
+    width: 13.75rem; /* 너비 */
+    height: 2.25rem; /* 높이 */
+    padding: 0.5rem 0.8125rem; /* 안쪽 여백 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    gap: 0.625rem; /* 탭 아이템 간 간격 */
+    
+    cursor: pointer;
+    transition: border-bottom 0.2s ease-in-out;
+    background: none; /* 기본 배경 제거 */
+    border: none; /* 기본 테두리 제거 */
+    outline: none; /* 클릭 시 테두리 제거 */
+    color: white; /* 글자색 흰색 */
+  }
+  
+  
+  /* .tabTrigger:hover {
+    color: #2563eb;
+  } */
+  
+/* 선택된 탭에 대한 스타일 */
+.tabTrigger[data-state="active"] {
+    background-color: #3A3D46;
+    border-radius: 12px;
+    padding: 10px 20px; /* 패딩이 있어야 border-radius가 잘 적용됨 */
+    /* border: 1px solid #2563eb; 테두리 추가 (배경색과 구분되게) */
+  }
+  
+  .tabContent {
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  

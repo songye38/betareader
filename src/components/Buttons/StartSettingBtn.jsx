@@ -7,7 +7,7 @@ const StartSettingBtn = ({onClick}) => {
       onClick = {onClick}
       style={{
         display: 'flex',
-        width: '12rem',
+        width: 'auto',
         padding: '0.5rem 1.25rem 0.5rem 1rem',
         justifyContent: 'center',  // 수평 중앙 정렬
         alignItems: 'center',      // 수직 중앙 정렬
@@ -30,7 +30,7 @@ const StartSettingBtn = ({onClick}) => {
       </div>
 
       {/* Text */}
-      <span>입력 시작하기</span>
+      <span>수정</span>
     </button>
   );
 };
