@@ -4,6 +4,8 @@ import AllManuSet from "@/components/MainPageComponents/AllManuSet";
 import AddManuPopup from "@/components/Popups/AddManuPopup";
 import UploadingEpi from "@/components/Modal/UploadingEpi";
 import MyPageModal from "@/components/Modal/MyPageModal";
+import BookmarkItem from "@/components/MyPage/BookmarkItem";
+import MyManuItem from "@/components/MyPage/MyManuItem";
 
 const MainPage = () => {
     return (
@@ -23,6 +25,8 @@ const MainPage = () => {
         <AddManuPopup />
         <UploadingEpi />
         <MyPageModal />
+        <BookmarkItem />
+        <MyManuItem />
 
       </div>
     );
