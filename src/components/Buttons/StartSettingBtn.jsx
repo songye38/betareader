@@ -12,7 +12,7 @@ const StartSettingBtn = ({onClick}) => {
         justifyContent: 'center',  // 수평 중앙 정렬
         alignItems: 'center',      // 수직 중앙 정렬
         gap: '0.25rem',
-        background: 'var(--neutral-800, #2C2D34)', // 배경색
+        background: 'var(--neutral-800, #5E6CFF)', // 배경색
         border: 'none',
         borderRadius: '0.75rem', // 모서리 둥글기
         cursor: 'pointer',
@@ -30,7 +30,7 @@ const StartSettingBtn = ({onClick}) => {
       </div>
 
       {/* Text */}
-      <span>수정</span>
+      <span>수정하기</span>
     </button>
   );
 };

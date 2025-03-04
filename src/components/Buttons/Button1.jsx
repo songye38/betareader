@@ -9,7 +9,7 @@ const Button1 = ({ onClick, type }) => {
     justifyContent: 'center',  // 수평 중앙 정렬
     alignItems: 'center',      // 수직 중앙 정렬
     gap: '0.25rem',
-    background: 'var(--neutral-800, #2C2D34)', // 배경색
+    background: type === "default" ? "#5E6CFF" : "#2C2D34",
     border: 'none',
     borderRadius: '0.75rem', // 모서리 둥글기
     cursor: 'pointer',
@@ -31,7 +31,7 @@ const Button1 = ({ onClick, type }) => {
       }
     : baseStyle; // default 스타일은 position 관련 속성 제거
 
-  const buttonText = type === 'down' ? '원고지 추가' : '작성';
+  const buttonText = type === 'down' ? '원고지 추가' : '작성하기';
   const iconSrc = type === 'down' ? '/plus_icon.svg' : '/write_icon.svg';
 
   return (

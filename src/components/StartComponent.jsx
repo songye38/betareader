@@ -1,12 +1,13 @@
-import React from 'react';
+import {React,useState,useEffect} from 'react';
 import { useRouter } from 'next/router';
 import useStore from '@/store/useStore'; // Zustand 사용
 import StartSettingBtn from './Buttons/StartSettingBtn';
 import Button1 from './Buttons/Button1';
+import MyTooltip from './MyTooltip';
 
 const StartComponent = () => {
     const router = useRouter();
-    const { manuscripts, addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useStore();
+    const { addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useStore();
 
     //TODO 설정집을 추가하지 않았으면 원고를 쓸 수 없도록 버튼을 disabled 해야함
     //TODO 한번 설정집을 썼으면 그 다음에는 '수정'으로 멘트를 바꿔야 함 처음에는 '작성'
@@ -73,7 +74,7 @@ const StartComponent = () => {
       
         incrementManuscriptId(); // 다음 원고 ID 증가
       };
-      
+
 
     return (
         <div style={{
@@ -100,7 +101,7 @@ const StartComponent = () => {
                 <div style={{display:'flex',flexDirection:'row',gap:'24px'}}>
                     {/* 기본 설정집 수정 섹션 */}
                     <div
-                        style={{
+                    style={{
                         width: 466,
                         height: 88,
                         paddingLeft: 28,
@@ -114,32 +115,34 @@ const StartComponent = () => {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         display: 'inline-flex',
+                    }}
+                    >
+                    <div
+                        style={{
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                        alignItems: 'flex-start',
+                        gap: 16,
+                        display: 'inline-flex',
                         }}
                     >
                         <div
                         style={{
-                            flexDirection: 'column',
-                            justifyContent: 'flex-start',
-                            alignItems: 'flex-start',
-                            gap: 16,
-                            display: 'inline-flex',
-                        }}
-                        >
-                        <div
-                            style={{
                             color: 'white',
                             fontSize: 20,
                             fontFamily: 'Pretendard',
                             fontWeight: '600',
                             lineHeight: '28px',
                             wordWrap: 'break-word',
-                            }}
+                        }}
                         >
-                            기본 설정집 작성
+                        기본 설정집 작성
                         </div>
-                        </div>
-                        <StartSettingBtn onClick={handleButtonClick} />
                     </div>
+                    <StartSettingBtn onClick={handleButtonClick} />
+                
+                    </div>
+
                     {/* 원고집 추가 섹션 */}
                     <div
                         style={{
@@ -183,6 +186,7 @@ const StartComponent = () => {
                         <Button1 onClick={handleAddTab} type={'default'} />
                     </div>
                 </div>
+                <MyTooltip />
             </div>
         </div>
       );

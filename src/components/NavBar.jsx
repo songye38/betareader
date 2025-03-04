@@ -35,7 +35,7 @@ const Navbar = () => {
       <div style={{ padding: 4, borderRadius: 100, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 10, display: 'inline-flex', position: 'relative' }}>
         <div style={{ justifyContent: 'flex-start', alignItems: 'center', gap: 4, display: 'inline-flex' }}>
           {/* 프로필 아이콘 부분 */}
-          <img src="/profile_img.svg" alt="Profile" width={32} height={32} />
+          <img src="/profile_img.svg" alt="Profile" width={32} height={32} onClick={toggleModal} />
 
           {/* 드롭다운 화살표 아이콘 */}
           <div data-svg-wrapper style={{ position: 'relative' }}>
