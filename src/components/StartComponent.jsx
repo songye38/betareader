@@ -8,6 +8,9 @@ const StartComponent = () => {
     const router = useRouter();
     const { manuscripts, addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useStore();
 
+    //TODO 설정집을 추가하지 않았으면 원고를 쓸 수 없도록 버튼을 disabled 해야함
+    //TODO 한번 설정집을 썼으면 그 다음에는 '수정'으로 멘트를 바꿔야 함 처음에는 '작성'
+
 
     //설정집 추가와 관련된 함수
     const handleButtonClick = () => {

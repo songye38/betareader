@@ -34,7 +34,7 @@ const manus = ({ userId, manuscriptId }) => {
             연재물 설정
         </div>
     </div>
-    {/* 만약 작성한 글이 없다면 "아직 작성한 연재물이 없어요." 문구 표시해줘야 한다.  */}
+    {/* TODO 만약 작성한 글이 없다면 "아직 작성한 연재물이 없어요." 문구 표시해줘야 한다.  */}
     <div style={{display:"flex",flexDirection:'column',gap:'24px'}}>
         <MyManuItem />
         <MyManuItem />

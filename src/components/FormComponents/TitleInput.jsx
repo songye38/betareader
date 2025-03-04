@@ -18,9 +18,6 @@ const TitleInput = ({ control, error,showLabel = true }) => {
                 *
             </div>
       </div>
-
-
-
       )}
       
       <Controller
