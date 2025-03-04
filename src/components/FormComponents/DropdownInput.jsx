@@ -106,7 +106,8 @@ const DropdownInput = ({ error, onDropdownChange }) => {
                     placeholder="직접 입력"
                     style={{
                       width: "100%",
-                      padding: "1rem",
+                      height:'100%',
+                      // padding: "0.3rem",
                       color: "white",
                       borderRadius: "0.5rem",
                       fontSize: "1rem",

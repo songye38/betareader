@@ -112,7 +112,7 @@ const EpisodeFormComponent = () => {
       }, 2000); // NOTE 2초마다 자동 저장
   
       return () => clearTimeout(timeout); // 컴포넌트 언마운트 시 타이머 클리어
-    }, [titleValue, episodeValue, dropdownValue, isSaving, isFormValid]);
+    }, [titleValue, episodeValue, isSaving, isFormValid]);
 
   return (
     <div>
