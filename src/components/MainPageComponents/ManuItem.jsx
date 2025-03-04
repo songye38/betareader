@@ -44,11 +44,12 @@ const ManuItem = () => {
               }}
             >
               {/* 제목이 들어온다.  */}
-              악역에게 꽃길을 깔아주려 합니다. 길이가 매우 길어지면 어떨까요? 궁금합니다.하하하하하하
+              악역에게 꽃길을 깔아주려 합니다. 길이가 매우 길어지면 어떨까요? 궁금합니다.하하하하하하하하하하하하하하하하하
             </div>
           </div>
           <div
             style={{
+              width:'20%',
               justifyContent: "flex-start",
               alignItems: "center",
               gap: 8,
@@ -92,31 +93,6 @@ const ManuItem = () => {
               최근 작성
             </div>
           </div>
-          </div>
-          <div>
-            {/* 버튼 추가하기 */}
-            <button
-              style={{
-                width: 'auto',
-                height: 36,
-                padding: '8px 20px 8px 16px',
-                background: '#4A4E5B',
-                borderRadius: 12,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 4,
-                border: 'none',
-                color: 'white',
-                fontSize: 14,
-                fontFamily: 'Pretendard',
-                fontWeight: 500,
-                lineHeight: '19.6px',
-                cursor: 'pointer',
-              }}
-            >
-              원고지 입력
-            </button>
           </div>
       </div>
     );

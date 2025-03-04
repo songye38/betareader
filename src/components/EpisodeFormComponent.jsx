@@ -33,13 +33,16 @@ const EpisodeFormComponent = () => {
 
   const onSubmit = (data) => {
     const episodeId = selectedTabFromStore ? selectedTabFromStore.id : null;
+    const epiNo = selectedTabFromStore ? selectedTabFromStore.EpisodeId : null;
+
     const combinedData = {
       ...data,
-      userId,
       manuscriptId,
-      episodeId,
+      epiNo
     };
 
+    console.log("최종 들어오는 데이터는? ", combinedData);
+    
     const epiId = episodeId;
 
     // 라우팅 경로 수정
@@ -89,7 +92,7 @@ const EpisodeFormComponent = () => {
       const timeout = setTimeout(() => {
         if (isFormValid && !isSaving) {
           setIsSaving(true);
-          //TODO 여기에 자동 저장을 처리하는 함수 호출 (예: 로컬스토리지나 서버에 데이터 저장)
+          //TODO 자동저장 서버에 저장
 
 
           localStorage.setItem('episodeForm', JSON.stringify({
