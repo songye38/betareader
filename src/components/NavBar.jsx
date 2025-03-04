@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google';
 import { useRouter } from 'next/router'; // useRouter import
 import MyPageModal from './Modal/MyPageModal';
 
+// TODO :화면 어디든지 클릭하면 모달이 사라지도록 해야함
 const poppins = Poppins({ 
   weight: ['800'], 
   subsets: ['latin'],
@@ -21,7 +22,7 @@ const Navbar = () => {
   return (
     <div style={{ width: 1440, height: 60, paddingLeft: 24, paddingRight: 24, paddingTop: 10, paddingBottom: 10, justifyContent: 'center', alignItems: 'center', gap: 1162, display: 'inline-flex', zIndex: 10 }}>
       {/* 왼쪽 부분 (로고 및 텍스트) */}
-      <div style={{ alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', gap: 2, display: 'inline-flex', cursor: 'pointer' }} onClick={() => router.push('/')}>
+      <div style={{ alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', gap: '8px', display: 'inline-flex', cursor: 'pointer' }} onClick={() => router.push('/')}>
       <img src="/final_logo.svg" alt="Profile" width={39} height={35} />
 
         {/* 제목 */}

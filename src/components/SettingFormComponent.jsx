@@ -16,7 +16,7 @@ const SettingFormComponent = () => {
   const methods = useForm({
     defaultValues: {
       title: '',
-      genre: [],
+      genre: '',
       ageCategory: '',
       plot: '',
       newKeywords: [], // newKeywords를 react-hook-form의 상태로 관리
@@ -27,9 +27,20 @@ const SettingFormComponent = () => {
 
   const { control, handleSubmit, formState: { errors, isValid }, watch, setValue } = methods;
 
-  // const onSubmit = (data) => {
-  //   console.log('Form Data: ', data);
-  // };
+
+  // ageCategory에 따라 ageGroup을 설정하는 함수
+    function getAgeGroup(ageCategory) {
+      switch (ageCategory) {
+        case "전체이용가":
+          return "GENERAL_AUDIENCE";
+        case "15세이상이용가":
+          return "FIFTEEN_ABOVE";
+        case "19세이상이용가":
+          return "NINETEEN_ABOVE";
+        default:
+          return "UNKNOWN"; // 기본값을 설정하거나 오류 처리
+      }
+    }
 
   const onSubmit = async (data) => {
 
@@ -39,8 +50,8 @@ const SettingFormComponent = () => {
       title: data.title,
       topic: data.plot,  // topic은 필요없다. 
       plot: data.plot,
-      genre: data.genre[0],  // genre가 배열로 되어있으므로 첫 번째 값만 사용
-      ageGroup: data.ageCategory,  // 'ageCategory' -> 'ageGroup'으로 이름 변경
+      genre: data.genre,  // genre가 배열로 되어있으므로 첫 번째 값만 사용
+      ageGroup: getAgeGroup(data.ageCategory), // 'ageCategory' -> 'ageGroup'으로 이름 변경
       keywords: data.newKeywords,
       authorId: 0,  // 예시로 0으로 설정, 실제 값은 로그인한 사용자 ID 등으로 대체 필요
       characters: data.characters.map((character) => ({

@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 
-// FIXME : 직접 입력하는 칸이 조금 넓어서 다른 요소와 구분된다. 바꿀 수 있다면 바꾸자 
 
-const options = ["프롤로그", "에피소드", "에필로그", "직접 입력"];
+const options = ["프롤로그", "에피소드", "에필로그"];
 
 const DropdownInput = ({ error, onDropdownChange }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,17 +22,17 @@ const DropdownInput = ({ error, onDropdownChange }) => {
     }
   };
 
-  const handleCustomInputChange = (e) => {
-    setCustomInputValue(e.target.value); // 커스텀 입력 값 업데이트
-    setSelectedValue(e.target.value); // 입력한 값을 바로 드롭다운 버튼에 표시
-    onDropdownChange("직접 입력"); // 드롭다운 값도 '직접 입력'으로 설정
-  };
+  // const handleCustomInputChange = (e) => {
+  //   setCustomInputValue(e.target.value); // 커스텀 입력 값 업데이트
+  //   setSelectedValue(e.target.value); // 입력한 값을 바로 드롭다운 버튼에 표시
+  //   onDropdownChange("직접 입력"); // 드롭다운 값도 '직접 입력'으로 설정
+  // };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      setIsOpen(false); // 엔터 키를 누르면 드롭다운을 닫음
-    }
-  };
+  // const handleKeyPress = (e) => {
+  //   if (e.key === "Enter") {
+  //     setIsOpen(false); // 엔터 키를 누르면 드롭다운을 닫음
+  //   }
+  // };
 
   return (
     <div style={{ position: "relative", display: "inline-block", width: "18rem" }}>
@@ -90,15 +89,15 @@ const DropdownInput = ({ error, onDropdownChange }) => {
                 <div
                   key={index}
                   style={{
-                    padding: "1rem",
+                    // padding: "1rem",
                     color: "white",
                     fontSize: "1rem",
                     fontWeight: "500",
                     cursor: "pointer",
-                    borderBottom: index !== options.length - 1 ? "1px solid #2A2D34" : "none",
+                    // borderBottom: index !== options.length - 1 ? "1px solid #2A2D34" : "none",
                   }}
                 >
-                  <input
+                  {/* <input
                     type="text"
                     value={customInputValue}
                     onChange={handleCustomInputChange}
@@ -115,7 +114,7 @@ const DropdownInput = ({ error, onDropdownChange }) => {
                       border: "none",
                       backgroundColor: "transparent",
                     }}
-                  />
+                  /> */}
                 </div>
               );
             }
@@ -128,7 +127,7 @@ const DropdownInput = ({ error, onDropdownChange }) => {
                   fontSize: "1rem",
                   fontWeight: "500",
                   cursor: "pointer",
-                  borderBottom: index !== options.length - 1 ? "1px solid #2A2D34" : "none",
+                  // borderBottom: index !== options.length - 1 ? "1px solid #2A2D34" : "none",
                   transition: "background-color 0.3s", // 배경색 변경 애니메이션
                 }}
                 onClick={() => handleOptionSelect(option)}
