@@ -68,7 +68,7 @@ const EpisodeFormComponent = () => {
     console.log("📌 최종 데이터:", requestData);
   
     try {
-      const response = await fetch(`https://175.106.97.51:8080/novels/${novelId}/episodes`, {
+      const response = await fetch(`http://175.106.97.51:8080/novels/${novelId}/episodes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
