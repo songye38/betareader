@@ -31,28 +31,95 @@ const EpisodeFormComponent = () => {
     setValue('dropdown', value);
   };
 
-  const onSubmit = (data) => {
+  function getEpisodeType(type) {
+    switch (type) {
+      case "프롤로그":
+        return "PROLOGUE";
+      case "에피소드":
+        return "EPISODE";
+      case "에필로그":
+        return "EPILOGUE";
+      default:
+        return "UNKNOWN"; // 기본값을 설정하거나 오류 처리
+    }
+  }
+
+  //기본 OnSubmit 함수
+  // const onSubmit = (data) => {
+  //   const episodeId = selectedTabFromStore ? selectedTabFromStore.id : null;
+  //   const epiNo = selectedTabFromStore ? selectedTabFromStore.EpisodeId : null;
+
+  //   const combinedData = {
+  //     ...data,
+  //     manuscriptId,
+  //     epiNo
+  //   };
+
+  //   console.log("최종 들어오는 데이터는? ", combinedData);
+    
+  //   const epiId = episodeId;
+
+  //   // 라우팅 경로 수정
+  //   if (userId && episodeId && manuscriptId && epiId) {
+  //     router.push(`/${userId}/${manuscriptId}/${epiId}/comment`);
+  //   } else {
+  //     toast.error("필수 정보가 누락되었습니다. 모든 정보를 확인해주세요.");
+  //   }
+  // };
+
+  const onSubmit = async (data) => {
     const episodeId = selectedTabFromStore ? selectedTabFromStore.id : null;
     const epiNo = selectedTabFromStore ? selectedTabFromStore.EpisodeId : null;
 
-    const combinedData = {
-      ...data,
-      manuscriptId,
-      epiNo
-    };
-
-    console.log("최종 들어오는 데이터는? ", combinedData);
-    
-    const epiId = episodeId;
-
-    // 라우팅 경로 수정
-    if (userId && episodeId && manuscriptId && epiId) {
-      router.push(`/${userId}/${manuscriptId}/${epiId}/comment`);
-    } else {
+  
+    const novelId = manuscriptId; // novelId는 manuscriptId로 설정
+    if (!userId || !novelId || !epiNo || !data.title || !data.episode) {
       toast.error("필수 정보가 누락되었습니다. 모든 정보를 확인해주세요.");
+      return;
+    }
+
+
+  
+    // 서버에 보낼 데이터 -> 완료됨
+    const requestData = {
+      title: data.title,
+      episodeNumber: epiNo,
+      content: data.episode,
+      episodeType: getEpisodeType(data.dropdown), // 기본값 설정
+    };
+  
+    console.log("📌 최종 데이터:", requestData);
+  
+    try {
+      const response = await fetch(`http://175.106.97.51:8080/novels/${novelId}/episodes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+  
+      console.log("📌 Response status:", response.status);
+  
+      if (!response.ok) {
+        console.error("❌ 에피소드 저장 실패:", response.status);
+        toast.error("에피소드 저장에 실패했습니다. 다시 시도해주세요.");
+        return;
+      }
+  
+      // 저장 성공 시, 코멘트 페이지로 이동
+      const epiId = episodeId || (await response.json()).id; // 서버 응답에서 에피소드 ID 가져오기
+      router.push(`/${userId}/${novelId}/${epiId}/comment`);
+  
+      toast.success("에피소드가 성공적으로 저장되었습니다!");
+  
+    } catch (error) {
+      console.error("❌ 요청 중 에러 발생:", error);
+      toast.error("에피소드 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
-
+  
+  
   const titleValue = watch('title');
   const episodeValue = watch('episode');
   const dropdownValue = watch('dropdown');

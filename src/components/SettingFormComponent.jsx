@@ -81,6 +81,7 @@ const SettingFormComponent = () => {
       }
     }
 
+    //기본 onSubmit 함수
     const onSubmit = async (data) => {
       console.log("최종 설정집 data", data);
     
@@ -154,10 +155,6 @@ const SettingFormComponent = () => {
       }
     };
     
-  
-  
-
-  // 실시간으로 필드 값 추적
   const title = watch('title');
   const genre = watch('genre');
   const ageCategory = watch('ageCategory');
