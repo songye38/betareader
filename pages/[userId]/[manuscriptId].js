@@ -9,8 +9,6 @@ const UserPage = ({ userId, manuscriptId }) => {
   const { activeTab, selectedTab } = useStore((state) => state); // Zustand에서 activeTab과 setActiveTab을 가져오기
   const router = useRouter();
 
-  console.log("selectedTab: " , selectedTab);
-
   // 조건부 렌더링을 위한 컴포넌트
   const renderContent = () => {
     if (!selectedTab) {

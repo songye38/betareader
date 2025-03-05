@@ -49,7 +49,7 @@ const Character = ({ control, index }) => {
                   key={item}
                   onClick={() => {
                     field.onChange(item); // 클릭 시 역할 변경
-                    console.log('현재 선택된 역할:', item); // 선택된 역할을 콘솔에 찍기
+                    // console.log('현재 선택된 역할:', item); // 선택된 역할을 콘솔에 찍기
                   }}
                   style={{
                     display: 'flex',

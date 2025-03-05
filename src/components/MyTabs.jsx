@@ -8,9 +8,6 @@ export function MyTabs({ activeTab, setActiveTab }) {
   const { tabs, selectedTab, setSelectedTab } = useStore((state) => state);
   const router = useRouter();  // router 사용
 
-  console.log("전체 탭들:", tabs);
-  console.log("현재 선택된 탭:", selectedTab);
-
   const handleTabChange = (tabId) => {
     setSelectedTab(tabId);  // 탭 클릭 시 해당 탭으로 상태 변경
 

@@ -9,6 +9,7 @@ import PlotInput from './FormComponents/PlotInput';
 import KeywordInput from './FormComponents/KeywordInput';
 import CharactersInput from './FormComponents/CharactersInput';
 import SettingSaveBtn from './Buttons/SettingSaveBtn';
+import { toast, Slide } from 'react-toastify';
 
 
 const SettingFormComponent = () => {
@@ -42,71 +43,117 @@ const SettingFormComponent = () => {
       }
     }
 
-  const onSubmit = async (data) => {
-
-    console.log("최종 설정집 data",data);
-    // 데이터를 서버에 맞게 변환
-    const requestData = {
-      title: data.title,
-      topic: data.plot,  // topic은 필요없다. 
-      plot: data.plot,
-      genre: data.genre,  // genre가 배열로 되어있으므로 첫 번째 값만 사용
-      ageGroup: getAgeGroup(data.ageCategory), // 'ageCategory' -> 'ageGroup'으로 이름 변경
-      keywords: data.newKeywords,
-      authorId: 0,  // 예시로 0으로 설정, 실제 값은 로그인한 사용자 ID 등으로 대체 필요
-      characters: data.characters.map((character) => ({
-        role: character.role,
-        name: character.name,
-        introduction: character.description, // 'description' -> 'introduction'으로 이름 변경
-      })),
-    };
-  
-    console.log('📌 Data to send:', requestData);
-  
-    try {
-      const response = await fetch(`${API_BASE_URL}/novels`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),  // 데이터를 JSON 형식으로 변환하여 보냄
-      });
-  
-      // HTTP 상태 코드가 2xx인 경우는 성공, 아니면 에러 처리
-      if (!response.ok) {
-        const errorData = await response.json();  // 서버에서 에러 메시지 받기
-        throw new Error(`소설 저장에 실패했습니다: ${errorData.message || '알 수 없는 오류'}`);
+    function getGenreType(genre) {
+      switch (genre) {
+        case "로맨스":
+          return "ROMANCE";
+        case "BL":
+          return "BL";
+        case "로맨스 판타지":
+          return "ROMANCE_FANTASY";
+        case "GL":
+          return "GL";
+        case "판타지":
+          return "FANTASY";
+        case "공포":
+          return "HORROR";
+        case "현대 판타지":
+          return "MODERN_FANTASY";
+        case "추리":
+          return "MYSTERY";
+        case "무협":
+          return "MARTIAL_ARTS";
+        case "드라마":
+          return "DRAMA";
+        default:
+          return "UNKNOWN"; // 기본값을 설정하거나 오류 처리
       }
-  
-      const responseData = await response.json();  // 응답 데이터를 JSON으로 파싱
-      console.log('📌 Response Data:', responseData);  // 응답 데이터 확인
-  
-      // 성공적으로 저장되었을 때 처리
-      toast.success('소설이 성공적으로 저장되었습니다!', {
-        position: 'bottom-center',
-        autoClose: 1200,
-        hideProgressBar: true,
-        closeButton: true,
-        theme: 'dark',
-        draggable: false,
-        pauseOnHover: true,
-        transition: Slide,
-      });
-  
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('소설 저장 중 오류가 발생했습니다. 다시 시도해주세요.', {
-        position: 'bottom-center',
-        autoClose: 1200,
-        hideProgressBar: true,
-        closeButton: true,
-        theme: 'dark',
-        draggable: false,
-        pauseOnHover: true,
-        transition: Slide,
-      });
     }
-  };
+
+    function getCharacterType(character) {
+      switch (character) {
+        case "주연":
+          return "PROTAGONIST";
+        case "조연":
+          return "SECONDARY";
+        default:
+          return "UNKNOWN"; // 기본값을 설정하거나 오류 처리
+      }
+    }
+
+    const onSubmit = async (data) => {
+      console.log("최종 설정집 data", data);
+    
+      // 데이터를 서버에 맞게 변환
+      const requestData = {
+        title: data.title,
+        plot: data.plot,
+        genre: getGenreType(data.genre),
+        ageGroup: getAgeGroup(data.ageCategory),
+        keywords: data.newKeywords,
+        characters: data.characters.map((character) => ({
+          role: getCharacterType(character.role),
+          name: character.name,
+          introduction: character.description,
+        })),
+      };
+    
+      console.log('📌 Data to send:', requestData);
+    
+      try {
+        const response = await fetch(`${API_BASE_URL}/novels`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+        });
+    
+        console.log("📌 Response status:", response.status);
+    
+        // HTTP 상태 코드가 2xx인 경우 성공 처리
+        if (!response.ok) {
+          console.error("❌ 소설 저장 실패:", response.status);
+          toast.error('소설 저장에 실패했습니다. 다시 시도해주세요.', {
+            position: 'bottom-center',
+            autoClose: 1200,
+            hideProgressBar: true,
+            closeButton: true,
+            theme: 'dark',
+            draggable: false,
+            pauseOnHover: true,
+            transition: Slide,
+          });
+          return;
+        }
+    
+        // 성공적으로 저장되었을 때 처리
+        toast.success('소설이 성공적으로 저장되었습니다!', {
+          position: 'bottom-center',
+          autoClose: 1200,
+          hideProgressBar: true,
+          closeButton: true,
+          theme: 'dark',
+          draggable: false,
+          pauseOnHover: true,
+          transition: Slide,
+        });
+    
+      } catch (error) {
+        console.error('❌ 요청 중 에러 발생:', error);
+        toast.error('소설 저장 중 오류가 발생했습니다. 다시 시도해주세요.', {
+          position: 'bottom-center',
+          autoClose: 1200,
+          hideProgressBar: true,
+          closeButton: true,
+          theme: 'dark',
+          draggable: false,
+          pauseOnHover: true,
+          transition: Slide,
+        });
+      }
+    };
+    
   
   
 
