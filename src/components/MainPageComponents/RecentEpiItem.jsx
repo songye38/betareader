@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-const RecentEpiItem = () => {
+const RecentEpiItem = ({ episode }) => {
   return (
     <div 
       style={{
@@ -34,7 +34,7 @@ const RecentEpiItem = () => {
             wordWrap: 'break-word'
           }}
         >
-          악역에게 꽃길을 깔아주려...
+          {episode.novelTitle} {/* 동적으로 제목 설정 */}
         </div>
         <div 
           style={{
@@ -46,7 +46,7 @@ const RecentEpiItem = () => {
             wordWrap: 'break-word'
           }}
         >
-          1시간 전
+          {episode.timeAgo} {/* 동적으로 시간 설정 (ex. "1시간 전") */}
         </div>
       </div>
 
@@ -72,7 +72,7 @@ const RecentEpiItem = () => {
             wordWrap: 'break-word'
           }}
         >
-          1화
+          {episode.episodeNumber}화 {/* 동적으로 화 번호 설정 */}
         </div>
         <div 
           style={{
@@ -91,7 +91,7 @@ const RecentEpiItem = () => {
             textOverflow: 'ellipsis',       // 넘칠 경우 말줄임표(...)
           }}
         >
-          비 내리는 밤이었다. 천둥이 하늘을 찢으며 번개가 성벽 위를 환하게 비췄다. 물에 젖은 돌벽이 마치 피를 흘리는 듯 붉게 빛났다.
+          {episode.content} {/* 동적으로 내용 설정 */}
         </div>
       </div>
     </div>

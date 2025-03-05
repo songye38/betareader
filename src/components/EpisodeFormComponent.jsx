@@ -44,29 +44,6 @@ const EpisodeFormComponent = () => {
     }
   }
 
-  //기본 OnSubmit 함수
-  // const onSubmit = (data) => {
-  //   const episodeId = selectedTabFromStore ? selectedTabFromStore.id : null;
-  //   const epiNo = selectedTabFromStore ? selectedTabFromStore.EpisodeId : null;
-
-  //   const combinedData = {
-  //     ...data,
-  //     manuscriptId,
-  //     epiNo
-  //   };
-
-  //   console.log("최종 들어오는 데이터는? ", combinedData);
-    
-  //   const epiId = episodeId;
-
-  //   // 라우팅 경로 수정
-  //   if (userId && episodeId && manuscriptId && epiId) {
-  //     router.push(`/${userId}/${manuscriptId}/${epiId}/comment`);
-  //   } else {
-  //     toast.error("필수 정보가 누락되었습니다. 모든 정보를 확인해주세요.");
-  //   }
-  // };
-
   const onSubmit = async (data) => {
     const episodeId = selectedTabFromStore ? selectedTabFromStore.id : null;
     const epiNo = selectedTabFromStore ? selectedTabFromStore.EpisodeId : null;
@@ -118,7 +95,6 @@ const EpisodeFormComponent = () => {
       toast.error("에피소드 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
-  
   
   const titleValue = watch('title');
   const episodeValue = watch('episode');
