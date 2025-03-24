@@ -47,6 +47,9 @@ const EpisodeFormComponent = () => {
   const onSubmit = async (data) => {
     const episodeId = selectedTabFromStore ? selectedTabFromStore.id : null;
     const epiNo = selectedTabFromStore ? selectedTabFromStore.EpisodeId : null;
+    console.log("selectedTabFromStore", selectedTabFromStore.id);
+    console.log("Type of selectedTabFromStore.id:", typeof selectedTabFromStore.id);
+
 
   
     const novelId = manuscriptId; // novelId는 manuscriptId로 설정
