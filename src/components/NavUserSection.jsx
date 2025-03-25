@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router'; // useRouter import
 import MyPageModal from './Modal/MyPageModal';
+import useAuthStore from '@/store/useAuthStore';
 
 const NavUserSection = ({signin}) => {
+  const user = useAuthStore((state) => state.user);
+  const profile = useAuthStore((state) => state.profile);
   const router = useRouter(); // useRouter 사용
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
 
@@ -68,7 +71,7 @@ const NavUserSection = ({signin}) => {
             zIndex: 100, // 모달이 다른 요소 위에 올 수 있도록
           }}
         >
-          <MyPageModal onClose={toggleModal} />
+          <MyPageModal onClose={toggleModal} username = {profile.username} />
         </div>
       )}
     </div>

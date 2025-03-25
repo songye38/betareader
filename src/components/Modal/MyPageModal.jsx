@@ -1,14 +1,30 @@
 import React from 'react';
 import { useRouter } from 'next/router'; // useRouter import
+import useAuthStore from '@/store/useAuthStore';
+import supabase from '@/supabase/supabaseClient';
 
-const MyPageModal = ({onClose}) => {
+const MyPageModal = ({onClose,username}) => {
+    const logout = useAuthStore((state) => state.logout);
     const router = useRouter(); // useRouter 훅 사용
     const handleNavigation = (path) => {
         router.push(path); // 경로 이동
         onClose(); // 모달 닫기
     };
+
+
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+          console.error("로그아웃 오류:", error.message);
+        } else {
+          logout(); // Zustand 상태 초기화
+        }
+      };
+
+
   return (
     <div 
+      onClick={handleLogout}
       style={{
         width: 345,
         height: 'auto',
@@ -36,7 +52,8 @@ const MyPageModal = ({onClose}) => {
                 wordWrap: 'break-word'
                 }}>
                     {/* 나중에 사용자 닉네임이 와야함 */}
-                betareader_12456 
+                {username}
+
                 </div>
         </div>
         <div style={{
