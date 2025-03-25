@@ -1,33 +1,24 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Signin from '../Signin';
 
-const SigninModal = () => {
-  const [isVisible, setIsVisible] = useState(true); // 팝업의 보임 여부 상태
-
-  const closePopup = () => {
-    setIsVisible(false); // 팝업을 숨김
-  };
-
-  if (!isVisible) {
-    return null; // isVisible이 false일 때는 아무것도 렌더링하지 않음
-  }
+const SigninModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null; // 모달이 닫히면 렌더링하지 않음
 
   return (
     <div
       style={{
         width: 'auto',
         height: 'auto',
-        padding : '20px',
+        padding: '20px',
         background: '#2C2D34',
         borderRadius: 24,
-        // border: '1px #4A4E5B solid',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         gap: 32,
         display: 'inline-flex',
-        overflow: 'hidden', // 추가: 자식 요소가 벗어나는 것을 방지
+        overflow: 'hidden',
       }}
     >
       <div
@@ -57,7 +48,7 @@ const SigninModal = () => {
           alt="Close"
           width={24}
           height={24}
-          onClick={closePopup}
+          onClick={onClose} // 상위 컴포넌트에서 닫기 로직 처리
           style={{ cursor: 'pointer' }}
         />
       </div>
