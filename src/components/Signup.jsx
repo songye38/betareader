@@ -1,127 +1,88 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useAuth } from '@/hooks/useAuth';
 
 const Signup = () => {
   const { control, handleSubmit } = useForm();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { handleSignUp, handleOAuthSignIn, loading, error } = useAuth();
+  console.log("핸들 사인업이 제대로 호출되고 있나?",handleSignUp)
 
-  // Submit handler for the form
-  const onSubmit = (data) => {
-    setLoading(true);
-    setError(null);
+  const onSubmit = async (data) => {
+    console.log("데이터가 제대로 들어오고 있나?");
+    console.log("data.email", data.email);
+    console.log("data.password", data.password);
+    console.log("data.nickname", data.nickname);
 
-    // Placeholder for signup logic (Supabase API or other)
-    // Simulate success
-    setTimeout(() => {
-      console.log('User signed up:', data);
-      setLoading(false);
-    }, 2000);
+    try {
+      // 회원가입 처리
+      const result = await handleSignUp(data.email, data.password, data.nickname);
 
-    // Handle error
-    // setError('Signup failed');  // Uncomment this line to simulate error
+      // 회원가입 성공 시 콘솔 출력
+      console.log("회원가입 성공", result);
+    } catch (error) {
+      console.error("회원가입 오류", error);
+    }
   };
 
   return (
-    <div className="signup-container">
-      <h2>회원가입</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
+    <div style={styles.signupContainer}>
+      <h2 style={styles.header}>회원가입</h2>
+      <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
         {/* 이메일 입력 */}
-        <div className="input-group">
-          <label htmlFor="email">Email</label>
+        <div style={styles.inputGroup}>
+          <label htmlFor="email" style={styles.label}>Email</label>
           <Controller
             name="email"
             control={control}
             render={({ field }) => (
-              <input
-                {...field}
-                type="email"
-                placeholder="이메일을 입력하세요"
-                required
-                style={inputStyle}
-              />
+              <input {...field} type="email" placeholder="이메일을 입력하세요" required style={styles.input} />
             )}
           />
         </div>
 
         {/* 비밀번호 입력 */}
-        <div className="input-group">
-          <label htmlFor="password">Password</label>
+        <div style={styles.inputGroup}>
+          <label htmlFor="password" style={styles.label}>Password</label>
           <Controller
             name="password"
             control={control}
             render={({ field }) => (
-              <input
-                {...field}
-                type="password"
-                placeholder="비밀번호를 입력하세요"
-                required
-                style={inputStyle}
-              />
+              <input {...field} type="password" placeholder="비밀번호를 입력하세요" required style={styles.input} />
             )}
           />
         </div>
 
         {/* 닉네임 입력 */}
-        <div className="input-group">
-          <label htmlFor="nickname">닉네임</label>
+        <div style={styles.inputGroup}>
+          <label htmlFor="nickname" style={styles.label}>닉네임</label>
           <Controller
             name="nickname"
             control={control}
             render={({ field }) => (
-              <input
-                {...field}
-                type="text"
-                placeholder="닉네임을 입력하세요"
-                required
-                style={inputStyle}
-              />
+              <input {...field} type="text" placeholder="닉네임을 입력하세요" required style={styles.input} />
             )}
           />
         </div>
 
         {/* 오류 메시지 표시 */}
-        {error && <p className="error">{error}</p>}
+        {error && <p style={styles.error}>{error}</p>}
 
         {/* 가입 버튼 */}
-        <button type="submit" disabled={loading} style={buttonStyle}>
+        <button type="submit" disabled={loading} style={styles.button}>
           {loading ? '회원가입...' : '회원가입'}
         </button>
       </form>
+
+      {/* 카카오 OAuth 회원가입 버튼 */}
+      <button onClick={() => handleOAuthSignIn('kakao')} style={styles.oauthButton}>
+        카카오로 가입하기
+      </button>
     </div>
   );
 };
 
-export default Signup;
-
-const inputStyle = {
-  width: '100%',
-  padding: '12px 18px',
-  background: 'rgba(96, 101, 117, 0.2)',
-  borderRadius: '12px',
-  fontSize: '16px',
-  fontWeight: '500',
-  color: 'white',
-  border: 'none',
-  outline: 'none',
-  resize: 'none',
-  marginBottom: '16px',
-};
-
-const buttonStyle = {
-  width: '100%',
-  padding: '14px 18px',
-  backgroundColor: '#8A94FF',
-  color: 'white',
-  border: 'none',
-  borderRadius: '12px',
-  fontSize: '18px',
-  fontWeight: '600',
-  cursor: 'pointer',
-};
-
 const styles = {
-  '.signup-container': {
+  signupContainer: {
     maxWidth: '500px',
     margin: '0 auto',
     padding: '20px',
@@ -131,46 +92,68 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
   },
-
-  '.signup-container h2': {
+  header: {
     color: 'white',
     fontSize: '24px',
     marginBottom: '20px',
   },
-
-  '.signup-form': {
+  form: {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
   },
-
-  '.input-group': {
+  inputGroup: {
     display: 'flex',
     flexDirection: 'column',
     gap: '8px',
   },
-
-  '.input-group label': {
+  label: {
     color: 'white',
     fontSize: '16px',
     fontWeight: '600',
   },
-
-  '.input-group input': {
+  input: {
     fontSize: '16px',
     fontWeight: '500',
+    padding: '12px 18px',
+    background: 'rgba(96, 101, 117, 0.2)',
+    borderRadius: '12px',
+    border: 'none',
+    outline: 'none',
+    color: 'white',
   },
-
-  'button:disabled': {
-    backgroundColor: '#b0b0b0',
+  button: {
+    width: '100%',
+    padding: '14px 18px',
+    backgroundColor: '#8A94FF',
+    color: 'white',
+    border: 'none',
+    borderRadius: '12px',
+    fontSize: '18px',
+    fontWeight: '600',
+    cursor: 'pointer',
+  },
+  buttonDisabled: {
+    backgroundColor: '#B0B0B0',
     cursor: 'not-allowed',
   },
-
-  '.error': {
+  error: {
     color: 'red',
     fontSize: '14px',
     marginTop: '8px',
     textAlign: 'center',
   },
+  oauthButton: {
+    marginTop: '16px',
+    padding: '14px 18px',
+    backgroundColor: '#FFCD00',
+    color: 'black',
+    borderRadius: '12px',
+    fontSize: '18px',
+    fontWeight: '600',
+    cursor: 'pointer',
+  },
 };
+
+export default Signup;
