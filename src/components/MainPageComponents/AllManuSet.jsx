@@ -1,51 +1,73 @@
 import AddManuBtn from "../Buttons/AddManuBtn";
 import ManuItem from "./ManuItem";
 import AddManuItem from "./AddManuItem";
+import useManuscripts from "@/hooks/useManuscripts";
 
-const AllManuSet = ({userId,manuscriptId}) => {
-    return (
-        <div style={{display:'flex',flexDirection:'column',gap:'20px'}}>
-            <div
-                style={{
-                width: 1096,
-                height: 40,
-                justifyContent: "space-between",
-                alignItems: "center",
-                display: "inline-flex",
-                }}
-            >
-                <div
-                style={{
-                    color: "white",
-                    fontSize: 24,
-                    fontFamily: "Pretendard",
-                    fontWeight: "700",
-                    lineHeight: "33.60px",
-                    wordWrap: "break-word",
-                }}
-                >
-                모든 원고집
-                </div>
-                <AddManuBtn userId={userId} manuscriptId={manuscriptId}/>
-            </div>
-            {/* TODO 있다면 있는만큼 표시해주기  */}
-            <div style={{display:'flex',flexDirection:'column',gap:'16px'}}>
-                <ManuItem />
-                <ManuItem />
-                <ManuItem />
-                <ManuItem />
-                <ManuItem />
-                <ManuItem />
-            </div>
-            {/* 아이템이 하나도 없다면 아래것을 렌더링 해주기 */}
-            {/* WARNING 여기 부분에도 props를 넣어주어야 한다. 안넣어주기 때문에 undefined undefined로 나온다! */}
-            <div style={{backgroundColor:'#1E1F24',borderRadius:'20px',paddingTop:'46px',paddingBottom:'46px'}}>
-                <AddManuItem />
-            </div>
+const AllManuSet = ({ userId, manuscriptId }) => {
+  const { manuscripts, loading, error } = useManuscripts();
 
+  if (loading) {
+    return <div>로딩 중...</div>; // 로딩 상태 표시
+  }
+
+  if (error) {
+    return <div>에러 발생: {error}</div>; // 에러 메시지 표시
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <div
+        style={{
+          width: 1096,
+          height: 40,
+          justifyContent: "space-between",
+          alignItems: "center",
+          display: "inline-flex",
+        }}
+      >
+        <div
+          style={{
+            color: "white",
+            fontSize: 24,
+            fontFamily: "Pretendard",
+            fontWeight: "700",
+            lineHeight: "33.60px",
+            wordWrap: "break-word",
+          }}
+        >
+          모든 원고집
         </div>
-    );
-  };
-  
-  export default AllManuSet;
-  
+        <AddManuBtn userId={userId} manuscriptId={manuscriptId} />
+      </div>
+
+      {/* 원고집이 있다면 표시 */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        {manuscripts.length > 0 ? (
+          manuscripts.map((manuscript) => (
+            <ManuItem
+              key={manuscript.id}
+              title={manuscript.title}
+              lastEditedAt={manuscript.last_edited_at}
+              episodeCount={manuscript.episode_count}
+              userId = {manuscript.user_id}
+              ManuId = {manuscript.id}
+            />
+          ))
+        ) : (
+          <div
+            style={{
+              backgroundColor: "#1E1F24",
+              borderRadius: "20px",
+              paddingTop: "46px",
+              paddingBottom: "46px",
+            }}
+          >
+            <AddManuItem />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AllManuSet;

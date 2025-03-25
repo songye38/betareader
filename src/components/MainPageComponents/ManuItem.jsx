@@ -1,6 +1,29 @@
-const ManuItem = () => {
+import { useRouter } from 'next/router';
+import dayjs from 'dayjs'; // dayjs 라이브러리 가져오기
+import relativeTime from 'dayjs/plugin/relativeTime'; // 상대 시간 플러그인
+import 'dayjs/locale/ko'; // 한국어 로케일 가져오기
+
+// dayjs에 상대 시간 플러그인 사용
+dayjs.extend(relativeTime);
+
+// dayjs에 한국어 로케일 설정
+dayjs.locale('ko');
+
+const ManuItem = ({ title, lastEditedAt, episodeCount ,userId, ManuId}) => {
+  const router = useRouter();
+  const relativeTimeDisplay = dayjs(lastEditedAt).fromNow();
+
+  const handleClick = () => {
+    if (userId && ManuId) {
+      router.push(`/${userId}/${ManuId}`);
+    }
+  };
+
+
+
     return (
       <div
+        onClick={handleClick} // 클릭 이벤트 추가
         style={{
           width: 1096,
           height: 76,
@@ -18,7 +41,7 @@ const ManuItem = () => {
           cursor : 'pointer',
         }}
       >
-        <div style={{display:'flex',flexDirection:'row',width:'85%'}}>
+        <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
           <div
             style={{
               width:'80%',
@@ -44,7 +67,7 @@ const ManuItem = () => {
               }}
             >
               {/* 제목이 들어온다.  */}
-              악역에게 꽃길을 깔아주려 합니다. 길이가 매우 길어지면 어떨까요? 궁금합니다.하하하하하하하하하하하하하하하하하
+              {title}
             </div>
           </div>
           <div
@@ -58,7 +81,6 @@ const ManuItem = () => {
           >
             <div
               style={{
-                width:'auto',
                 color: "#D9DEEE",
                 fontSize: 16,
                 fontFamily: "Pretendard",
@@ -68,7 +90,7 @@ const ManuItem = () => {
               }}
             >
               {/* 해당 원고집 안에 있는 총 원고의 개수   */}
-              10개의 원고지
+              {episodeCount}개의 원고지
             </div>
             <div
               style={{
@@ -90,7 +112,7 @@ const ManuItem = () => {
               }}
             >
               {/* 작성 시점에 관한 것 아마 보이기도 하고 안보이기도 하고  */}
-              최근 작성
+              {relativeTimeDisplay}
             </div>
           </div>
           </div>

@@ -31,8 +31,6 @@ const AddManuBtn = () => {
         return;
       }
 
-      console.log("삽입된 데이터:", data);  // 삽입된 데이터를 확인
-
       // 2. 새로운 원고집 페이지로 이동
       const manuscriptId = data.id; // 자동 생성된 manuscriptId 사용
       router.push(`/${user.id}/${manuscriptId}`); // 해당 경로로 이동
