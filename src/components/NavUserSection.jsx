@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router'; // useRouter import
-// import MyPageModal from './Modal/MyPageModal';
+import MyPageModal from './Modal/MyPageModal';
 
 const NavUserSection = ({signin}) => {
   const router = useRouter(); // useRouter 사용

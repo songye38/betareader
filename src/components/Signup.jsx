@@ -74,9 +74,9 @@ const Signup = () => {
       </form>
 
       {/* 카카오 OAuth 회원가입 버튼 */}
-      <button onClick={() => handleOAuthSignIn('kakao')} style={styles.oauthButton}>
+      {/* <button onClick={() => handleOAuthSignIn('kakao')} style={styles.oauthButton}>
         카카오로 가입하기
-      </button>
+      </button> */}
     </div>
   );
 };

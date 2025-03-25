@@ -25,51 +25,53 @@ export const signOut = async () => {
 // 회원가입 (이메일 + 닉네임)
 export const signUpWithEmail = async (email, password, nickname) => {
   try {
-    // Supabase에 사용자 추가 요청
+    // 1️⃣ 회원가입 요청
     const { data, error: authError } = await supabase.auth.signUp({
       email,
       password,
     });
 
-    // authError가 있는지 확인
     if (authError) {
-      console.error('회원가입 에러:', authError);
+      console.error("회원가입 에러:", authError);
       throw new Error(authError.message);
     }
 
-    // data.user에서 user 정보 가져오기
-    const user = data?.user;
+    const user = data.user;
     if (!user) {
-      console.error('회원가입 후 반환된 user 객체가 없습니다.');
-      throw new Error('회원가입에 실패했습니다. 사용자 정보를 가져올 수 없습니다.');
+      throw new Error("회원가입은 성공했지만, 사용자 정보를 가져올 수 없습니다.");
     }
 
-    console.log('회원가입 성공, user:', user); // user 객체 출력
+    console.log("회원가입 성공:", user);
 
-    // user 객체를 로컬 변수에 할당
-    const userId = user.id;  // ⚠️ 'UID'가 아니라 'id'임
-    console.log('userId:', userId); // userId 출력
-
-    // 추가로 'profile' 테이블에 닉네임 저장
-    const { data: profileData, error: dbError } = await supabase
-      .from('profile')  // 'profile' 테이블에 접근
+    // 2️⃣ 프로필 정보 추가
+    const { error: dbError } = await supabase
+      .from("profile")
       .upsert({
-        user_id: userId,  // 'users' 테이블의 user_id
-        username: nickname, // 프로필에 저장할 닉네임
-      })
-      .single();  // 하나의 레코드만 반환되도록 설정
+        user_id: user.id, // Supabase에서 제공하는 user.id
+        username: nickname,
+      });
 
     if (dbError) {
-      console.error('프로필 저장 에러:', dbError);
-      throw new Error(dbError.message);
+      throw new Error("프로필 저장 중 오류 발생: " + dbError.message);
     }
 
-    console.log('프로필 저장 성공:', profileData); // 저장된 프로필 데이터 출력
+    console.log("프로필 저장 성공");
 
-    // 정상적으로 처리되었을 경우 반환된 데이터
-    return profileData; // `profileData`는 upsert된 사용자 정보를 포함할 것임
+    // 3️⃣ 회원가입 후 자동 로그인 (세션 유지)
+    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (loginError) {
+      throw new Error("자동 로그인 실패: " + loginError.message);
+    }
+
+    console.log("자동 로그인 성공:", loginData);
+
+    return loginData; // 세션 정보 반환
   } catch (error) {
-    console.error('회원가입 오류:', error);
-    throw error;  // 상위 함수로 오류를 전달
+    console.error("회원가입 오류:", error);
+    throw error;
   }
 };

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Poppins } from 'next/font/google';
 import { useRouter } from 'next/router'; // useRouter import
-import MyPageModal from './Modal/MyPageModal';
 import NavSignSection from './NavSignSection';
+import useAuthStore from '@/store/useAuthStore';
 import NavUserSection from './NavUserSection';
+import MyPageModal from './Modal/MyPageModal';
 
 // TODO :화면 어디든지 클릭하면 모달이 사라지도록 해야함
 const poppins = Poppins({ 
@@ -13,6 +14,7 @@ const poppins = Poppins({
 });
 
 const Navbar = () => {
+  const { user, logout } = useAuthStore();
   const router = useRouter(); // useRouter 사용
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
 
@@ -69,7 +71,7 @@ const Navbar = () => {
 
       {/* 오른쪽 부분 (버튼 및 아이콘) */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-        <NavSignSection />
+      {user ? <NavUserSection user={user} /> : <NavSignSection />}
       </div>
     </div>
   );
