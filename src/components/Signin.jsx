@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useAuth } from '@/hooks/useAuth';
 
 const Signin = () => {
   const { control, handleSubmit } = useForm();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { handleEmailSignIn, loading, error } = useAuth();
 
-  // Submit handler for the form
-  const onSubmit = (data) => {
-    setLoading(true);
-    setError(null);
 
-    // Placeholder for signin logic (Supabase API or other)
-    // Simulate success
-    setTimeout(() => {
-      console.log('User signed in:', data);
-      setLoading(false);
-    }, 2000);
-
-    // Handle error
-    // setError('Signin failed');  // Uncomment this line to simulate error
-  };
+  const onSubmit = async (data) => {
+  
+      try {
+        // 로그인 처리
+        const result = await handleEmailSignIn(data.email, data.password);
+  
+        // 회원가입 성공 시 콘솔 출력
+        console.log("회원가입 성공", result);
+      } catch (error) {
+        console.error("회원가입 오류", error);
+      }
+    };
 
   return (
     <div className="signin-container">

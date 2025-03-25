@@ -57,5 +57,5 @@ export const useAuth = () => {
     }
   };
 
-  return { handleSignUp, handleOAuthSignIn, handleSignOut, loading, error };
+  return { handleEmailSignIn, handleSignUp, handleOAuthSignIn, handleSignOut, loading, error };
 };

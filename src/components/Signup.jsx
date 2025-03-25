@@ -4,14 +4,11 @@ import { useAuth } from '@/hooks/useAuth';
 
 const Signup = () => {
   const { control, handleSubmit } = useForm();
-  const { handleSignUp, handleOAuthSignIn, loading, error } = useAuth();
-  console.log("핸들 사인업이 제대로 호출되고 있나?",handleSignUp)
 
+
+  // TODO OAuth 로그인도 해야한다.
+  const { handleSignUp, handleOAuthSignIn, loading, error } = useAuth();
   const onSubmit = async (data) => {
-    console.log("데이터가 제대로 들어오고 있나?");
-    console.log("data.email", data.email);
-    console.log("data.password", data.password);
-    console.log("data.nickname", data.nickname);
 
     try {
       // 회원가입 처리
@@ -73,7 +70,7 @@ const Signup = () => {
         </button>
       </form>
 
-      {/* 카카오 OAuth 회원가입 버튼 */}
+      {/*  TODO 카카오 OAuth 회원가입 버튼 */}
       {/* <button onClick={() => handleOAuthSignIn('kakao')} style={styles.oauthButton}>
         카카오로 가입하기
       </button> */}
