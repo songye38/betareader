@@ -3,13 +3,13 @@ import { useState,useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import EpisodeInput from './FormComponents/EpisodeInput';
-import useStore from '@/store/useStore';
+import useTabStore from '@/store/useTabStore';
 import DropdownInput from './FormComponents/DropdownInput';
 import CheckCommentBtn from './Buttons/CheckCommentBtn';
 import { toast, Slide } from 'react-toastify';
 
 const EpisodeFormComponent = () => {
-  const selectedTabFromStore = useStore.getState().tabs.find(tab => tab.selected);
+  const selectedTabFromStore = useTabStore.getState().tabs.find(tab => tab.selected);
   const router = useRouter();
   const { userId, manuscriptId } = router.query; // URL 파라미터에서 값 추출
   const [isSaving, setIsSaving] = useState(false); //자동저장을 위한 기능

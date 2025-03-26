@@ -19,7 +19,7 @@
 
 import { create } from 'zustand';
 
-const useStore = create((set) => ({
+const useTabStore = create((set) => ({
   tabs: [], // 모든 탭을 관리 (원고, 설정 등)
   currentManuscriptId: 1, // 원고 ID 관리
   selectedTab: null, // 현재 선택된 탭
@@ -54,4 +54,4 @@ const useStore = create((set) => ({
     set((state) => ({ currentManuscriptId: state.currentManuscriptId + 1 })), // 원고 ID 증가
 }));
 
-export default useStore;
+export default useTabStore;

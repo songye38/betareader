@@ -1,11 +1,11 @@
 import React from 'react';
-import useStore from '@/store/useStore';
+import useTabStore from '@/store/useTabStore';
 import * as Tabs from '@radix-ui/react-tabs';
 import { useRouter } from 'next/router';  // useRouter 추가
 import styles from '@/styles/MyTabs.module.css'; // CSS 모듈 임포트
 
 export function MyTabs({ activeTab, setActiveTab }) {
-  const { tabs, selectedTab, setSelectedTab } = useStore((state) => state);
+  const { tabs, selectedTab, setSelectedTab } = useTabStore((state) => state);
   const router = useRouter();  // router 사용
 
   const handleTabChange = (tabId) => {

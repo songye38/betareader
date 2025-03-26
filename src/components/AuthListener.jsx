@@ -1,4 +1,3 @@
-// components/AuthListener.js
 import { useEffect } from "react";
 import supabase from "../supabase/supabaseClient";
 import useAuthStore from "../store/useAuthStore";
@@ -34,7 +33,7 @@ export default function AuthListener() {
 
     // 현재 로그인된 유저 정보 가져오기
     const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
+      const { data } = await supabase.auth.getUser(); // 로그인된 사용자 정보 가져오기
       await fetchUserData(data?.user);
     };
     getUser();

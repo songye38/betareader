@@ -2,12 +2,12 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Button1 from './Buttons/Button1';
-import useStore from '@/store/useStore'; // Zustand 스토어 사용
+import useTabStore from '@/store/useTabStore'; // Zustand 스토어 사용
 import { MyTabs } from './MyTabs';
 
 const SidebarComponent = () => {
   const router = useRouter();
-  const { manuscripts, addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useStore();
+  const { manuscripts, addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useTabStore();
 
   const handleAddTab = () => {
     const newTabId = Date.now(); // 고유한 ID 생성

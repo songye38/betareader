@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import SidebarComponent from "@/components/SidebarComponent"; // 사이드바
-import useStore from '@/store/useStore'; // Zustand 스토어 사용
+import useStore from '@/store/useTabStore'; // Zustand 스토어 사용
 import StartComponent from "@/components/StartComponent"; // 시작 페이지
 import SettingFormComponent from "@/components/SettingFormComponent"; // 설정 폼 컴포넌트
 import EpisodeFormComponent from "@/components/EpisodeFormComponent"; // 에피소드 폼 컴포넌트

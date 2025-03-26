@@ -1,13 +1,13 @@
 import {React,useState,useEffect} from 'react';
 import { useRouter } from 'next/router';
-import useStore from '@/store/useStore'; // Zustand 사용
+import useTabStore from '@/store/useTabStore'; // Zustand 사용
 import StartSettingBtn from './Buttons/StartSettingBtn';
 import Button1 from './Buttons/Button1';
 import MyTooltip from './MyTooltip';
 
 const StartComponent = () => {
     const router = useRouter();
-    const { addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useStore();
+    const { addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useTabStore();
 
     //TODO 설정집을 추가하지 않았으면 원고를 쓸 수 없도록 버튼을 disabled 해야함
     //TODO 한번 설정집을 썼으면 그 다음에는 '수정'으로 멘트를 바꿔야 함 처음에는 '작성'
