@@ -26,6 +26,7 @@ const StartComponent = () => {
         // 설정집 탭 추가 로직
         const newTab = {
             type : 'setting',
+            no : 0,
             id: 'settings',  // 설정집 탭 ID (고정)
             label: '설정집',  // 탭 이름
             EpisodeId: null,  // 원고와 관련 없음

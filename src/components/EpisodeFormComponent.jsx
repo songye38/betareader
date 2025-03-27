@@ -11,15 +11,7 @@ import useEpisodeForm from '@/hooks/useEpisode';
 const EpisodeFormComponent = () => {
   const {tabs,selectedTab} = useTabStore();
   const router = useRouter();
-  const { userId, manuscriptId, tabId } = router.query; // URL 파라미터에서 값 추출
   const selectedTabFromStore = tabs.find((tab) => tab.id === selectedTab?.id) || null;
-
-
-
-
-
-
-
   console.log("tabs",tabs);
   console.log("selectedTab",selectedTab);
 

@@ -11,11 +11,12 @@ const UserPage = ({ userId, manuscriptId }) => {
 
   // 조건부 렌더링을 위한 컴포넌트
   const renderContent = () => {
-    if (!selectedTab) {
+    console.log("selectedTab", selectedTab);
+    if (!selectedTab || selectedTab.id === null || selectedTab.no === null) {
       return <StartComponent />;  // selectedTab이 없을 때는 StartComponent 렌더링
     }
     
-    if (selectedTab === 'settings') {
+    if (selectedTab.id === 'settings') {
       return <SettingFormComponent />;  // 'settings'일 때는 SettingFormComponent 렌더링
     } else {
       return <EpisodeFormComponent />;  // 그 외의 경우는 EpisodeFormComponent 렌더링

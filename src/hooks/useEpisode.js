@@ -3,11 +3,13 @@ import { useForm } from 'react-hook-form';
 import { toast, Slide } from 'react-toastify';
 import { saveEpisode } from '@/models/episodeModel'; 
 import { useRouter } from 'next/router';
+import useTabStore from '@/store/useTabStore';
 
-const useEpisodeForm = (selectedTabFromStore) => {
+const useEpisodeForm = () => {
 
     const router = useRouter();
     const { manuscriptId, tab } = router.query;
+    const { selectedTab } = useTabStore();
 
     const tabId = tab; // 혹은 바로 tab을 사용해도 됩니다.
 
@@ -60,6 +62,7 @@ const useEpisodeForm = (selectedTabFromStore) => {
 
     // 서버에 보낼 데이터
     const requestData = {
+      tabNo : selectedTab.no,
       manuscriptId : manuscriptId,
       tabId : tabId,
       title: data.title,
@@ -68,20 +71,34 @@ const useEpisodeForm = (selectedTabFromStore) => {
     };
 
     console.log("hook",requestData)
-
     try {
-      const response = await saveEpisode(requestData);
-      if (!response || response.error) {
-        toast.error("에피소드 저장에 실패했습니다. 다시 시도해주세요.");
-        return;
+        const response = await saveEpisode(requestData);
+      
+        if (!response || response.error) {
+          console.error("❌ API 실패 상세 정보:", response);
+          toast.error("에피소드 저장에 실패했습니다. 다시 시도해주세요.");
+          return;
+        }
+      
+        toast.success("에피소드가 성공적으로 저장되었습니다!");
+      
+      } catch (error) {
+        console.error("❌ 요청 중 에러 발생:", error);
+      
+        // Axios 의 경우 error.response 도 체크
+        if (error.response) {
+          console.error("🔍 서버 응답 error.response:", error.response);
+          console.error("🔍 서버 응답 데이터 error.response.data:", error.response.data);
+          console.error("🔍 서버 응답 상태코드 error.response.status:", error.response.status);
+        } else if (error.request) {
+          console.error("🔍 요청은 갔지만 응답 없음 error.request:", error.request);
+        } else {
+          console.error("🔍 기타 에러 메시지:", error.message);
+        }
+      
+        toast.error("에피소드 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
       }
-      toast.success("에피소드가 성공적으로 저장되었습니다!");
-
-    } catch (error) {
-      console.error("❌ 요청 중 에러 발생:", error);
-      toast.error("에피소드 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
-    }
-  };
+    }      
 
   // 자동 저장을 위한 debounce
   useEffect(() => {

@@ -7,7 +7,8 @@ export const saveEpisode = async (requestData) => {
       .from('episode')
       .insert([
         {
-          manuscript_id : requestData.manuscriptId,  
+          tab_no: requestData.tabNo,
+          manuscript_id: requestData.manuscriptId,
           title: requestData.title,
           tab_id: requestData.tabId,
           content: requestData.content,
@@ -18,12 +19,13 @@ export const saveEpisode = async (requestData) => {
 
     if (error) {
       console.error("❌ Supabase 에러:", error.message);
-      return { error };
+      throw error;  // 에러가 발생하면 즉시 함수 종료
     }
 
-    return data; // 성공적으로 저장된 데이터 반환
+    console.log("데이터베이스 저장 성공", data);
+    return data;  // 데이터가 성공적으로 저장되면 반환
   } catch (error) {
     console.error("❌ 에피소드 저장 실패:", error);
-    return { error };
+    throw error;  // 에러를 던져서 호출한 곳에서 처리하도록
   }
 };
