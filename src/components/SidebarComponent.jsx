@@ -16,6 +16,7 @@ const SidebarComponent = () => {
     const newTab = {
       type: 'episode',
       id: newTabId,
+      no: newEpisodeId, // ← 추가됨
       label: `${newEpisodeId}화`,
       EpisodeId: newEpisodeId,
       selected: true,
@@ -24,8 +25,8 @@ const SidebarComponent = () => {
     addTab(newTab); // Zustand 상태 업데이트
     
     // 현재 탭이 새로 추가된 탭과 다를 경우에만 선택
-    if (newTabId !== selectedTab) {
-      setSelectedTab(newTabId); // 새 탭을 활성화
+    if (newTabId !== selectedTab.id) {
+      setSelectedTab(newTabId, newEpisodeId); // 새 탭을 활성화
     }
   
     // 탭을 추가한 후, URL을 해당 탭 ID로 업데이트

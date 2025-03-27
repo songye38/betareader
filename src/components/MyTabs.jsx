@@ -9,7 +9,9 @@ export function MyTabs({ activeTab, setActiveTab }) {
   const router = useRouter();  // router 사용
 
   const handleTabChange = (tabId) => {
-    setSelectedTab(tabId);  // 탭 클릭 시 해당 탭으로 상태 변경
+    const selected = tabs.find((tab) => tab.id === tabId);
+    if (!selected) return;
+    setSelectedTab(selected.id,selected.no);  // 탭 클릭 시 해당 탭으로 상태 변경
 
     // 탭 클릭 시 URL을 변경하여 탭 정보를 반영
     router.push({
@@ -23,7 +25,7 @@ export function MyTabs({ activeTab, setActiveTab }) {
   }
 
   return (
-    <Tabs.Root value={selectedTab} onValueChange={handleTabChange} className={styles.tabs}>
+    <Tabs.Root value={selectedTab.id} onValueChange={handleTabChange} className={styles.tabs}>
       <Tabs.List className={styles.tabsList}>
         {tabs.map((tab) => {
           // `type`에 따라 탭을 렌더링
@@ -33,7 +35,7 @@ export function MyTabs({ activeTab, setActiveTab }) {
               <Tabs.Trigger
                 key={tab.id}
                 value={tab.id}
-                className={`${styles.tabTrigger} ${selectedTab === tab.id ? styles.selectedTab : ''}`}
+                className={`${styles.tabTrigger} ${selectedTab.id === tab.id ? styles.selectedTab : ''}`}
               >
                 {tab.label}
               </Tabs.Trigger>

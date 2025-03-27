@@ -42,7 +42,7 @@ const StartComponent = () => {
 
         // 현재 탭이 'settings' 탭이 아닐 때만 설정
         if (selectedTab !== 'settings') {
-            setSelectedTab(newTab.id);  // 새 탭 선택
+            setSelectedTab(newTab.id,newTab.no);  // 새 탭 선택
         }
     };
 
@@ -54,6 +54,7 @@ const StartComponent = () => {
         const newTab = {
           type: 'episode',
           id: newTabId,
+          no : newEpisodeId,
           label: `${newEpisodeId}화`,
           EpisodeId: newEpisodeId,
           selected: true,
@@ -63,7 +64,7 @@ const StartComponent = () => {
         
         // 현재 탭이 새로 추가된 탭과 다를 경우에만 선택
         if (newTabId !== selectedTab) {
-          setSelectedTab(newTabId); // 새 탭을 활성화
+          setSelectedTab(newTabId,newEpisodeId); // 새 탭을 활성화
         }
       
         // 탭을 추가한 후, URL을 해당 탭 ID로 업데이트

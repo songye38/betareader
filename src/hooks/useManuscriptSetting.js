@@ -25,14 +25,48 @@ const useManuscriptSetting = () => {
 
   const { control, handleSubmit, formState: { errors }, watch, setValue } = methods;
   const [loading, setLoading] = useState(false);
+  const [initialData, setInitialData] = useState(null); // 초기 데이터 상태 추가
 
-  // 로딩 상태에서 manuscriptId가 존재하지 않으면 폼을 비활성화
+  // manuscriptId가 변경되면 데이터를 가져오는 useEffect
   useEffect(() => {
-    if (!manuscriptId) {
-      // manuscriptId가 없을 때, 예를 들어, 페이지가 로드되기 전이면 처리를 할 수 있습니다.
-      console.error('manuscriptId가 URL에서 찾을 수 없습니다.');
+    if (manuscriptId) {
+      fetchManuscriptSettingData(); // manuscriptId가 있을 때 데이터 가져오기
     }
   }, [manuscriptId]);
+
+  // manuscript_setting 테이블에서 데이터 가져오기
+  const fetchManuscriptSettingData = async () => {
+    setLoading(true); // 데이터 로딩 시작
+
+    try {
+      const { data, error } = await supabase
+        .from('manuscript_setting')
+        .select('*')
+        .eq('id', manuscriptId) // manuscriptId로 필터링
+        .single(); // 하나의 데이터만 가져옴
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      // 가져온 데이터로 폼에 기본값 설정
+      setInitialData(data);
+      
+      // 필드 값 설정
+      setValue('title', data.title);
+      setValue('genre', data.genre);  // genre 값을 선택으로 설정
+      setValue('ageCategory', data.age_category);
+      setValue('plot', data.plot);
+      setValue('newKeywords', data.keywords || []);
+      setValue('characters', data.characters || [{ name: '', role: '', description: '' }]);
+
+    } catch (error) {
+      console.error('❌ 데이터 로딩 실패:', error.message);
+      toast.error('데이터를 가져오는 중 오류가 발생했습니다.', { position: 'bottom-center', autoClose: 1200, theme: 'dark', transition: Slide });
+    } finally {
+      setLoading(false); // 데이터 로딩 완료
+    }
+  };
 
   const handleKeywordChange = (updatedKeywords) => {
     setValue('newKeywords', updatedKeywords);
@@ -80,6 +114,7 @@ const useManuscriptSetting = () => {
     onSubmit,
     handleKeywordChange,
     loading,
+    initialData,  // 초기 데이터 상태 반환
   };
 };
 

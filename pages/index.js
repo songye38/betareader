@@ -8,33 +8,42 @@ import SigninModal from "@/components/Modal/SigninModal";
 
 
 const MainPage = () => {
-  const [episodes, setEpisodes] = useState([]);
+  const episodes = [
+    {
+      novelTitle: "용사의 귀환",
+      timeAgo: "1시간 전",
+      episodeNumber: 1,
+      content: "용사가 오랜 여행 끝에 마을로 돌아왔다.",
+    },
+    {
+      novelTitle: "마법사의 일기",
+      timeAgo: "3시간 전",
+      episodeNumber: 2,
+      content: "마법사는 오늘도 실험을 이어갔다. 뜻밖의 발견이 있었다.",
+    },
+    {
+      novelTitle: "검은 숲의 비밀",
+      timeAgo: "어제",
+      episodeNumber: 3,
+      content: "숲 속 깊은 곳에서 의문의 빛을 발견했다.",
+    },
+    {
+      novelTitle: "드래곤과의 계약",
+      timeAgo: "2일 전",
+      episodeNumber: 4,
+      content: "용사는 드래곤과 목숨을 건 계약을 맺었다.",
+    },
+    {
+      novelTitle: "사라진 왕국",
+      timeAgo: "5일 전",
+      episodeNumber: 5,
+      content: "전설 속의 왕국이 사라진 진실이 드러난다.",
+    },
+  ];
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const size = 5; // 불러올 에피소드 개수 (필수)
-
-  //TODO 데이터 불러오는 부분
-  // useEffect(() => {
-  //   const fetchEpisodes = async (size) => {
-  //     try {
-  //       const response = await fetch(`${API_BASE_URL}/novels/episodes?size=${size}`);
-        
-  //       if (!response.ok) {
-  //         throw new Error(`에피소드 데이터를 불러오는 데 실패했습니다. (HTTP ${response.status})`);
-  //       }
-
-  //       const data = await response.json();
-  //       setEpisodes(data); // 불러온 데이터를 상태로 저장
-  //     } catch (error) {
-  //       console.error("❌ 데이터 가져오기 실패:", error);
-  //       setError(error.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchEpisodes(size);
-  // }, []);
 
   return (
     <div 
@@ -46,10 +55,10 @@ const MainPage = () => {
         gap: "32px",
       }}
     >
-      {loading && <p>📌 데이터를 불러오는 중...</p>}
-      {error && <p>❌ 오류 발생: {error}</p>}
+
+      {/* TODO 실제 데이터 불러오는 것으로 변경 */}
       
-      {!loading && !error && <RecentEpiSet episodes={episodes} />}
+      <RecentEpiSet episodes={episodes} />
       
       {/* TODO : 서버에서 가져온 값으로 바꾸기 */}
       <AllManuSet userId={1} manuscriptId={1} />

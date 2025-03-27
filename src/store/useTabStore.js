@@ -1,28 +1,11 @@
-// import { create } from 'zustand';
-
-// const useStore = create((set) => ({
-//   tabs: [], // 모든 탭을 관리 (원고, 설정 등)
-//   currentManuscriptId: 1, // 원고 ID 관리
-//   selectedTab: null, // 현재 선택된 탭
-//   addTab: (newTab) => 
-//     set((state) => ({
-//       tabs: [...state.tabs, newTab], // 새 탭 추가 (원고, 설정 등)
-//       selectedTab: newTab.id, // 방금 추가한 탭을 선택
-//     })),
-//   setSelectedTab: (tabId) => set({ selectedTab: tabId }), // 특정 탭을 선택
-//   incrementManuscriptId: () => 
-//     set((state) => ({ currentManuscriptId: state.currentManuscriptId + 1 })), // 원고 ID 증가
-// }));
-
-// export default useStore;
-
-
 import { create } from 'zustand';
 
 const useTabStore = create((set) => ({
   tabs: [], // 모든 탭을 관리 (원고, 설정 등)
   currentManuscriptId: 1, // 원고 ID 관리
-  selectedTab: null, // 현재 선택된 탭
+  
+  // 현재 선택된 탭 여기에 고유 id와 no를 함께 저장 selectedTab: null, // 현재 선택된 탭 여기에 고유 id와 no를 함께 저장
+  selectedTab: { id: null, no: null },
   addTab: (newTab) => 
     set((state) => {
       const updatedTabs = state.tabs.map(tab => ({
@@ -35,10 +18,10 @@ const useTabStore = create((set) => ({
 
       return {
         tabs: updatedTabs, // 탭 배열 업데이트
-        selectedTab: newTab.id, // 방금 추가한 탭을 선택
+        selectedTab: { id: newTab.id, no: newTab.no }, // id와 no 동시 저장
       };
     }),
-  setSelectedTab: (tabId) => 
+  setSelectedTab: (tabId, tabNo) => 
     set((state) => {
       const updatedTabs = state.tabs.map(tab => ({
         ...tab,
@@ -47,7 +30,7 @@ const useTabStore = create((set) => ({
 
       return {
         tabs: updatedTabs,
-        selectedTab: tabId,
+        selectedTab: { id: tabId, no: tabNo }, // id와 no 동시 저장
       };
     }), // 특정 탭을 선택
   incrementManuscriptId: () => 
