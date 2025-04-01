@@ -62,7 +62,7 @@ const useManuscriptSetting = () => {
       // 필드 값 설정
       setValue('title', data.title);
       setValue('genre', data.genre);  // genre 값을 선택으로 설정
-      setValue('ageCategory', data.age_category);
+      setValue('ageCategory', data.age_group);
       setValue('plot', data.plot);
       setValue('newKeywords', data.keywords || []);
       setValue('characters', data.characters || [{ name: '', role: '', description: '' }]);

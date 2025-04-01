@@ -4,7 +4,6 @@ const CommentComponent = ({ id, onHeartClick, isHearted,name,text }) => {
   const [isLiked, setIsLiked] = useState(isHearted);
 
   const toggleLike = () => {
-    console.log("토글된 id는?",id);
     const newHeartedState = !isLiked;
     setIsLiked(newHeartedState);
     onHeartClick(id, newHeartedState); // 부모 컴포넌트에 하트 상태를 전달

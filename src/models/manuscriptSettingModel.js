@@ -6,6 +6,16 @@ export function getAgeGroup(ageCategory) {
       default: return "UNKNOWN";
     }
   }
+
+  export const getAgeCategoryDisplay = (ageCategoryEnum) => {
+    switch (ageCategoryEnum) {
+      case "GENERAL_AUDIENCE": return "전체이용가";
+      case "FIFTEEN_ABOVE": return "15세이상이용가";
+      case "NINETEEN_ABOVE": return "19세이상이용가";
+      default: return "전체이용가";  // 기본값
+    }
+  };
+  
   
   export function getGenreType(genre) {
     switch (genre) {
@@ -22,6 +32,23 @@ export function getAgeGroup(ageCategory) {
       default: return "UNKNOWN";
     }
   }
+
+  export function getGenreDisplay(genreEnum) {
+    switch (genreEnum) {
+      case "ROMANCE": return "로맨스";
+      case "BL": return "BL";
+      case "ROMANCE_FANTASY": return "로맨스 판타지";
+      case "GL": return "GL";
+      case "FANTASY": return "판타지";
+      case "HORROR": return "공포";
+      case "MODERN_FANTASY": return "현대 판타지";
+      case "MYSTERY": return "추리";
+      case "MARTIAL_ARTS": return "무협";
+      case "DRAMA": return "드라마";
+      default: return "알 수 없음";  // 기본값 처리
+    }
+  }
+  
   
   export function getCharacterType(character) {
     switch (character) {

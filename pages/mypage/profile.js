@@ -18,8 +18,6 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
         nickname,
       };
 
-      console.log("서버로 보낼 데이터:", requestData);
-
       // TODO: 서버에 requestData를 보낼 fetch 또는 axios 요청 추가
     };
 

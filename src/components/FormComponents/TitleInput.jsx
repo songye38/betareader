@@ -5,6 +5,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 
 const TitleInput = ({ control, error,showLabel = true }) => {
+  console.log("title의 control은?",control);
   return (
     <div style={{ 
         width: showLabel ? 'auto' : '850px',
