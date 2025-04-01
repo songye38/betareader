@@ -27,6 +27,7 @@ const SettingFormComponent = ({ onClose }) => {
   const genre = watch('genre');
   const ageCategory = watch('ageCategory');
   const plot = watch('plot');
+  const newKeywords = watch('newKeywords');
 
   // 유효성 검사
   const formIsValid = title && genre?.length > 0 && ageCategory && plot && !errors.title && !errors.genre && !errors.ageCategory && !errors.plot;

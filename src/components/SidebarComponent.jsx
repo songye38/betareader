@@ -14,6 +14,8 @@ const SidebarComponent = () => {
   const {manuscript} = useManuscriptStore();
   const {user} = useAuthStore();
 
+  console.log("manuscript",manuscript);
+
 
   useEffect(() => {
     if (manuscript) {
@@ -52,7 +54,6 @@ const SidebarComponent = () => {
 
   const handleTitleClick = () => {
     if (user?.id && manuscript?.id) {
-      console.log("제목이 눌림");
       resetSelectedTab();
       router.push(`/${user.id}/${manuscript.id}`); // 페이지 이동
     }

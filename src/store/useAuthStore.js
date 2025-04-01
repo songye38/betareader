@@ -11,7 +11,7 @@ const useAuthStore = create((set) => ({
 
   logout: async () => {
     await supabase.auth.signOut();
-    set({ user: null, profile: null, manuscriptId: null });
+    set({ user: null, profile: null });
   },
 }));
 

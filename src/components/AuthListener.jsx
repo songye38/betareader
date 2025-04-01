@@ -40,7 +40,7 @@ export default function AuthListener() {
 
     // 로그인 상태 감지 및 유저 정보 업데이트
     const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("🔄 Auth 상태 변경:", event, session);
+    //   console.log("🔄 Auth 상태 변경:", event, session);
       await fetchUserData(session?.user);
     });
 

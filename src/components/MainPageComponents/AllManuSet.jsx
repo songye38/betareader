@@ -4,7 +4,7 @@ import AddManuItem from "./AddManuItem";
 import useManuscripts from "@/hooks/useManuscripts";
 
 const AllManuSet = ({ userId, manuscriptId }) => {
-  const { manuscripts, loading, error } = useManuscripts();
+  const { manuscript, loading, error } = useManuscripts();
 
   if (loading) {
     return <div>로딩 중...</div>; // 로딩 상태 표시
@@ -42,8 +42,8 @@ const AllManuSet = ({ userId, manuscriptId }) => {
 
       {/* 원고집이 있다면 표시 */}
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        {manuscripts.length > 0 ? (
-          manuscripts.map((manuscript) => (
+        {manuscript.length > 0 ? (
+          manuscript.map((manuscript) => (
             <ManuItem
               key={manuscript.id}
               title={manuscript.title}

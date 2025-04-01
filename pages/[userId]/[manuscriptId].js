@@ -11,16 +11,15 @@ import useManuscriptStore from "@/store/useManuscriptStore";
 
 const UserPage = () => {
   const { selectedTab } = useStore((state) => state); // Zustand에서 selectedTab 가져오기
-  const { manuscriptId } = useAuthStore((state) => state); // Zustand에서 manuscriptId 가져오기
   const [isSetup, setIsSetup] = useState(false); // 원고 데이터의 isSetup 상태를 저장
   const { manuscript,setManuscript } = useManuscriptStore(); 
 
-  // manuscriptId가 있을 때 원고 데이터를 가져오는 함수
+  // manuscript.id가 있을 때 원고 데이터를 가져오는 함수
   useEffect(() => {
     const fetchManuscriptData = async () => {
-      if (manuscriptId) {
+      if (manuscript.id) {
         try {
-          const data = await fetchManuscriptById(manuscriptId);
+          const data = await fetchManuscriptById(manuscript.id);
           console.log("원래 저장했던 데이터",data);
           setManuscript(data); // 🆕 Zustand 업데이트
           setIsSetup(data.isSetup);
@@ -33,7 +32,7 @@ const UserPage = () => {
     };
 
     fetchManuscriptData();
-  }, [manuscriptId,selectedTab]); 
+  }, [manuscript.id,selectedTab]); 
 
 
 

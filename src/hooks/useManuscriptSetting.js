@@ -8,6 +8,8 @@ import { transformManuscriptSettingData } from '@/models/manuscriptSettingModel'
 import { toast, Slide } from 'react-toastify';
 
 const useManuscriptSetting = () => {
+
+    // useRouter 훅을 사용하여 URL 쿼리 파라미터 접근
   const router = useRouter();  // useRouter 훅 사용
   const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
 
@@ -42,11 +44,16 @@ const useManuscriptSetting = () => {
       const { data, error } = await supabase
         .from('manuscript_setting')
         .select('*')
-        .eq('id', manuscriptId) // manuscriptId로 필터링
-        .single(); // 하나의 데이터만 가져옴
+        .eq('manuscript_id', manuscriptId) // manuscriptId로 필터링
+        .maybeSingle(); // 하나의 데이터만 가져옴
 
       if (error) {
         throw new Error(error.message);
+      }
+
+      if (!data) {
+        console.warn("⚠️ 해당 manuscriptId에 대한 데이터가 없습니다.");
+        return; // 데이터가 없으면 함수 종료
       }
 
       // 가져온 데이터로 폼에 기본값 설정
@@ -69,10 +76,15 @@ const useManuscriptSetting = () => {
   };
 
   const handleKeywordChange = (updatedKeywords) => {
+    console.log("handleKeywordChange 호출됨");
     setValue('newKeywords', updatedKeywords);
-  };
+    
+    // watch로 최신 상태 가져오기
+    console.log("키워드 업데이트:", watch("newKeywords")); 
+}
 
   const onSubmit = async (data) => {
+    console.log("onsubmit 함수를 호출합니다.");
     if (!manuscriptId) {
       toast.error('manuscriptId를 찾을 수 없습니다.', { position: 'bottom-center', autoClose: 1200, theme: 'dark', transition: Slide });
       return;

@@ -2,12 +2,13 @@ import { useRouter } from "next/router";
 import useAuthStore from "@/store/useAuthStore";
 import supabase from "@/supabase/supabaseClient";
 import { useState } from "react";
+import useManuscriptStore from "@/store/useManuscriptStore";
 
 const StartWritingBtn = ({manuTitle}) => {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);  // useAuthStore에서 user 정보 가져오기
   const [loading, setLoading] = useState(false);
-  const {setManuscriptId} = useAuthStore();
+  const {setManuscript} = useManuscriptStore();
 
   const handleClick = async () => {
     if (!user) {
@@ -33,8 +34,16 @@ const StartWritingBtn = ({manuTitle}) => {
       }
 
       // 2. 새로운 원고집 페이지로 이동
-      const manuscriptId = data.id; // 자동 생성된 manuscriptId 사용
-      setManuscriptId(manuscriptId);
+      const newManuscript = {
+        episode_count: null,
+        id: data.id,
+        isSetup: false,
+        last_edited_at: null,
+        title: '',
+        user_id: null,
+      }
+
+      setManuscript(newManuscript);
       console.log("새로운 페이지로 이동할 때 이 값이 정해지나?",manuscriptId);
       router.push(`/${user.id}/${manuscriptId}`); // 해당 경로로 이동
 

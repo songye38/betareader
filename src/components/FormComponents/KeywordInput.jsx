@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import Tag from './Tag';
 
-const KeywordInput = ({ control, error, initialKeywords = [] }) => {
+const KeywordInput = ({ control, error, initialKeywords = [], onKeywordChange }) => {
   const [inputValue, setInputValue] = useState(''); // 입력값 상태
   const [keywords, setKeywords] = useState(initialKeywords); // 키워드 리스트 상태
 
@@ -17,8 +17,14 @@ const KeywordInput = ({ control, error, initialKeywords = [] }) => {
 
       // 중복 체크 후 키워드 추가
       if (!keywords.includes(newKeyword)) {
-        setKeywords([...keywords, newKeyword]);
+        const updatedKeywords = [...keywords, newKeyword];
+        setKeywords(updatedKeywords);
         setInputValue(''); // 입력 필드 초기화
+
+        // 부모 컴포넌트에 변경사항 전달
+        if (onKeywordChange) {
+          onKeywordChange(updatedKeywords);
+        }
       }
     }
   };
@@ -30,7 +36,13 @@ const KeywordInput = ({ control, error, initialKeywords = [] }) => {
 
   // 태그 삭제 기능
   const handleDeleteTag = (index) => {
-    setKeywords((prevKeywords) => prevKeywords.filter((_, i) => i !== index));
+    const updatedKeywords = keywords.filter((_, i) => i !== index);
+    setKeywords(updatedKeywords);
+
+    // 부모 컴포넌트에 변경사항 전달
+    if (onKeywordChange) {
+      onKeywordChange(updatedKeywords);
+    }
   };
 
   return (
