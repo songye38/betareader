@@ -5,11 +5,9 @@ import supabase from "../supabase/supabaseClient";
 const useAuthStore = create((set) => ({
   user: null,  // user_id
   profile: null,
-  manuscriptId: null,
 
   setUser: (user) => set({ user }),  // user_id 설정
   setProfile: (profile) => set({ profile }),  // 프로필 정보 설정
-  setManuscriptId: (manuscriptId) => set({ manuscriptId }),  // manuscript_id 설정
 
   logout: async () => {
     await supabase.auth.signOut();

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import dayjs from 'dayjs'; // dayjs 라이브러리 가져오기
 import relativeTime from 'dayjs/plugin/relativeTime'; // 상대 시간 플러그인
 import 'dayjs/locale/ko'; // 한국어 로케일 가져오기
+import useManuscriptStore from '@/store/useManuscriptStore';
 
 // dayjs에 상대 시간 플러그인 사용
 dayjs.extend(relativeTime);
@@ -12,12 +13,26 @@ dayjs.locale('ko');
 const ManuItem = ({ title, lastEditedAt, episodeCount ,userId, ManuId}) => {
   const router = useRouter();
   const relativeTimeDisplay = dayjs(lastEditedAt).fromNow();
+  const {setManuscript} = useManuscriptStore();
+
+  const data = {
+    "episode_count" : episodeCount,
+    'id' : ManuId,
+    'isSetup' : false,
+    'last_edited_at' : lastEditedAt,
+    'title' : title,
+    'user_id' : userId
+  }
 
   const handleClick = () => {
     if (userId && ManuId) {
+      setManuscript(data);
       router.push(`/${userId}/${ManuId}`);
     }
   };
+
+
+
 
 
 

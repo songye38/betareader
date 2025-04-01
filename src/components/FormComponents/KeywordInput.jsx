@@ -4,26 +4,22 @@ import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import Tag from './Tag';
 
-const KeywordInput = ({ control, error, newKeywords, onKeywordChange }) => {
-  const [inputValue, setInputValue] = useState(''); // 입력값
-  const [isProcessing, setIsProcessing] = useState(false); // 중복 방지 플래그
+const KeywordInput = ({ control, error, initialKeywords = [] }) => {
+  const [inputValue, setInputValue] = useState(''); // 입력값 상태
+  const [keywords, setKeywords] = useState(initialKeywords); // 키워드 리스트 상태
 
-  // Enter 키 입력 시 태그 추가 (300ms 딜레이)
+  // Enter 키 입력 시 태그 추가
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && inputValue.trim() && newKeywords.length < 3 && !isProcessing) {
+    if (e.key === 'Enter' && inputValue.trim() && keywords.length < 3) {
       e.preventDefault(); // 기본 이벤트 방지
-      setIsProcessing(true); // 중복 실행 방지
 
-      setTimeout(() => {
-        // newKeywords에 입력된 값이 없다면 추가
-        if (!newKeywords.includes(inputValue.trim())) {
-          const updatedKeywords = [...newKeywords, inputValue.trim()];
-          onKeywordChange(updatedKeywords); // 키워드 변경 함수 호출
-        }
+      const newKeyword = inputValue.trim();
 
+      // 중복 체크 후 키워드 추가
+      if (!keywords.includes(newKeyword)) {
+        setKeywords([...keywords, newKeyword]);
         setInputValue(''); // 입력 필드 초기화
-        setIsProcessing(false); // 처리 완료 후 다시 활성화
-      }, 200); // 200ms 후에 실행
+      }
     }
   };
 
@@ -34,13 +30,12 @@ const KeywordInput = ({ control, error, newKeywords, onKeywordChange }) => {
 
   // 태그 삭제 기능
   const handleDeleteTag = (index) => {
-    const updatedKeywords = newKeywords.filter((_, i) => i !== index);
-    onKeywordChange(updatedKeywords); // 키워드 변경 함수 호출
+    setKeywords((prevKeywords) => prevKeywords.filter((_, i) => i !== index));
   };
 
   return (
     <div style={{
-      width: 959,
+      width: 'auto',
       height: 'auto',
       padding: 24,
       background: '#1E1F24',
@@ -49,13 +44,13 @@ const KeywordInput = ({ control, error, newKeywords, onKeywordChange }) => {
       flexDirection: 'column',
       gap: 20
     }}>
-      <div style={{ color: 'white', fontSize: 24, fontWeight: '700' }}>
+      <div style={{ color: 'white', fontSize: 20, fontWeight: '600' }}>
         키워드 (최대 3개)
       </div>
 
       {/* 키워드 입력 필드 */}
       <Controller
-        name="newKeywords"
+        name="keywords"
         control={control}
         render={({ field }) => (
           <input
@@ -83,7 +78,7 @@ const KeywordInput = ({ control, error, newKeywords, onKeywordChange }) => {
 
       {/* 태그 리스트 */}
       <div style={{ display: 'flex', flexDirection: 'row', gap: '12px' }}>
-        {newKeywords.map((tag, index) => (
+        {keywords.map((tag, index) => (
           <Tag key={index} onDelete={() => handleDeleteTag(index)}>
             {tag}
           </Tag>

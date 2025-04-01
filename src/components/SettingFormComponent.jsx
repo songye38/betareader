@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import React from 'react';
+import { FormProvider } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import GenreInput from './FormComponents/GenreInput';
 import AgeInput from './FormComponents/AgeInput';
@@ -11,9 +11,7 @@ import CharactersInput from './FormComponents/CharactersInput';
 import SettingSaveBtn from './Buttons/SettingSaveBtn';
 import useManuscriptSetting from '@/hooks/useManuscriptSetting';
 
-
-const SettingFormComponent = () => {
-
+const SettingFormComponent = ({ onClose }) => {
   const {
     methods,
     control,
@@ -25,71 +23,92 @@ const SettingFormComponent = () => {
     loading,
   } = useManuscriptSetting();
 
-    
   const title = watch('title');
   const genre = watch('genre');
   const ageCategory = watch('ageCategory');
   const plot = watch('plot');
-  const newKeywords = watch('newKeywords'); // react-hook-form에서 keywords 상태 추적
 
-  // Form 값이 변경될 때마다 isValid를 실시간으로 추적
+  // 유효성 검사
   const formIsValid = title && genre?.length > 0 && ageCategory && plot && !errors.title && !errors.genre && !errors.ageCategory && !errors.plot;
 
   return (
-    // FormProvider로 감싸기
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-        {/* TitleInput에 필수 검증 추가 */}
-        <TitleInput 
-          control={control} 
-          error={errors.title} 
-          showLabel={true} 
-          rules={{ required: '제목을 입력해주세요.' }} 
-        />
-        
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
-          {/* GenreInput에 필수 검증 추가 */}
-          <GenreInput 
-            control={control} 
-            error={errors.genre} 
-            rules={{ required: '장르를 선택해주세요.' }} 
-          />
-          
-          {/* AgeInput에 필수 검증 추가 */}
-          <AgeInput 
-            control={control} 
-            error={errors.ageCategory}  
-            rules={{ required: '나이를 선택해주세요.' }} 
-          />
+    <div
+      style={{
+        width: 900,
+        maxHeight: "80vh", // 화면 높이의 80%까지만 사용
+        overflowY: "auto", // 스크롤 가능하도록 설정
+        padding: 36,
+        background: "#2C2D34",
+        borderRadius: 24,
+        border: "1px #4A4E5B solid",
+        display: "flex", // ✅ inline-flex 제거
+        flexDirection: "column", // ✅ 세로 정렬 유지
+        justifyContent: "flex-start", // ✅ 상단부터 정렬 (잘리는 문제 해결)
+        alignItems: "center",
+        gap: 32,
+      }}
+    >
+      {/* 제목 및 닫기 버튼 */}
+      <div
+        style={{
+          alignSelf: "stretch",
+          justifyContent: "space-between",
+          alignItems: "center",
+          display: "flex",
+        }}
+      >
+        <div
+          style={{
+            color: "white",
+            fontSize: 20,
+            fontFamily: "Pretendard",
+            fontWeight: "600",
+            lineHeight: "28px",
+            wordWrap: "break-word",
+          }}
+        >
+          설정집 작성
         </div>
 
-        {/* PlotInput에 필수 검증 추가 */}
-        <PlotInput 
-          control={control} 
-          error={errors.plot} 
-          rules={{ required: '줄거리를 입력해주세요.' }} 
+        <img
+          src="/close_icon.svg"
+          alt="Close"
+          width={24}
+          height={24}
+          onClick={onClose}
+          style={{ cursor: "pointer" }}
         />
+      </div>
 
-        {/* KeywordInput에 키워드 상태와 변경 함수 전달 */}
-        <KeywordInput 
-          control={control} 
-          error={errors.newKeywords} 
-          newKeywords={newKeywords} // 키워드 상태 전달
-          onKeywordChange={handleKeywordChange} // 키워드 변경 함수 전달
-        />
+      {/* FormProvider로 감싸기 */}
+      <FormProvider {...methods}>
+        <form 
+          onSubmit={handleSubmit(onSubmit)} 
+          style={{ display: 'flex', flexDirection: 'column', gap: '18px', width: '100%' }}
+        >
+          {/* 제목 입력 */}
+          <TitleInput control={control} error={errors.title} showLabel={true} />
 
-        <CharactersInput 
-          control={control} 
-          error={errors.characters} 
-        />
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
+            <GenreInput control={control} error={errors.genre} />
+            <AgeInput control={control} error={errors.ageCategory} />
+          </div>
 
-        {/* 버튼은 기본적으로 disabled 상태 */}
-        <SettingSaveBtn 
-            disabled={!formIsValid || loading} 
-            onClick={handleSubmit(onSubmit)} 
+          <PlotInput control={control} error={errors.plot} />
+
+          <KeywordInput 
+            control={control} 
+            error={errors.newKeywords} 
+            onKeywordChange={handleKeywordChange} 
           />
-      </form>
-    </FormProvider>
+
+          <CharactersInput control={control} error={errors.characters} />
+
+          {/* 저장 버튼 */}
+          <SettingSaveBtn disabled={!formIsValid || loading} />
+        </form>
+      </FormProvider>
+    </div>
   );
 };
 

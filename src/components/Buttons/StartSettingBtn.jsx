@@ -26,11 +26,11 @@ const StartSettingBtn = ({onClick}) => {
     >
       {/* SVG Icon */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img src="/write_icon.svg" alt="Profile" width={24} height={24} />
+        <img src="/write_icon.svg" alt="Profile" width={20} height={20} />
       </div>
 
       {/* Text */}
-      <span>수정하기</span>
+      <span>작성하기</span>
     </button>
   );
 };

@@ -37,7 +37,7 @@ const AllManuSet = ({ userId, manuscriptId }) => {
         >
           모든 원고집
         </div>
-        <AddManuBtn userId={userId} manuscriptId={manuscriptId} />
+        <AddManuBtn />
       </div>
 
       {/* 원고집이 있다면 표시 */}

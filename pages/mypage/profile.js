@@ -1,7 +1,7 @@
 'use client';
 import { useState } from "react"; // react에서 useState를 올바르게 불러옵니다.
 
-const Profile = ({ userId, manuscriptId }) => { // 컴포넌트 이름 대문자로 수정
+const Profile = () => { // 컴포넌트 이름 대문자로 수정
 
     const [nickname, setNickname] = useState("");
     const [isFocused, setIsFocused] = useState(false);

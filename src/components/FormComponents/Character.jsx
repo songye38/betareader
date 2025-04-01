@@ -5,8 +5,8 @@ const Character = ({ control, index }) => {
   return (
     <div
       style={{
-        width: 903,
-        height: 114,
+        width: 'auto',
+        height: 'auto',
         padding: 20,
         background: '#2C2D34',
         borderRadius: 16,

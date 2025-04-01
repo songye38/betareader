@@ -15,7 +15,7 @@ const AgeInput = ({ control, error }) => {
     <div
       style={{
         width: 322,
-        height: 170,
+        height: 'auto',
         paddingLeft: 28,
         paddingRight: 28,
         paddingTop: 20,
@@ -33,9 +33,9 @@ const AgeInput = ({ control, error }) => {
         <div
           style={{
             color: 'white',
-            fontSize: 24,
+            fontSize: 20,
             fontFamily: 'Pretendard',
-            fontWeight: '700',
+            fontWeight: '600',
             lineHeight: '33.60px',
             wordWrap: 'break-word',
           }}

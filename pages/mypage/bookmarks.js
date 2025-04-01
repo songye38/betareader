@@ -1,6 +1,6 @@
 import BookmarkItem from "@/components/MyPage/BookmarkItem";
 
-const bookmarks = ({ userId, manuscriptId }) => {
+const bookmarks = () => {
 
   return (
     <div style={{'display':'flex',flexDirection:'column',gap:'40px',justifyContent: 'center',alignItems: 'center'}}>

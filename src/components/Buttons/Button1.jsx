@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button1 = ({ onClick, type }) => {
+const Button1 = ({ onClick, type, status }) => {
   // 기본 스타일 설정
   const baseStyle = {
     display: 'flex',
@@ -9,11 +9,13 @@ const Button1 = ({ onClick, type }) => {
     justifyContent: 'center',  // 수평 중앙 정렬
     alignItems: 'center',      // 수직 중앙 정렬
     gap: '0.25rem',
-    background: type === "default" ? "#5E6CFF" : "#2C2D34",
+    background: type === "default" 
+      ? (status === "false" ? "gray" : "#5E6CFF")  // status가 "false"일 때 gray
+      : "#2C2D34",
     border: 'none',
     borderRadius: '0.75rem', // 모서리 둥글기
-    cursor: 'pointer',
-    color: 'white',
+    cursor: status === 'false' ? 'pointer' : 'not-allowed', // disabled일 때 클릭 불가
+    color: status === 'false' ? '#A0A0A0' : 'white', // disabled일 때 텍스트 색상 변경
     fontFamily: 'Pretendard',
     fontWeight: '500',
     fontSize: '14px',
@@ -35,7 +37,11 @@ const Button1 = ({ onClick, type }) => {
   const iconSrc = type === 'down' ? '/plus_icon.svg' : '/write_icon.svg';
 
   return (
-    <button onClick={onClick} style={buttonStyle}>
+    <button 
+      onClick={status !== 'false' ? onClick : null}  // disabled일 경우 클릭 이벤트 비활성화
+      style={buttonStyle}
+      disabled={status === 'false'}  // disabled 상태일 때 버튼 비활성화
+    >
       {/* SVG Icon */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <img src={iconSrc} alt="Profile" width={24} height={24} />

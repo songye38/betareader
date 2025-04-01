@@ -1,197 +1,206 @@
-import {React,useState,useEffect} from 'react';
+import { React, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useTabStore from '@/store/useTabStore'; // Zustand 사용
 import StartSettingBtn from './Buttons/StartSettingBtn';
 import Button1 from './Buttons/Button1';
-import MyTooltip from './MyTooltip';
+import useManuscriptStore from '@/store/useManuscriptStore';
+import UpdateSettingBtn from './Buttons/UpdateSettingBtn';
 
-const StartComponent = () => {
-    const router = useRouter();
-    const { addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useTabStore();
+const StartComponent = ({ isSetup }) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const { addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId, selectedTab, tabs } = useTabStore();
+  const { manuscript } = useManuscriptStore();
 
-    //TODO 설정집을 추가하지 않았으면 원고를 쓸 수 없도록 버튼을 disabled 해야함
-    //TODO 한번 설정집을 썼으면 그 다음에는 '수정'으로 멘트를 바꿔야 함 처음에는 '작성'
+  useEffect(() => {
+    if (manuscript) {
+      setIsLoading(false);
+    }
+  }, [manuscript]);
 
+  // 설정집 추가
+  const handleButtonClick = () => {
+    if (tabs.some(tab => tab.id === 'settings')) return;
 
-    //설정집 추가와 관련된 함수
-    const handleButtonClick = () => {
-        // 이미 설정집 탭이 존재하는지 확인
-        const settingsTabExists = tabs.some(tab => tab.id === 'settings');
-
-        if (settingsTabExists) {
-            // 설정집 탭이 이미 존재하면 아무 것도 하지 않음
-            return;
-        }
-
-        // 설정집 탭 추가 로직
-        const newTab = {
-            type : 'setting',
-            no : 0,
-            id: 'settings',  // 설정집 탭 ID (고정)
-            label: '설정집',  // 탭 이름
-            EpisodeId: null,  // 원고와 관련 없음
-            selected: true,  // 새 탭은 기본으로 선택됨
-        };
-
-        addTab(newTab);  // Zustand 상태 업데이트로 새 탭 추가
-
-
-        router.push({
-            pathname: router.pathname, // 현재 경로 유지
-            query: { ...router.query, tab: newTab.id }, // tab 파라미터를 새로운 탭 ID로 업데이트
-          });
-
-        // 현재 탭이 'settings' 탭이 아닐 때만 설정
-        if (selectedTab !== 'settings') {
-            setSelectedTab(newTab.id,newTab.no);  // 새 탭 선택
-        }
+    const newTab = {
+      type: 'setting',
+      no: 0,
+      id: 'settings',
+      label: '설정집',
+      EpisodeId: null,
+      selected: true,
     };
 
-    // 원고지 추가와 관련된 함수 
-    const handleAddTab = () => {
-        const newTabId = Date.now(); // 고유한 ID 생성
-        const newEpisodeId = currentManuscriptId; // 현재 원고 ID 사용
-      
-        const newTab = {
-          type: 'episode',
-          id: newTabId,
-          no : newEpisodeId,
-          label: `${newEpisodeId}화`,
-          EpisodeId: newEpisodeId,
-          selected: true,
-        };
-      
-        addTab(newTab); // Zustand 상태 업데이트
-        
-        // 현재 탭이 새로 추가된 탭과 다를 경우에만 선택
-        if (newTabId !== selectedTab) {
-          setSelectedTab(newTabId,newEpisodeId); // 새 탭을 활성화
-        }
-      
-        // 탭을 추가한 후, URL을 해당 탭 ID로 업데이트
-        router.push({
-          pathname: router.pathname, // 현재 경로 유지
-          query: { ...router.query, tab: newTabId }, // tab 파라미터를 새로운 탭 ID로 업데이트
-        });
-      
-        incrementManuscriptId(); // 다음 원고 ID 증가
-      };
+    addTab(newTab);
+    router.push({ pathname: router.pathname, query: { ...router.query, tab: newTab.id } });
 
+    if (selectedTab !== 'settings') {
+      setSelectedTab(newTab.id, newTab.no);
+    }
+  };
 
-    return (
-        <div style={{
-            display: 'flex',
-            justifyContent: 'center', // 가로 중앙 정렬
-            alignItems: 'center',     // 세로 중앙 정렬
-            height: '100vh',          // 화면 전체 높이를 차지하도록
-            width: '100%'             // 화면 전체 너비를 차지하도록
-          }}>
-            <div style={{display:'flex',flexDirection:'column',gap:'52px',justifyContent: 'center',  alignItems: 'center'}}>
-                <div style={{display:'flex',flexDirection:'column',gap:'11px',justifyContent: 'center',  alignItems: 'center'}}>
-                    <img src="/book_icon.svg" alt="Profile" width={45} height={45} />
-                    <div style={{
-                        color: 'white',
-                        fontSize: 44,
-                        fontFamily: 'Pretendard',
-                        fontWeight: '600',
-                        lineHeight: '61.6px',
-                        wordWrap: 'break-word'
-                        }}>
-                    악역에게 꽃길을 깔아주려 합니다
-                    </div>
-                </div>
-                <div style={{display:'flex',flexDirection:'row',gap:'24px'}}>
-                    {/* 기본 설정집 수정 섹션 */}
-                    <div
-                    style={{
-                        width: 466,
-                        height: 88,
-                        paddingLeft: 28,
-                        paddingRight: 28,
-                        paddingTop: 24,
-                        paddingBottom: 24,
-                        background: '#1E1F24',
-                        borderRadius: 20,
-                        overflow: 'hidden',
-                        border: '1px #4A4E5B solid',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        display: 'inline-flex',
-                    }}
-                    >
-                    <div
-                        style={{
-                        flexDirection: 'column',
-                        justifyContent: 'flex-start',
-                        alignItems: 'flex-start',
-                        gap: 16,
-                        display: 'inline-flex',
-                        }}
-                    >
-                        <div
-                        style={{
-                            color: 'white',
-                            fontSize: 20,
-                            fontFamily: 'Pretendard',
-                            fontWeight: '600',
-                            lineHeight: '28px',
-                            wordWrap: 'break-word',
-                        }}
-                        >
-                        기본 설정집 작성
-                        </div>
-                    </div>
-                    <StartSettingBtn onClick={handleButtonClick} />
-                
-                    </div>
+  // 원고 추가
+  const handleAddTab = () => {
+    const newTabId = Date.now();
+    const newEpisodeId = currentManuscriptId;
 
-                    {/* 원고집 추가 섹션 */}
-                    <div
-                        style={{
-                        width: 466,
-                        height: 88,
-                        paddingLeft: 28,
-                        paddingRight: 28,
-                        paddingTop: 24,
-                        paddingBottom: 24,
-                        background: '#1E1F24',
-                        borderRadius: 20,
-                        overflow: 'hidden',
-                        border: '1px #4A4E5B solid',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        display: 'inline-flex',
-                        }}
-                    >
-                        <div
-                        style={{
-                            flexDirection: 'column',
-                            justifyContent: 'flex-start',
-                            alignItems: 'flex-start',
-                            gap: 16,
-                            display: 'inline-flex',
-                        }}
-                        >
-                        <div
-                            style={{
-                            color: 'white',
-                            fontSize: 20,
-                            fontFamily: 'Pretendard',
-                            fontWeight: '600',
-                            lineHeight: '28px',
-                            wordWrap: 'break-word',
-                            }}
-                        >
-                            새 원고지 작성
-                        </div>
-                        </div>
-                        <Button1 onClick={handleAddTab} type={'default'} />
-                    </div>
-                </div>
-                <MyTooltip />
-            </div>
+    const newTab = {
+      type: 'episode',
+      id: newTabId,
+      no: newEpisodeId,
+      label: `${newEpisodeId}화`,
+      EpisodeId: newEpisodeId,
+      selected: true,
+    };
+
+    addTab(newTab);
+    if (newTabId !== selectedTab) {
+      setSelectedTab(newTabId, newEpisodeId);
+    }
+
+    router.push({ pathname: router.pathname, query: { ...router.query, tab: newTabId } });
+    incrementManuscriptId();
+  };
+
+  return (
+    <div style={containerStyle}>
+      <div style={contentWrapperStyle}>
+        <div style={titleWrapperStyle}>
+          <img src="/book_icon.svg" alt="Profile" width={45} height={45} />
+          <div style={titleStyle}>{manuscript?.title || "로딩 중..."}</div>
         </div>
-      );
+
+        {/* 2x2 레이아웃 적용 */}
+        <div style={gridContainerStyle}>
+          {/* 설정집 수정 */}
+          <div style={cardStyle}>
+            <div style={cardContentStyle}>
+              <div style={cardTitleStyle}>설정집 수정</div>
+            </div>
+            <UpdateSettingBtn />
+          </div>
+
+          {/* 새 원고 추가 */}
+          <div style={cardStyle}>
+            <div style={cardContentStyle}>
+              <div style={cardTitleStyle}>새 원고 추가</div>
+            </div>
+            <StartSettingBtn onClick={handleButtonClick} />
+          </div>
+
+          {/* 최근 작업한 에피소드 보기 */}
+          <div style={cardStyle}>
+            <div style={cardContentStyle}>
+              <div style={cardTitleStyle}>최근 작업한 에피소드</div>
+            </div>
+            <StartSettingBtn onClick={handleButtonClick} />
+          </div>
+
+          {/* 새 원고지 작성 */}
+          <div style={{ ...cardStyle, background: isSetup ? '#5E6CFF' : '#2F3138' }}>
+            <div style={cardContentStyle}>
+              <div style={{ ...cardTitleStyle, color: isSetup ? 'white' : '#737373' }}>
+                새 원고지 작성
+              </div>
+            </div>
+            {isSetup ? (
+              <Button1 onClick={handleAddTab} type={'default'} status={isSetup} />
+            ) : (
+              <div style={disabledTextStyle}>기본 설정집을 먼저 작성해주세요</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default StartComponent;
+
+const containerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start', // 🔼 위쪽 정렬
+    height: '100vh',
+    width: '100%',
+    paddingTop: '10vh', // 🔼 원하는 만큼 조절 (예: 10vh)
+  };
+
+const contentWrapperStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '52px',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const titleWrapperStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '11px',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const titleStyle = {
+  color: 'white',
+  fontSize: 44,
+  fontFamily: 'Pretendard',
+  fontWeight: '600',
+  lineHeight: '61.6px',
+  wordWrap: 'break-word',
+};
+
+// 2x2 레이아웃 스타일
+const gridContainerStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+  width: '100%',
+};
+
+// 카드 스타일
+const cardStyle = {
+  flex: 1,
+  width: 'auto',
+  height: 88,
+  paddingLeft: 28,
+  paddingRight: 28,
+  paddingTop: 24,
+  paddingBottom: 24,
+  background: '#1E1F24',
+  borderRadius: 20,
+  overflow: 'hidden',
+  border: '1px #4A4E5B solid',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  display: 'flex',
+};
+
+// 카드 내부 컨텐츠 스타일
+const cardContentStyle = {
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  alignItems: 'flex-start',
+  gap: 16,
+  display: 'flex',
+};
+
+// 카드 제목 스타일
+const cardTitleStyle = {
+  color: 'white',
+  fontSize: 20,
+  fontFamily: 'Pretendard',
+  fontWeight: '600',
+  lineHeight: '28px',
+  wordWrap: 'break-word',
+};
+
+// 비활성 메시지 스타일
+const disabledTextStyle = {
+  color: '#737373',
+  fontSize: 14,
+  fontFamily: 'Pretendard',
+  fontWeight: '500',
+  lineHeight: '19.6px',
+};

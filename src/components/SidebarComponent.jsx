@@ -1,13 +1,25 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import { useRouter } from 'next/router';
 import Button1 from './Buttons/Button1';
 import useTabStore from '@/store/useTabStore'; // Zustand 스토어 사용
 import { MyTabs } from './MyTabs';
+import useManuscriptStore from '@/store/useManuscriptStore';
+import useAuthStore from '@/store/useAuthStore';
 
 const SidebarComponent = () => {
   const router = useRouter();
-  const { manuscripts, addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useTabStore();
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const { resetSelectedTab,addTab, setSelectedTab, currentManuscriptId, incrementManuscriptId,selectedTab,tabs } = useTabStore();
+  const {manuscript} = useManuscriptStore();
+  const {user} = useAuthStore();
+
+
+  useEffect(() => {
+    if (manuscript) {
+      setIsLoading(false); // manuscript가 로드되면 로딩 종료
+    }
+  }, [manuscript]);
 
   const handleAddTab = () => {
     const newTabId = Date.now(); // 고유한 ID 생성
@@ -36,6 +48,14 @@ const SidebarComponent = () => {
     });
   
     incrementManuscriptId(); // 다음 원고 ID 증가
+  };
+
+  const handleTitleClick = () => {
+    if (user?.id && manuscript?.id) {
+      console.log("제목이 눌림");
+      resetSelectedTab();
+      router.push(`/${user.id}/${manuscript.id}`); // 페이지 이동
+    }
   };
   
   useEffect(() => {
@@ -67,9 +87,12 @@ const SidebarComponent = () => {
           alignItems: 'flex-start',
         }}
       >
-        <div style={{ padding: '0rem 0.8125rem' }}>
-          <img src="/book_icon.svg" alt="Profile" width={24} height={24} />
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center',paddingBottom:'20px' }}>
+          <div style={{ padding: '0rem 0.8125rem' }}>
+            <img src="/book_icon.svg" alt="Profile" width={32} height={32} />
+          </div>
         </div>
+
         <div
           style={{
             width: '220px',
@@ -80,6 +103,7 @@ const SidebarComponent = () => {
           }}
         >
           <div
+            onClick={handleTitleClick} // ✅ 클릭 이벤트 추가
             style={{
               color: 'var(--neutral-white, #FFF)',
               fontFamily: 'Pretendard',
@@ -88,9 +112,10 @@ const SidebarComponent = () => {
               lineHeight: '140%',
               wordWrap: 'break-word',
               padding: '0rem 0.8125rem',
+              pointer : 'cursor',
             }}
           >
-            '웹소설1'의 원고집
+            {manuscript?.title || "로딩 중..."}
           </div>
           {/* {isSettingCreated && <SettingTab onClick={handleTabClick} selected={setSelectedTab} />} */}
 

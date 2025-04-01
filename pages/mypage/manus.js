@@ -1,6 +1,6 @@
 import MyManuItem from "@/components/MyPage/MyManuItem";
 
-const manus = ({ userId, manuscriptId }) => {
+const manus = () => {
 
   return (
     <div style={{'display':'flex',flexDirection:'column',gap:'40px',justifyContent: 'center',alignItems: 'center'}}>

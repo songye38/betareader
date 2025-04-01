@@ -13,7 +13,7 @@ const CharactersInput = ({ control, error }) => {
   return (
     <div style={{ width: '100%', padding: 24, background: '#1E1F24', borderRadius: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-        <div style={{ color: 'white', fontSize: 24, fontWeight: '700' }}>인물 목록</div>
+        <div style={{ color: 'white', fontSize: 20, fontWeight: '600' }}>인물 목록</div>
         <button
             type="button"
             onClick={() => append({ name: '', role: '', description: '' })}
