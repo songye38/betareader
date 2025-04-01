@@ -14,12 +14,14 @@ const SidebarComponent = () => {
   const {manuscript} = useManuscriptStore();
   const {user} = useAuthStore();
 
+
   console.log("manuscript",manuscript);
 
 
   useEffect(() => {
     if (manuscript) {
       setIsLoading(false); // manuscript가 로드되면 로딩 종료
+      console.log("use effect안의 manuscript",manuscript);
     }
   }, [manuscript]);
 
@@ -88,7 +90,7 @@ const SidebarComponent = () => {
           alignItems: 'flex-start',
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center',paddingBottom:'20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center',paddingBottom:'4px' }}>
           <div style={{ padding: '0rem 0.8125rem' }}>
             <img src="/book_icon.svg" alt="Profile" width={32} height={32} />
           </div>
@@ -117,6 +119,7 @@ const SidebarComponent = () => {
             }}
           >
             {manuscript?.title || "로딩 중..."}
+            
           </div>
           {/* {isSettingCreated && <SettingTab onClick={handleTabClick} selected={setSelectedTab} />} */}
 

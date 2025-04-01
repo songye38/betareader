@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
+import { getCharacterTypeDisplay } from '@/models/manuscriptSettingModel';
 
 const Character = ({ control, index }) => {
+  const [selectedCharacterType, setSelectedCharacterType] = useState('');
+
   return (
     <div
       style={{
@@ -42,79 +45,88 @@ const Character = ({ control, index }) => {
         <Controller
           name={`characters[${index}].role`}
           control={control}
-          render={({ field }) => (
-            <div style={{ display: 'flex', gap: 14 }}>
-              {['주연', '조연'].map((item) => (
-                <div
-                  key={item}
-                  onClick={() => {
-                    field.onChange(item); // 클릭 시 역할 변경
-                    // console.log('현재 선택된 역할:', item); // 선택된 역할을 콘솔에 찍기
-                  }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    cursor: 'pointer',
-                    flexDirection: 'row',
-                  }}
-                >
-                  {/* 원을 그리기 위한 클릭 가능한 div */}
+          render={({ field }) => {
+            // `useEffect`를 사용하여 서버에서 가져온 값으로 `selectedCharacterType`을 업데이트
+            useEffect(() => {
+              if (field.value) {
+                setSelectedCharacterType(getCharacterTypeDisplay(field.value)); // 서버에서 받아온 역할값을 바로 업데이트
+              }
+            }, [field.value]); // field.value가 변경될 때마다 실행
+
+            return (
+              <div style={{ display: 'flex', gap: 14 }}>
+                {['주연', '조연'].map((item) => (
                   <div
+                    key={item}
+                    onClick={() => {
+                      field.onChange(item); // 클릭 시 역할 변경
+                      setSelectedCharacterType(item); // 선택된 항목을 `selectedCharacterType`에 업데이트
+                    }}
                     style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: '50%',
-                      border: '1px solid #7B8091',
-                      backgroundColor: field.value === item ? '#8A94FF' : 'transparent', // 선택된 항목에 보라색 채우기
                       display: 'flex',
-                      justifyContent: 'center',
                       alignItems: 'center',
-                      position: 'relative', // 원 안에 SVG를 절대적으로 배치하기 위한 설정
+                      gap: 8,
+                      cursor: 'pointer',
+                      flexDirection: 'row',
                     }}
                   >
-                    {/* 선택된 항목에 체크 아이콘 표시 */}
-                    {field.value === item && (
-                      <div
-                        style={{
-                          width: '16px',
-                          height: '16px',
-                          borderRadius: '50%',
-                        }}
-                      />
-                    )}
-                    {/* SVG 아이콘을 원 안에 넣기 */}
-                    {field.value === item && (
-                      <svg
-                        width="10"
-                        height="8"
-                        viewBox="0 0 10 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        style={{
-                          position: 'absolute', // 절대 위치 지정
-                          width: '8px',
-                          height: '8px',
-                        }}
-                      >
-                        <path
-                          d="M0.714355 3.39258L3.79128 7.14258L8.71436 1.14258"
-                          stroke="#1E1F24"
-                          strokeWidth="1.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                    {/* 원을 그리기 위한 클릭 가능한 div */}
+                    <div
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: '50%',
+                        border: '1px solid #7B8091',
+                        backgroundColor: selectedCharacterType === item ? '#8A94FF' : 'transparent', // 선택된 항목에 보라색 채우기
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'relative', // 원 안에 SVG를 절대적으로 배치하기 위한 설정
+                      }}
+                    >
+                      {/* 선택된 항목에 체크 아이콘 표시 */}
+                      {selectedCharacterType === item && (
+                        <div
+                          style={{
+                            width: '16px',
+                            height: '16px',
+                            borderRadius: '50%',
+                          }}
                         />
-                      </svg>
-                    )}
-                  </div>
+                      )}
+                      {/* SVG 아이콘을 원 안에 넣기 */}
+                      {selectedCharacterType === item && (
+                        <svg
+                          width="10"
+                          height="8"
+                          viewBox="0 0 10 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          style={{
+                            position: 'absolute', // 절대 위치 지정
+                            width: '8px',
+                            height: '8px',
+                          }}
+                        >
+                          <path
+                            d="M0.714355 3.39258L3.79128 7.14258L8.71436 1.14258"
+                            stroke="#1E1F24"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </div>
 
-                  <div style={{ fontSize: 16, fontWeight: '500', color: 'white' }}>
-                    {item}
+                    <div style={{ fontSize: 16, fontWeight: '500', color: 'white' }}>
+                      {item}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            );
+          }}
         />
       </div>
 

@@ -44,8 +44,7 @@ const StartWritingBtn = ({manuTitle}) => {
       }
 
       setManuscript(newManuscript);
-      console.log("새로운 페이지로 이동할 때 이 값이 정해지나?",manuscriptId);
-      router.push(`/${user.id}/${manuscriptId}`); // 해당 경로로 이동
+      router.push(`/${user.id}/${data.id}`); // 해당 경로로 이동
 
     } catch (error) {
       console.error('원고집 생성 실패:', error);

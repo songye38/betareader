@@ -57,6 +57,14 @@ export function getAgeGroup(ageCategory) {
       default: return "UNKNOWN";
     }
   }
+
+  export function getCharacterTypeDisplay(characterType) {
+    switch (characterType) {
+      case "PROTAGONIST": return "주연";
+      case "SECONDARY": return "조연";
+      default: return "UNKNOWN";  // 기본값
+    }
+  }
   
   export function transformManuscriptSettingData(data) {
     return {

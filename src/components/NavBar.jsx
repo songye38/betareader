@@ -47,17 +47,17 @@ const Navbar = () => {
           alignItems: 'center', 
           gap: '8px', 
           display: 'flex', 
-          cursor: 'pointer',
           flex: 1, // 공간을 균등하게 차지하도록 설정
         }} 
-        onClick={() => router.push('/')}
       >
-        <img src="/final_logo.svg" alt="Profile" width={39} height={35} />
+        <img src="/final_logo.svg" alt="Profile" width={39} height={35}/>
         
         {/* 제목 */}
         <div 
+          onClick={() => router.push('/')}
           className={poppins.className} 
           style={{
+            cursor: 'pointer',
             color: 'white',
             fontSize: '20px',
             fontWeight: '800',

@@ -70,7 +70,7 @@ const useEpisodeForm = () => {
       type: getEpisodeType(data.dropdown),
     };
 
-    console.log("hook",requestData)
+    console.log("hook에서 최종 데이터 저장",requestData)
     try {
         const response = await saveEpisode(requestData);
       

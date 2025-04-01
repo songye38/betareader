@@ -13,6 +13,8 @@ export const fetchManuscriptsByUserId = async (userId) => {
     throw new Error('Manuscript fetch error: ' + error.message);
   }
 
+  console.log("서버에서 가져온 데이터",data);
+
   return data;
 };
 

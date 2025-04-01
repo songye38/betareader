@@ -1,8 +1,6 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
-import {getAgeCategoryDisplay} from './../../models/manuscriptSettingModel'
+import { getAgeCategoryDisplay } from './../../models/manuscriptSettingModel'
 
 const AgeInput = ({ control, error }) => {
   const ageCategories = [
@@ -61,10 +59,10 @@ const AgeInput = ({ control, error }) => {
         name="ageCategory"
         control={control}
         render={({ field }) => {
-          // field.value가 바뀔 때마다 selectedCategory를 업데이트
-          useEffect(() => {
+          // 서버에서 받아온 값으로 초기 선택 상태 설정
+          if (field.value && !selectedCategory) {
             setSelectedCategory(getAgeCategoryDisplay(field.value));
-          }, [field.value]); // field.value가 바뀔 때마다 실행
+          }
 
           return (
             <div

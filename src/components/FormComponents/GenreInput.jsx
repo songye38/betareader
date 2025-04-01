@@ -58,7 +58,9 @@ const GenreInput = ({ control, error }) => {
         render={({ field }) => {
           // field.value가 바뀔 때마다 selectedGenre를 업데이트
           useEffect(() => {
-            setSelectedGenre(getGenreDisplay(field.value));
+            if (field.value) {
+              setSelectedGenre(getGenreDisplay(field.value)); // react-hook-form의 field.value에 맞춰 selectedGenre 상태를 설정
+            }
           }, [field.value]); // field.value가 바뀔 때마다 실행
 
           return (
@@ -80,8 +82,10 @@ const GenreInput = ({ control, error }) => {
                   {/* 원을 그리기 위한 클릭 가능한 div */}
                   <div
                     onClick={() => {
-                      setSelectedGenre(genre); // 선택된 장르 상태 업데이트
-                      field.onChange(genre); // react-hook-form 상태 업데이트
+                      // 선택된 장르 상태를 업데이트
+                      setSelectedGenre(genre); 
+                      // react-hook-form의 상태도 바로 업데이트
+                      field.onChange(genre); 
                     }}
                     style={{
                       width: 20,
@@ -111,7 +115,14 @@ const GenreInput = ({ control, error }) => {
                       </div>
                     )}
                   </div>
-                  <div style={{ color: 'white', fontSize: 16, fontFamily: 'Pretendard', fontWeight: '500', lineHeight: '22.40px', textAlign: 'center' }}>
+                  <div style={{
+                    color: 'white',
+                    fontSize: 16,
+                    fontFamily: 'Pretendard',
+                    fontWeight: '500',
+                    lineHeight: '22.40px',
+                    textAlign: 'center'
+                  }}>
                     {genre}
                   </div>
                 </div>
