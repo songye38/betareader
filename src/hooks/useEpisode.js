@@ -4,12 +4,16 @@ import { toast, Slide } from 'react-toastify';
 import { saveEpisode } from '@/models/episodeModel'; 
 import { useRouter } from 'next/router';
 import useTabStore from '@/store/useTabStore';
+import { getRecentEpisodes } from '@/models/episodeModel';
+import useAuthStore from '@/store/useAuthStore';
 
 const useEpisodeForm = () => {
 
     const router = useRouter();
     const { manuscriptId, tab } = router.query;
     const { selectedTab } = useTabStore();
+    const [recentEpisodes, setRecentEpisodes] = useState([]);  // 최근 에피소드 상태
+    const {user} = useAuthStore();
 
     const tabId = tab; // 혹은 바로 tab을 사용해도 됩니다.
 
@@ -73,6 +77,8 @@ const useEpisodeForm = () => {
     console.log("hook에서 최종 데이터 저장",requestData)
     try {
         const response = await saveEpisode(requestData);
+
+        console.log("저장한 후 response",response);
       
         if (!response || response.error) {
           console.error("❌ API 실패 상세 정보:", response);
@@ -99,6 +105,20 @@ const useEpisodeForm = () => {
         toast.error("에피소드 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
       }
     }      
+
+    // 최근 에피소드 5개 가져오기
+  const fetchRecentEpisodes = async () => {
+    const userId = user.id;  
+    console.log("userid",userId);
+    try {
+      const episodes = await getRecentEpisodes(userId);
+      setRecentEpisodes(episodes);  // 가져온 에피소드 데이터를 상태에 저장
+      console.log("가장 최근 수정된 에피소드들:", episodes);
+    } catch (error) {
+      console.error("❌ 에피소드 가져오기 실패:", error);
+      toast.error("최근 에피소드를 불러오는 데 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   // 자동 저장을 위한 debounce
   useEffect(() => {
@@ -140,6 +160,8 @@ const useEpisodeForm = () => {
     handleDropdownChange,
     onSubmit,
     setValue,
+    recentEpisodes,
+    fetchRecentEpisodes
   };
 };
 

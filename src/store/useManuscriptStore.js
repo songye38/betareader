@@ -15,6 +15,8 @@ const useManuscriptStore = create((set) => ({
     manuscript: data,
   }),
 
+  allEpisodes : [],
+
   // 원고 설정
   episode: {
     manuscript_id : null,
