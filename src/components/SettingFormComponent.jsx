@@ -21,12 +21,14 @@ const SettingFormComponent = ({ onClose }) => {
     onSubmit,
     handleKeywordChange,
     loading,
+    getValues,
   } = useManuscriptSetting();
 
   const title = watch('title');
   const genre = watch('genre');
   const ageCategory = watch('ageCategory');
   const plot = watch('plot');
+
 
   // 유효성 검사
   const formIsValid = title && genre?.length > 0 && ageCategory && plot && !errors.title && !errors.genre && !errors.ageCategory && !errors.plot;
@@ -90,8 +92,18 @@ const SettingFormComponent = ({ onClose }) => {
           <TitleInput control={control} error={errors.title} showLabel={true} />
 
           <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
-            <GenreInput control={control} error={errors.genre} />
-            <AgeInput control={control} error={errors.ageCategory} />
+            <GenreInput 
+              control={control} 
+              error={errors.genre} 
+              getValues={getValues} // getValues 전달
+              loading = {loading}
+            />
+            <AgeInput 
+              control={control} 
+              error={errors.ageCategory} 
+              getValues={getValues} // getValues 전달
+              loading = {loading}
+            />
           </div>
 
           <PlotInput control={control} error={errors.plot} />
@@ -100,9 +112,16 @@ const SettingFormComponent = ({ onClose }) => {
             control={control} 
             error={errors.newKeywords} 
             onKeywordChange={handleKeywordChange} 
+            getValues={getValues} // getValues 전달
+            loading = {loading}
           />
 
-          <CharactersInput control={control} error={errors.characters} />
+          <CharactersInput 
+            control={control} 
+            error={errors.characters} 
+            getValues={getValues} // getValues 전달
+            loading = {loading}
+          />
 
           {/* 저장 버튼 */}
           <SettingSaveBtn disabled={!formIsValid || loading} />

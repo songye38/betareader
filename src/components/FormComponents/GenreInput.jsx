@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { getGenreDisplay } from '@/models/manuscriptSettingModel';
 
-const GenreInput = ({ control, error }) => {
+const GenreInput = ({ control, error ,getValues, loading}) => {
   const genres = [
     '로맨스', 'BL', '로맨스 판타지', 'GL', '판타지', '공포',
     '현대 판타지', '무협', '추리', '드라마'
@@ -12,6 +12,13 @@ const GenreInput = ({ control, error }) => {
 
   // 선택된 장르 상태 관리
   const [selectedGenre, setSelectedGenre] = useState('');
+
+  useEffect(() => {
+    if (!loading) {
+      const genreValue = getValues("genre");
+      setSelectedGenre(getGenreDisplay(genreValue)); // react-hook-form의 field.value에 맞춰 selectedGenre 상태를 설정
+    }
+  }, [loading, getValues]); // loading이 변경될 때마다 실행
 
   return (
     <div style={{
@@ -55,81 +62,72 @@ const GenreInput = ({ control, error }) => {
       <Controller
         name="genre"
         control={control}
-        render={({ field }) => {
-          // field.value가 바뀔 때마다 selectedGenre를 업데이트
-          useEffect(() => {
-            if (field.value) {
-              setSelectedGenre(getGenreDisplay(field.value)); // react-hook-form의 field.value에 맞춰 selectedGenre 상태를 설정
-            }
-          }, [field.value]); // field.value가 바뀔 때마다 실행
-
-          return (
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              gap: 20
-            }}>
-              {genres.map((genre, index) => (
-                <div key={index} style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}>
-                  {/* 원을 그리기 위한 클릭 가능한 div */}
-                  <div
-                    onClick={() => {
-                      // 선택된 장르 상태를 업데이트
-                      setSelectedGenre(genre); 
-                      // react-hook-form의 상태도 바로 업데이트
-                      field.onChange(genre); 
-                    }}
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: '50%',
-                      border: '1px solid #7B8091',
-                      backgroundColor: selectedGenre === genre ? '#8A94FF' : 'transparent', // 선택된 장르는 색상 변경
-                      display: 'flex',
-                      justifyContent: 'center',
+        render={({ field }) => (
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            gap: 20
+          }}>
+            {genres.map((genre, index) => (
+              <div key={index} style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                {/* 원을 그리기 위한 클릭 가능한 div */}
+                <div
+                  onClick={() => {
+                    // 선택된 장르 상태를 업데이트
+                    setSelectedGenre(genre); 
+                    // react-hook-form의 상태도 바로 업데이트
+                    field.onChange(genre); 
+                  }}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: '50%',
+                    border: '1px solid #7B8091',
+                    backgroundColor: selectedGenre === genre ? '#8A94FF' : 'transparent', // 선택된 장르는 색상 변경
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    position: 'relative',
+                  }}
+                >
+                  {/* 선택된 상태에서 SVG를 표시 */}
+                  {selectedGenre === genre && (
+                    <div style={{
+                      width: '16px', 
+                      height: '16px', 
+                      display: 'flex', 
+                      justifyContent: 'center', 
                       alignItems: 'center',
-                      cursor: 'pointer',
-                      position: 'relative',
-                    }}
-                  >
-                    {/* 선택된 상태에서 SVG를 표시 */}
-                    {selectedGenre === genre && (
-                      <div style={{
-                        width: '16px', 
-                        height: '16px', 
-                        display: 'flex', 
-                        justifyContent: 'center', 
-                        alignItems: 'center',
-                      }}>
-                        <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M0.714355 3.39258L3.79128 7.14258L8.71436 1.14258" stroke="#1E1F24" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  <div style={{
-                    color: 'white',
-                    fontSize: 16,
-                    fontFamily: 'Pretendard',
-                    fontWeight: '500',
-                    lineHeight: '22.40px',
-                    textAlign: 'center'
-                  }}>
-                    {genre}
-                  </div>
+                    }}>
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.714355 3.39258L3.79128 7.14258L8.71436 1.14258" stroke="#1E1F24" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
-          );
-        }}
+                <div style={{
+                  color: 'white',
+                  fontSize: 16,
+                  fontFamily: 'Pretendard',
+                  fontWeight: '500',
+                  lineHeight: '22.40px',
+                  textAlign: 'center'
+                }}>
+                  {genre}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       />
 
       {/* 에러 메시지 */}

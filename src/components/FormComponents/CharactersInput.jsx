@@ -4,7 +4,7 @@ import React from 'react';
 import { useFieldArray } from 'react-hook-form';
 import Character from './Character';
 
-const CharactersInput = ({ control, error }) => {
+const CharactersInput = ({ control, error,getValues,loading }) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'characters',
@@ -50,7 +50,7 @@ const CharactersInput = ({ control, error }) => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {fields.map((field, index) => (
           <div key={field.id} style={{ position: 'relative' }}>
-            <Character control={control} index={index} />
+            <Character control={control} index={index} getValues = {getValues} loading = {loading} />
             <button
               type="button"
               onClick={() => remove(index)}

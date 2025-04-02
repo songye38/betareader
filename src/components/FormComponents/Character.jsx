@@ -2,8 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { getCharacterTypeDisplay } from '@/models/manuscriptSettingModel';
 
-const Character = ({ control, index }) => {
+const Character = ({ control, index,getValues, loading }) => {
   const [selectedCharacterType, setSelectedCharacterType] = useState('');
+
+    // useEffect(() => {
+    //   if (!loading) {
+    //     const characterValue = getValues("characters");
+    //     setSelectedCharacterType(getCharacterTypeDisplay((characterValue));
+    //   }
+    // }, [loading, getValues]); // loading이 변경될 때마다 실행
 
   return (
     <div

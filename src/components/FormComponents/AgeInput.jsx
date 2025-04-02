@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { getAgeCategoryDisplay } from './../../models/manuscriptSettingModel'
 
-const AgeInput = ({ control, error }) => {
+const AgeInput = ({ control, error,getValues, loading }) => {
   const ageCategories = [
     '전체이용가', '15세이상이용가', '19세이상이용가'
   ];
 
   // 선택된 카테고리 상태 관리
   const [selectedCategory, setSelectedCategory] = useState('');
+
+    useEffect(() => {
+      if (!loading) {
+        const ageValue = getValues("ageCategory");
+        setSelectedCategory(getAgeCategoryDisplay(ageValue)); // react-hook-form의 field.value에 맞춰 selectedGenre 상태를 설정
+      }
+    }, [loading, getValues]); // loading이 변경될 때마다 실행
+    
 
   return (
     <div
@@ -59,10 +67,6 @@ const AgeInput = ({ control, error }) => {
         name="ageCategory"
         control={control}
         render={({ field }) => {
-          // 서버에서 받아온 값으로 초기 선택 상태 설정
-          if (field.value && !selectedCategory) {
-            setSelectedCategory(getAgeCategoryDisplay(field.value));
-          }
 
           return (
             <div

@@ -25,7 +25,7 @@ const useManuscriptSetting = () => {
     mode: 'onChange',
   });
 
-  const { control, handleSubmit, formState: { errors }, watch, setValue } = methods;
+  const { control, handleSubmit, formState: { errors }, watch, setValue ,getValues} = methods;
   const [loading, setLoading] = useState(false);
   const [initialData, setInitialData] = useState(null); // 초기 데이터 상태 추가
 
@@ -124,6 +124,7 @@ const useManuscriptSetting = () => {
     watch,
     setValue,
     onSubmit,
+    getValues,
     handleKeywordChange,
     loading,
     initialData,  // 초기 데이터 상태 반환
