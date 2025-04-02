@@ -20,6 +20,13 @@ const useTabStore = create((set) => ({
       };
     }),
 
+    resetTabs: () =>
+      set(() => ({
+        tabs: [],
+        selectedTab: { id: null, no: null },
+        currentManuscriptId: 1, // 🆕 currentManuscriptId도 초기화
+      })),
+
   setSelectedTab: (tabId, tabNo) =>
     set((state) => {
       if (tabId === null) {

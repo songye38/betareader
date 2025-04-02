@@ -1,9 +1,7 @@
-import { useRouter } from "next/router";
+
 import SidebarComponent from "@/components/SidebarComponent"; // 사이드바
 import useStore from '@/store/useTabStore'; // Zustand 스토어 사용
-import useAuthStore from '@/store/useAuthStore'; // Zustand의 AuthStore
 import StartComponent from "@/components/StartComponent"; // 시작 페이지
-import SettingFormComponent from "@/components/SettingFormComponent"; // 설정 폼 컴포넌트
 import EpisodeFormComponent from "@/components/EpisodeFormComponent"; // 에피소드 폼 컴포넌트
 import { fetchManuscriptById } from "@/models/manuscriptModel"; // 원고 가져오는 함수
 import { useState, useEffect } from "react";
@@ -13,6 +11,15 @@ const UserPage = () => {
   const { selectedTab } = useStore((state) => state); // Zustand에서 selectedTab 가져오기
   const [isSetup, setIsSetup] = useState(false); // 원고 데이터의 isSetup 상태를 저장
   const { manuscript,setManuscript } = useManuscriptStore(); 
+  const {resetTabs} = useStore();
+
+
+
+// 각 EpisodeFormComponent에 개별적인 상태 관리
+const [episodeData, setEpisodeData] = useState(null);
+
+
+
 
   // manuscript.id가 있을 때 원고 데이터를 가져오는 함수
   useEffect(() => {
@@ -33,6 +40,13 @@ const UserPage = () => {
 
     fetchManuscriptData();
   }, [manuscript.id,selectedTab]); 
+
+  // 페이지 나갈 때 탭 초기화
+  useEffect(() => {
+    return () => {
+      resetTabs();
+    };
+  }, []);
 
 
 

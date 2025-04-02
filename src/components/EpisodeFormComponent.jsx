@@ -1,20 +1,16 @@
-import { useRouter } from 'next/router';
 import { FormProvider } from 'react-hook-form';
 import TitleInput from './FormComponents/TitleInput';
 import EpisodeInput from './FormComponents/EpisodeInput';
 import DropdownInput from './FormComponents/DropdownInput';
 import CheckCommentBtn from './Buttons/CheckCommentBtn';
-import SaveEpiBtn from './Buttons/SaveEpiBtn';
 import useTabStore from '@/store/useTabStore';
 import useEpisodeForm from '@/hooks/useEpisode';
+import { useEffect, useState } from 'react';
 
 const EpisodeFormComponent = () => {
-  const {tabs,selectedTab} = useTabStore();
-  const router = useRouter();
+  const { tabs, selectedTab } = useTabStore();
   const selectedTabFromStore = tabs.find((tab) => tab.id === selectedTab?.id) || null;
-  console.log("tabs",tabs);
-  console.log("selectedTab",selectedTab);
-
+  
   const {
     methods,
     control,
@@ -25,13 +21,30 @@ const EpisodeFormComponent = () => {
     setValue,
   } = useEpisodeForm();
 
+  // 로컬 상태를 생성하여 각 탭별로 데이터를 개별 관리
+  const [episodeState, setEpisodeState] = useState({ title: '', episode: '', dropdown: '' });
+
+  // 탭이 변경될 때 개별 상태를 불러오기
+  useEffect(() => {
+    if (selectedTabFromStore) {
+      setEpisodeState({
+        title: selectedTabFromStore?.data?.title || '',
+        episode: selectedTabFromStore?.data?.episode || '',
+        dropdown: selectedTabFromStore?.data?.dropdown || '',
+      });
+
+      // react-hook-form의 필드 값도 업데이트
+      setValue('title', selectedTabFromStore?.data?.title || '');
+      setValue('episode', selectedTabFromStore?.data?.episode || '');
+      setValue('dropdown', selectedTabFromStore?.data?.dropdown || '');
+    }
+  }, [selectedTabFromStore, setValue]);
 
   // 드롭다운 값 변경 핸들러
   const handleDropdownChange = (value) => {
-    // handleFormChange('dropdown', value);
+    setEpisodeState((prev) => ({ ...prev, dropdown: value }));
     setValue('dropdown', value);
   };
-
 
   // 폼 유효성 검사
   const titleValue = watch('title');
@@ -77,8 +90,7 @@ const EpisodeFormComponent = () => {
               gap: '20px',
             }}
           >
-            <SaveEpiBtn disabled={!isFormValid} onClick={handleSubmit(onSubmit)}  />
-            <CheckCommentBtn disabled={!isFormValid} onClick={handleSubmit(onSubmit)}  />
+            <CheckCommentBtn disabled={!isFormValid} onClick={handleSubmit(onSubmit)} />
           </div>
         </form>
       </FormProvider>

@@ -85,7 +85,7 @@ const StartComponent = ({ isSetup }) => {
             <div style={cardContentStyle}>
               <div style={cardTitleStyle}>새 원고 추가</div>
             </div>
-            <StartSettingBtn onClick={handleButtonClick} />
+            <Button1 onClick={handleAddTab} type={'default'} status={isSetup} />
           </div>
 
           {/* 최근 작업한 에피소드 보기 */}
