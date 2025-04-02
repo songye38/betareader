@@ -49,8 +49,6 @@ const [episodeData, setEpisodeData] = useState(null);
   }, []);
 
 
-
-
   // 조건부 렌더링을 위한 컴포넌트
   const renderContent = () => {
     if (selectedTab && selectedTab.id) {

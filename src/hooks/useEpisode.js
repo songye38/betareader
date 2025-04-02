@@ -11,7 +11,6 @@ const useEpisodeForm = () => {
 
     const router = useRouter();
     const { manuscriptId, tab } = router.query;
-    const { selectedTab } = useTabStore();
     const [recentEpisodes, setRecentEpisodes] = useState([]);  // 최근 에피소드 상태
     const {user} = useAuthStore();
 
@@ -25,7 +24,6 @@ const useEpisodeForm = () => {
     defaultValues: {
       title: '',
       episode: '',
-      dropdown: '', 
     },
     mode: 'onChange',
   });
@@ -34,28 +32,10 @@ const useEpisodeForm = () => {
   
   const titleValue = watch('title');
   const episodeValue = watch('episode');
-  const dropdownValue = watch('dropdown');
   
-  const isFormValid = titleValue && episodeValue && dropdownValue !== '';
+  const isFormValid = titleValue && episodeValue !== '';
   
-  // 드롭다운 값 변경 핸들러
-  const handleDropdownChange = (value) => {
-    setValue('dropdown', value);
-  };
-  
-  function getEpisodeType(type) {
-    switch (type) {
-      case "프롤로그":
-        return "PROLOGUE";
-      case "에피소드":
-        return "EPISODE";
-      case "에필로그":
-        return "EPILOGUE";
-      default:
-        return "EPISODE";
-    }
-  }
-  
+
   // 폼 제출 함수
   const onSubmit = async (data) => {
 
@@ -66,12 +46,11 @@ const useEpisodeForm = () => {
 
     // 서버에 보낼 데이터
     const requestData = {
-      tabNo : selectedTab.no,
+      tabNo : data.tabNo,
       manuscriptId : manuscriptId,
       tabId : tabId,
       title: data.title,
       content: data.episode,
-      type: getEpisodeType(data.dropdown),
     };
 
     console.log("hook에서 최종 데이터 저장",requestData)
@@ -129,7 +108,6 @@ const useEpisodeForm = () => {
         localStorage.setItem('episodeForm', JSON.stringify({
           title: titleValue,
           episode: episodeValue,
-          dropdown: dropdownValue,
         }));
 
         toast.info("자동 저장되었습니다.", {
@@ -148,7 +126,7 @@ const useEpisodeForm = () => {
     }, 2000);
 
     return () => clearTimeout(timeout); 
-  }, [titleValue, episodeValue,dropdownValue ]);
+  }, [titleValue, episodeValue ]);
 
   return {
     methods,
@@ -157,7 +135,6 @@ const useEpisodeForm = () => {
     errors,
     watch,
     isFormValid,
-    handleDropdownChange,
     onSubmit,
     setValue,
     recentEpisodes,

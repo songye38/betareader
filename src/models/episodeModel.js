@@ -51,7 +51,7 @@ export const getRecentEpisodes = async (userId) => {
         throw error;
       }
   
-      console.log("가장 최근 수정된 에피소드들:", data);
+      console.log("episode model 가장 최근 수정된 에피소드들:", data);
       return data;  // 데이터 반환
     } catch (error) {
       console.error("❌ 에피소드 불러오기 실패:", error);
