@@ -45,7 +45,7 @@ const useManuscriptSetting = () => {
         .from('manuscript_setting')
         .select('*')
         .eq('manuscript_id', manuscriptId) // manuscriptId로 필터링
-        .maybeSingle(); // 하나의 데이터만 가져옴
+        .single(); // 하나의 데이터만 가져옴
 
       if (error) {
         throw new Error(error.message);
@@ -83,38 +83,57 @@ const useManuscriptSetting = () => {
     console.log("키워드 업데이트:", watch("newKeywords")); 
 }
 
-  const onSubmit = async (data) => {
-    console.log("onsubmit 함수를 호출합니다.");
+const onSubmit = async (data) => {
+    console.log("📌 onSubmit 호출됨!");
+  
     if (!manuscriptId) {
       toast.error('manuscriptId를 찾을 수 없습니다.', { position: 'bottom-center', autoClose: 1200, theme: 'dark', transition: Slide });
       return;
     }
-
-    // manuscriptId를 requestData에 추가
-    const requestData = { ...data, manuscript_id: manuscriptId };  // manuscript_id를 먼저 추가
-
-    // 데이터를 변환 후 보내기
-    const transformedData = transformManuscriptSettingData(requestData); // 변환 함수 호출
-
-    console.log("📌 최종 설정 data", requestData);
-
+  
     try {
       setLoading(true);
-      const { error } = await supabase.from('manuscript_setting').insert([transformedData]);
-
+  
+      // 기존 데이터 가져오기 (manuscript_id 기준)
+      const { data: existingData, error: fetchError } = await supabase
+        .from('manuscript_setting')
+        .select('*')
+        .eq('manuscript_id', manuscriptId)
+        .single();
+  
+      if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116: No rows found
+        throw new Error(`데이터 조회 오류: ${fetchError.message}`);
+      }
+  
+      // 기존 값과 새로운 데이터를 병합 (null 값 덮어쓰기 방지)
+      const updatedData = {
+        ...existingData, // 기존 데이터 유지
+        ...data, // 새로운 데이터 덮어쓰기
+        manuscript_id: manuscriptId, // manuscript_id 유지
+      };
+  
+      // 변환 함수 적용
+      const transformedData = transformManuscriptSettingData(updatedData);
+  
+      // 데이터 업데이트
+      const { error } = await supabase
+        .from('manuscript_setting')
+        .upsert([transformedData], { onConflict: ['manuscript_id'] }); // 중복 키 기준 업데이트
+  
       if (error) {
-        console.error("❌ 저장 실패:", error.message);
+        console.error("❌ 설정 저장 실패:", error.message);
         toast.error('설정 저장에 실패했습니다.', { position: 'bottom-center', autoClose: 1200, theme: 'dark', transition: Slide });
       } else {
-        toast.success('설정이 성공적으로 저장되었습니다!', { position: 'bottom-center', autoClose: 1200, theme: 'dark', transition: Slide });
+        toast.success('✅ 설정이 성공적으로 저장되었습니다!', { position: 'bottom-center', autoClose: 1200, theme: 'dark', transition: Slide });
       }
     } catch (error) {
-      console.error('❌ 요청 에러:', error);
+      console.error('❌ 요청 중 오류:', error);
       toast.error('저장 중 오류가 발생했습니다.', { position: 'bottom-center', autoClose: 1200, theme: 'dark', transition: Slide });
     } finally {
       setLoading(false);
     }
   };
+  
 
   return {
     methods,

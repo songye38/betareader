@@ -31,7 +31,7 @@ const SettingSaveBtn = ({ disabled }) => {
           wordWrap: 'break-word',
         }}
       >
-        입력 내용 저장
+        입력 내용 수정
       </div>
     </button>
   );
