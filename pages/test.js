@@ -7,14 +7,15 @@ import MainBtnSet from '@/components/WritingPageComponents/MainBtnSet';
 import AddIdeaModal from '@/components/Modal/AddIdeaModal';
 import AddCharacterModal from '@/components/Modal/AddEnvironmentModal';
 import AddEnvironmentModal from '@/components/Modal/AddCharacterModal';
-import EnvironmentSet from '@/components/WritingPageComponents/EnvironmentSet';
 import IdeaSlider from '@/components/WritingPageComponents/IdeaSlider';
 import CharacterSlider from '@/components/WritingPageComponents/CharacterSlider';
+import EnvironmentSlider from '@/components/WritingPageComponents/EnvironmentSlider';
 
 const WritingFloatingMenu = () => {
   const [activeTitle, setActiveTitle] = useState('전체 에피소드'); // 기본 선택값
   const [isCharacterSliderOpen, setIsCharacterSliderOpen] = useState(false);
   const [isIdeaSliderOpen, setIsIdeaSliderOpen] = useState(false);
+  const [isEnvironmentSliderOpen, setIsEnvironmentSliderOpen] = useState(false);
 
   const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크'];
 
@@ -54,6 +55,12 @@ const WritingFloatingMenu = () => {
                   } else {
                     setIsCharacterSliderOpen(false);
                   }
+                if (title === '세계관 노트') {
+                setIsEnvironmentSliderOpen(true);
+                } else {
+                setIsEnvironmentSliderOpen(false);
+                }
+                  
             }}
           />
             ))}
@@ -64,8 +71,8 @@ const WritingFloatingMenu = () => {
         <RecentEpiSet_test />
         <IdeaSlider isVisible={isIdeaSliderOpen} />
         <CharacterSlider isVisible={isCharacterSliderOpen} />
+        <EnvironmentSlider isVisible={isEnvironmentSliderOpen} />
         <MainBtnSet />
-        <EnvironmentSet />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>
             <AddIdeaModal />
             <AddEnvironmentModal />
