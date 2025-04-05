@@ -16,8 +16,57 @@ const IdeaItem = ({ idea }) => {
         gap: 12,
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
         fontFamily: 'Pretendard',
+        position: 'relative', // for positioning the buttons
       }}
     >
+      {/* 수정, 삭제 버튼 */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+          display: 'flex',
+          gap: '8px',
+        }}
+      >
+        <button
+          style={{
+            padding: '6px 10px',
+            fontSize: 12,
+            fontWeight: 500,
+            color: '#FFFFFF',
+            backgroundColor: '#2C2D34',
+            border: '1px solid #3A3D46',
+            borderRadius: 6,
+            fontFamily: 'Pretendard',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease-in-out',
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
+          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
+        >
+          수정
+        </button>
+        <button
+          style={{
+            padding: '6px 10px',
+            fontSize: 12,
+            fontWeight: 500,
+            color: '#FFFFFF',
+            backgroundColor: '#2C2D34',
+            border: '1px solid #3A3D46',
+            borderRadius: 6,
+            fontFamily: 'Pretendard',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease-in-out',
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
+          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
+        >
+          삭제
+        </button>
+      </div>
+
       {/* 제목 */}
       <div style={{ fontSize: 18, fontWeight: 600 }}>{title}</div>
 
