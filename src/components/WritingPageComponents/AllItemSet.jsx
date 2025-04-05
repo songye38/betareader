@@ -88,7 +88,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
         bottom: isVisible ? 0 : '-100%',
         left: 0,
         right: 0,
-        height: '80vh',
+        height: '100vh',
         backgroundColor: '#1F1F23', // 어두운 배경색
         color: '#FFFFFF',           // 밝은 텍스트
         transition: 'bottom 0.3s ease-in-out',
@@ -115,7 +115,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               style={{
-                padding: 8,
+                padding: 14,
                 borderBottom: activeTab === tab.id ? '3px solid white' : 'none',
                 color: activeTab === tab.id ? '#FFFFFF' : '#979595',
                 fontSize: 16,
@@ -130,11 +130,12 @@ const AllItemSet = ({ isVisible, onClose }) => {
         <button
           onClick={onClose}
           style={{
-            fontSize: 32,
+            fontSize: 28,
             background: 'none',
             border: 'none',
             color: '#FFFFFF',
             cursor: 'pointer',
+            padding:'8px',
           }}
         >
           ✕
