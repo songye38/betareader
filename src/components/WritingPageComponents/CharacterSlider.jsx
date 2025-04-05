@@ -62,22 +62,53 @@ const CharacterSlider = ({ isVisible, onClose }) => {
         borderRight: '1px solid #3A3D46',
         transition: 'left 0.3s ease-in-out',
         zIndex: 1000,
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
+      {/* 헤더 + 버튼 */}
       <div
         style={{
-          fontSize: 20,
-          fontWeight: 600,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingBottom: 16,
           marginBottom: 20,
-          fontFamily: 'Pretendard',
           borderBottom: '1px solid #3A3D46',
-          paddingBottom: 16, // 선과 텍스트 사이 여백
-          marginBottom: 20,  // 리스트와의 간격 유지
         }}
       >
-        캐릭터 카드
+        <div
+          style={{
+            fontSize: 20,
+            fontWeight: 600,
+            fontFamily: 'Pretendard',
+          }}
+        >
+          캐릭터 카드
+        </div>
+
+        <button
+          style={{
+            padding: '6px 10px',
+            fontSize: 12,
+            fontWeight: 500,
+            color: '#FFFFFF',
+            backgroundColor: '#2C2D34',
+            border: '1px solid #3A3D46',
+            borderRadius: 6,
+            fontFamily: 'Pretendard',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease-in-out',
+          }}
+          onClick={() => console.log('캐릭터 카드 추가하기 클릭')}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#3A3B42'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2C2D34'}
+        >
+          캐릭터 카드 추가하기
+        </button>
       </div>
 
+      {/* 캐릭터 카드 리스트 */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {dummyCharacters.map((char, index) => (
           <CharacterItem key={index} character={char} />

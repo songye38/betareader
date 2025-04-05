@@ -52,22 +52,47 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
         flexDirection: 'column',
       }}
     >
-      {/* 헤더 */}
+      {/* 헤더 + 버튼 */}
       <div
         style={{
-          fontSize: 20,
-          fontWeight: 600,
-          fontFamily: 'Pretendard',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '20px 20px 16px 20px',
           borderBottom: '1px solid #3A3D46',
-          paddingBottom: 16,
           marginBottom: 20,
-          color: 'white',
-          paddingLeft: 20,
-          paddingRight: 20,
-          paddingTop: 20,
         }}
       >
-        전체 원고 목록
+        <div
+          style={{
+            fontSize: 20,
+            fontWeight: 600,
+            fontFamily: 'Pretendard',
+            color: 'white',
+          }}
+        >
+          전체 원고 목록
+        </div>
+
+        <button
+          style={{
+            padding: '6px 10px',
+            fontSize: 12,
+            fontWeight: 500,
+            color: '#FFFFFF',
+            backgroundColor: '#2C2D34',
+            border: '1px solid #3A3D46',
+            borderRadius: 6,
+            fontFamily: 'Pretendard',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease-in-out',
+          }}
+          onClick={() => console.log('원고 추가하기 클릭')}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#3A3B42'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2C2D34'}
+        >
+          원고 추가하기
+        </button>
       </div>
 
       {/* 콘텐츠 리스트 */}

@@ -58,20 +58,51 @@ const IdeaSlider = ({ isVisible, onClose }) => {
         zIndex: 1000,
       }}
     >
+      {/* 헤더: 타이틀 + 버튼 */}
       <div
         style={{
-          fontSize: 20,
-          fontWeight: 600,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           marginBottom: 20,
-          fontFamily: 'Pretendard',
+          paddingBottom: 16,
           borderBottom: '1px solid #3A3D46',
-          paddingBottom: 16, // 선과 텍스트 사이 여백
-          marginBottom: 20,  // 리스트와의 간격 유지
         }}
       >
-        아이디어 모음
+        <div
+          style={{
+            fontSize: 20,
+            fontWeight: 600,
+            fontFamily: 'Pretendard',
+            color: '#FFFFFF',
+          }}
+        >
+          아이디어 모음
+        </div>
+
+        {/* 아이디어 추가하기 버튼 */}
+        <button
+          style={{
+            padding: '6px 10px',
+            fontSize: 12,
+            fontWeight: 500,
+            color: '#FFFFFF',
+            backgroundColor: '#2C2D34',
+            border: '1px solid #3A3D46',
+            borderRadius: 6,
+            fontFamily: 'Pretendard',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease-in-out',
+          }}
+          onClick={() => console.log('아이디어 추가하기 클릭')}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#3A3B42'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2C2D34'}
+        >
+          아이디어 추가하기
+        </button>
       </div>
 
+      {/* 리스트 */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
         {mockIdeas.map((idea, idx) => (
           <IdeaItem key={idx} idea={idea} />
