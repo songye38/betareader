@@ -3,7 +3,7 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-const EpisodeInput = ({ control, error }) => {
+const EpisodeInput = ({ control, error,title }) => {
   return (
     <div
       style={{
@@ -14,7 +14,7 @@ const EpisodeInput = ({ control, error }) => {
         paddingTop: 24,
         paddingBottom: 24,
         background: '#1E1F24',
-        borderRadius: 20,
+        borderRadius: 12,
         overflow: 'hidden',
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -23,6 +23,10 @@ const EpisodeInput = ({ control, error }) => {
         display: 'inline-flex',
       }}
     >
+      <div style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
+        {title}
+      </div>
+
       <Controller
         name="episode"
         control={control}

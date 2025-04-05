@@ -48,19 +48,20 @@ const AddCharacterModal = () => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%',display: 'flex', flexDirection: 'column', gap: '18px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <TitleInput control={control} error={errors.title} showLabel={false} />
-            <DropdownInput control={control} error={errors.dropdown} /> 
-            <TitleInput control={control} error={errors.title} showLabel={false} />
-            <DropdownInput control={control} error={errors.dropdown} /> 
+            <TitleInput control={control} error={errors.title} showLabel={false} title={"캐릭터 이름"}/>
+            <DropdownInput control={control} error={errors.dropdown} title={"역할"} /> 
+            <TitleInput control={control} error={errors.title} showLabel={false} title={"연령"}/>
+            <DropdownInput control={control} error={errors.dropdown} title={"성별"} /> 
             <KeywordInput 
                 control={control} 
                 error={errors.newKeywords} 
                 onKeywordChange={handleKeywordChange} 
                 getValues={getValues} // getValues 전달
                 loading = {loading}
+                title = {"성격 키워드"}
             />
-            <EpisodeInput control={control} error={errors.episode} />
-            <EpisodeInput control={control} error={errors.episode} />
+            <EpisodeInput control={control} error={errors.episode} title={"외형특징"}/>
+            <EpisodeInput control={control} error={errors.episode} title={"주요목표"}/>
           </div>
 
           <div

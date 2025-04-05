@@ -5,9 +5,9 @@ import { useState } from 'react';
 
 const options = ["프롤로그", "에피소드", "에필로그"];
 
-const DropdownInput = ({ error, onDropdownChange }) => {
+const DropdownInput = ({ error, onDropdownChange ,title}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('선택하세요');
+  const [selectedValue, setSelectedValue] = useState(`${title} 선택하기`);
   const [customInputValue, setCustomInputValue] = useState('');
 
   // 드롭다운 값이 변경될 때 상위 컴포넌트에 선택된 값을 전달하는 함수
@@ -45,7 +45,7 @@ const DropdownInput = ({ error, onDropdownChange }) => {
           padding: "1.5rem 1.25rem",
           justifyContent: "space-between",
           alignItems: "center",
-          borderRadius: "1.25rem",
+          borderRadius: "12px",
           background: "#1E1F24",
           color: "white",
           cursor: "pointer",

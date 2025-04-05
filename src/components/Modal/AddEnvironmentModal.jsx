@@ -48,17 +48,18 @@ const AddEnvironmentModal = () => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%',display: 'flex', flexDirection: 'column', gap: '18px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <TitleInput control={control} error={errors.title} showLabel={false} />
-            <DropdownInput control={control} error={errors.dropdown} />
-            <EpisodeInput control={control} error={errors.episode} />
+            <TitleInput control={control} error={errors.title} showLabel={false}  title={"세계관 제목"}/>
+            <DropdownInput control={control} error={errors.dropdown} title={"세계관 타입"} />
+            <EpisodeInput control={control} error={errors.episode} title={"상세설명"} />
             <KeywordInput 
                 control={control} 
                 error={errors.newKeywords} 
                 onKeywordChange={handleKeywordChange} 
                 getValues={getValues} // getValues 전달
                 loading = {loading}
+                title = {"참고자료 링크"}
             />
-            <EpisodeInput control={control} error={errors.episode} />
+            <EpisodeInput control={control} error={errors.episode} title={"추가메모"}/>
           </div>
 
           <div

@@ -42,18 +42,22 @@ const AddIdeaModal = () => {
         overflow: 'hidden',
       }}
     >
+        <div>
+            아이디어 추가
+        </div>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%',display: 'flex', flexDirection: 'column', gap: '18px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <DropdownInput control={control} error={errors.dropdown} />
-            <TitleInput control={control} error={errors.title} showLabel={false} />
-            <EpisodeInput control={control} error={errors.episode} />
+            <TitleInput control={control} error={errors.title} showLabel={false}  title={"아이디어 제목"}/>
+            <DropdownInput control={control} error={errors.dropdown} title={"카테고리"} />
+            <EpisodeInput control={control} error={errors.episode} title={"상세내용"}/>
             <KeywordInput 
                 control={control} 
                 error={errors.newKeywords} 
                 onKeywordChange={handleKeywordChange} 
                 getValues={getValues} // getValues 전달
                 loading = {loading}
+                title = {"태그 (최대3개)"}
           />
           </div>
 

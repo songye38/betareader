@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import Tag from './Tag';
 
-const KeywordInput = ({ control, error, onKeywordChange,getValues,loading }) => {
+const KeywordInput = ({ control, error, onKeywordChange,getValues,loading,title }) => {
 
   const [inputValue, setInputValue] = useState(''); // 입력값
   const [newKeywords, setNewKeywords] = useState([]); // 키워드 상태
@@ -81,14 +81,14 @@ const KeywordInput = ({ control, error, onKeywordChange,getValues,loading }) => 
         height: 'auto',
         padding: 24,
         background: '#1E1F24',
-        borderRadius: 20,
+        borderRadius: 12,
         display: 'flex',
         flexDirection: 'column',
         gap: 20,
       }}
     >
-      <div style={{ color: 'white', fontSize: 20, fontWeight: '600' }}>
-        키워드 (최대 3개)
+      <div style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
+        {title}
       </div>
 
       {/* 키워드 입력 필드 */}
