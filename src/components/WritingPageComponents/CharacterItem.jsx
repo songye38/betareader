@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CharacterItem = ({ character }) => {
+const CharacterItem = ({ character, onEdit, onDelete }) => {
   const {
     name,
     role,
@@ -25,8 +25,59 @@ const CharacterItem = ({ character }) => {
         boxShadow: '0 0 0 1px #3A3D46',
         width: '100%',
         maxWidth: '400px',
+        position: 'relative', // to position the buttons
       }}
     >
+      {/* 수정, 삭제 버튼 */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+          display: 'flex',
+          gap: '8px',
+        }}
+      >
+        <button
+          onClick={onEdit}
+          style={{
+            padding: '6px 10px',
+            fontSize: 12,
+            fontWeight: 500,
+            color: '#FFFFFF',
+            backgroundColor: '#2C2D34',
+            border: '1px solid #3A3D46',
+            borderRadius: 6,
+            fontFamily: 'Pretendard',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease-in-out',
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
+          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
+        >
+          수정
+        </button>
+        <button
+          onClick={onDelete}
+          style={{
+            padding: '6px 10px',
+            fontSize: 12,
+            fontWeight: 500,
+            color: '#FFFFFF',
+            backgroundColor: '#2C2D34',
+            border: '1px solid #3A3D46',
+            borderRadius: 6,
+            fontFamily: 'Pretendard',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease-in-out',
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
+          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
+        >
+          삭제
+        </button>
+      </div>
+
       {/* 캐릭터 이름 + 역할 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ fontSize: 18, fontWeight: 600 }}>{name}</div>
