@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import WritingFloatingBtn from '@/components/Buttons/WritingFloatingBtn';
 import Navbar from '@/components/NavBar';
 import NavMainSection from '@/components/NavMainSection';
+import RecentEpiSet_test from '@/components/WritingPageComponents/RecentEpiSet_test';
+import MainBtnSet from '@/components/WritingPageComponents/MainBtnSet';
 
 const WritingFloatingMenu = () => {
   const [activeTitle, setActiveTitle] = useState('전체 에피소드'); // 기본 선택값
@@ -36,6 +38,11 @@ const WritingFloatingMenu = () => {
             />
             ))}
         </div>
+
+
+
+        <RecentEpiSet_test />
+        <MainBtnSet />
     </div>
   );
 };
