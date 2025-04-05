@@ -10,12 +10,14 @@ import AddEnvironmentModal from '@/components/Modal/AddCharacterModal';
 import IdeaSlider from '@/components/WritingPageComponents/IdeaSlider';
 import CharacterSlider from '@/components/WritingPageComponents/CharacterSlider';
 import EnvironmentSlider from '@/components/WritingPageComponents/EnvironmentSlider';
+import AllEpiSlider from '@/components/WritingPageComponents/AllEpiSlider';
 
 const WritingFloatingMenu = () => {
   const [activeTitle, setActiveTitle] = useState('전체 에피소드'); // 기본 선택값
   const [isCharacterSliderOpen, setIsCharacterSliderOpen] = useState(false);
   const [isIdeaSliderOpen, setIsIdeaSliderOpen] = useState(false);
   const [isEnvironmentSliderOpen, setIsEnvironmentSliderOpen] = useState(false);
+  const [isAllEpiSliderOpen, setIsAllEpiSliderOpen] = useState(false);
 
   const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크'];
 
@@ -56,9 +58,14 @@ const WritingFloatingMenu = () => {
                     setIsCharacterSliderOpen(false);
                   }
                 if (title === '세계관 노트') {
-                setIsEnvironmentSliderOpen(true);
+                    setIsEnvironmentSliderOpen(true);
                 } else {
-                setIsEnvironmentSliderOpen(false);
+                    setIsEnvironmentSliderOpen(false);
+                }
+                if (title === '전체 에피소드') {
+                    setIsAllEpiSliderOpen(true);
+                } else {
+                    setIsAllEpiSliderOpen(false);
                 }
                   
             }}
@@ -72,6 +79,7 @@ const WritingFloatingMenu = () => {
         <IdeaSlider isVisible={isIdeaSliderOpen} />
         <CharacterSlider isVisible={isCharacterSliderOpen} />
         <EnvironmentSlider isVisible={isEnvironmentSliderOpen} />
+        <AllEpiSlider isVisible={isAllEpiSliderOpen} />    
         <MainBtnSet />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>
             <AddIdeaModal />
