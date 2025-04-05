@@ -8,17 +8,17 @@ import useManuscriptSetting from '@/hooks/useManuscriptSetting';
 import KeywordInput from '../FormComponents/KeywordInput';
 
 const AddEnvironmentModal = () => {
-    const {
-        methods,
-        control,
-        errors,
-        handleSubmit,
-        watch,
-        onSubmit,
-        handleKeywordChange,
-        loading,
-        getValues,
-      } = useManuscriptSetting();
+  const {
+    methods,
+    control,
+    errors,
+    handleSubmit,
+    watch,
+    onSubmit,
+    handleKeywordChange,
+    loading,
+    getValues,
+  } = useManuscriptSetting();
 
   const [episodeState, setEpisodeState] = useState({ title: '', episode: '' });
 
@@ -30,56 +30,69 @@ const AddEnvironmentModal = () => {
     <div
       style={{
         width: '400px',
-        height: 'auto',
-        padding: 20,
+        height: '100vh',
         background: '#2C2D34',
-        borderRadius: 24,
+        borderRadius: 4,
+        display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 32,
-        display: 'inline-flex',
+        justifyContent: 'space-between',
         overflow: 'hidden',
       }}
     >
-        <div>
-            세계관 노트 추가
+      {/* 상단: 제목 + 폼 */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: 'auto',
+          padding: 20,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 20,
+        }}
+      >
+        <div
+          style={{
+            color: 'white',
+            fontSize: 20,
+            fontWeight: 600,
+            fontFamily: 'Pretendard',
+          }}
+        >
+          세계관 노트 추가
         </div>
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%',display: 'flex', flexDirection: 'column', gap: '18px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <TitleInput control={control} error={errors.title} showLabel={false}  title={"세계관 제목"}/>
-            <DropdownInput control={control} error={errors.dropdown} title={"세계관 타입"} />
-            <EpisodeInput control={control} error={errors.episode} title={"상세설명"} />
-            <KeywordInput 
-                control={control} 
-                error={errors.newKeywords} 
-                onKeywordChange={handleKeywordChange} 
-                getValues={getValues} // getValues 전달
-                loading = {loading}
-                title = {"참고자료 링크"}
-            />
-            <EpisodeInput control={control} error={errors.episode} title={"추가메모"}/>
-          </div>
 
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              paddingTop: 24,
-              paddingBottom: 24,
-              paddingRight: 24,
-              borderTop: '1px #3A3D46 solid',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: '20px',
-            }}
+        <FormProvider {...methods}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
-            <CheckCommentBtn disabled={!isFormValid} onClick={handleSubmit(onSubmit)} />
-          </div>
-        </form>
-      </FormProvider>
+            <TitleInput control={control} error={errors.title} showLabel={false} title={'세계관 제목'} />
+            <DropdownInput control={control} error={errors.dropdown} title={'세계관 타입'} />
+            <EpisodeInput control={control} error={errors.episode} title={'상세설명'} />
+            <KeywordInput
+              control={control}
+              error={errors.newKeywords}
+              onKeywordChange={handleKeywordChange}
+              getValues={getValues}
+              loading={loading}
+              title={'참고자료 링크'}
+            />
+          </form>
+        </FormProvider>
+      </div>
+
+      {/* 하단: 고정 버튼 */}
+      <div
+        style={{
+          borderTop: '1px #3A3D46 solid',
+          padding: 20,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CheckCommentBtn disabled={!isFormValid} onClick={handleSubmit(onSubmit)} />
+      </div>
     </div>
   );
 };

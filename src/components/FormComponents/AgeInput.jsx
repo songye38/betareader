@@ -4,7 +4,7 @@ import { getAgeCategoryDisplay } from './../../models/manuscriptSettingModel'
 
 const AgeInput = ({ control, error,getValues, loading }) => {
   const ageCategories = [
-    '전체이용가', '15세이상이용가', '19세이상이용가'
+    '여성', '남성', '기타'
   ];
 
   // 선택된 카테고리 상태 관리
@@ -21,8 +21,8 @@ const AgeInput = ({ control, error,getValues, loading }) => {
   return (
     <div
       style={{
-        width: 322,
-        height: 'auto',
+        width: '100%',
+        height: '100%',
         paddingLeft: 28,
         paddingRight: 28,
         paddingTop: 20,
@@ -32,7 +32,7 @@ const AgeInput = ({ control, error,getValues, loading }) => {
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        gap: 16,
+        gap: 8,
         display: 'inline-flex',
       }}
     >
@@ -40,19 +40,19 @@ const AgeInput = ({ control, error,getValues, loading }) => {
         <div
           style={{
             color: 'white',
-            fontSize: 20,
+            fontSize: 16,
             fontFamily: 'Pretendard',
             fontWeight: '600',
             lineHeight: '33.60px',
             wordWrap: 'break-word',
           }}
         >
-          연령대
+          성별
         </div>
         <div
           style={{
             color: '#8A94FF',
-            fontSize: 24,
+            fontSize: 16,
             fontFamily: 'Pretendard',
             fontWeight: '700',
             lineHeight: '33.60px',
@@ -75,7 +75,7 @@ const AgeInput = ({ control, error,getValues, loading }) => {
                 flexWrap: 'wrap',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
-                gap: 20,
+                gap: 12,
               }}
             >
               {ageCategories.map((ageCategory, index) => (
