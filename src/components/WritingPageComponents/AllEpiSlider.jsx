@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import AllEpiItem from './AllEpiItem';
 
 const dummyEpisodes = [
@@ -22,20 +22,22 @@ const dummyEpisodes = [
   },
 ];
 
-const AllEpiSlider = ({ isVisible }) => {
-  // 외부 클릭 시 슬라이더 닫기
+const AllEpiSlider = ({ isVisible, onClose }) => {
+  const sliderRef = useRef(null);
+
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (isVisible && !e.target.closest('#all-epi-slider')) {
-        onClose();
+      if (isVisible && sliderRef.current && !sliderRef.current.contains(e.target)) {
+        onClose?.();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isVisible]);
+  }, [isVisible, onClose]);
 
   return (
     <div
+      ref={sliderRef}
       style={{
         position: 'fixed',
         top: 0,
@@ -49,7 +51,6 @@ const AllEpiSlider = ({ isVisible }) => {
         display: 'flex',
         flexDirection: 'column',
       }}
-      id="all-epi-slider"
     >
       {/* 헤더 */}
       <div

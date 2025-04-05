@@ -16,93 +16,67 @@ const RecentEpiItem_mini = ({ episode }) => {
   return (
     <div 
       style={{
-        width: '100%', 
-        height: 162, 
-        paddingLeft: 28, 
-        paddingRight: 28, 
-        paddingTop: 24, 
-        paddingBottom: 24, 
-        background: '#2C2D34', 
-        borderRadius: 20, 
-        overflow: 'hidden', 
-        border: '1px #4A4E5B solid', 
-        flexDirection: 'column', 
-        justifyContent: 'space-between', 
-        alignItems: 'flex-end', 
-        display: 'inline-flex',
-        cursor : 'pointer',
+        width: '100%',
+        height: 162,
+        padding: 20,
+        background: '#2C2D34',
+        borderRadius: 16,
+        border: '1px solid #3F414A',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        gap: 12,
+        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
       }}
     >
-      {/* 상단 내용: 제목과 시간 */}
-      <div style={{ alignSelf: 'stretch', justifyContent: 'space-between', alignItems: 'center', display: 'inline-flex' }}>
-        <div 
-          style={{
-            color: '#7B8091', 
-            fontSize: 12, 
-            fontFamily: 'Pretendard', 
-            fontWeight: '400', 
-            lineHeight: '16.80px', 
-            wordWrap: 'break-word'
-          }}
-        >
-          {relativeTimeDisplay} {/* 동적으로 시간 설정 (ex. "1시간 전") */}
-        </div>
+      {/* 상단 시간 정보 */}
+      <div style={{
+        fontSize: 12,
+        fontFamily: 'Pretendard',
+        fontWeight: 400,
+        color: '#9FA4B0',
+      }}>
+        {relativeTimeDisplay}
       </div>
 
-      {/* 하단 내용: 화 제목과 내용 */}
-      <div 
-        style={{
-          alignSelf: 'stretch', 
-          height: 85, 
-          flexDirection: 'column', 
-          justifyContent: 'flex-start', 
-          alignItems: 'flex-start', 
-          gap: 8, 
-          display: 'flex'
-        }}
-      >
-        <div 
+      {/* 본문 */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div
           style={{
-            color: 'white', 
-            fontSize: 20, 
-            fontFamily: 'Pretendard', 
-            fontWeight: '600', 
-            lineHeight: '28px', 
-            wordWrap: 'break-word'
+            fontSize: 18,
+            fontWeight: 600,
+            color: '#FFFFFF',
+            fontFamily: 'Pretendard',
           }}
         >
-          {episode.tab_no}화 {/* 동적으로 화 번호 설정 */}
-        </div>
-        <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
-          <div 
-            style={{
-              color: 'white', 
-              fontSize: 16, 
-              fontFamily: 'Pretendard', 
-              fontWeight: '500', 
-              lineHeight: 'auto', 
-              wordWrap: 'break-word'
-            }}
-          >
-            피드백 받는중 {/* 동적으로 화 번호 설정 */}
-          </div>
-          <div 
-            style={{
-              color: 'white', 
-              fontSize: 11, 
-              fontFamily: 'Pretendard', 
-              fontWeight: '700', 
-              lineHeight: 'auto', 
-              wordWrap: 'break-word'
-            }}
-          >
-            피드백 개수 4/10 {/* 동적으로 화 번호 설정 */}
-          </div>
+          {episode.tab_no}화
         </div>
 
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 500,
+            color: '#D1D5DB',
+            fontFamily: 'Pretendard',
+          }}
+        >
+          피드백 받는중
+        </div>
+
+        <div
+          style={{
+            fontSize: 12,
+            fontWeight: 700,
+            color: '#A1A6B1',
+            fontFamily: 'Pretendard',
+          }}
+        >
+          피드백 개수 4/10
+        </div>
       </div>
     </div>
   );
 };
-
 export default RecentEpiItem_mini;

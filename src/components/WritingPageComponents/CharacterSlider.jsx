@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import CharacterItem from './CharacterItem';
 
 const dummyCharacters = [
@@ -31,9 +31,23 @@ const dummyCharacters = [
   },
 ];
 
-const CharacterSlider = ({ isVisible }) => {
+const CharacterSlider = ({ isVisible, onClose }) => {
+  const sliderRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (isVisible && sliderRef.current && !sliderRef.current.contains(e.target)) {
+        onClose?.();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isVisible, onClose]);
+
   return (
     <div
+      ref={sliderRef}
       style={{
         position: 'fixed',
         top: 0,
@@ -50,9 +64,17 @@ const CharacterSlider = ({ isVisible }) => {
         zIndex: 1000,
       }}
     >
-      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 20 }}>
+      <div
+        style={{
+          fontSize: 20,
+          fontWeight: 600,
+          marginBottom: 20,
+          fontFamily: 'Pretendard',
+        }}
+      >
         캐릭터 카드
       </div>
+
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {dummyCharacters.map((char, index) => (
           <CharacterItem key={index} character={char} />

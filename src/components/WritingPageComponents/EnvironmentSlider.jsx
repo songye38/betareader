@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import EnvironmentItem from './EnvironmentItem';
 
 const dummyEnvironments = [
@@ -20,14 +20,27 @@ const dummyEnvironments = [
   {
     title: '루미나 스페이스',
     type: '우주 식민지',
-    description: '대통령은 국가의 원수이며, 외국에 대하여 국가를 대표한다. 이 헌법시행 당시의 대법원장과 대법원판사가 아닌 법관은 제1항 단서의 규정에 불구하고 이 헌법에 의하여 대통령은 국가의 원수이며, 외국에 대하여 국가를 대표한다. 이 헌법시행 당시의 대법원장과 대법원판사가 아닌 법관은 제1항 단서의 규정에 불구하고 이 헌법에 의하여 ',
+    description: '대통령은 국가의 원수이며, 외국에 대하여 국가를 대표한다. 이 헌법시행 당시의 대법원장과 대법원판사가 아닌 법관은 제1항 단서의 규정에 불구하고 이 헌법에 의하여 대통령은 국가의 원수이며, 외국에 대하여 국가를 대표한다.',
     references: ['https://space.org/ref1', 'https://nasa.gov/concept'],
   },
 ];
 
-const EnvironmentSlider = ({ isVisible }) => {
+const EnvironmentSlider = ({ isVisible, onClose }) => {
+  const sliderRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (isVisible && sliderRef.current && !sliderRef.current.contains(e.target)) {
+        onClose?.();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isVisible, onClose]);
+
   return (
     <div
+      ref={sliderRef}
       style={{
         position: 'fixed',
         top: 0,
@@ -44,7 +57,14 @@ const EnvironmentSlider = ({ isVisible }) => {
         zIndex: 1000,
       }}
     >
-      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 20 }}>
+      <div
+        style={{
+          fontSize: 20,
+          fontWeight: 600,
+          marginBottom: 20,
+          fontFamily: 'Pretendard',
+        }}
+      >
         세계관 노트
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

@@ -1,71 +1,76 @@
+'use client';
 
-import SidebarComponent from "@/components/SidebarComponent"; // 사이드바
-import useStore from '@/store/useTabStore'; // Zustand 스토어 사용
-import StartComponent from "@/components/StartComponent"; // 시작 페이지
-import EpisodeFormComponent from "@/components/EpisodeFormComponent"; // 에피소드 폼 컴포넌트
-import { fetchManuscriptById } from "@/models/manuscriptModel"; // 원고 가져오는 함수
-import { useState, useEffect } from "react";
-import useManuscriptStore from "@/store/useManuscriptStore";
+import React, { useState } from 'react';
+import WritingFloatingBtn from '@/components/Buttons/WritingFloatingBtn';
+import Navbar from '@/components/NavBar';
+import NavMainSection from '@/components/NavMainSection';
+import IdeaSlider from '@/components/WritingPageComponents/IdeaSlider';
+import CharacterSlider from '@/components/WritingPageComponents/CharacterSlider';
+import EnvironmentSlider from '@/components/WritingPageComponents/EnvironmentSlider';
+import AllEpiSlider from '@/components/WritingPageComponents/AllEpiSlider';
 
-const UserPage = () => {
-  const { selectedTab } = useStore((state) => state); // Zustand에서 selectedTab 가져오기
-  const [isSetup, setIsSetup] = useState(false); // 원고 데이터의 isSetup 상태를 저장
-  const { manuscript,setManuscript } = useManuscriptStore(); 
-  const {resetTabs} = useStore();
+const WritingFloatingMenu = () => {
+  const [activeTitle, setActiveTitle] = useState('전체 에피소드');
+  const [activeSlider, setActiveSlider] = useState('allEpi'); // 'idea', 'character', 'environment', 'allEpi', null
 
+  const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크'];
 
-
-// 각 EpisodeFormComponent에 개별적인 상태 관리
-const [episodeData, setEpisodeData] = useState(null);
-
-
-
-
-  // manuscript.id가 있을 때 원고 데이터를 가져오는 함수
-  useEffect(() => {
-    const fetchManuscriptData = async () => {
-      if (manuscript.id) {
-        try {
-          const data = await fetchManuscriptById(manuscript.id);
-          console.log("원래 저장했던 데이터",data);
-          setManuscript(data); // 🆕 Zustand 업데이트
-          setIsSetup(data.isSetup);
-          console.log("📌 Zustand 저장된 manuscript:", manuscript); // 📌 콘솔에서 확인
-          console.log("isSetup", isSetup);
-        } catch (error) {
-          console.error("Error fetching manuscript:", error);
-        }
-      }
-    };
-
-    fetchManuscriptData();
-  }, [manuscript.id,selectedTab]); 
-
-  // 페이지 나갈 때 탭 초기화
-  useEffect(() => {
-    return () => {
-      resetTabs();
-    };
-  }, []);
-
-
-  // 조건부 렌더링을 위한 컴포넌트
-  const renderContent = () => {
-    if (selectedTab && selectedTab.id) {
-      // selectedTab이 존재하면 EpisodeFormComponent를 렌더링
-      return <EpisodeFormComponent />;
-    } else {
-      // selectedTab이 없으면 StartComponent를 렌더링
-      return <StartComponent />;
+  const handleSliderOpen = (title) => {
+    setActiveTitle(title);
+    switch (title) {
+      case '아이디어':
+        setActiveSlider('idea');
+        break;
+      case '캐릭터 카드':
+        setActiveSlider('character');
+        break;
+      case '세계관 노트':
+        setActiveSlider('environment');
+        break;
+      case '전체 에피소드':
+        setActiveSlider('allEpi');
+        break;
+      default:
+        setActiveSlider(null);
     }
   };
 
+  const closeAllSliders = () => {
+    setActiveSlider(null);
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
-      <SidebarComponent />
-      {renderContent()}
+    <div>
+      <Navbar customNavComponent={<NavMainSection />} />
+
+      {/* 플로팅 버튼 메뉴 */}
+      <div
+        style={{
+          width: 'auto',
+          padding: '8px 16px',
+          background: '#F0F0F0',
+          borderRadius: 4,
+          display: 'inline-flex',
+          gap: 4,
+        }}
+      >
+        {titles.map((title) => (
+          <WritingFloatingBtn
+            key={title}
+            title={title}
+            isActive={activeTitle === title}
+            onClick={() => handleSliderOpen(title)}
+          />
+        ))}
+      </div>
+
+      {/* 슬라이더들 */}
+      <IdeaSlider isVisible={activeSlider === 'idea'} onClose={closeAllSliders} />
+      <CharacterSlider isVisible={activeSlider === 'character'} onClose={closeAllSliders} />
+      <EnvironmentSlider isVisible={activeSlider === 'environment'} onClose={closeAllSliders} />
+      <AllEpiSlider isVisible={activeSlider === 'allEpi'} onClose={closeAllSliders} />
     </div>
   );
 };
 
-export default UserPage;
+export default WritingFloatingMenu;

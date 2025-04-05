@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import IdeaItem from './IdeaItem';
 
 const mockIdeas = [
@@ -28,9 +28,22 @@ const mockIdeas = [
   },
 ];
 
-const IdeaSlider = ({ isVisible }) => {
+const IdeaSlider = ({ isVisible, onClose }) => {
+  const sliderRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (isVisible && sliderRef.current && !sliderRef.current.contains(e.target)) {
+        onClose?.(); // onClose가 존재할 때만 실행
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isVisible, onClose]);
+
   return (
     <div
+      ref={sliderRef}
       style={{
         position: 'fixed',
         top: 0,
