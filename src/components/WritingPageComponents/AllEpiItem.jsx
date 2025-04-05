@@ -1,25 +1,31 @@
 import React from 'react';
 
 const statusColors = {
-  작성중: '#4CAF50',       // 녹색
-  '피드백 받는중': '#FF9800', // 주황색
+  작성중: '#6071FB',
+  '피드백 받는중': '#F27878',
 };
 
-const AllEpiItem = ({ episode }) => {
+const AllEpiItem = ({ episode, active }) => {
   const { title, content, lastUpdated, status } = episode;
+
+  const borderColor = active ? (statusColors[status] || '#999') : 'transparent';
 
   return (
     <div
       style={{
-        background: '#2C2D34',
+        background: active ? '#3A3B42' : '#2C2D34',
         padding: '24px',
         borderRadius: '12px',
         display: 'flex',
         flexDirection: 'column',
         gap: '10px',
         color: 'white',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+        boxShadow: active
+          ? `0 0 0 2px ${borderColor}`
+          : '0 2px 8px rgba(0,0,0,0.15)',
         fontFamily: 'Pretendard',
+        transition: 'all 0.2s ease-in-out',
+        cursor: 'pointer',
       }}
     >
       {/* 상단: 제목 + 상태 뱃지 */}

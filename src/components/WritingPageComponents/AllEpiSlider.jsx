@@ -22,7 +22,7 @@ const dummyEpisodes = [
   },
 ];
 
-const AllEpiSlider = ({ isVisible, onClose }) => {
+const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
   const sliderRef = useRef(null);
 
   useEffect(() => {
@@ -55,12 +55,16 @@ const AllEpiSlider = ({ isVisible, onClose }) => {
       {/* 헤더 */}
       <div
         style={{
-          padding: '20px',
-          borderBottom: '1px solid #3A3D46',
-          color: 'white',
-          fontSize: '20px',
+          fontSize: 20,
           fontWeight: 600,
           fontFamily: 'Pretendard',
+          borderBottom: '1px solid #3A3D46',
+          paddingBottom: 16,
+          marginBottom: 20,
+          color: 'white',
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingTop: 20,
         }}
       >
         전체 원고 목록
@@ -78,7 +82,11 @@ const AllEpiSlider = ({ isVisible, onClose }) => {
         }}
       >
         {dummyEpisodes.map((ep, idx) => (
-          <AllEpiItem key={idx} episode={ep} />
+          <AllEpiItem
+            key={idx}
+            episode={ep}
+            active={ep.title === activeTitle}
+          />
         ))}
       </div>
     </div>

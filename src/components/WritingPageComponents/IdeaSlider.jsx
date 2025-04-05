@@ -60,11 +60,13 @@ const IdeaSlider = ({ isVisible, onClose }) => {
     >
       <div
         style={{
-          color: 'white',
           fontSize: 20,
           fontWeight: 600,
           marginBottom: 20,
           fontFamily: 'Pretendard',
+          borderBottom: '1px solid #3A3D46',
+          paddingBottom: 16, // 선과 텍스트 사이 여백
+          marginBottom: 20,  // 리스트와의 간격 유지
         }}
       >
         아이디어 모음

@@ -69,7 +69,11 @@ const WritingFloatingMenu = () => {
       <IdeaSlider isVisible={activeSlider === 'idea'} onClose={closeAllSliders} />
       <CharacterSlider isVisible={activeSlider === 'character'} onClose={closeAllSliders} />
       <EnvironmentSlider isVisible={activeSlider === 'environment'} onClose={closeAllSliders} />
-      <AllEpiSlider isVisible={activeSlider === 'allEpi'} onClose={closeAllSliders} />
+      <AllEpiSlider
+        isVisible={activeSlider === 'allEpi'}
+        onClose={closeAllSliders}
+        activeTitle="프롤로그: 각성"  // 여기만 active 처리됨
+      />
     </div>
   );
 };
