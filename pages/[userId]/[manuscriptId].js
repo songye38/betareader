@@ -37,6 +37,7 @@ const WritingFloatingMenu = () => {
 
   const closeAllSliders = () => {
     setActiveSlider(null);
+    setActiveTitle(null); // ← 버튼 비활성화도 같이 처리
   };
 
   return (
