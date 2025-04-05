@@ -7,7 +7,7 @@ const EpisodeInput = ({ control, error }) => {
   return (
     <div
       style={{
-        width: 850,
+        width: 'auto',
         height: 'auto', // 높이를 'auto'로 변경하여 텍스트 길이에 맞게 조정됩니다.
         paddingLeft: 28,
         paddingRight: 28,
@@ -30,7 +30,7 @@ const EpisodeInput = ({ control, error }) => {
           <textarea
             {...field}
             placeholder="제목을 입력해주세요."
-            rows={13} // 기본 4행 크기로 설정
+            rows={4} // 기본 4행 크기로 설정
             style={{
               width: '100%',
               padding: '10px',

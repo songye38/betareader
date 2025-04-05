@@ -35,13 +35,13 @@ const DropdownInput = ({ error, onDropdownChange }) => {
   // };
 
   return (
-    <div style={{ position: "relative", display: "inline-block", width: "18rem" }}>
+    <div style={{ width:'100%',position: "relative", display: "inline-block"}}>
       {/* 기본 드롭다운 버튼 */}
       <div
         style={{
           display: "flex",
-          width: "288px",
-          height: "76px",
+          width: "100%",
+          height: "66px",
           padding: "1.5rem 1.25rem",
           justifyContent: "space-between",
           alignItems: "center",

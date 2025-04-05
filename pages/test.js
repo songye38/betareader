@@ -4,6 +4,9 @@ import Navbar from '@/components/NavBar';
 import NavMainSection from '@/components/NavMainSection';
 import RecentEpiSet_test from '@/components/WritingPageComponents/RecentEpiSet_test';
 import MainBtnSet from '@/components/WritingPageComponents/MainBtnSet';
+import AddIdeaModal from '@/components/Modal/AddIdeaModal';
+import AddCharacterModal from '@/components/Modal/AddEnvironmentModal';
+import AddEnvironmentModal from '@/components/Modal/AddCharacterModal';
 
 const WritingFloatingMenu = () => {
   const [activeTitle, setActiveTitle] = useState('전체 에피소드'); // 기본 선택값
@@ -43,6 +46,11 @@ const WritingFloatingMenu = () => {
 
         <RecentEpiSet_test />
         <MainBtnSet />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>
+            <AddIdeaModal />
+            <AddEnvironmentModal />
+            <AddCharacterModal />
+        </div>
     </div>
   );
 };
