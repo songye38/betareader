@@ -8,15 +8,27 @@ import IdeaSlider from '@/components/WritingPageComponents/IdeaSlider';
 import CharacterSlider from '@/components/WritingPageComponents/CharacterSlider';
 import EnvironmentSlider from '@/components/WritingPageComponents/EnvironmentSlider';
 import AllEpiSlider from '@/components/WritingPageComponents/AllEpiSlider';
+import AllItemSet from '@/components/WritingPageComponents/AllItemSet';
 
 const WritingFloatingMenu = () => {
   const [activeTitle, setActiveTitle] = useState('전체 에피소드');
-  const [activeSlider, setActiveSlider] = useState('allEpi'); // 'idea', 'character', 'environment', 'allEpi', null
+  const [activeSlider, setActiveSlider] = useState('allEpi'); // 'idea', 'character', 'environment', 'allEpi', 'bookmark', null
+  const [isAllItemSetOpen, setIsAllItemSetOpen] = useState(false); // ✅ 추가
 
-  const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트'];
+  const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크'];
 
   const handleSliderOpen = (title) => {
     setActiveTitle(title);
+
+    // 북마크인 경우 AllItemSet 오픈
+    if (title === '북마크') {
+      setActiveSlider('bookmark');
+      setIsAllItemSetOpen(true);
+      return;
+    }
+
+    setIsAllItemSetOpen(false); // 북마크 외 탭 클릭 시 닫기
+
     switch (title) {
       case '아이디어':
         setActiveSlider('idea');
@@ -38,13 +50,14 @@ const WritingFloatingMenu = () => {
   const closeAllSliders = () => {
     setActiveSlider(null);
     setActiveTitle(null);
+    setIsAllItemSetOpen(false); // ✅ 슬라이더 닫힐 때 AllItemSet도 닫기
   };
 
   return (
     <div>
       <Navbar customNavComponent={<NavMainSection />} />
 
-      {/* 플로팅 버튼 메뉴: 중앙 정렬 */}
+      {/* 플로팅 버튼 메뉴 */}
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <div
           style={{
@@ -66,14 +79,15 @@ const WritingFloatingMenu = () => {
         </div>
       </div>
 
-      {/* 슬라이더들 */}
+      {/* 슬라이더 컴포넌트들 */}
+      <AllItemSet isVisible={isAllItemSetOpen} onClose={closeAllSliders} />
       <IdeaSlider isVisible={activeSlider === 'idea'} onClose={closeAllSliders} />
       <CharacterSlider isVisible={activeSlider === 'character'} onClose={closeAllSliders} />
       <EnvironmentSlider isVisible={activeSlider === 'environment'} onClose={closeAllSliders} />
       <AllEpiSlider
         isVisible={activeSlider === 'allEpi'}
         onClose={closeAllSliders}
-        activeTitle="프롤로그: 각성" // 테스트용 active 처리
+        activeTitle="프롤로그: 각성"
       />
     </div>
   );

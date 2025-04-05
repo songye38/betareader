@@ -43,8 +43,20 @@ const EnvironmentItem = ({ environment }) => {
           <strong>참고자료 링크:</strong>
           <ul style={{ paddingLeft: 16, marginTop: 8 }}>
             {references.map((link, idx) => (
-              <li key={idx}>
-                <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: '#68B6F3' }}>
+              <li key={idx} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: '#68B6F3',
+                    display: 'block',  // Make the <a> tag a block element
+                    maxWidth: '100%', // Ensure it does not overflow its parent
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',  // Prevent wrapping
+                  }}
+                >
                   {link}
                 </a>
               </li>
