@@ -1,6 +1,7 @@
 // pages/_app.js
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 import Navbar from "@/components/NavBar"; // NavBar 컴포넌트 import
 import { ToastContainer, Bounce } from 'react-toastify'; // ToastContainer 및 Bounce import
 import "./globals.css"; // 전역 스타일
@@ -23,10 +24,14 @@ const geistMono = Geist_Mono({
 });
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
+  const hideNavbarPages = ['/test'];
+
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} ${poppins.className}`}>
       <AuthListener /> {/* ✅ 로그인 상태 감지 및 Zustand 업데이트 */}
-      <Navbar /> {/* 상단 바 추가 */}
+      {/* <Navbar />  */}
+      {!hideNavbarPages.includes(router.pathname) && <Navbar />}
       <Component {...pageProps} /> {/* 페이지별 내용 렌더링 */}
       <ToastContainer 
         position="top-right"

@@ -15,13 +15,12 @@ const SidebarComponent = () => {
   const {user} = useAuthStore();
 
 
-  console.log("manuscript",manuscript);
+  // console.log("manuscript",manuscript);
 
 
   useEffect(() => {
     if (manuscript) {
       setIsLoading(false); // manuscript가 로드되면 로딩 종료
-      console.log("use effect안의 manuscript",manuscript);
     }
   }, [manuscript]);
 

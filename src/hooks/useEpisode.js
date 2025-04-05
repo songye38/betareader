@@ -2,31 +2,35 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast, Slide } from 'react-toastify';
 import { saveEpisode } from '@/models/episodeModel'; 
-import { useRouter } from 'next/router';
-import useTabStore from '@/store/useTabStore';
-import { getRecentEpisodes } from '@/models/episodeModel';
+import { getRecentEpisodes,getEpisodesByManuId } from '@/models/episodeModel';
 import useAuthStore from '@/store/useAuthStore';
+import useManuscriptStore from '@/store/useManuscriptStore';
+import useTabStore from '@/store/useTabStore';
 
 const useEpisodeForm = () => {
 
-    const router = useRouter();
-    const { manuscriptId, tab } = router.query;
     const [recentEpisodes, setRecentEpisodes] = useState([]);  // 최근 에피소드 상태
-    const {user} = useAuthStore();
+    const [allEpisodes, setAllEpisodes] = useState([]);
+    const [isSaving, setIsSaving] = useState(false); // 자동 저장 여부
+    const {manuscript} = useManuscriptStore();
+    const {tabs} = useTabStore();
 
-    const tabId = tab; // 혹은 바로 tab을 사용해도 됩니다.
-
-    console.log("hook manuscript id",manuscriptId)
-    console.log("hook tab id",tabId)
-
-  const [isSaving, setIsSaving] = useState(false); // 자동 저장 여부
-  const methods = useForm({
-    defaultValues: {
-      title: '',
-      episode: '',
-    },
-    mode: 'onChange',
-  });
+    useEffect(() => {
+        if (manuscript) {
+          //fetchEpisodesByManuId();
+        }
+        if (tabs) {
+            //fetchRecentEpisodes();
+          }
+      }, [manuscript, tabs]);
+    
+    const methods = useForm({
+        defaultValues: {
+        title: '',
+        episode: '',
+        },
+        mode: 'onChange',
+    });
   
   const { control, handleSubmit, formState: { errors }, watch, setValue } = methods;
   
@@ -34,12 +38,11 @@ const useEpisodeForm = () => {
   const episodeValue = watch('episode');
   
   const isFormValid = titleValue && episodeValue !== '';
-  
 
   // 폼 제출 함수
   const onSubmit = async (data) => {
 
-    if (!manuscriptId || !tabId || !data.title || !data.episode) {
+    if (!manuscript.id || !tabs.id || !data.title || !data.episode) {
       toast.error("hook 입니다. -------필수 정보가 누락되었습니다. 모든 정보를 확인해주세요.");
       return;
     }
@@ -47,8 +50,8 @@ const useEpisodeForm = () => {
     // 서버에 보낼 데이터
     const requestData = {
       tabNo : data.tabNo,
-      manuscriptId : manuscriptId,
-      tabId : tabId,
+      manuscriptId : manuscript.id,
+      tabId : tabs.id,
       title: data.title,
       content: data.episode,
     };
@@ -87,12 +90,24 @@ const useEpisodeForm = () => {
 
     // 최근 에피소드 5개 가져오기
   const fetchRecentEpisodes = async () => {
-    const userId = user.id;  
-    console.log("userid",userId);
     try {
-      const episodes = await getRecentEpisodes(userId);
+      const episodes = await getRecentEpisodes(manuscript.user_id);
       setRecentEpisodes(episodes);  // 가져온 에피소드 데이터를 상태에 저장
-      console.log("가장 최근 수정된 에피소드들:", episodes);
+    //   console.log(]]]]]["가장 최근 수정된 에피소드들:", episodes);
+    } catch (error) {
+      console.error("❌ 에피소드 가져오기 실패:", error);
+      toast.error("최근 에피소드를 불러오는 데 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+
+
+  const fetchEpisodesByManuId = async () => {
+
+    try {
+      const allEpisodes = await getEpisodesByManuId(manuscript.user_id,manuscript.id);
+      setAllEpisodes(allEpisodes);  // 가져온 에피소드 데이터를 상태에 저장
+      console.log("해당 manuId에 속하는 모든 에피소드들:", allEpisodes);
     } catch (error) {
       console.error("❌ 에피소드 가져오기 실패:", error);
       toast.error("최근 에피소드를 불러오는 데 실패했습니다. 다시 시도해주세요.");
@@ -138,7 +153,8 @@ const useEpisodeForm = () => {
     onSubmit,
     setValue,
     recentEpisodes,
-    fetchRecentEpisodes
+    fetchRecentEpisodes,
+    fetchEpisodesByManuId
   };
 };
 

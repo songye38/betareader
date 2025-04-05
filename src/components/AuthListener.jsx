@@ -15,7 +15,6 @@ export default function AuthListener() {
       }
 
       setUser(user); // 기본 유저 정보 저장
-      console.log("auth listenrer에서 usr", user);
 
       // 🔥 profile 테이블에서 추가 정보 가져오기
       const { data: profile, error } = await supabase
@@ -25,7 +24,6 @@ export default function AuthListener() {
         .single();
 
       if (error) {
-        console.error("프로필 정보 불러오기 오류:", error);
         setProfile(null);
       } else {
         setProfile(profile);
@@ -41,7 +39,7 @@ export default function AuthListener() {
 
     // 로그인 상태 감지 및 유저 정보 업데이트
     const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
-     console.log("🔄 Auth 상태 변경:", event, session);
+    //  console.log("🔄 Auth 상태 변경:", event, session);
       await fetchUserData(session?.user);
     });
 

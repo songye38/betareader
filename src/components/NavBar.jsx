@@ -13,7 +13,7 @@ const poppins = Poppins({
   display: 'swap'
 });
 
-const Navbar = () => {
+const Navbar = ({ customNavComponent }) => {
   const { user, logout } = useAuthStore();
   const router = useRouter(); // useRouter 사용
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
@@ -71,7 +71,8 @@ const Navbar = () => {
 
       {/* 오른쪽 부분 (버튼 및 아이콘) */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-      {user ? <NavUserSection user={user} /> : <NavSignSection />}
+      {/* {user ? <NavUserSection user={user} /> : <NavSignSection />} */}
+      {customNavComponent ? customNavComponent : user ? <NavUserSection user={user} /> : <NavSignSection />}
       </div>
     </div>
   );

@@ -58,4 +58,34 @@ export const getRecentEpisodes = async (userId) => {
       throw error;
     }
   };
+
+  export const getEpisodesByManuId = async (userId, manuscriptId) => {
+    try {
+      const { data, error } = await supabase
+        .from('episode')
+        .select(`
+          *,
+          manuscript (
+            id,
+            user_id
+          )
+        `)
+        .eq('manuscript.user_id', userId)  // 특정 userId의 원고만 가져옴
+        .eq('manuscript.id', manuscriptId) // 특정 manuscript_id의 에피소드만 필터링
+        .order('tab_no', { ascending: true }); // tab_no 기준 정렬 (작은값 → 큰값)
+  
+      if (error) {
+        console.error("❌ Supabase 에러:", error.message);
+        throw error;
+      }
+  
+      console.log("🎯 가져온 에피소드 데이터:", data);
+      return data;  
+    } catch (error) {
+      console.error("❌ 에피소드 불러오기 실패:", error);
+      throw error;
+    }
+  };
+  
+  
   

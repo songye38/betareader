@@ -1,10 +1,6 @@
-import { useState } from "react";
 import RecentEpiSet from "@/components/MainPageComponents/RecentEpiSet";
 import AllManuSet from "@/components/MainPageComponents/AllManuSet";
-import AddManuPopup from "@/components/Popups/AddManuPopup";
-import UploadingEpi from "@/components/Modal/UploadingEpi";
-import StartManuPopup from "@/components/Popups/StartManuPopup";
-
+import AddIdeaPopup from "@/components/Popups/AddIdeaPopup";
 
 const MainPage = () => {
 
@@ -23,6 +19,7 @@ const MainPage = () => {
       
       <RecentEpiSet />
       <AllManuSet />
+      <AddIdeaPopup />
 
     </div>
   );
