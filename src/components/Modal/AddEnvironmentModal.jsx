@@ -7,7 +7,7 @@ import CheckCommentBtn from '../Buttons/CheckCommentBtn';
 import useManuscriptSetting from '@/hooks/useManuscriptSetting';
 import KeywordInput from '../FormComponents/KeywordInput';
 
-const AddEnvironmentModal = () => {
+const AddEnvironmentModal = ({ onClose }) => {
   const {
     methods,
     control,
@@ -39,7 +39,7 @@ const AddEnvironmentModal = () => {
         overflow: 'hidden',
       }}
     >
-      {/* 상단: 제목 + 폼 */}
+      {/* 상단: 타이틀 + 닫기 버튼 + 폼 */}
       <div
         style={{
           flex: 1,
@@ -50,15 +50,32 @@ const AddEnvironmentModal = () => {
           gap: 20,
         }}
       >
-        <div
-          style={{
-            color: 'white',
-            fontSize: 20,
-            fontWeight: 600,
-            fontFamily: 'Pretendard',
-          }}
-        >
-          세계관 노트 추가
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            style={{
+              color: 'white',
+              fontSize: 20,
+              fontWeight: 600,
+              fontFamily: 'Pretendard',
+            }}
+          >
+            세계관 노트 추가
+          </div>
+
+          <button
+            onClick={onClose}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#FFFFFF',
+              fontSize: 20,
+              cursor: 'pointer',
+              padding: 4,
+            }}
+            aria-label="닫기"
+          >
+            ✕
+          </button>
         </div>
 
         <FormProvider {...methods}>

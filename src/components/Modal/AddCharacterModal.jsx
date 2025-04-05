@@ -8,7 +8,7 @@ import useManuscriptSetting from '@/hooks/useManuscriptSetting';
 import KeywordInput from '../FormComponents/KeywordInput';
 import AgeInput from '../FormComponents/AgeInput';
 
-const AddCharacterModal = () => {
+const AddCharacterModal = ({ onClose }) => {
   const {
     methods,
     control,
@@ -38,7 +38,7 @@ const AddCharacterModal = () => {
         overflow: 'hidden',
       }}
     >
-      {/* 상단: 타이틀 + 폼 (스크롤 가능) */}
+      {/* 상단: 타이틀 + 닫기 버튼 + 폼 (스크롤 가능) */}
       <div
         style={{
           flex: 1,
@@ -49,15 +49,32 @@ const AddCharacterModal = () => {
           gap: 20,
         }}
       >
-        <div
-          style={{
-            color: 'white',
-            fontSize: 20,
-            fontWeight: 600,
-            fontFamily: 'Pretendard',
-          }}
-        >
-          캐릭터 카드 추가
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            style={{
+              color: 'white',
+              fontSize: 20,
+              fontWeight: 600,
+              fontFamily: 'Pretendard',
+            }}
+          >
+            캐릭터 카드 추가
+          </div>
+
+          <button
+            onClick={onClose}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#FFFFFF',
+              fontSize: 20,
+              cursor: 'pointer',
+              padding: 4,
+            }}
+            aria-label="닫기"
+          >
+            ✕
+          </button>
         </div>
 
         <FormProvider {...methods}>

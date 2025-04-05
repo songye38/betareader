@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import TitleInput from '../FormComponents/TitleInput';
@@ -7,14 +9,13 @@ import CheckCommentBtn from '../Buttons/CheckCommentBtn';
 import useManuscriptSetting from '@/hooks/useManuscriptSetting';
 import KeywordInput from '../FormComponents/KeywordInput';
 
-const AddIdeaModal = () => {
+const AddIdeaModal = ({ onClose, onSubmit: parentSubmit }) => {
   const {
     methods,
     control,
     errors,
     handleSubmit,
     watch,
-    onSubmit,
     handleKeywordChange,
     loading,
     getValues,
@@ -24,20 +25,32 @@ const AddIdeaModal = () => {
   const episodeValue = watch('episode');
   const isFormValid = titleValue && episodeValue !== '';
 
+  // 실제 제출 함수
+  const onSubmit = (data) => {
+    const newIdea = {
+      title: data.title,
+      category: data.dropdown,
+      description: data.episode,
+      tags: data.newKeywords || [],
+    };
+
+    parentSubmit?.(newIdea); // 부모로 전달
+    onClose?.(); // 닫기
+  };
+
   return (
     <div
       style={{
         width: '400px',
         height: '100vh',
         background: '#2C2D34',
-        borderRadius: 4,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         overflow: 'hidden',
       }}
     >
-      {/* 상단 영역 (타이틀 + 폼), 스크롤 가능 */}
+      {/* 상단 영역 */}
       <div
         style={{
           flex: 1,
@@ -48,15 +61,33 @@ const AddIdeaModal = () => {
           gap: 20,
         }}
       >
-        <div
-          style={{
-            color: 'white',
-            fontSize: 20,
-            fontWeight: 600,
-            fontFamily: 'Pretendard',
-          }}
-        >
-          아이디어 추가
+        {/* 타이틀 + 닫기 버튼 */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            style={{
+              color: 'white',
+              fontSize: 20,
+              fontWeight: 600,
+              fontFamily: 'Pretendard',
+            }}
+          >
+            아이디어 추가
+          </div>
+
+          <button
+            onClick={onClose}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#FFFFFF',
+              fontSize: 20,
+              cursor: 'pointer',
+              padding: 4,
+            }}
+            aria-label="닫기"
+          >
+            ✕
+          </button>
         </div>
 
         <FormProvider {...methods}>
@@ -79,7 +110,7 @@ const AddIdeaModal = () => {
         </FormProvider>
       </div>
 
-      {/* 하단 고정 버튼 */}
+      {/* 하단 버튼 */}
       <div
         style={{
           borderTop: '1px #3A3D46 solid',
