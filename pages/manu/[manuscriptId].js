@@ -13,7 +13,7 @@ const WritingFloatingMenu = () => {
   const [activeTitle, setActiveTitle] = useState('전체 에피소드');
   const [activeSlider, setActiveSlider] = useState('allEpi'); // 'idea', 'character', 'environment', 'allEpi', null
 
-  const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크'];
+  const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트'];
 
   const handleSliderOpen = (title) => {
     setActiveTitle(title);
@@ -37,32 +37,33 @@ const WritingFloatingMenu = () => {
 
   const closeAllSliders = () => {
     setActiveSlider(null);
-    setActiveTitle(null); // ← 버튼 비활성화도 같이 처리
+    setActiveTitle(null);
   };
 
   return (
     <div>
       <Navbar customNavComponent={<NavMainSection />} />
 
-      {/* 플로팅 버튼 메뉴 */}
-      <div
-        style={{
-          width: 'auto',
-          padding: '8px 16px',
-          background: '#F0F0F0',
-          borderRadius: 4,
-          display: 'inline-flex',
-          gap: 4,
-        }}
-      >
-        {titles.map((title) => (
-          <WritingFloatingBtn
-            key={title}
-            title={title}
-            isActive={activeTitle === title}
-            onClick={() => handleSliderOpen(title)}
-          />
-        ))}
+      {/* 플로팅 버튼 메뉴: 중앙 정렬 */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+        <div
+          style={{
+            padding: '8px 16px',
+            background: '#F0F0F0',
+            borderRadius: 4,
+            display: 'flex',
+            gap: 4,
+          }}
+        >
+          {titles.map((title) => (
+            <WritingFloatingBtn
+              key={title}
+              title={title}
+              isActive={activeTitle === title}
+              onClick={() => handleSliderOpen(title)}
+            />
+          ))}
+        </div>
       </div>
 
       {/* 슬라이더들 */}
@@ -72,7 +73,7 @@ const WritingFloatingMenu = () => {
       <AllEpiSlider
         isVisible={activeSlider === 'allEpi'}
         onClose={closeAllSliders}
-        activeTitle="프롤로그: 각성"  // 여기만 active 처리됨
+        activeTitle="프롤로그: 각성" // 테스트용 active 처리
       />
     </div>
   );

@@ -25,13 +25,18 @@ const geistMono = Geist_Mono({
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
-  const hideNavbarPages = ['/test'];
+  const hideNavbarPages = ['/test', '/manu'];
+
+const shouldHideNavbar = hideNavbarPages.some((path) =>
+  router.pathname.startsWith(path)
+);
 
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} ${poppins.className}`}>
       <AuthListener /> {/* ✅ 로그인 상태 감지 및 Zustand 업데이트 */}
       {/* <Navbar />  */}
-      {!hideNavbarPages.includes(router.pathname) && <Navbar />}
+
+      {!shouldHideNavbar && <Navbar />}
       <Component {...pageProps} /> {/* 페이지별 내용 렌더링 */}
       <ToastContainer 
         position="top-right"
