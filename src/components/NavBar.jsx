@@ -25,20 +25,23 @@ const Navbar = ({ customNavComponent }) => {
 
   return (
     <div 
-      style={{ 
-        width: '100%',  // 부모 요소의 너비를 100%로 설정
-        height: '100%',  // 고정 높이
-        paddingLeft: '24px',
-        paddingRight: '24px',
-        paddingTop: '10px',
-        paddingBottom: '10px',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 'auto',  // 자식 요소들이 flex로 자동 배치되게 설정
-        display: 'flex', // 부모 요소에 flexbox 적용
-        zIndex: 10,
-        position: 'relative', // 상대적인 위치로 설정
-      }}
+    style={{ 
+      position: 'fixed',         // ✅ fixed 유지
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '60px',            // ✅ 전체 height 말고 고정 높이
+      paddingLeft: '24px',
+      paddingRight: '24px',
+      paddingTop: '10px',
+      paddingBottom: '10px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+      backgroundColor: '#0A0A0A', // ✅ 배경색 설정해야 스크롤시 아래가 안 비쳐
+      zIndex: 999,
+      // ❌ position: 'relative', 이 줄 제거!
+    }}
     >
       {/* 왼쪽 부분 (로고 및 텍스트) */}
       <div 

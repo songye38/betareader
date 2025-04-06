@@ -29,7 +29,7 @@ const SaveEpiBtn = ({ disabled,onClick }) => {
           color: 'white',
           fontSize: 14,
           fontFamily: 'Pretendard',
-          fontWeight: '500',
+          fontWeight: '600',
           lineHeight: '28px',
           wordWrap: 'break-word',
         }}

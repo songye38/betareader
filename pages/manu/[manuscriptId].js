@@ -77,53 +77,54 @@ const WritingFloatingMenu = () => {
       
 
       <div
-  style={{
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'center', // 수평 중앙 정렬
-    paddingBottom:'40px',
-  }}
->
-  <div
-    style={{
-      maxWidth: '400px', // 최대 너비 400px
-      width: 'auto', // 너비가 400px보다 작으면 자동 조정
-      color: 'white',
-      fontSize: 27,
-      fontFamily: 'Pretendard',
-      fontWeight: '700',
-      wordWrap: 'break-word',
-      textAlign: 'center', // 텍스트 중앙 정렬
-      paddingBottom: '16px', // 아래 여백 추가
-    }}
-  >
-    제목 : 탄생 제 1화
-  </div>
+        style={{
+          paddingTop:'80px',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center', // 수평 중앙 정렬
+          paddingBottom:'40px',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '400px', // 최대 너비 400px
+            width: 'auto', // 너비가 400px보다 작으면 자동 조정
+            color: 'white',
+            fontSize: 27,
+            fontFamily: 'Pretendard',
+            fontWeight: '700',
+            wordWrap: 'break-word',
+            textAlign: 'center', // 텍스트 중앙 정렬
+            paddingBottom: '16px', // 아래 여백 추가
+          }}
+        >
+          제목 : 탄생 제 1화
+        </div>
 
-  <div
-    style={{
-      width: 'auto', // 버튼 셋의 너비가 버튼 개수에 맞게 자동으로 조정
-      padding: '8px 16px',
-      background: '#F0F0F0',
-      borderRadius: 4,
-      display: 'flex',
-      gap: 4,
-      justifyContent: 'center', // 버튼을 수평 중앙 정렬
-      alignItems: 'center', // 버튼을 수직 중앙 정렬
-    }}
-  >
-    {titles.map((title) => (
-      <WritingFloatingBtn
-        key={title}
-        title={title}
-        isActive={activeTitle === title}
-        onClick={() => handleSliderOpen(title)}
-      />
-    ))}
-  </div>
-</div>
+        <div
+          style={{
+            width: 'auto', // 버튼 셋의 너비가 버튼 개수에 맞게 자동으로 조정
+            padding: '8px 16px',
+            background: '#F0F0F0',
+            borderRadius: 4,
+            display: 'flex',
+            gap: 4,
+            justifyContent: 'center', // 버튼을 수평 중앙 정렬
+            alignItems: 'center', // 버튼을 수직 중앙 정렬
+          }}
+        >
+          {titles.map((title) => (
+            <WritingFloatingBtn
+              key={title}
+              title={title}
+              isActive={activeTitle === title}
+              onClick={() => handleSliderOpen(title)}
+            />
+          ))}
+        </div>
+     </div>
 
 
       {/* 슬라이더 컴포넌트들 */}
@@ -151,17 +152,6 @@ const WritingFloatingMenu = () => {
             <ContentInput control={control} error={errors.title} showLabel={false} title={'캐릭터 이름'} />
           </form>
         </FormProvider>
-
-
-
-
-
-
-
-
-
-
-
 
     </div>
   );
