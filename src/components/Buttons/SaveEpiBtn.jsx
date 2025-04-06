@@ -9,8 +9,8 @@ const SaveEpiBtn = ({ disabled,onClick }) => {
       style={{
         width: 'auto',
         height: 'auto',
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 14,
+        paddingRight: 14,
         paddingTop: 8,
         paddingBottom: 8,
         background: '#5E6CFF',
@@ -27,7 +27,7 @@ const SaveEpiBtn = ({ disabled,onClick }) => {
         style={{
           textAlign: 'center',
           color: 'white',
-          fontSize: 16,
+          fontSize: 14,
           fontFamily: 'Pretendard',
           fontWeight: '500',
           lineHeight: '28px',

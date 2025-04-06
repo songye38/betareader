@@ -9,11 +9,28 @@ import CharacterSlider from '@/components/WritingPageComponents/CharacterSlider'
 import EnvironmentSlider from '@/components/WritingPageComponents/EnvironmentSlider';
 import AllEpiSlider from '@/components/WritingPageComponents/AllEpiSlider';
 import AllItemSet from '@/components/WritingPageComponents/AllItemSet';
+import { FormProvider } from 'react-hook-form';
+import ContentInput from '@/components/WritingPageComponents/ContentInput';
+import useManuscriptSetting from '@/hooks/useManuscriptSetting';
+import FeedbackSettingModal from '@/components/FeedbackComponents/FeedbackSettingModal';
 
 const WritingFloatingMenu = () => {
   const [activeTitle, setActiveTitle] = useState('전체 에피소드');
   const [activeSlider, setActiveSlider] = useState('allEpi'); // 'idea', 'character', 'environment', 'allEpi', 'bookmark', null
   const [isAllItemSetOpen, setIsAllItemSetOpen] = useState(false); // ✅ 추가
+
+  const {
+    methods,
+    control,
+    errors,
+    handleSubmit,
+    watch,
+    onSubmit,
+    handleKeywordChange,
+    loading,
+    getValues,
+  } = useManuscriptSetting();
+
 
   const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크'];
 
@@ -56,30 +73,60 @@ const WritingFloatingMenu = () => {
   return (
     <div>
       <Navbar customNavComponent={<NavMainSection />} />
+      
 
-      {/* 플로팅 버튼 메뉴 */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-        <div
-          style={{
-            padding: '8px 16px',
-            background: '#F0F0F0',
-            borderRadius: 4,
-            display: 'flex',
-            gap: 4,
-          }}
-        >
-          {titles.map((title) => (
-            <WritingFloatingBtn
-              key={title}
-              title={title}
-              isActive={activeTitle === title}
-              onClick={() => handleSliderOpen(title)}
-            />
-          ))}
-        </div>
-      </div>
+      <div
+  style={{
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center', // 수평 중앙 정렬
+    paddingBottom:'40px',
+  }}
+>
+  <div
+    style={{
+      maxWidth: '400px', // 최대 너비 400px
+      width: 'auto', // 너비가 400px보다 작으면 자동 조정
+      color: 'white',
+      fontSize: 27,
+      fontFamily: 'Pretendard',
+      fontWeight: '700',
+      wordWrap: 'break-word',
+      textAlign: 'center', // 텍스트 중앙 정렬
+      paddingBottom: '16px', // 아래 여백 추가
+    }}
+  >
+    제목 : 탄생 제 1화
+  </div>
+
+  <div
+    style={{
+      width: 'auto', // 버튼 셋의 너비가 버튼 개수에 맞게 자동으로 조정
+      padding: '8px 16px',
+      background: '#F0F0F0',
+      borderRadius: 4,
+      display: 'flex',
+      gap: 4,
+      justifyContent: 'center', // 버튼을 수평 중앙 정렬
+      alignItems: 'center', // 버튼을 수직 중앙 정렬
+    }}
+  >
+    {titles.map((title) => (
+      <WritingFloatingBtn
+        key={title}
+        title={title}
+        isActive={activeTitle === title}
+        onClick={() => handleSliderOpen(title)}
+      />
+    ))}
+  </div>
+</div>
+
 
       {/* 슬라이더 컴포넌트들 */}
+      <FeedbackSettingModal />
       <AllItemSet isVisible={isAllItemSetOpen} onClose={closeAllSliders} />
       <IdeaSlider isVisible={activeSlider === 'idea'} onClose={closeAllSliders} />
       <CharacterSlider isVisible={activeSlider === 'character'} onClose={closeAllSliders} />
@@ -89,6 +136,26 @@ const WritingFloatingMenu = () => {
         onClose={closeAllSliders}
         activeTitle="프롤로그: 각성"
       />
+              <FormProvider {...methods}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
+          >
+            <ContentInput control={control} error={errors.title} showLabel={false} title={'캐릭터 이름'} />
+          </form>
+        </FormProvider>
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
   );
 };
