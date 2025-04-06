@@ -1,12 +1,14 @@
-import React from 'react';
+import { React, useState} from 'react';
 
 const IdeaItem = ({ idea }) => {
   const { title, category, description, tags } = idea;
+    const [isHovered, setIsHovered] = useState(false);
+    const backgroundColor = isHovered ? '#383940' : '#2C2D34';
 
   return (
     <div
       style={{
-        backgroundColor: '#2C2D34',
+        backgroundColor: backgroundColor,
         borderRadius: 12,
         padding: 20,
         width: 'auto',
@@ -18,6 +20,8 @@ const IdeaItem = ({ idea }) => {
         fontFamily: 'Pretendard',
         position: 'relative', // for positioning the buttons
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* 수정, 삭제 버튼 */}
       <div

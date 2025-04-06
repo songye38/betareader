@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const statusColors = {
   작성중: '#6071FB',
@@ -7,13 +7,21 @@ const statusColors = {
 
 const AllEpiItem = ({ episode, active }) => {
   const { title, content, lastUpdated, status } = episode;
+  const [isHovered, setIsHovered] = useState(false);
 
   const borderColor = active ? (statusColors[status] || '#999') : 'transparent';
+
+  // 배경색 조건에 따라 다르게 적용
+  const getBackgroundColor = () => {
+    if (active) return '#3A3B42';
+    if (isHovered) return '#383940';
+    return '#2C2D34';
+  };
 
   return (
     <div
       style={{
-        background: active ? '#3A3B42' : '#2C2D34',
+        background: getBackgroundColor(),
         padding: '24px',
         borderRadius: '12px',
         display: 'flex',
@@ -27,6 +35,8 @@ const AllEpiItem = ({ episode, active }) => {
         transition: 'all 0.2s ease-in-out',
         cursor: 'pointer',
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* 상단: 제목 + 상태 뱃지 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

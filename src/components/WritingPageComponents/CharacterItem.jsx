@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const CharacterItem = ({ character, onEdit, onDelete }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   const {
     name,
     role,
@@ -11,10 +13,12 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
     goal,
   } = character;
 
+  const backgroundColor = isHovered ? '#383940' : '#2C2D34';
+
   return (
     <div
       style={{
-        background: '#2C2D34',
+        background: backgroundColor,
         padding: '20px',
         borderRadius: '8px',
         color: 'white',
@@ -25,8 +29,12 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
         boxShadow: '0 0 0 1px #3A3D46',
         width: '100%',
         maxWidth: '400px',
-        position: 'relative', // to position the buttons
+        position: 'relative',
+        transition: 'background-color 0.2s ease-in-out',
+        cursor: 'pointer',
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* 수정, 삭제 버튼 */}
       <div

@@ -1,6 +1,8 @@
-import React from 'react';
+import {React,useState }from 'react';
 
 const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const backgroundColor = isHovered ? '#383940' : '#2C2D34';
   const {
     title,
     type,
@@ -11,7 +13,7 @@ const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
   return (
     <div
       style={{
-        background: '#2C2D34',
+        background: backgroundColor,
         padding: '20px',
         borderRadius: '8px',
         color: 'white',
@@ -24,6 +26,8 @@ const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
         maxWidth: '400px',
         position: 'relative', // Ensure the buttons are fixed and the content is laid out below
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* 수정, 삭제 버튼 */}
       <div
