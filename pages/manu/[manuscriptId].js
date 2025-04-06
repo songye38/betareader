@@ -18,6 +18,7 @@ const WritingFloatingMenu = () => {
   const [activeTitle, setActiveTitle] = useState('전체 에피소드');
   const [activeSlider, setActiveSlider] = useState('allEpi'); // 'idea', 'character', 'environment', 'allEpi', 'bookmark', null
   const [isAllItemSetOpen, setIsAllItemSetOpen] = useState(false); // ✅ 추가
+  const [showModal, setShowModal] = useState(false);
 
   const {
     methods,
@@ -126,7 +127,13 @@ const WritingFloatingMenu = () => {
 
 
       {/* 슬라이더 컴포넌트들 */}
-      <FeedbackSettingModal />
+      {showModal && (
+      <FeedbackSettingModal
+        selected={10}
+        onSelect={(n) => setCount(n)}
+        onClose={() => setShowModal(false)}
+      />
+    )}
       <AllItemSet isVisible={isAllItemSetOpen} onClose={closeAllSliders} />
       <IdeaSlider isVisible={activeSlider === 'idea'} onClose={closeAllSliders} />
       <CharacterSlider isVisible={activeSlider === 'character'} onClose={closeAllSliders} />
