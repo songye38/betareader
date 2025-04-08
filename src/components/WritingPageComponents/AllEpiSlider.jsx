@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import AllEpiItem from './AllEpiItem';
+import useWritingTab from '../../hooks/useWritingTab';
+import useTabStore from '@/store/useTabStore';
 
 const dummyEpisodes = [
   {
@@ -23,7 +25,12 @@ const dummyEpisodes = [
 ];
 
 const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
+  const { handleAddTab,handleTabChange } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
   const sliderRef = useRef(null);
+  const {tabs,currentManuscriptId,selectedTab} = useTabStore(); // Zustand 사용
+
+  console.log("tabs",tabs);
+
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -87,7 +94,7 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
             cursor: 'pointer',
             transition: 'all 0.2s ease-in-out',
           }}
-          onClick={() => console.log('원고 추가하기 클릭')}
+          onClick={handleAddTab} // ✅ 여기 연결!
           onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#3A3B42'}
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2C2D34'}
         >
@@ -106,11 +113,12 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
           gap: '16px',
         }}
       >
-        {dummyEpisodes.map((ep, idx) => (
+        {tabs.map((tab) => (
           <AllEpiItem
-            key={idx}
-            episode={ep}
-            active={ep.title === activeTitle}
+            key={tab.id}
+            episode={tab}
+            active={tab.selected} // ✅ selected가 true면 active 처리
+            onClick={() => handleTabChange(tab.id)} // ✅ 클릭 시 탭 전환
           />
         ))}
       </div>

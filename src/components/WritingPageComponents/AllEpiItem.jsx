@@ -5,7 +5,7 @@ const statusColors = {
   '피드백 받는중': '#F27878',
 };
 
-const AllEpiItem = ({ episode, active }) => {
+const AllEpiItem = ({ episode, active,onClick }) => {
   const { title, content, lastUpdated, status } = episode;
   const [isHovered, setIsHovered] = useState(false);
 
@@ -19,7 +19,9 @@ const AllEpiItem = ({ episode, active }) => {
   };
 
   return (
+
     <div
+      onClick={onClick} // ✅ 여기 클릭 이벤트 연결
       style={{
         background: getBackgroundColor(),
         padding: '24px',
@@ -56,9 +58,11 @@ const AllEpiItem = ({ episode, active }) => {
       </div>
 
       {/* 본문 요약 */}
-      <div style={{ fontSize: '14px', lineHeight: 1.5, whiteSpace: 'pre-line', color: '#CCCCCC' }}>
-        {content.length > 120 ? content.slice(0, 120) + '...' : content}
-      </div>
+      {content && (
+        <div style={{ fontSize: '14px', lineHeight: 1.5, whiteSpace: 'pre-line', color: '#CCCCCC' }}>
+          {content.length > 120 ? content.slice(0, 120) + '...' : content}
+        </div>
+      )}
 
       {/* 최근 작성일 */}
       <div style={{ fontSize: '12px', color: '#888888', textAlign: 'right' }}>
