@@ -30,7 +30,7 @@ const ManuItem = ({ title, lastEditedAt, episodeCount ,userId, ManuId}) => {
     if (userId && ManuId) {
       setManuscript(data);
       // fetchEpisodesByManuId(userId);
-      router.push(`/${userId}/${ManuId}`);
+      router.push(`/manu/${ManuId}`);
     }
   };
 

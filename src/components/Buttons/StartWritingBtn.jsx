@@ -48,7 +48,7 @@ const StartWritingBtn = ({ manuTitle }) => {
       });
 
       // 4. 원고 페이지로 이동
-      router.push(`/${user.id}/${data.id}`);
+      router.push(`/manu/${data.id}`);
     } catch (err) {
       console.error("❌ 원고집 생성 실패:", err);
     } finally {

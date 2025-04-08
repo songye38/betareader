@@ -17,8 +17,8 @@ import FeedbackSlider from '@/components/FeedbackComponents/FeedbackSlider';
 
 const WritingFloatingMenu = () => {
   console.log('페이지 진입');
-  const [activeTitle, setActiveTitle] = useState('전체 에피소드');
-  const [activeSlider, setActiveSlider] = useState('allEpi'); // 'idea', 'character', 'environment', 'allEpi', 'bookmark', null
+  const [activeTitle, setActiveTitle] = useState('null');
+  const [activeSlider, setActiveSlider] = useState('null'); // 'idea', 'character', 'environment', 'allEpi', 'bookmark', null
   const [isAllItemSetOpen, setIsAllItemSetOpen] = useState(false); // ✅ 추가
   const [showModal, setShowModal] = useState(false);
 
