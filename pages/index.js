@@ -4,6 +4,8 @@ import AddIdeaPopup from "@/components/Popups/AddIdeaPopup";
 
 const MainPage = () => {
 
+  console.log("메인 진입했나?")
+
   return (
     <div 
       style={{

@@ -36,6 +36,17 @@ const FeedbackSet = () => {
         padding: '24px',
       }}
     >
+        <div
+        style={{
+          fontSize: '18px',
+          fontWeight: '600',
+          color: 'white',
+          fontFamily: 'Pretendard',
+          marginBottom: '8px',
+        }}
+      >
+        피드백
+      </div>
       {mockFeedbacks.map((feedback) => (
         <FeedbackItem
           key={feedback.id}

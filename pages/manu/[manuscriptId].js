@@ -13,8 +13,10 @@ import { FormProvider } from 'react-hook-form';
 import ContentInput from '@/components/WritingPageComponents/ContentInput';
 import useManuscriptSetting from '@/hooks/useManuscriptSetting';
 import FeedbackSettingModal from '@/components/FeedbackComponents/FeedbackSettingModal';
+import FeedbackSlider from '@/components/FeedbackComponents/FeedbackSlider';
 
 const WritingFloatingMenu = () => {
+  console.log('페이지 진입');
   const [activeTitle, setActiveTitle] = useState('전체 에피소드');
   const [activeSlider, setActiveSlider] = useState('allEpi'); // 'idea', 'character', 'environment', 'allEpi', 'bookmark', null
   const [isAllItemSetOpen, setIsAllItemSetOpen] = useState(false); // ✅ 추가
@@ -33,7 +35,7 @@ const WritingFloatingMenu = () => {
   } = useManuscriptSetting();
 
 
-  const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크'];
+  const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크','피드백'];
 
   const handleSliderOpen = (title) => {
     setActiveTitle(title);
@@ -59,6 +61,9 @@ const WritingFloatingMenu = () => {
         break;
       case '전체 에피소드':
         setActiveSlider('allEpi');
+        break;
+      case '피드백':
+        setActiveSlider('feedback');
         break;
       default:
         setActiveSlider(null);
@@ -144,7 +149,8 @@ const WritingFloatingMenu = () => {
         onClose={closeAllSliders}
         activeTitle="프롤로그: 각성"
       />
-              <FormProvider {...methods}>
+      <FeedbackSlider isVisible={activeSlider === 'feedback'} onClose={closeAllSliders} />
+        <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit)}
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
