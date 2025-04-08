@@ -8,6 +8,8 @@ const poppins = Poppins({
   display: 'swap',
 });
 
+const MAIN_PURPLE = '#8B5CF6';
+
 const mockInsights = [
   {
     category: '서사 흐름',
@@ -47,50 +49,46 @@ const InsightSet = () => {
         display: 'flex',
         flexDirection: 'column',
         gap: '16px',
-        backgroundColor: '#1F1F24',
-        borderRadius: '12px',
       }}
     >
-      {/* 헤더 영역 */}
+      {/* 섹션 제목 */}
       <div
         style={{
           fontSize: '18px',
           fontWeight: '600',
           color: 'white',
           fontFamily: 'Pretendard',
-          marginBottom: '8px',
         }}
       >
         BetaFocus
       </div>
 
-      {/* 설명 영역 */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {/* 설명 박스 */}
+      <div
+        style={{
+          backgroundColor: '#2A2B2F',
+          padding: '12px 16px',
+          borderRadius: '8px',
+          color: '#eee',
+          fontSize: '14px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+        }}
+      >
         <div
+          className={poppins.className}
           style={{
-            backgroundColor: '#3A3A40',
-            borderRadius: 12,
-            padding: '12px 16px',
-            fontSize: 14,
-            fontWeight: 600,
-            color: 'white',
-            lineHeight: 1.5,
+            color: MAIN_PURPLE,
+            fontSize: '14px',
+            fontWeight: '700',
+            lineHeight: '24px',
           }}
         >
-          <div
-            className={poppins.className}
-            style={{
-              cursor: 'pointer',
-              color: '#C6CCFF',
-              fontSize: '14px',
-              fontWeight: '700',
-              lineHeight: '30.8px',
-              wordWrap: 'break-word',
-            }}
-          >
-            ✨ BetaFocus란?
-          </div>
-          <div>피드백 속 핵심 인사이트에 집중하고, 더 나은 글을 완성하세요.</div>
+          ✨ BetaFocus란?
+        </div>
+        <div style={{ color: '#ccc' }}>
+          피드백 속 핵심 인사이트에 집중하고, 더 나은 글을 완성하세요.
         </div>
       </div>
 
@@ -112,16 +110,18 @@ const InsightSet = () => {
           style={{
             width: '100%',
             padding: '12px',
-            borderRadius: '8px',
-            backgroundColor: '#5A5CFF',
+            borderRadius: '6px',
+            backgroundColor: MAIN_PURPLE,
             color: 'white',
             fontWeight: 600,
             fontSize: '14px',
             border: 'none',
             cursor: 'pointer',
+            transition: 'background-color 0.2s ease',
           }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = '#7C4DFF')}
+          onMouseOut={(e) => (e.target.style.backgroundColor = MAIN_PURPLE)}
           onClick={() => {
-            // 전체 재작성 핸들러
             alert('전체 재작성 기능 실행!');
           }}
         >
@@ -132,7 +132,7 @@ const InsightSet = () => {
           style={{
             width: '100%',
             padding: '12px',
-            borderRadius: '8px',
+            borderRadius: '6px',
             backgroundColor: '#3A3B42',
             color: 'white',
             fontWeight: 600,
@@ -141,7 +141,6 @@ const InsightSet = () => {
             cursor: 'pointer',
           }}
           onClick={() => {
-            // 선택 인사이트 기반 수정 핸들러
             alert(`선택된 인사이트: ${selectedIndexes.length}개`);
           }}
         >
