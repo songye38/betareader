@@ -1,14 +1,13 @@
 import RecentEpiSet from "@/components/MainPageComponents/RecentEpiSet";
 import AllManuSet from "@/components/MainPageComponents/AllManuSet";
-import AddIdeaPopup from "@/components/Popups/AddIdeaPopup";
+import UserSectionComponent from "@/components/UserSection/UserSectionComponent";
 
 const MainPage = () => {
-
-  console.log("메인 진입했나?")
 
   return (
     <div 
       style={{
+        marginTop: "80px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -16,13 +15,9 @@ const MainPage = () => {
         gap: "32px",
       }}
     >
-
-
-      
+      <UserSectionComponent />
       <RecentEpiSet />
       <AllManuSet />
-      <AddIdeaPopup />
-
     </div>
   );
 };
