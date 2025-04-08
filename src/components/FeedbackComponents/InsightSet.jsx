@@ -47,7 +47,6 @@ const InsightSet = () => {
         display: 'flex',
         flexDirection: 'column',
         gap: '16px',
-        padding: '24px',
         backgroundColor: '#1F1F24',
         borderRadius: '12px',
       }}

@@ -33,7 +33,7 @@ const FeedbackSet = () => {
         width: '100%',
         maxWidth: '700px',
         margin: '0 auto',
-        padding: '24px',
+        // padding: '24px',
       }}
     >
         <div
