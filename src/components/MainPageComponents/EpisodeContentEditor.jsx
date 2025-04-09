@@ -12,8 +12,6 @@ const EpisodeContentEditor = ({ control, errors }) => {
       <ContentInput
         control={control}
         error={errors.content}
-        title="내용"
-        defaultValue={currentTab.content}
       />
     </>
   );

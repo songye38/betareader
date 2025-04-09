@@ -13,7 +13,9 @@ const useEpisodeForm = () => {
     const [allEpisodes, setAllEpisodes] = useState([]);
     const [isSaving, setIsSaving] = useState(false); // 자동 저장 여부
     const {manuscript} = useManuscriptStore();
-    const {tabs} = useTabStore();
+    const {tabs,selectedTab} = useTabStore();
+
+    console.log("tabs 정보 안나오나?",tabs);
 
     useEffect(() => {
         if (manuscript) {
@@ -26,8 +28,8 @@ const useEpisodeForm = () => {
     
     const methods = useForm({
         defaultValues: {
-        title: '',
-        episode: '',
+        title: '무제',
+        content: '',
         },
         mode: 'onChange',
     });
@@ -35,25 +37,26 @@ const useEpisodeForm = () => {
   const { control, handleSubmit, formState: { errors }, watch, setValue } = methods;
   
   const titleValue = watch('title');
-  const episodeValue = watch('episode');
+  const episodeValue = watch('content');
   
   const isFormValid = titleValue && episodeValue !== '';
 
   // 폼 제출 함수
   const onSubmit = async (data) => {
 
-    if (!manuscript.id || !tabs.id || !data.title || !data.episode) {
-      toast.error("hook 입니다. -------필수 정보가 누락되었습니다. 모든 정보를 확인해주세요.");
+
+    if (!manuscript.id || !selectedTab.id || !data.title || !data.content) {
+      toast.error("필수 정보가 누락되었습니다.");
       return;
     }
 
     // 서버에 보낼 데이터
     const requestData = {
-      tabNo : data.tabNo,
+      tabNo : selectedTab.no,
       manuscriptId : manuscript.id,
-      tabId : tabs.id,
+      tabId : selectedTab.id,
       title: data.title,
-      content: data.episode,
+      content: data.content,
     };
 
     console.log("hook에서 최종 데이터 저장",requestData)

@@ -2,7 +2,7 @@ import React from 'react';
 import SaveEpiBtn from './Buttons/SaveEpiBtn';
 import CheckCommentBtn from './Buttons/CheckCommentBtn';
 
-const NavMainSection = () => {
+const NavMainSection = ({ onSave }) => {
 
   return (
     <div style={{
@@ -12,7 +12,8 @@ const NavMainSection = () => {
       flexDirection: 'row',
       gap: '10px',
     }}>
-        <SaveEpiBtn />
+      {/* 여기서 임시저장을 한다.  */}
+        <SaveEpiBtn onClick={onSave} />
         <CheckCommentBtn />
 
     </div>

@@ -15,6 +15,7 @@ export const saveEpisode = async (requestData) => {
             type: requestData.type,
           },
       )
+    .select()
     .single();
 
     if (error) {
