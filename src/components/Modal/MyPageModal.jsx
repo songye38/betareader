@@ -24,7 +24,6 @@ const MyPageModal = ({onClose,username}) => {
 
   return (
     <div 
-      onClick={handleLogout}
       style={{
         width: 345,
         height: 'auto',
@@ -140,6 +139,7 @@ const MyPageModal = ({onClose,username}) => {
         </div>
         {/* 로그아웃 */}
         <div 
+            onClick={handleLogout}
             style={{
             alignSelf: 'stretch',
             paddingLeft: 13,
