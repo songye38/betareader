@@ -1,38 +1,49 @@
 import { useState, useEffect } from 'react';
-import { fetchManuscriptsByUserId } from '@/models/manuscriptModel'; // 모델에서 API 호출 함수 가져오기
-import useAuthStore from '@/store/useAuthStore'; // 로그인된 유저 정보 가져오기
+import { fetchManuscriptsByUserId } from '@/models/manuscriptModel';
+import { deleteManuscriptById } from '@/models/manuscriptModel'; // ✅ 삭제 함수 import
+import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/router';
 import useManuscriptStore from '@/store/useManuscriptStore';
 
-const useManuscripts = () => {
-  const user = useAuthStore((state) => state.user); // 로그인된 유저 정보
-  const [loading, setLoading] = useState(false); // 로딩 상태
-  const [error, setError] = useState(null); // 에러 상태
-  const router = useRouter(); // 현재 페이지 경로 가져오기
-  const {manuscript,setManuscript} = useManuscriptStore();
+const useManuscripts = (limit = null) => {
+  const user = useAuthStore((state) => state.user);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const router = useRouter();
+  const { manuscript, setManuscript } = useManuscriptStore();
 
   useEffect(() => {
-    if (!user) return; // 유저가 없으면 데이터를 가져오지 않음
+    if (!user) return;
 
     const getManuscripts = async () => {
-      setLoading(true); // 로딩 시작
-      setError(null); // 에러 초기화
+      setLoading(true);
+      setError(null);
 
       try {
-        const data = await fetchManuscriptsByUserId(user.id); // 모델에서 데이터 가져오기
-        setManuscript(data); // 데이터 상태 설정
-        
+        const data = await fetchManuscriptsByUserId(user.id, limit);
+        setManuscript(data);
       } catch (err) {
-        setError(err.message); // 에러 상태 설정
+        setError(err.message);
       }
 
-      setLoading(false); // 로딩 끝
+      setLoading(false);
     };
 
     getManuscripts();
-  }, [user, router.pathname]); // 의존성 추가
+  }, [user, router.pathname, limit]);
 
-  return { manuscript, loading, error };
+  // ✅ 삭제 함수 추가
+  const deleteManuscript = async (manuscriptId) => {
+    try {
+      await deleteManuscriptById(manuscriptId); // 실제 삭제
+      const updated = await fetchManuscriptsByUserId(user.id, limit); // 목록 갱신
+      setManuscript(updated); // 상태 갱신
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  return { manuscript, loading, error, deleteManuscript }; // ✅ deleteManuscript도 반환
 };
 
 export default useManuscripts;

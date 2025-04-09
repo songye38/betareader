@@ -1,6 +1,17 @@
 import React from 'react';
 
-const MyManuItem = () => {
+import dayjs from 'dayjs'; // dayjs 라이브러리 가져오기
+import relativeTime from 'dayjs/plugin/relativeTime'; // 상대 시간 플러그인
+import 'dayjs/locale/ko'; // 한국어 로케일 가져오기
+
+// dayjs에 상대 시간 플러그인 사용
+dayjs.extend(relativeTime);
+
+// dayjs에 한국어 로케일 설정
+dayjs.locale('ko');
+
+const MyManuItem = ({id,title,day,num,onDelete}) => {
+  const relativeTimeDisplay = dayjs(day).fromNow();
   return (
     <div style={{
       width: 956, height: 146, paddingLeft: 28, paddingRight: 28, paddingTop: 24, paddingBottom: 24,
@@ -14,7 +25,7 @@ const MyManuItem = () => {
         <div style={{
           color: 'white', fontSize: 20, fontFamily: 'Pretendard', fontWeight: '600', lineHeight: '28px', wordWrap: 'break-word'
         }}>
-          악역에게 꽃길을 깔아주려 합니다
+          {title}
         </div>
         <div style={{
           justifyContent: 'flex-start', alignItems: 'center', gap: 12, display: 'inline-flex'
@@ -22,7 +33,7 @@ const MyManuItem = () => {
           <div style={{
             color: '#D9DEEE', fontSize: 16, fontFamily: 'Pretendard', fontWeight: '400', lineHeight: '22.40px', wordWrap: 'break-word'
           }}>
-            2024.01.23. 제작
+            {relativeTimeDisplay} 제작
           </div>
           <div style={{
             width: 2, height: 2, background: '#BFC3D3', borderRadius: 9999
@@ -30,20 +41,26 @@ const MyManuItem = () => {
           <div style={{
             color: '#D9DEEE', fontSize: 16, fontFamily: 'Pretendard', fontWeight: '500', lineHeight: '22.40px', wordWrap: 'break-word'
           }}>
-            10개의 원고지
+            {num}개의 원고지
           </div>
         </div>
       </div>
-      <div style={{
-        paddingTop: 8, paddingBottom: 8, paddingLeft: 16, paddingRight: 20, background: '#3A3D46',
-        borderRadius: 12, justifyContent: 'center', alignItems: 'center', gap: 4, display: 'flex'
-      }}>
-        <img src="/delete_icon.svg" alt="Profile" width={24} height={24} />
-        <div style={{
-          textAlign: 'center', color: 'white', fontSize: 14, fontFamily: 'Pretendard',
-          fontWeight: '400', lineHeight: '19.60px', wordWrap: 'break-word'
+      <div 
+        onClick={() => {
+          if (confirm('정말 삭제하시겠어요?')) {
+            onDelete?.(id); // 삭제 함수 호출
+          }
+        }}
+        style={{
+          paddingTop: 8, paddingBottom: 8, paddingLeft: 16, paddingRight: 20, background: '#3A3D46',
+          borderRadius: 12, justifyContent: 'center', alignItems: 'center', gap: 4, display: 'flex'
         }}>
-          삭제
+          <img src="/delete_icon.svg" alt="Profile" width={24} height={24} />
+          <div style={{
+            textAlign: 'center', color: 'white', fontSize: 14, fontFamily: 'Pretendard',
+            fontWeight: '400', lineHeight: '19.60px', wordWrap: 'break-word'
+          }}>
+            삭제
         </div>
       </div>
     </div>

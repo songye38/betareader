@@ -1,22 +1,28 @@
 import supabase from '@/supabase/supabaseClient';
 
 // 유저 아이디로만 필터링하는 함수
-export const fetchManuscriptsByUserId = async (userId) => {
-  const { data, error } = await supabase
+export const fetchManuscriptsByUserId = async (userId, limit = null) => {
+  let query = supabase
     .from('manuscript')
     .select('id, user_id, title, last_edited_at, episode_count, isSetup')
-    .eq('user_id', userId) // 특정 유저의 원고만 필터링
-    .order('last_edited_at', { ascending: false }) // 최신 수정 기준 내림차순 정렬
-    .limit(5); // 상위 5개만 가져오기
+    .eq('user_id', userId)
+    .order('last_edited_at', { ascending: false });
+
+  if (limit) {
+    query = query.limit(limit);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     throw new Error('Manuscript fetch error: ' + error.message);
   }
 
-  console.log("서버에서 가져온 데이터",data);
+  console.log("서버에서 가져온 데이터", data);
 
   return data;
 };
+
 
 // 원고 아이디로만 필터링하는 함수
 export const fetchManuscriptById = async (manuscriptId) => {
@@ -42,4 +48,18 @@ export const fetchManuscripts = async (userId, manuscriptId = null) => {
 
   // manuscriptId가 없을 경우 userId로 원고들을 가져옵니다.
   return await fetchManuscriptsByUserId(userId);
+};
+
+
+export const deleteManuscriptById = async (manuscriptId) => {
+  const { data, error } = await supabase
+    .from('manuscript')
+    .delete()
+    .eq('id', manuscriptId);
+
+  if (error) {
+    throw new Error('Manuscript delete error: ' + error.message);
+  }
+
+  return data; // 삭제된 row 정보 반환
 };
