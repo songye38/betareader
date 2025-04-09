@@ -48,7 +48,25 @@ const WritingPage = () => {
 
   return (
     <div>
-      <Navbar customNavComponent={<NavMainSection onSave={handleSubmit(onSubmit)} />} />
+      <Navbar
+        customNavComponent={
+            <NavMainSection
+            onSave={async () => {
+                const saved = await handleSubmit(onSubmit)();
+
+                console.log("그래서 saves에는 무엇이?",saved);
+                if (saved) {
+                useTabStore.getState().updateTab(saved.tab_id, {
+                    title: saved.title,
+                    content: saved.content,
+                    status: '임시저장됨',
+                });
+                }
+            }}
+            />
+        }
+        />
+
 
 
       <FormProvider {...methods}>

@@ -31,7 +31,7 @@ const UserSectionComponent = () => {
           wordWrap: 'break-word',
         }}
       >
-        My Section
+        My BetaSpace
       </div>
 
 

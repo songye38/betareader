@@ -6,14 +6,12 @@ import useAuthStore from '@/store/useAuthStore';
 const RecentEpiSet = () => {
   // useEpisodeForm 훅에서 필요한 데이터를 가져옵니다.
   const { recentEpisodes = [], fetchRecentEpisodes } = useEpisodeForm();
-  const { user } = useAuthStore(); // 로그인된 유저 정보 가져오기
-
+  const { user,profile } = useAuthStore(); // 로그인된 유저 정보 가져오기
+  
   useEffect(() => {
-    // user 정보가 있을 때만 fetchRecentEpisodes 호출
-    if (user?.id) {
-      fetchRecentEpisodes(user.id); // user.id를 전달하여 에피소드 가져오기
-    }
-  }, [user]); // user 상태가 변경될 때마다 실행
+    if (!user || !user.id) return;
+    fetchRecentEpisodes(user.id);
+  }, [user?.id]);
 
   return (
     <div
@@ -38,7 +36,7 @@ const RecentEpiSet = () => {
           wordWrap: 'break-word',
         }}
       >
-        최근 작성한 원고
+        최근 작성한 원고 제목
       </div>
 
       {/* 최근 에피소드가 있을 때만 표시 */}

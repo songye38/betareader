@@ -31,10 +31,9 @@ const useWritingTab = () => {
       const newEpisodeId = currentManuscriptId;
   
       const newTab = {
-        type: 'episode',
+        // type: 'episode',
         id: newTabId,
         no: newEpisodeId,
-        // label: `${newEpisodeId}화`,
         EpisodeId: newEpisodeId,
         selected: true,
         title :'무제',
@@ -48,7 +47,6 @@ const useWritingTab = () => {
         setSelectedTab(newTabId, newEpisodeId);
       }
 
-      console.log("새로운 탭이 추가됨.");
   
       router.push({
         pathname: router.pathname,

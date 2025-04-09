@@ -17,6 +17,7 @@ const Navbar = ({ customNavComponent }) => {
   const { user, logout } = useAuthStore();
   const router = useRouter(); // useRouter 사용
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+  console.log("navbar에서 user는 있는가?",user);
 
   // 모달 토글 함수
   const toggleModal = () => {
@@ -74,8 +75,10 @@ const Navbar = ({ customNavComponent }) => {
 
       {/* 오른쪽 부분 (버튼 및 아이콘) */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-      {/* {user ? <NavUserSection user={user} /> : <NavSignSection />} */}
-      {customNavComponent ? customNavComponent : user ? <NavUserSection user={user} /> : <NavSignSection />}
+      {
+        customNavComponent ? customNavComponent :
+        user && user.id && user.email ? <NavUserSection user={user} /> : <NavSignSection />
+      }
       </div>
     </div>
   );

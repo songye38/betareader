@@ -9,6 +9,9 @@ const NavUserSection = ({signin}) => {
   const router = useRouter(); // useRouter 사용
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
 
+  console.log("profile은 이제 안되나?",profile);
+  console.log("user은 이제 안되나?",user);
+
   // 모달 토글 함수
   const toggleModal = () => {
     setIsModalOpen((prevState) => !prevState); // 모달 상태 변경
@@ -71,6 +74,8 @@ const NavUserSection = ({signin}) => {
             zIndex: 100, // 모달이 다른 요소 위에 올 수 있도록
           }}
         >
+
+          
           <MyPageModal onClose={toggleModal} username = {profile.username} />
         </div>
       )}

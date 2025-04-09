@@ -13,8 +13,9 @@ const NavMainSection = ({ onSave }) => {
       gap: '10px',
     }}>
       {/* 여기서 임시저장을 한다.  */}
-        <SaveEpiBtn onClick={onSave} />
-        <CheckCommentBtn />
+
+      <SaveEpiBtn onClick={onSave} />
+      <CheckCommentBtn />
 
     </div>
   );

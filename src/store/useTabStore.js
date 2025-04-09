@@ -20,12 +20,21 @@ const useTabStore = create((set) => ({
       };
     }),
 
-    resetTabs: () =>
-      set(() => ({
-        tabs: [],
-        selectedTab: { id: null, no: null },
-        currentManuscriptId: 1, // 🆕 currentManuscriptId도 초기화
-      })),
+  resetTabs: () =>
+    set(() => ({
+      tabs: [],
+      selectedTab: { id: null, no: null },
+      currentManuscriptId: 1, // 🆕 currentManuscriptId도 초기화
+    })),
+
+  updateTab: (id, updatedFields) =>
+    set((state) => {
+      const updatedTabs = state.tabs.map((tab) =>
+        tab.id === id ? { ...tab, ...updatedFields } : tab
+      );
+  
+      return { tabs: updatedTabs };
+    }),
 
   setSelectedTab: (tabId, tabNo) =>
     set((state) => {

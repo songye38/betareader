@@ -21,7 +21,6 @@ const useManuscripts = () => {
       try {
         const data = await fetchManuscriptsByUserId(user.id); // 모델에서 데이터 가져오기
         setManuscript(data); // 데이터 상태 설정
-        console.log("manuscript 상태값은 어덯게 저장되어 있나?",manuscript);
         
       } catch (err) {
         setError(err.message); // 에러 상태 설정

@@ -61,7 +61,7 @@ const SidebarComponent = () => {
   };
   
   useEffect(() => {
-    console.log('Tabs changed:', tabs); // tabs 상태 변경 시 콘솔 출력
+    // console.log('Tabs changed:', tabs); // tabs 상태 변경 시 콘솔 출력
   }, [tabs]);
   
   

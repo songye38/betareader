@@ -7,44 +7,59 @@ export default function AuthListener() {
   const setProfile = useAuthStore((state) => state.setProfile);
 
   useEffect(() => {
-    const fetchUserData = async (user) => {
-      if (!user) {
+    const fetchUserData = async (session) => {
+      if (!session?.user) {
         setUser(null);
         setProfile(null);
         return;
       }
 
-      setUser(user); // 기본 유저 정보 저장
 
-      // 🔥 profile 테이블에서 추가 정보 가져오기
+      console.log("session.user.id",session.user.id);
+      
+
+      // 최소한의 정보만 저장 (persist로 저장됨)
+      const user = session.user;
+      setUser({ id: user.id, email: user.email });
+
+      // Supabase에서 추가 정보(profile) 가져오기
       const { data: profile, error } = await supabase
-        .from("profile")
+        .from("profile") // 테이블명 꼭 확인!
         .select("username")
-        .eq("user_id", user.id)
+        .eq("user_id", session.user.id)
         .single();
 
       if (error) {
+        console.error("❌ 프로필 가져오기 실패:", error);
         setProfile(null);
       } else {
+        console.log("✅ 프로필 가져오기 성공:", profile);
         setProfile(profile);
       }
     };
 
-    // 현재 로그인된 유저 정보 가져오기
+    // 1. 최초 유저 가져오기
     const getUser = async () => {
-      const { data } = await supabase.auth.getUser(); // 로그인된 사용자 정보 가져오기
-      await fetchUserData(data?.user);
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log("그래서 session은",session);
+      await fetchUserData(session);
     };
     getUser();
 
-    // 로그인 상태 감지 및 유저 정보 업데이트
-    const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
-    //  console.log("🔄 Auth 상태 변경:", event, session);
-      await fetchUserData(session?.user);
-    });
+    // 2. auth 상태 감지
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log("📢 Auth 이벤트:", event);
+    console.log("📦 전달된 세션:", session);
+        await fetchUserData(session);
+      }
+    );
 
-    return () => listener?.subscription?.unsubscribe();
+    // 🧼 정리 (언마운트 시 구독 해제)
+    return () => {
+      listener?.subscription?.unsubscribe();
+    };
   }, [setUser, setProfile]);
 
-  return null; // UI를 렌더링하지 않음
+  return null;
 }
