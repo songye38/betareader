@@ -34,7 +34,7 @@ const useWritingTab = () => {
         type: 'episode',
         id: newTabId,
         no: newEpisodeId,
-        label: `${newEpisodeId}화`,
+        // label: `${newEpisodeId}화`,
         EpisodeId: newEpisodeId,
         selected: true,
         title :'무제',

@@ -63,7 +63,7 @@ const StartWritingBtn = ({ manuTitle }) => {
         width: 'auto',
         height: 52,
         padding: '12px 20px',
-        background: '#5E6CFF',
+        background: '#A78EF7',
         borderRadius: 16,
         display: 'inline-flex',
         justifyContent: 'center',

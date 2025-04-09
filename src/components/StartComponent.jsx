@@ -97,7 +97,7 @@ const StartComponent = ({ isSetup }) => {
           </div>
 
           {/* 새 원고지 작성 */}
-          <div style={{ ...cardStyle, background: isSetup ? '#5E6CFF' : '#2F3138' }}>
+          <div style={{ ...cardStyle, background: isSetup ? '#A78EF7' : '#2F3138' }}>
             <div style={cardContentStyle}>
               <div style={{ ...cardTitleStyle, color: isSetup ? 'white' : '#737373' }}>
                 새 원고지 작성

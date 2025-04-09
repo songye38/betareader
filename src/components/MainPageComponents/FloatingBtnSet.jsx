@@ -8,7 +8,7 @@ import EnvironmentSlider from '@/components/WritingPageComponents/EnvironmentSli
 import AllEpiSlider from '@/components/WritingPageComponents/AllEpiSlider';
 import FeedbackSlider from '@/components/FeedbackComponents/FeedbackSlider';
 import FeedbackSettingModal from '@/components/FeedbackComponents/FeedbackSettingModal';
-import useSliderManager from '@/hooks/useSliderManager';
+import useSliderStore from '@/store/useSliderStore'; // ✅ zustand store로 변경
 
 const FloatingBtnSet = () => {
   const {
@@ -17,7 +17,7 @@ const FloatingBtnSet = () => {
     showModal,
     setShowModal,
     closeAllSliders,
-  } = useSliderManager();
+  } = useSliderStore();
 
   return (
     <>

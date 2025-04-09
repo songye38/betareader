@@ -10,7 +10,6 @@ const WritingFloatingMenu = () => {
 
   return (
     <div>
-      페이지를 그리자
       {tabs.length === 0 ? <StartPage /> : <WritingPage />}
     </div>
   );

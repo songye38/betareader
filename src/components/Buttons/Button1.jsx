@@ -10,7 +10,7 @@ const Button1 = ({ onClick, type, status }) => {
     alignItems: 'center',      // 수직 중앙 정렬
     gap: '0.25rem',
     background: type === "default" 
-      ? (status === "false" ? "gray" : "#5E6CFF")  // status가 "false"일 때 gray
+      ? (status === "false" ? "gray" : "#A78EF7")  // status가 "false"일 때 gray
       : "#2C2D34",
     border: 'none',
     borderRadius: '0.75rem', // 모서리 둥글기

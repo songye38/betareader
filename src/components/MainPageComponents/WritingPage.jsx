@@ -5,12 +5,12 @@ import WritingFloatingBtn from '@/components/Buttons/WritingFloatingBtn';
 import Navbar from '@/components/NavBar';
 import NavMainSection from '@/components/NavMainSection';
 import useManuscriptSetting from '@/hooks/useManuscriptSetting';
-import useSliderManager from '@/hooks/useSliderManager';
 import { FormProvider } from 'react-hook-form';
 import EpisodeContentEditor from '@/components/MainPageComponents/EpisodeContentEditor';
 import EpisodeTitleEditor from '@/components/MainPageComponents/EpisodeTitleEditor';
 import useTabStore from '@/store/useTabStore';
 import FloatingBtnSet from '@/components/MainPageComponents/FloatingBtnSet';
+import useSliderStore from '@/store/useSliderStore'; // ✅ zustand store로 변경
 
 const WritingPage = () => {
   const { tabs } = useTabStore();
@@ -19,7 +19,7 @@ const WritingPage = () => {
   const {
     activeTitle,
     handleSliderOpen,
-  } = useSliderManager();
+  } = useSliderStore(); // ✅ useSliderManager 대신 zustand store 사용
 
   const {
     methods,
@@ -90,7 +90,7 @@ const WritingPage = () => {
         </div>
       </div>
 
-      {/* ✅ 슬라이더 및 모달 통합 컴포넌트 */}
+      {/* ✅ zustand 기반 슬라이더 및 모달 컴포넌트 */}
       <FloatingBtnSet />
 
       {/* 에피소드 에디터 */}

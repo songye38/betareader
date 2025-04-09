@@ -13,7 +13,7 @@ const SaveEpiBtn = ({ disabled,onClick }) => {
         paddingRight: 14,
         paddingTop: 8,
         paddingBottom: 8,
-        background: '#5E6CFF',
+        background: '#A78EF7',
         borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center',

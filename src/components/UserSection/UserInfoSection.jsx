@@ -1,8 +1,16 @@
 'use client';
 
 import React from 'react';
+import useAuthStore from '@/store/useAuthStore';
 
 const UserInfoSection = () => {
+  const { profile } = useAuthStore();
+
+  // profile이 없을 때는 null 반환하거나 로딩 처리
+  if (!profile) {
+    return null; // 또는 <div>로딩 중...</div>
+  }
+
   return (
     <div
       style={{
@@ -24,7 +32,7 @@ const UserInfoSection = () => {
     >
       {/* 유저 인사말 */}
       <div style={{ fontSize: '20px', fontWeight: 600 }}>
-        안녕하세요, <span style={{ color: '#A78BFA' }}>지현님</span>
+        안녕하세요, <span style={{ color: '#A78BFA' }}>{profile.username}님</span>
       </div>
 
       {/* 멤버십 뱃지 */}

@@ -22,7 +22,7 @@ const UploadingEpi = () => {
     >
       <div data-svg-wrapper style={{ position: 'relative' }}>
         <svg width="92" height="91" viewBox="0 0 92 91" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0.5" width="91" height="91" rx="20" fill="#5E6CFF" />
+          <rect x="0.5" width="91" height="91" rx="20" fill="#A78EF7" />
         </svg>
       </div>
       

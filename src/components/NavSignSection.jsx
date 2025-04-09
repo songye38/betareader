@@ -61,7 +61,7 @@ const NavSignSection = () => {
 const buttonStyle = {
   width: '100px',
   padding: '8px 4px',
-  backgroundColor: '#5E6CFF',
+  backgroundColor: '#A78EF7',
   color: 'white',
   border: 'none',
   borderRadius: '12px',

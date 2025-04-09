@@ -10,7 +10,7 @@ const SettingSaveBtn = ({ disabled }) => {
         paddingRight: 24,
         paddingTop: 14,
         paddingBottom: 14,
-        background: disabled ? '#2F3138' : '#5E6CFF',
+        background: disabled ? '#2F3138' : '#A78EF7',
         borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',

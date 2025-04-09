@@ -19,7 +19,7 @@ const AddManuBtn = () => {
           paddingRight: 20,
           paddingTop: 12,
           paddingBottom: 12,
-          background: "#5E6CFF",
+          background: "#A78EF7",
           borderRadius: 16,
           justifyContent: "center",
           alignItems: "center",

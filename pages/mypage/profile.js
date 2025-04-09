@@ -144,7 +144,7 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
                       width: '162px',
                       height: '56px',
                       padding: '14px 24px',
-                      background: '#5E6CFF',
+                      background: '#A78EF7',
                       borderRadius: '16px',
                       display: 'flex',
                       justifyContent: 'center',
