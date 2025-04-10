@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const goals = [
   '문장 표현력 강화하기',
@@ -20,8 +20,13 @@ const goals = [
   '자신만의 문체와 스타일 찾기',
 ];
 
-const SetGoalModal = ({ onClose, onConfirm }) => {
+const SetGoalModal = ({ initialGoals = [], onClose, onConfirm }) => {
   const [selected, setSelected] = useState([]);
+
+  // ✅ 모달 열릴 때 초기 목표 설정
+  useEffect(() => {
+    setSelected(initialGoals);
+  }, [initialGoals]);
 
   const toggleGoal = (goal) => {
     const isSelected = selected.includes(goal);
@@ -29,8 +34,8 @@ const SetGoalModal = ({ onClose, onConfirm }) => {
     if (isSelected) {
       setSelected(selected.filter((g) => g !== goal));
     } else {
-      if (selected.length >= 5) {
-        alert('최대 5개까지만 선택할 수 있어요!');
+      if (selected.length >= 3) {
+        alert('최대 3개까지만 선택할 수 있어요!');
         return;
       }
       setSelected([...selected, goal]);
@@ -62,7 +67,7 @@ const SetGoalModal = ({ onClose, onConfirm }) => {
         }}
       >
         <div style={{ fontSize: '20px', fontWeight: 600, marginBottom: '16px' }}>
-          ✍️ 글쓰기 목표 선택 (최대 5개)
+          ✍️ 글쓰기 목표 선택 (최대 3개)
         </div>
 
         <div
