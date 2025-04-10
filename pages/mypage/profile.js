@@ -1,25 +1,54 @@
 'use client';
 import { useState } from "react"; // react에서 useState를 올바르게 불러옵니다.
+import { useProfile } from "@/hooks/useProfile";
+import supabase from "@/supabase/supabaseClient";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import useAuthStore from "@/store/useAuthStore";
 
 const Profile = () => { // 컴포넌트 이름 대문자로 수정
 
     const [nickname, setNickname] = useState("");
     const [isFocused, setIsFocused] = useState(false);
+    const [userId, setUserId] = useState(null);
+    const { updateUsername } = useProfile(); // ✅ 훅에서 함수 가져오기
+    const profile = useAuthStore((state) => state.profile);
+
+    useEffect(() => {
+        const getSession = async () => {
+          const { data, error } = await supabase.auth.getSession();
+          if (error) {
+            console.error("세션 가져오기 실패:", error);
+          } else {
+            setUserId(data.session.user.id);          
+          }
+        };
+        getSession();
+      }, []);
 
     // 변경 내용 저장 버튼 클릭 시 호출될 함수
     const handleSubmit = async () => {
-      if (!nickname.trim()) {
-        alert("닉네임을 입력해주세요.");
-        return;
-      }
-
-      const requestData = {
-        userId,
-        nickname,
+        if (!nickname.trim()) {
+          alert("닉네임을 입력해주세요.");
+          return;
+        }
+    
+        if (!userId) {
+          alert("사용자 정보를 불러오지 못했습니다.");
+          return;
+        }
+    
+        try {
+          await updateUsername(userId, nickname);
+            toast.success("닉네임이 성공적으로 저장되었습니다.");
+        } catch (err) {
+            toast.success("닉네임 저장 중 오류가 발생했습니다.");
+        }
       };
 
-      // TODO: 서버에 requestData를 보낼 fetch 또는 axios 요청 추가
-    };
+    if (!profile) {
+    return <div style={{ color: 'white' }}>로딩 중...</div>; // 혹은 Skeleton UI로 교체
+    }
 
     return (
       <div style={{'display':'flex',flexDirection:'column',gap:'40px',justifyContent: 'center',alignItems: 'center',width:'100%'}}>
@@ -87,7 +116,8 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
               {/* 인풋 부분 */}
               <input
                   type="text"
-                  placeholder="닉네임을 입력해주세요"
+                  value={nickname} // ✅ value 바인딩
+                  placeholder={profile.username}
                   style={{
                       width: '948px',
                       height: '76px',
@@ -105,6 +135,7 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
                       border: 'none',
                       outline: 'none', // 클릭 시 기본 아웃라인 제거
                   }}
+                  onChange={(e) => setNickname(e.target.value)} // ✅ 상태 업데이트
                   onFocus={() => setIsFocused(true)}
                   onBlur={(e) => setIsFocused(e.target.value !== "")}  
               />
