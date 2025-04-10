@@ -7,9 +7,10 @@ const RecentEpiSet = () => {
   // useEpisodeForm 훅에서 필요한 데이터를 가져옵니다.
   const { recentEpisodes = [], fetchRecentEpisodes } = useEpisodeForm();
   const { user,profile } = useAuthStore(); // 로그인된 유저 정보 가져오기
-  
+
   useEffect(() => {
     if (!user || !user.id) return;
+    console.log("recentEpisodes에는 어떤것들이 들어있나?",recentEpisodes)
     fetchRecentEpisodes(user.id);
   }, [user?.id]);
 

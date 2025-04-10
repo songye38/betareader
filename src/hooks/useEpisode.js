@@ -113,34 +113,6 @@ const useEpisodeForm = () => {
     }
   };
 
-  // 자동 저장을 위한 debounce
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (isFormValid && !isSaving) {
-        setIsSaving(true);
-        
-        localStorage.setItem('episodeForm', JSON.stringify({
-          title: titleValue,
-          episode: episodeValue,
-        }));
-
-        toast.info("자동 저장되었습니다.", {
-          position: "bottom-center",
-          autoClose: 1000,
-          hideProgressBar: true,
-          closeButton: true,
-          theme: "dark",
-          draggable: false,
-          pauseOnHover: true,
-          transition: Slide,
-        });
-
-        setIsSaving(false);
-      }
-    }, 2000);
-
-    return () => clearTimeout(timeout); 
-  }, [titleValue, episodeValue ]);
 
   return {
     methods,

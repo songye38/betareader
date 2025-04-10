@@ -53,7 +53,8 @@ const MyManuItem = ({id,title,day,num,onDelete}) => {
         }}
         style={{
           paddingTop: 8, paddingBottom: 8, paddingLeft: 16, paddingRight: 20, background: '#3A3D46',
-          borderRadius: 12, justifyContent: 'center', alignItems: 'center', gap: 4, display: 'flex'
+          borderRadius: 12, justifyContent: 'center', alignItems: 'center', gap: 4, display: 'flex',
+          cursor : 'pointer',
         }}>
           <img src="/delete_icon.svg" alt="Profile" width={24} height={24} />
           <div style={{
