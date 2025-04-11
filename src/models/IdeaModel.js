@@ -1,20 +1,18 @@
 import supabase from '@/supabase/supabaseClient';
 
 // 아이디어 저장 함수
-export const createIdea = async (idea, userId) => {
+export const createIdea = async (idea,manuscriptId) => {
   const { title, category, description, tags } = idea;
 
   const { data, error } = await supabase
     .from('idea') // 테이블 이름
     .insert([
       {
-        user_id: userId,
-        manuscript_id : manuscript_id,
+        manuscript_id : manuscriptId,
         title,
         category,
         description,
-        tags, // Supabase에서 tags 컬럼이 배열로 저장 가능해야 함 (type: text[])
-        created_at: new Date().toISOString(), // created_at 필드가 있다면 추가
+        tags, 
       },
     ])
     .select();
@@ -25,4 +23,21 @@ export const createIdea = async (idea, userId) => {
   }
 
   return data[0]; // 저장된 데이터 반환
+};
+
+
+// 특정 manuscript_id로 아이디어 목록 가져오기
+export const getIdeasByManuscript = async (manuscriptId) => {
+  const { data, error } = await supabase
+    .from('idea')
+    .select('*')
+    .eq('manuscript_id', manuscriptId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('아이디어 목록 불러오기 실패:', error.message);
+    throw new Error('아이디어를 불러오는 중 오류가 발생했습니다.');
+  }
+
+  return data;
 };
