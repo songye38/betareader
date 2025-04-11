@@ -3,7 +3,7 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-const EpisodeInput = ({ control, error,title }) => {
+const EpisodeInput = ({ control, error,title,name}) => {
   return (
     <div
       style={{
@@ -28,7 +28,7 @@ const EpisodeInput = ({ control, error,title }) => {
       </div>
 
       <Controller
-        name="episode"
+        name={name}
         control={control}
         render={({ field }) => (
           <textarea

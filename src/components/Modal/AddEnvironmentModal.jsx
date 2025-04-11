@@ -4,21 +4,29 @@ import TitleInput from '../FormComponents/TitleInput';
 import EpisodeInput from '../FormComponents/EpisodeInput';
 import DropdownInput from '../FormComponents/DropdownInput';
 import CheckCommentBtn from '../Buttons/CheckCommentBtn';
-import useManuscriptSetting from '@/hooks/useManuscriptSetting';
 import KeywordInput from '../FormComponents/KeywordInput';
+import useEnvironment from '@/hooks/useEnvironment';
+import { useRouter } from 'next/router';
 
 const AddEnvironmentModal = ({ onClose }) => {
+  const router = useRouter(); // useRouter 사용
+  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
+
   const {
     methods,
     control,
     errors,
     handleSubmit,
-    watch,
-    onSubmit,
     handleKeywordChange,
-    loading,
+    watch,
+    setValue,
     getValues,
-  } = useManuscriptSetting();
+    error,
+    ideas,
+    loading,
+    fetchEnvironments,
+    addEnvironment,
+  } = useEnvironment();
 
   const [episodeState, setEpisodeState] = useState({ title: '', episode: '' });
 
@@ -80,12 +88,12 @@ const AddEnvironmentModal = ({ onClose }) => {
 
         <FormProvider {...methods}>
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit((formData) => addEnvironment(formData, manuscriptId))}
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
             <TitleInput control={control} error={errors.title} showLabel={false} title={'세계관 제목'} />
             <DropdownInput control={control} error={errors.dropdown} type={'세계관'} />
-            <EpisodeInput control={control} error={errors.episode} title={'상세설명'} />
+            <EpisodeInput control={control} error={errors.description} title={'상세설명'} name={"description"} />
             <KeywordInput
               control={control}
               error={errors.newKeywords}
@@ -94,6 +102,7 @@ const AddEnvironmentModal = ({ onClose }) => {
               loading={loading}
               title={'참고자료 링크'}
             />
+            <EpisodeInput control={control} error={errors.note} title={'비고'} name={"note"} />
           </form>
         </FormProvider>
       </div>
@@ -108,7 +117,10 @@ const AddEnvironmentModal = ({ onClose }) => {
           alignItems: 'center',
         }}
       >
-        <CheckCommentBtn disabled={!isFormValid} onClick={handleSubmit(onSubmit)} />
+        <CheckCommentBtn 
+          disabled={!isFormValid} 
+          onClick={handleSubmit((formData) => addEnvironment(formData, manuscriptId))}
+          />
       </div>
     </div>
   );

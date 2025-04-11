@@ -1,10 +1,39 @@
 import { useState } from 'react';
 import { createEnvironment,getEnvironmentsByManuscript } from '@/models/EnvironmentModel';
+import { useForm } from 'react-hook-form';
 
 const useEnvironment = () => {
   const [environments, setEnvironments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+
+
+      const methods = useForm({
+        defaultValues: {
+          title : '',
+          dropdown : '',
+          description : '',
+          newKeywords: [],
+          note : '',
+        },
+        mode: 'onChange',
+      });
+    
+      const { control, handleSubmit, formState: { errors }, watch, setValue ,getValues} = methods;
+
+      const handleKeywordChange = (updatedKeywords) => {
+        console.log("handleKeywordChange 호출됨");
+  
+        //TODO 이 부분 잠시 블럭처ㅣㄹ
+        setValue('newKeywords', updatedKeywords);
+        
+        // watch로 최신 상태 가져오기
+        console.log("키워드 업데이트:", watch("newKeywords")); 
+    }
+
+
+
 
   // 아이디어 목록 불러오기
   const fetchEnvironments = async (manuscriptId) => {
@@ -22,6 +51,8 @@ const useEnvironment = () => {
 
   // 아이디어 추가
   const addEnvironment = async (environment, manuscriptId) => {
+
+    console.log("여기 들어오나?",environment);
     setLoading(true);
     setError(null);
     try {
@@ -35,11 +66,19 @@ const useEnvironment = () => {
   };
 
   return {
-    ideas,
+    methods,
+    control,
+    errors,
+    handleSubmit,
+    watch,
+    setValue,
+    getValues,
+    environments,
     loading,
     error,
     fetchEnvironments,
     addEnvironment,
+    handleKeywordChange
   };
 };
 

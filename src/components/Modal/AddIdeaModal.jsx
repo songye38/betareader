@@ -89,7 +89,7 @@ const AddIdeaModal = ({ onClose}) => {
           >
             <TitleInput control={control} error={errors.title} showLabel={false} title={'아이디어 제목'} />
             <DropdownInput control={control} error={errors.dropdown} type={'아이디어'}/>
-            <EpisodeInput control={control} error={errors.episode} title={'상세내용'} />
+            <EpisodeInput control={control} error={errors.episode} title={'상세내용'} name={"episode"} />
             <KeywordInput
               control={control}
               error={errors.newKeywords}

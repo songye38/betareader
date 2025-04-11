@@ -1,29 +1,40 @@
 import supabase from '@/supabase/supabaseClient';
+import { toast } from 'react-toastify';
+import { getEnvironmentType } from '@/utils/typeMappings';
 
 // 아이디어 저장 함수
-export const createEnvironment = async (environment,manuscriptId) => {
-  const { title,type,description,reference_list,notes} = environment;
+export const createEnvironment = async (environment, manuscriptId) => {
+  try {
+    const { title, type, description, newKeywords, note } = environment;
 
-  const { data, error } = await supabase
-    .from('environment') // 테이블 이름
-    .insert([
-      {
-        manuscript_id : manuscriptId,
-        title,
-        type,
-        description,
-        reference_list,
-        notes
-      },
-    ])
-    .select();
+    const { data, error } = await supabase
+      .from('environment')
+      .insert([
+        {
+          manuscript_id: manuscriptId,
+          title,
+          type : getEnvironmentType(environment.dropdown),
+          description,
+          reference_list: newKeywords,
+          notes: note,
+        },
+      ])
+      .select()
+      .single(); // 단일 객체 반환
 
-  if (error) {
-    console.error('세계관 저장 실패:', error.message);
-    throw new Error('세계관 저장 중 오류가 발생했습니다.');
+    if (error) {
+      toast.error("세계관 생성 실패")
+      console.error('[세계관 생성 실패]', error.message);
+      throw new Error('세계관을 저장하는 도중 문제가 발생했습니다.');
+    }
+
+    toast.success("세계관 생성 성공");
+    console.log('[세계관 저장 완료]', data);
+    return data;
+  } catch (err) {
+    console.error('[createEnvironment 예외 발생]', err.message);
+    throw err;
   }
-
-  return data[0]; // 저장된 데이터 반환
 };
 
 // 특정 manuscript_id로 아이디어 목록 가져오기

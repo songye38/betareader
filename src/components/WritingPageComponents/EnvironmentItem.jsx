@@ -1,8 +1,11 @@
 import {React,useState }from 'react';
+import { getEnvironmentTypeKo } from '@/utils/typeMappings';
 
 const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
   const backgroundColor = isHovered ? '#383940' : '#2C2D34';
+
+  console.log("들어온environment ,environment",environment);
   const {
     title,
     type,
@@ -80,24 +83,24 @@ const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
       </div>
 
       {/* 제목 */}
-      <div style={{ fontSize: 18, fontWeight: 600 }}>{title}</div>
+      <div style={{ fontSize: 18, fontWeight: 600 }}>{environment.title}</div>
 
       {/* 타입 */}
-      <div style={{ fontSize: 14, color: '#A0A0A0', marginTop: '20px' }}>{type}</div>
+      <div style={{ fontSize: 14, color: '#A0A0A0', marginTop: '20px' }}>{getEnvironmentTypeKo(environment.type) || '카테고리 없음'}</div>
 
       {/* 상세 설명 */}
       {description && (
         <div style={{ fontSize: 14, whiteSpace: 'pre-wrap', lineHeight: 1.4 }}>
-          <strong>상세설명:</strong> {description}
+          <strong>상세설명:</strong> {environment.description}
         </div>
       )}
 
       {/* 참고 링크 */}
-      {references.length > 0 && (
+      {environment.reference_list.length > 0 && (
         <div style={{ fontSize: 14 }}>
           <strong>참고자료 링크:</strong>
           <ul style={{ paddingLeft: 16, marginTop: 8 }}>
-            {references.map((link, idx) => (
+            {environment.reference_list.map((link, idx) => (
               <li key={idx} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 <a
                   href={link}
