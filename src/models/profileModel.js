@@ -48,3 +48,48 @@ export async function getProfileGoals(userId) {
   
     return data;
   }
+
+
+  function sanitizeFileName(name) {
+    return name
+      .replace(/\s+/g, '-')           // 공백 → 하이픈
+      .replace(/[^\w.-]/g, '')        // 특수문자 제거 (한글 포함)
+      .toLowerCase();
+  }
+
+  // 이미지 업로드 및 URL 저장 함수
+export async function uploadProfileImage(userId, file) {
+    // 파일 이름을 유니크하게 지정 (예: user123.png)
+
+    const safeFileName = sanitizeFileName(file.name);
+    const filePath = `${userId}/${safeFileName}`;
+  
+    // 1. Storage에 업로드
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('profile-image') // 📦 너가 만든 storage 버킷 이름
+      .upload(filePath, file, {
+        upsert: true,
+      });
+  
+    if (uploadError) {
+      console.error('Error uploading image:', uploadError);
+      throw uploadError;
+    }
+  
+  
+    // 2. profile 테이블에 이미지 URL 저장
+    const { data, error } = await supabase
+      .from('profile')
+      .update({ avatar_url: filePath }) // ✅ avatar_url 필드에 저장
+      .eq('user_id', userId)
+      .select()
+      .single();
+  
+    if (error) {
+      console.error('Error updating avatar URL:', error);
+      throw error;
+    }
+  
+    return data;
+  }
+  

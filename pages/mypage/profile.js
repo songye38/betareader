@@ -6,13 +6,32 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import useAuthStore from "@/store/useAuthStore";
 
+const MAX_FILE_SIZE_KB = 500;
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
 const Profile = () => { // 컴포넌트 이름 대문자로 수정
 
     const [nickname, setNickname] = useState("");
     const [isFocused, setIsFocused] = useState(false);
     const [userId, setUserId] = useState(null);
-    const { updateUsername } = useProfile(); // ✅ 훅에서 함수 가져오기
+    const { updateUsername,updateProfileImage } = useProfile(); // ✅ 훅에서 함수 가져오기
     const profile = useAuthStore((state) => state.profile);
+    const [avatarFile, setAvatarFile] = useState(null);
+    const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url || null);
+
+
+    useEffect(() => {
+        if (profile?.avatar_url) {
+          setAvatarUrl(profile.avatar_url);
+          console.log("🎯 avatar_url 업데이트됨:", profile.avatar_url);
+          console.log("🧪 실제 avatar_url:", avatarUrl);
+        } else {
+          console.log("⚠️ avatar_url 없음, 현재 profile:", profile);
+        }
+      }, [profile]);
+      
+
+
 
     useEffect(() => {
         const getSession = async () => {
@@ -40,11 +59,60 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
     
         try {
           await updateUsername(userId, nickname);
+            // udpateprofile
             toast.success("닉네임이 성공적으로 저장되었습니다.");
         } catch (err) {
             toast.success("닉네임 저장 중 오류가 발생했습니다.");
         }
       };
+
+      // 이미지 파일 선택 핸들러
+      const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+      
+        const fileSizeKB = file.size / 1024;
+      
+        if (!ALLOWED_TYPES.includes(file.type)) {
+          alert("jpeg, png, webp 형식의 이미지 파일만 업로드할 수 있어요.");
+          return;
+        }
+      
+        if (fileSizeKB > MAX_FILE_SIZE_KB) {
+          alert(`이미지 크기는 최대 ${MAX_FILE_SIZE_KB}KB까지 업로드할 수 있어요.`);
+          return;
+        }
+      
+        setAvatarFile(file);
+        setAvatarUrl(URL.createObjectURL(file)); // 로컬 미리보기
+      };
+  
+    // 이미지 업로드 + 저장 로직
+    const handleImageUpload = async () => {
+        if (!avatarFile || !userId) return;
+    
+        const url = await updateProfileImage(userId, avatarFile);
+    
+        if (url) {
+        toast.success("프로필 이미지가 저장되었습니다.");
+        } else {
+        toast.error("이미지 업로드에 실패했습니다.");
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     if (!profile) {
     return <div style={{ color: 'white' }}>로딩 중...</div>; // 혹은 Skeleton UI로 교체
@@ -83,6 +151,68 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
                   프로필 설정
               </div>
           </div>
+
+
+
+
+            {/* 프로필 이미지 업로드 섹션 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', alignItems: 'center' }}>
+            {/* 미리보기 */}
+            <img
+                src={avatarUrl || '/default-avatar.png'} // 기본 이미지 경로 설정 가능
+                alt="프로필 이미지"
+                style={{
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '2px solid #4A4E5B'
+                }}
+            />
+
+            {/* 파일 선택 버튼 */}
+            <label
+                style={{
+                backgroundColor: '#3A3D46',
+                color: 'white',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontFamily: 'Pretendard',
+                }}
+            >
+                이미지 선택
+                <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+                />
+            </label>
+
+            {/* 업로드 버튼 */}
+            {avatarFile && (
+                <button
+                onClick={handleImageUpload}
+                style={{
+                    backgroundColor: '#A78EF7',
+                    color: 'white',
+                    padding: '8px 20px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    marginTop: '10px',
+                }}
+                >
+                이미지 저장
+                </button>
+            )}
+            </div>
+
+
           
           {/* 섹션2 */}
           <div style={{display:'flex',flexDirection:'column',gap:'14px',paddingBottom:'280px'}}>

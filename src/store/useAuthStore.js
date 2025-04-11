@@ -18,6 +18,15 @@ const useAuthStore = create(
           }, // ✅ 필요한 최소 정보만 저장
         }),
       setProfile: (profile) => set({ profile }),
+
+      updateProfile: (newData) =>
+        set((state) => ({
+          profile: {
+            ...state.profile,
+            ...newData,
+          },
+        })),
+
       setHasHydrated: (bool) => set({ hasHydrated: bool }),
 
       logout: async () => {
