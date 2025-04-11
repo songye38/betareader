@@ -9,7 +9,7 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
     const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const {environments,fetchEnvironments ,loading}= useEnvironment();
+  const {environments,fetchEnvironments ,loading,deleteEnvironment}= useEnvironment();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -96,7 +96,7 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
           ) : !environments || environments.length === 0 ? (
             <div style={{ color: '#aaa', textAlign: 'center' }}>아이디어가 없습니다.</div>
           ) : (
-            environments.map((env, idx) => <EnvironmentItem key={idx} environment={env} />)
+            environments.map((env, idx) => <EnvironmentItem key={idx} environment={env} onDelete={deleteEnvironment} />)
           )}
       </div>
 

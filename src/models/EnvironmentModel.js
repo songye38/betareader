@@ -53,3 +53,30 @@ export const getEnvironmentsByManuscript = async (manuscriptId) => {
     return data;
   };
 
+// 환경(id) 삭제 함수
+export const deleteEnvironmentById = async (id) => {
+  try {
+    const { error } = await supabase
+      .from('environment')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('[세계관 삭제 실패]', error.message);
+      toast.error("세계관 삭제 실패");
+      throw new Error('세계관 삭제 중 오류가 발생했습니다.');
+    }
+
+    toast.success("세계관이 삭제되었습니다.");
+  } catch (err) {
+    console.error('[deleteEnvironmentById 예외 발생]', err.message);
+    toast.error("삭제 도중 문제가 발생했습니다.");
+    throw err;
+  }
+};
+
+
+
+
+
+

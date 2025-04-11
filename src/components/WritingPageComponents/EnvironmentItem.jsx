@@ -62,7 +62,6 @@ const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
           수정
         </button>
         <button
-          onClick={onDelete}
           style={{
             padding: '6px 10px',
             fontSize: 12,
@@ -75,6 +74,7 @@ const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
             cursor: 'pointer',
             transition: 'all 0.2s ease-in-out',
           }}
+          onClick={() => onDelete?.(environment.id)} // ✅ 삭제 핸들러 실행
           onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
           onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
         >

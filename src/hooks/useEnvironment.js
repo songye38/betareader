@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createEnvironment,getEnvironmentsByManuscript } from '@/models/EnvironmentModel';
+import { createEnvironment,getEnvironmentsByManuscript,deleteEnvironmentById } from '@/models/EnvironmentModel';
 import { useForm } from 'react-hook-form';
 
 const useEnvironment = () => {
@@ -65,6 +65,19 @@ const useEnvironment = () => {
     }
   };
 
+  const deleteEnvironment = async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+      await deleteEnvironmentById(id);
+      setEnvironments((prev) => prev.filter((env) => env.id !== id)); // 삭제된 항목 제외
+    } catch (err) {
+      setError(err.message || '세계관 삭제 실패');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     methods,
     control,
@@ -78,7 +91,8 @@ const useEnvironment = () => {
     error,
     fetchEnvironments,
     addEnvironment,
-    handleKeywordChange
+    handleKeywordChange,
+    deleteEnvironment
   };
 };
 
