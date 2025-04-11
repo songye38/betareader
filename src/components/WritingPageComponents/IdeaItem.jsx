@@ -1,7 +1,9 @@
 import { React, useState} from 'react';
+import { getIdeaTypeKo } from '@/utils/typeMappings';
 
-const IdeaItem = ({ idea }) => {
+const IdeaItem = ({ idea ,onDelete}) => {
   const { title, category, description, tags } = idea;
+  console.log("💥💥💥💥💥💥id는 어떻게 들어오나",idea);
     const [isHovered, setIsHovered] = useState(false);
     const backgroundColor = isHovered ? '#383940' : '#2C2D34';
 
@@ -64,6 +66,7 @@ const IdeaItem = ({ idea }) => {
             cursor: 'pointer',
             transition: 'all 0.2s ease-in-out',
           }}
+          onClick={() => onDelete?.(idea.id)} // ✅ 삭제 핸들러 실행
           onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
           onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
         >
@@ -85,7 +88,7 @@ const IdeaItem = ({ idea }) => {
           width: 'fit-content',
         }}
       >
-        {category || '카테고리 없음'}
+        {getIdeaTypeKo(category) || '카테고리 없음'}
       </div>
 
       {/* 상세내용 */}

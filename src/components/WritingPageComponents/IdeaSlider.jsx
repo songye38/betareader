@@ -12,7 +12,7 @@ const IdeaSlider = ({ isVisible, onClose }) => {
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // ⬅️ 추가
-  const {ideas,fetchIdeas ,loading}= useIdea();
+  const {ideas,fetchIdeas ,loading,deleteIdea}= useIdea();
 
 
   useEffect(() => {
@@ -100,7 +100,7 @@ const IdeaSlider = ({ isVisible, onClose }) => {
           ) : !ideas || ideas.length === 0 ? (
             <div style={{ color: '#aaa', textAlign: 'center' }}>아이디어가 없습니다.</div>
           ) : (
-            ideas.map((idea, idx) => <IdeaItem key={idx} idea={idea} />)
+            ideas.map((idea, idx) => <IdeaItem key={idx} idea={idea} onDelete={deleteIdea} />)
           )}
       </div>
       </div>

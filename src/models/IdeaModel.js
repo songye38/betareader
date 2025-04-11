@@ -38,8 +38,6 @@ export const createIdea = async (idea, manuscriptId) => {
   }
 };
 
-
-
 // 특정 manuscript_id로 아이디어 목록 가져오기
 export const getIdeasByManuscript = async (manuscriptId) => {
   const { data, error } = await supabase
@@ -70,4 +68,26 @@ export const getIdeaByManuscript = async (id,manuscriptId) => {
   }
 
   return data;
+};
+
+// 아이디어 삭제 (id 기준)
+export const deleteIdeaById = async (id) => {
+  try {
+    const { error } = await supabase
+      .from('idea')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('아이디어 삭제 실패:', error.message);
+      toast.error("아이디어 삭제 실패");
+      throw new Error(error.message);
+    }
+
+    toast.success("아이디어 삭제 성공!");
+  } catch (err) {
+    console.error("예외 발생:", err.message);
+    toast.error("아이디어 삭제 중 예외 발생");
+    throw err;
+  }
 };

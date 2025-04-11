@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { createIdea,getIdeasByManuscript ,getIdeaByManuscript} from '@/models/IdeaModel';
+import { createIdea,getIdeasByManuscript ,getIdeaByManuscript,deleteIdeaById} from '@/models/IdeaModel';
 
 const useIdea = () => {
   const [ideas, setIdeas] = useState([]);
@@ -79,6 +79,20 @@ const useIdea = () => {
     }
   };
 
+  // 아이디어 삭제
+  const deleteIdea = async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+      await deleteIdeaById(id);
+      setIdeas((prev) => prev.filter((item) => item.id !== id)); // 상태에서도 제거
+    } catch (err) {
+      setError(err.message || '아이디어 삭제 실패');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     methods,
     control,
@@ -94,6 +108,7 @@ const useIdea = () => {
     addIdea,
     handleKeywordChange,
     fetchIdea,
+    deleteIdea
   };
 };
 
