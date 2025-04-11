@@ -14,35 +14,39 @@ const KeywordInput = ({ control, error, onKeywordChange,getValues,loading,title 
   useEffect(() => {
     if (!loading) {
       const values = getValues("newKeywords");
-      setNewKeywords(values);
+  
+      if (Array.isArray(values) && JSON.stringify(values) !== JSON.stringify(newKeywords)) {
+        setNewKeywords(values);
+      }
     }
-  }, [loading, getValues]); // loading이 변경될 때마다 실행
-
+  }, [loading]);
+  
 
 
   // Enter 키 입력 시 태그 추가 (200ms 딜레이)
   const handleKeyPress = (e) => {
-
-    if (e.key === 'Enter' && inputValue.trim() && newKeywords.length < 3 && !isProcessing) {
+    if (
+      e.key === 'Enter' &&
+      inputValue.trim() &&
+      newKeywords.length < 3 &&
+      !isProcessing
+    ) {
       e.preventDefault();
       setIsProcessing(true);
-
+  
+      const trimmed = inputValue.trim();
+  
       setTimeout(() => {
-        setNewKeywords((prevKeywords) => {
-          const updatedKeywords = Array.isArray(prevKeywords)
-            ? [...prevKeywords, inputValue.trim()]
-            : [inputValue.trim()]; // 기존 값이 배열이 아니면 새 배열로 변환
-          // 부모 컴포넌트에도 업데이트
-          onKeywordChange(updatedKeywords);
-
-          return updatedKeywords;
-        });
-
+        const updatedKeywords = [...newKeywords, trimmed];
+        setNewKeywords(updatedKeywords);
+        onKeywordChange(updatedKeywords); // 부모에게 알림
+  
         setInputValue('');
         setIsProcessing(false);
       }, 200);
     }
   };
+  
 
   // 입력값 변경 시 업데이트
   const handleChange = (e) => {

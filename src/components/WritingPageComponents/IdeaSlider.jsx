@@ -1,36 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import IdeaItem from './IdeaItem';
 import AddIdeaModal from '../Modal/AddIdeaModal';
+import { useRouter } from 'next/router';
+import useIdea from '@/hooks/useIdea';
+import { toast } from 'react-toastify';
+
 
 const IdeaSlider = ({ isVisible, onClose }) => {
+  const router = useRouter(); // useRouter 사용
+  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [ideas, setIdeas] = useState([
-    {
-      title: 'AI 반려동물 프로젝트',
-      category: '테크',
-      description: 'AI가 주인의 감정을 분석해서 반응하는 반려동물 개발\n실제 행동도 가능하게!',
-      tags: ['AI', '감정인식', '로봇'],
-    },
-    {
-      title: '해저 도시 구축',
-      category: 'SF',
-      description: '지구 온난화 대안으로 바닷속 도시 건설\n수중 생태계와 공존하는 사회',
-      tags: ['미래도시', '기후위기'],
-    },
-    {
-      title: '마법 학교의 혁명',
-      category: '판타지',
-      description: '기존 마법 질서를 깨는 하급 마법사의 혁명 이야기',
-      tags: ['혁명', '마법', '학교'],
-    },
-    {
-      title: '우주 해적단',
-      category: 'SF',
-      description: '은하계를 누비는 무법자들의 전설',
-      tags: ['우주', '모험', '해적'],
-    },
-  ]);
+  const [isLoading, setIsLoading] = useState(true); // ⬅️ 추가
+  const {ideas,fetchIdeas ,loading}= useIdea();
+
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -42,10 +25,11 @@ const IdeaSlider = ({ isVisible, onClose }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isVisible, onClose]);
 
-  const handleAddIdea = (newIdea) => {
-    setIdeas((prev) => [newIdea, ...prev]);
-    setIsPopupOpen(false);
-  };
+  useEffect(() => {
+    if (!manuscriptId) return;
+    fetchIdeas(manuscriptId); // 내부에서 loading 및 ideas 처리됨
+  }, [isVisible]);
+  
 
   return (
     <>
@@ -111,10 +95,14 @@ const IdeaSlider = ({ isVisible, onClose }) => {
 
         {/* 아이디어 리스트 */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          {ideas.map((idea, idx) => (
-            <IdeaItem key={idx} idea={idea} />
-          ))}
-        </div>
+          {loading ? (
+            <div style={{ color: '#aaa', textAlign: 'center' }}>로딩중...</div>
+          ) : !ideas || ideas.length === 0 ? (
+            <div style={{ color: '#aaa', textAlign: 'center' }}>아이디어가 없습니다.</div>
+          ) : (
+            ideas.map((idea, idx) => <IdeaItem key={idx} idea={idea} />)
+          )}
+      </div>
       </div>
 
       {/* 아이디어 추가 슬라이드 */}
@@ -134,7 +122,7 @@ const IdeaSlider = ({ isVisible, onClose }) => {
         >
           <AddIdeaModal
             onClose={() => setIsPopupOpen(false)}
-            onSubmit={handleAddIdea}
+            // onSubmit={handleAddIdea}
           />
         </div>
       )}

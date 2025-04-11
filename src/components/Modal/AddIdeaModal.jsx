@@ -1,42 +1,35 @@
 'use client';
 
-import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import TitleInput from '../FormComponents/TitleInput';
 import EpisodeInput from '../FormComponents/EpisodeInput';
 import DropdownInput from '../FormComponents/DropdownInput';
 import CheckCommentBtn from '../Buttons/CheckCommentBtn';
-import useManuscriptSetting from '@/hooks/useManuscriptSetting';
 import KeywordInput from '../FormComponents/KeywordInput';
+import useIdea from '@/hooks/useIdea';
+import { useRouter } from 'next/router';
 
-const AddIdeaModal = ({ onClose, onSubmit: parentSubmit }) => {
+const AddIdeaModal = ({ onClose}) => {
+    const router = useRouter(); // useRouter 사용
+    const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
+
   const {
     methods,
     control,
     errors,
     handleSubmit,
-    watch,
     handleKeywordChange,
+    watch,
     loading,
     getValues,
-  } = useManuscriptSetting();
+    fetchIdeas,
+    addIdea,
+  } = useIdea();
 
   const titleValue = watch('title');
   const episodeValue = watch('episode');
   const isFormValid = titleValue && episodeValue !== '';
 
-  // 실제 제출 함수
-  const onSubmit = (data) => {
-    const newIdea = {
-      title: data.title,
-      category: data.dropdown,
-      description: data.episode,
-      tags: data.newKeywords || [],
-    };
-
-    parentSubmit?.(newIdea); // 부모로 전달
-    onClose?.(); // 닫기
-  };
 
   return (
     <div
@@ -89,14 +82,13 @@ const AddIdeaModal = ({ onClose, onSubmit: parentSubmit }) => {
             ✕
           </button>
         </div>
-
         <FormProvider {...methods}>
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit((formData) => addIdea(formData, manuscriptId))}
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
             <TitleInput control={control} error={errors.title} showLabel={false} title={'아이디어 제목'} />
-            <DropdownInput control={control} error={errors.dropdown} title={'카테고리'} />
+            <DropdownInput control={control} error={errors.dropdown} type={'아이디어'}/>
             <EpisodeInput control={control} error={errors.episode} title={'상세내용'} />
             <KeywordInput
               control={control}
@@ -120,7 +112,10 @@ const AddIdeaModal = ({ onClose, onSubmit: parentSubmit }) => {
           alignItems: 'center',
         }}
       >
-        <CheckCommentBtn disabled={!isFormValid} onClick={handleSubmit(onSubmit)} />
+        <CheckCommentBtn 
+          disabled={!isFormValid} 
+          onClick={handleSubmit((formData) => addIdea(formData, manuscriptId))}
+          />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import supabase from '@/supabase/supabaseClient';
 
+
 // 아이디어 저장 함수
 export const createCharacter = async (character,manuscriptId) => {
   const { name, role, age, gender,personality,appearance ,backstory,goal,famous_quote} = character;

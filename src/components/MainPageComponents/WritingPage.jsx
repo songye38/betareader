@@ -68,7 +68,7 @@ const WritingPage = () => {
         />
 
 
-
+      <FloatingBtnSet />
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -126,7 +126,7 @@ const WritingPage = () => {
           </div>
 
           {/* 슬라이더 및 모달 */}
-          <FloatingBtnSet />
+          {/* <FloatingBtnSet /> */}
 
           {/* 본문 에디터 */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', paddingBottom: '80px' }}>

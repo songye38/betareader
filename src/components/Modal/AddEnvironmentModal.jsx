@@ -84,7 +84,7 @@ const AddEnvironmentModal = ({ onClose }) => {
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
             <TitleInput control={control} error={errors.title} showLabel={false} title={'세계관 제목'} />
-            <DropdownInput control={control} error={errors.dropdown} title={'세계관 타입'} />
+            <DropdownInput control={control} error={errors.dropdown} type={'세계관'} />
             <EpisodeInput control={control} error={errors.episode} title={'상세설명'} />
             <KeywordInput
               control={control}

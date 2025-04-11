@@ -83,7 +83,7 @@ const AddCharacterModal = ({ onClose }) => {
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
             <TitleInput control={control} error={errors.title} showLabel={false} title={'캐릭터 이름'} />
-            <DropdownInput control={control} error={errors.dropdown} title={'역할'} />
+            <DropdownInput control={control} error={errors.dropdown} type={'캐릭터'}  />
             <AgeInput control={control} error={errors.ageCategory} getValues={getValues} loading={loading} />
             <TitleInput control={control} error={errors.title} showLabel={false} title={'나이'} />
             <KeywordInput

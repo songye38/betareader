@@ -15,7 +15,7 @@ const AllManuSet = ({ userId, manuscriptId }) => {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px",marginBottom:'60px' }}>
       <div
         style={{
           width: 1096,
