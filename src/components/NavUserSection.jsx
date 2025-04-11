@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useRouter } from 'next/router'; // useRouter import
 import MyPageModal from './Modal/MyPageModal';
 import useAuthStore from '@/store/useAuthStore';
@@ -8,9 +8,14 @@ const NavUserSection = ({signin}) => {
   const profile = useAuthStore((state) => state.profile);
   const router = useRouter(); // useRouter 사용
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+  const [avatarUrl, setAvatarUrl] = useState(undefined);
 
-  console.log("profile은 이제 안되나?",profile);
-  console.log("user은 이제 안되나?",user);
+
+  useEffect(() => {
+          if (profile?.avatar_url !== undefined) {
+            setAvatarUrl(profile.avatar_url || null); // 없으면 null로 명시
+          }
+        }, [profile]);
 
   // 모달 토글 함수
   const toggleModal = () => {
@@ -40,13 +45,24 @@ const NavUserSection = ({signin}) => {
         }}
       >
         {/* 프로필 아이콘 부분 */}
-        <img
+        {/* <img
           src="/profile_img.svg"
           alt="Profile"
           width={32}
           height={32}
           onClick={toggleModal}
-        />
+        /> */}
+          <img
+            src={avatarUrl === undefined ? "/loading_spinner.svg" : (avatarUrl || "/write_icon.svg")}
+            alt="Profile"
+            width={48}
+            height={48}
+            onClick={toggleModal}
+            style={{
+                borderRadius: '50%',
+                objectFit: 'cover',
+            }}
+          />
 
         {/* 드롭다운 화살표 아이콘 */}
         <div data-svg-wrapper style={{ position: 'relative' }}>

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Poppins } from 'next/font/google';
 import { useRouter } from 'next/router'; // useRouter import
 import NavSignSection from './NavSignSection';
 import useAuthStore from '@/store/useAuthStore';
 import NavUserSection from './NavUserSection';
 import MyPageModal from './Modal/MyPageModal';
+
+
+
 
 // TODO :화면 어디든지 클릭하면 모달이 사라지도록 해야함
 const poppins = Poppins({ 
@@ -17,12 +20,13 @@ const Navbar = ({ customNavComponent }) => {
   const { user, logout } = useAuthStore();
   const router = useRouter(); // useRouter 사용
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
-  console.log("navbar에서 user는 있는가?",user);
+
 
   // 모달 토글 함수
   const toggleModal = () => {
     setIsModalOpen((prevState) => !prevState); // 모달 상태 변경
   };
+
 
   return (
     <div 
@@ -41,7 +45,6 @@ const Navbar = ({ customNavComponent }) => {
       display: 'flex',
       backgroundColor: '#0A0A0A', // ✅ 배경색 설정해야 스크롤시 아래가 안 비쳐
       zIndex: 999,
-      // ❌ position: 'relative', 이 줄 제거!
     }}
     >
       {/* 왼쪽 부분 (로고 및 텍스트) */}

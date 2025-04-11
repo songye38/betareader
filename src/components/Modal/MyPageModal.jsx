@@ -2,10 +2,25 @@ import React from 'react';
 import { useRouter } from 'next/router'; // useRouter import
 import useAuthStore from '@/store/useAuthStore';
 import supabase from '@/supabase/supabaseClient';
+import { useState,useEffect } from 'react';
 
 const MyPageModal = ({onClose,username}) => {
     const logout = useAuthStore((state) => state.logout);
+    const profile = useAuthStore((state) => state.profile);
     const router = useRouter(); // useRouter 훅 사용
+    const [avatarUrl, setAvatarUrl] = useState(undefined);
+
+
+    useEffect(() => {
+        if (profile?.avatar_url !== undefined) {
+          setAvatarUrl(profile.avatar_url || null); // 없으면 null로 명시
+        }
+      }, [profile]);
+    
+
+
+
+
     const handleNavigation = (path) => {
         router.push(path); // 경로 이동
         onClose(); // 모달 닫기
@@ -40,7 +55,18 @@ const MyPageModal = ({onClose,username}) => {
     >
     <div style={{  width : '100%',display:'flex',flexDirection:'row',alignItems: 'flex-end',justifyContent: 'space-between',paddingBottom:'20px' ,borderBottom:'1.2px solid #636466'}}>
         <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
-            <img src="/profile_img.svg" alt="Profile" width={48} height={48} />
+            {/* <img src="/profile_img.svg" alt="Profile" width={48} height={48} /> */}
+            <img
+                src={avatarUrl === undefined ? "/loading_spinner.svg" : (avatarUrl || "/write_icon.svg")}
+                alt="Profile"
+                width={48}
+                height={48}
+                onClick={() => handleNavigation('/mypage/profile')}
+                style={{
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                }}
+                />
             <div style={{
                 textAlign: 'center',
                 color: 'white',
@@ -65,6 +91,7 @@ const MyPageModal = ({onClose,username}) => {
             boxSizing: 'border-box'         // border가 이미지 크기에 영향을 미치지 않도록 설정
         }}>
             <img src="/write_icon.svg" alt="Profile" width={24} height={24} onClick={() => handleNavigation('/mypage/profile')} />
+
         </div>
 
 
