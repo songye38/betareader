@@ -51,29 +51,29 @@ const useEnvironment = () => {
     }
   };
 
-  const fetchEnvironment = async (id, manuscriptId) => {
-    setLoading(true);
-    setError(null);
-  
-    try {
-      const data = await getEnvironmentByManuscript(id, manuscriptId);
+const fetchEnvironment = async (id, manuscriptId) => {
+  setLoading(true);
+  setError(null);
 
-      console.log("받아오는 data는",data);
-      setEnvironment(data);
-  
-      methods.reset({
-        title: data.title || '',
-        dropdown: getEnvironmentTypeKo(data.type) || '',
-        description: data.description || '',
-        newKeywords: data.reference_list || [],
-        note : data.notes || '',
-      });
-    } catch (err) {
-      setError(err.message || '세계관 불러오기 실패');
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const data = await getEnvironmentByManuscript(id, manuscriptId);
+
+    console.log("받아오는 data는",data);
+    setEnvironment(data);
+
+    methods.reset({
+      title: data.title || '',
+      dropdown: getEnvironmentTypeKo(data.type) || '',
+      description: data.description || '',
+      newKeywords: data.reference_list || [],
+      note : data.notes || '',
+    });
+  } catch (err) {
+    setError(err.message || '세계관 불러오기 실패');
+  } finally {
+    setLoading(false);
+  }
+};
 
   // 아이디어 추가
   const addEnvironment = async (environment, manuscriptId) => {

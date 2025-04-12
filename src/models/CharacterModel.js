@@ -62,6 +62,23 @@ export const getCharactersByManuscript = async (manuscriptId) => {
     return data;
   };
 
+export const getCharacterByManuscript = async (id,manuscriptId) => {
+  const { data, error } = await supabase
+    .from('character')
+    .select('*')
+    .eq('id', id)
+    .eq('manuscript_id', manuscriptId)
+    .order('created_at', { ascending: false })
+    .single();
+
+  if (error) {
+    console.error('캐릭터 불러오기 실패:', error.message);
+    throw new Error('캐릭터 정보를 불러오는 중 오류가 발생했습니다.');
+  }
+
+  return data;
+};
+
 
   // 환경(id) 삭제 함수
 export const deleteCharacterById = async (id) => {

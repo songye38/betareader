@@ -1,4 +1,5 @@
-import { useState } from 'react';
+'use client';
+
 import { FormProvider } from 'react-hook-form';
 import TitleInput from '../FormComponents/TitleInput';
 import EpisodeInput from '../FormComponents/EpisodeInput';
@@ -6,11 +7,9 @@ import DropdownInput from '../FormComponents/DropdownInput';
 import CheckCommentBtn from '../Buttons/CheckCommentBtn';
 import KeywordInput from '../FormComponents/KeywordInput';
 import useCharacter from '@/hooks/useCharacter';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-const AddCharacterModal = ({ onClose }) => {
-    const router = useRouter(); // useRouter 사용
-    const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
+const AddCharacterModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
   const {
     methods,
     control,
@@ -23,11 +22,39 @@ const AddCharacterModal = ({ onClose }) => {
     error,
     handleKeywordChange,
     fetchCharacters,
+    character,
+    fetchCharacter,
     addCharacter,
   } = useCharacter();
 
+  useEffect(() => {
+    if (ideaId && manuscriptId && isOpen) {
+      fetchCharacter(ideaId, manuscriptId);
+    }
+  }, [ideaId, manuscriptId, isOpen]);
+
   const titleValue = watch('title');
   const isFormValid = titleValue !== '';
+
+  // ✨ 로딩 중 처리
+  if (ideaId && loading) {
+    return (
+      <div
+        style={{
+          width: '400px',
+          height: '100vh',
+          background: '#2C2D34',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: 'white',
+          fontSize: 18,
+        }}
+      >
+        로딩 중...
+      </div>
+    );
+  }
 
   return (
     <div
@@ -62,7 +89,7 @@ const AddCharacterModal = ({ onClose }) => {
               fontFamily: 'Pretendard',
             }}
           >
-            캐릭터 카드 추가
+            캐릭터 카드 {ideaId ? '수정' : '작성'}
           </div>
 
           <button
@@ -118,7 +145,7 @@ const AddCharacterModal = ({ onClose }) => {
         <CheckCommentBtn 
           disabled={!isFormValid} 
           onClick={handleSubmit((formData) => addCharacter(formData, manuscriptId))}
-          />
+        />
       </div>
     </div>
   );

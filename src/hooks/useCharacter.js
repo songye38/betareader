@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { createCharacter,getCharactersByManuscript ,deleteCharacterById} from '@/models/CharacterModel';
+import { createCharacter,getCharactersByManuscript ,deleteCharacterById,getCharacterByManuscript} from '@/models/CharacterModel';
 import { useForm } from 'react-hook-form';
+import { getCharacterTypeKo,getGenderTypeKo} from '@/utils/typeMappings';
 
 const useCharacter = () => {
   const [characters, setCharacters] = useState([]);
+  const [character, setCharacter] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -48,6 +50,33 @@ const useCharacter = () => {
     }
   };
 
+const fetchCharacter = async (id, manuscriptId) => {
+  setLoading(true);
+  setError(null);
+
+  try {
+    const data = await getCharacterByManuscript(id, manuscriptId);
+
+    console.log("받아오는 data는",data);
+    setCharacter(data);
+
+    methods.reset({
+      name: data.name || '',
+      character_type: getCharacterTypeKo(data.role) || '',
+      gender: getGenderTypeKo(data.gender) || '',
+      age: data.age || '',
+      backstory: data.backstory || '',
+      appearance: data.appearance || '',
+      newKeywords: data.personality || [],
+      goal : data.goal || '',
+    });
+  } catch (err) {
+    setError(err.message || '캐릭터 정보 불러오기 실패');
+  } finally {
+    setLoading(false);
+  }
+};
+
   // 아이디어 추가
   const addCharacter = async (character, manuscriptId) => {
     setLoading(true);
@@ -80,6 +109,8 @@ const deleteCharacter = async (id) => {
 
 
   return {
+    character,
+    fetchCharacter,
     deleteCharacter,
     characters,
     methods,
