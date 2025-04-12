@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { createEnvironment,getEnvironmentsByManuscript,deleteEnvironmentById } from '@/models/EnvironmentModel';
+import { createEnvironment,getEnvironmentsByManuscript,deleteEnvironmentById,getEnvironmentByManuscript } from '@/models/EnvironmentModel';
 import { useForm } from 'react-hook-form';
+import { getEnvironmentTypeKo } from '@/utils/typeMappings';
 
 const useEnvironment = () => {
   const [environments, setEnvironments] = useState([]);
+  const [environment, setEnvironment] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -42,6 +44,30 @@ const useEnvironment = () => {
     try {
       const data = await getEnvironmentsByManuscript(manuscriptId);
       setEnvironments(data);
+    } catch (err) {
+      setError(err.message || '세계관 불러오기 실패');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchEnvironment = async (id, manuscriptId) => {
+    setLoading(true);
+    setError(null);
+  
+    try {
+      const data = await getEnvironmentByManuscript(id, manuscriptId);
+
+      console.log("받아오는 data는",data);
+      setEnvironment(data);
+  
+      methods.reset({
+        title: data.title || '',
+        dropdown: getEnvironmentTypeKo(data.type) || '',
+        description: data.description || '',
+        newKeywords: data.reference_list || [],
+        note : data.notes || '',
+      });
     } catch (err) {
       setError(err.message || '세계관 불러오기 실패');
     } finally {
@@ -92,7 +118,9 @@ const useEnvironment = () => {
     fetchEnvironments,
     addEnvironment,
     handleKeywordChange,
-    deleteEnvironment
+    deleteEnvironment,
+    fetchEnvironment,
+    environment,
   };
 };
 

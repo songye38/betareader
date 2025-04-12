@@ -1,4 +1,5 @@
-import { useState } from 'react';
+'use client';
+
 import { FormProvider } from 'react-hook-form';
 import TitleInput from '../FormComponents/TitleInput';
 import EpisodeInput from '../FormComponents/EpisodeInput';
@@ -6,12 +7,9 @@ import DropdownInput from '../FormComponents/DropdownInput';
 import CheckCommentBtn from '../Buttons/CheckCommentBtn';
 import KeywordInput from '../FormComponents/KeywordInput';
 import useEnvironment from '@/hooks/useEnvironment';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-const AddEnvironmentModal = ({ onClose }) => {
-  const router = useRouter(); // useRouter 사용
-  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
-
+const AddEnvironmentModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
   const {
     methods,
     control,
@@ -24,15 +22,41 @@ const AddEnvironmentModal = ({ onClose }) => {
     error,
     ideas,
     loading,
+    environment,
+    fetchEnvironment,
     fetchEnvironments,
     addEnvironment,
   } = useEnvironment();
 
-  const [episodeState, setEpisodeState] = useState({ title: '', episode: '' });
-
   const titleValue = watch('title');
   const episodeValue = watch('episode');
   const isFormValid = titleValue && episodeValue !== '';
+
+  useEffect(() => {
+    if (ideaId && manuscriptId && isOpen) {
+      fetchEnvironment(ideaId, manuscriptId);
+    }
+  }, [ideaId, manuscriptId, isOpen]);
+
+  // ✨ 로딩 중일 때 화면 처리
+  if (ideaId && loading) {
+    return (
+      <div
+        style={{
+          width: '400px',
+          height: '100vh',
+          background: '#2C2D34',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: 'white',
+          fontSize: 18,
+        }}
+      >
+        로딩 중...
+      </div>
+    );
+  }
 
   return (
     <div
@@ -67,7 +91,7 @@ const AddEnvironmentModal = ({ onClose }) => {
               fontFamily: 'Pretendard',
             }}
           >
-            세계관 노트 추가
+            세계관 노트 {ideaId ? '수정' : '작성'}
           </div>
 
           <button
@@ -91,9 +115,9 @@ const AddEnvironmentModal = ({ onClose }) => {
             onSubmit={handleSubmit((formData) => addEnvironment(formData, manuscriptId))}
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
-            <TitleInput control={control} error={errors.title} showLabel={false} title={'세계관 제목'}  name={"title"}/>
-            <DropdownInput control={control} error={errors.dropdown} type={'세계관'} name={"dropdown"}/>
-            <EpisodeInput control={control} error={errors.description} title={'상세설명'} name={"description"} />
+            <TitleInput control={control} error={errors.title} showLabel={false} title={'세계관 제목'} name={'title'} />
+            <DropdownInput control={control} error={errors.dropdown} type={'세계관'} name={'dropdown'} />
+            <EpisodeInput control={control} error={errors.description} title={'상세설명'} name={'description'} />
             <KeywordInput
               control={control}
               error={errors.newKeywords}
@@ -102,7 +126,7 @@ const AddEnvironmentModal = ({ onClose }) => {
               loading={loading}
               title={'참고자료 링크'}
             />
-            <EpisodeInput control={control} error={errors.note} title={'비고'} name={"note"} />
+            <EpisodeInput control={control} error={errors.note} title={'비고'} name={'note'} />
           </form>
         </FormProvider>
       </div>
@@ -117,10 +141,10 @@ const AddEnvironmentModal = ({ onClose }) => {
           alignItems: 'center',
         }}
       >
-        <CheckCommentBtn 
-          disabled={!isFormValid} 
+        <CheckCommentBtn
+          disabled={!isFormValid}
           onClick={handleSubmit((formData) => addEnvironment(formData, manuscriptId))}
-          />
+        />
       </div>
     </div>
   );

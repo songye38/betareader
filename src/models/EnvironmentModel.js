@@ -53,6 +53,25 @@ export const getEnvironmentsByManuscript = async (manuscriptId) => {
     return data;
   };
 
+export const getEnvironmentByManuscript = async (id,manuscriptId) => {
+  const { data, error } = await supabase
+    .from('environment')
+    .select('*')
+    .eq('id', id)
+    .eq('manuscript_id', manuscriptId)
+    .order('created_at', { ascending: false })
+    .single();
+
+  if (error) {
+    console.error('세계관 목록 불러오기 실패:', error.message);
+    throw new Error('세계관을 불러오는 중 오류가 발생했습니다.');
+  }
+
+  return data;
+};
+
+
+
 // 환경(id) 삭제 함수
 export const deleteEnvironmentById = async (id) => {
   try {

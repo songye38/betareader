@@ -5,6 +5,8 @@ import useEnvironment from '@/hooks/useEnvironment';
 import { useRouter } from 'next/router';
 
 const EnvironmentSlider = ({ isVisible, onClose }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false); //💥💥💥💥💥💥추가됨
+  const [editingIdeaId, setEditingIdeaId] = useState(null); //💥💥💥💥💥💥추가됨
   const router = useRouter(); // useRouter 사용
   const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const sliderRef = useRef(null);
@@ -25,6 +27,14 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
       if (!manuscriptId) return;
       fetchEnvironments(manuscriptId); // 내부에서 loading 및 ideas 처리됨
     }, [isVisible]);
+
+      //💥💥💥💥💥💥추가됨
+  const handleEdit = (ideaId) => {
+    console.log("버튼이 눌리고 값이 들어오나?",ideaId);
+    setEditingIdeaId(ideaId); // 수정할 아이디 설정
+    setIsModalOpen(true);     // 모달 열기
+  };
+  
 
   return (
     <>
@@ -82,7 +92,7 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
               cursor: 'pointer',
               transition: 'all 0.2s ease-in-out',
             }}
-            onClick={() => setIsPopupOpen(true)}
+            onClick={() => setIsModalOpen(true)}
             onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
             onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
           >
@@ -96,7 +106,7 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
           ) : !environments || environments.length === 0 ? (
             <div style={{ color: '#aaa', textAlign: 'center' }}>아이디어가 없습니다.</div>
           ) : (
-            environments.map((env, idx) => <EnvironmentItem key={idx} environment={env} onDelete={deleteEnvironment} />)
+            environments.map((env, idx) => <EnvironmentItem key={idx} environment={env} onDelete={deleteEnvironment} onEdit={() => handleEdit(env.id)} />)
           )}
       </div>
 
@@ -104,7 +114,7 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
       </div>
 
       {/* AddEnvironmentModal */}
-      {isPopupOpen && (
+      {isModalOpen && (
         <div
           style={{
             position: 'fixed',
@@ -117,10 +127,13 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
           }}
         >
           <AddEnvironmentModal
+            isOpen={isModalOpen}
             onClose={() => {
-              setIsPopupOpen(false);
-              onClose?.(); // 슬라이더도 함께 닫히게!
+              setIsModalOpen(false);
+              setEditingIdeaId(null); // 닫을 때 초기화
             }}
+            ideaId={editingIdeaId} // 수정할 아이디어 id 전달
+            manuscriptId={manuscriptId}
           />
         </div>
       )}
