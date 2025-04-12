@@ -1,5 +1,6 @@
 import supabase from '@/supabase/supabaseClient';
 import { getCharacterType,getGenderType } from '@/utils/typeMappings';
+import { toast } from 'react-toastify';
 
 
 // 아이디어 저장 함수
@@ -60,3 +61,27 @@ export const getCharactersByManuscript = async (manuscriptId) => {
   
     return data;
   };
+
+
+  // 환경(id) 삭제 함수
+export const deleteCharacterById = async (id) => {
+  try {
+    const { error } = await supabase
+      .from('character')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('[캐릭터 삭제 실패]', error.message);
+      toast.error("캐릭터 삭제 실패");
+      throw new Error('캐릭터 삭제 중 오류가 발생했습니다.');
+    }
+
+    toast.success("캐릭터가 삭제되었습니다.");
+  } catch (err) {
+    console.error('[deleteCharacterById 예외 발생]', err.message);
+    toast.error("삭제 도중 문제가 발생했습니다.");
+    throw err;
+  }
+};
+

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getGenderTypeKo } from '@/utils/typeMappings';
+import { getGenderTypeKo,getCharacterTypeKo } from '@/utils/typeMappings';
 
 const CharacterItem = ({ character, onEdit, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -70,7 +70,6 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
           수정
         </button>
         <button
-          onClick={onDelete}
           style={{
             padding: '6px 10px',
             fontSize: 12,
@@ -83,6 +82,7 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
             cursor: 'pointer',
             transition: 'all 0.2s ease-in-out',
           }}
+          onClick={() => onDelete?.(character.id)} // ✅ 삭제 핸들러 실행
           onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
           onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
         >
@@ -91,15 +91,12 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
       </div>
 
       {/* 캐릭터 이름 + 역할 */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: '4px' }}>
         <div style={{ fontSize: 18, fontWeight: 600 }}>{name}</div>
-        <div style={{ fontSize: 14, color: '#A0A0A0' }}>{role}</div>
+        <div style={{ fontSize: 14, color: '#A0A0A0' }}>{getCharacterTypeKo(role)}</div>
       </div>
 
-      {/* 나이/연령대 */}
-      <div style={{ fontSize: 14 }}>
-        <strong>성별:</strong> {getGenderTypeKo(gender)} / <strong>나이:</strong> {age}
-      </div>
+
 
       {/* 키워드 */}
       {personality.length > 0 && (
@@ -120,6 +117,11 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
           ))}
         </div>
       )}
+
+      {/* 나이/연령대 */}
+            <div style={{ fontSize: 14 }}>
+        <strong>성별:</strong> {getGenderTypeKo(gender)} / <strong>나이:</strong> {age}
+      </div>
 
       {/* 성장배경 */}
       {backstory && (

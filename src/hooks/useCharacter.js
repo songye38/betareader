@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createCharacter,getCharactersByManuscript } from '@/models/CharacterModel';
+import { createCharacter,getCharactersByManuscript ,deleteCharacterById} from '@/models/CharacterModel';
 import { useForm } from 'react-hook-form';
 
 const useCharacter = () => {
@@ -62,7 +62,25 @@ const useCharacter = () => {
     }
   };
 
+const deleteCharacter = async (id) => {
+  console.log("이 함수가 호출되긴 하나?");
+  setLoading(true);
+  setError(null);
+  try {
+    await deleteCharacterById(id);
+    setCharacters((prev) => prev.filter((cha) => cha.id !== id)); // 삭제된 항목 제외
+  } catch (err) {
+    setError(err.message || '캐릭터 삭제 실패');
+  } finally {
+    setLoading(false);
+  }
+};
+  
+
+
+
   return {
+    deleteCharacter,
     characters,
     methods,
     control,

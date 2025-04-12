@@ -10,7 +10,7 @@ const CharacterSlider = ({ isVisible, onClose }) => {
   const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const {fetchCharacters ,characters,loading}= useCharacter();
+  const {fetchCharacters ,characters,loading,deleteCharacter}= useCharacter();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -98,7 +98,7 @@ const CharacterSlider = ({ isVisible, onClose }) => {
             ) : !characters || characters.length === 0 ? (
               <div style={{ color: '#aaa', textAlign: 'center' }}>캐릭터가 없습니다.</div>
             ) : (
-              characters.map((char, idx) => <CharacterItem key={idx} character={char}  />)
+              characters.map((char, idx) => <CharacterItem key={idx} character={char} onDelete={deleteCharacter} />)
             )}
         </div>
       </div>
