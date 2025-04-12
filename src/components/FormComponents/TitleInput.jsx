@@ -4,7 +4,7 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-const TitleInput = ({ control, error,showLabel = true ,title}) => {
+const TitleInput = ({ control, error,showLabel = true ,title,name}) => {
   return (
     <div style={{ 
         width: '100%',
@@ -19,7 +19,7 @@ const TitleInput = ({ control, error,showLabel = true ,title}) => {
       </div>
       
       <Controller
-        name="title"
+        name={name}
         control={control}
         render={({ field }) => (
           <input

@@ -87,8 +87,8 @@ const AddIdeaModal = ({ onClose}) => {
             onSubmit={handleSubmit((formData) => addIdea(formData, manuscriptId))}
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
-            <TitleInput control={control} error={errors.title} showLabel={false} title={'아이디어 제목'} />
-            <DropdownInput control={control} error={errors.dropdown} type={'아이디어'}/>
+            <TitleInput control={control} error={errors.title} showLabel={false} title={'아이디어 제목'} name={"title"} />
+            <DropdownInput control={control} error={errors.dropdown} type={'아이디어'} name={"dropdown"}/>
             <EpisodeInput control={control} error={errors.episode} title={'상세내용'} name={"episode"} />
             <KeywordInput
               control={control}

@@ -1,10 +1,38 @@
 import { useState } from 'react';
 import { createCharacter,getCharactersByManuscript } from '@/models/CharacterModel';
+import { useForm } from 'react-hook-form';
 
 const useCharacter = () => {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+      const methods = useForm({
+        defaultValues: {
+          name : '',
+          age : '',
+          appearance : '',
+          character_type : '',
+          gender : '',
+          goal : '',
+          newKeywords: [],
+          backstory : '',
+        },
+        mode: 'onChange',
+      });
+    
+      const { control, handleSubmit, formState: { errors }, watch, setValue ,getValues} = methods;
+  
+      const handleKeywordChange = (updatedKeywords) => {
+        console.log("handleKeywordChange 호출됨");
+  
+        //TODO 이 부분 잠시 블럭처ㅣㄹ
+        setValue('newKeywords', updatedKeywords);
+        
+        // watch로 최신 상태 가져오기
+        console.log("키워드 업데이트:", watch("newKeywords")); 
+    }
+
 
   // 아이디어 목록 불러오기
   const fetchCharacters = async (manuscriptId) => {
@@ -35,9 +63,16 @@ const useCharacter = () => {
   };
 
   return {
-    ideas,
+    methods,
+    control,
+    errors,
+    handleSubmit,
+    watch,
+    setValue,
+    getValues,
     loading,
     error,
+    handleKeywordChange,
     fetchCharacters,
     addCharacter,
   };

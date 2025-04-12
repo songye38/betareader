@@ -91,8 +91,8 @@ const AddEnvironmentModal = ({ onClose }) => {
             onSubmit={handleSubmit((formData) => addEnvironment(formData, manuscriptId))}
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
-            <TitleInput control={control} error={errors.title} showLabel={false} title={'세계관 제목'} />
-            <DropdownInput control={control} error={errors.dropdown} type={'세계관'} />
+            <TitleInput control={control} error={errors.title} showLabel={false} title={'세계관 제목'}  name={"title"}/>
+            <DropdownInput control={control} error={errors.dropdown} type={'세계관'} name={"dropdown"}/>
             <EpisodeInput control={control} error={errors.description} title={'상세설명'} name={"description"} />
             <KeywordInput
               control={control}

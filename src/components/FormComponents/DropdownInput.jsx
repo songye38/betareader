@@ -19,13 +19,13 @@ const dropdownOptionsMap = {
   "아이디어": ["설정", "캐릭터", "플롯", "디테일", "테마"],
 };
 
-const DropdownInput = ({ control, error, type }) => {
+const DropdownInput = ({ control, error, type ,name}) => {
   const [isOpen, setIsOpen] = useState(false);
   const options = dropdownOptionsMap[type] || [];
 
   return (
     <Controller
-      name="dropdown"
+      name={name}
       control={control}
       rules={{ required: true }}
       render={({ field: { onChange, value } }) => (

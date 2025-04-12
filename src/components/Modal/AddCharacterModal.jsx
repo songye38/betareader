@@ -4,26 +4,30 @@ import TitleInput from '../FormComponents/TitleInput';
 import EpisodeInput from '../FormComponents/EpisodeInput';
 import DropdownInput from '../FormComponents/DropdownInput';
 import CheckCommentBtn from '../Buttons/CheckCommentBtn';
-import useManuscriptSetting from '@/hooks/useManuscriptSetting';
 import KeywordInput from '../FormComponents/KeywordInput';
-import AgeInput from '../FormComponents/AgeInput';
+import useCharacter from '@/hooks/useCharacter';
+import { useRouter } from 'next/router';
 
 const AddCharacterModal = ({ onClose }) => {
+    const router = useRouter(); // useRouter 사용
+    const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const {
     methods,
     control,
     errors,
     handleSubmit,
     watch,
-    onSubmit,
-    handleKeywordChange,
-    loading,
+    setValue,
     getValues,
-  } = useManuscriptSetting();
+    loading,
+    error,
+    handleKeywordChange,
+    fetchCharacters,
+    addCharacter,
+  } = useCharacter();
 
   const titleValue = watch('title');
-  const episodeValue = watch('episode');
-  const isFormValid = titleValue && episodeValue !== '';
+  const isFormValid = titleValue !== '';
 
   return (
     <div
@@ -79,13 +83,13 @@ const AddCharacterModal = ({ onClose }) => {
 
         <FormProvider {...methods}>
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit((formData) => addCharacter(formData, manuscriptId))}
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
-            <TitleInput control={control} error={errors.title} showLabel={false} title={'캐릭터 이름'} />
-            <DropdownInput control={control} error={errors.dropdown} type={'캐릭터'}  />
-            <AgeInput control={control} error={errors.ageCategory} getValues={getValues} loading={loading} />
-            <TitleInput control={control} error={errors.title} showLabel={false} title={'나이'} />
+            <TitleInput control={control} error={errors.title} showLabel={false} title={'캐릭터 이름'} name={"name"} />
+            <DropdownInput control={control} error={errors.dropdown} type={'캐릭터'} name={"character_type"} />
+            <DropdownInput control={control} error={errors.dropdown} type={'성별'} name={"gender"} />
+            <TitleInput control={control} error={errors.title} showLabel={false} title={'나이'}  name={'age'}/>
             <KeywordInput
               control={control}
               error={errors.newKeywords}
@@ -94,8 +98,9 @@ const AddCharacterModal = ({ onClose }) => {
               loading={loading}
               title={'성격 키워드'}
             />
-            <EpisodeInput control={control} error={errors.episode} title={'외형특징'} />
-            <EpisodeInput control={control} error={errors.episode} title={'주요목표'} />
+            <EpisodeInput control={control} error={errors.episode} title={'성장배경'} name={"backstory"} />
+            <EpisodeInput control={control} error={errors.episode} title={'외형특징'} name={"appearance"} />
+            <EpisodeInput control={control} error={errors.episode} title={'주요목표'} name={"goal"}/>
           </form>
         </FormProvider>
       </div>
@@ -110,7 +115,10 @@ const AddCharacterModal = ({ onClose }) => {
           alignItems: 'center',
         }}
       >
-        <CheckCommentBtn disabled={!isFormValid} onClick={handleSubmit(onSubmit)} />
+        <CheckCommentBtn 
+          disabled={!isFormValid} 
+          onClick={handleSubmit((formData) => addCharacter(formData, manuscriptId))}
+          />
       </div>
     </div>
   );
