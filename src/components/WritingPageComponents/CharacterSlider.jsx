@@ -1,40 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CharacterItem from './CharacterItem';
 import AddCharacterModal from '../Modal/AddCharacterModal';
+import { useRouter } from 'next/router';
+import useCharacter from '@/hooks/useCharacter';
 
-const dummyCharacters = [
-  {
-    name: '이소연',
-    role: '주인공',
-    ageCategory: '20대 후반',
-    age: '29',
-    keywords: ['냉철함', '분석적', '이성적'],
-    appearance: '긴 흑발에 날카로운 눈매\n평소 정장을 입고 다님',
-    goal: '인공지능을 활용해 세상을 바꾸는 것',
-  },
-  {
-    name: '박진수',
-    role: '조력자',
-    ageCategory: '30대 초반',
-    age: '33',
-    keywords: ['따뜻함', '유머러스', '친근함'],
-    appearance: '단정한 헤어스타일에 캐주얼 복장',
-    goal: '소연의 프로젝트를 실현시키는 것',
-  },
-  {
-    name: '강하늘',
-    role: '대립자',
-    ageCategory: '40대',
-    age: '45',
-    keywords: ['야망', '완벽주의자', '냉정함'],
-    appearance: '항상 슈트를 입고, 눈빛이 날카롭다',
-    goal: '자신의 철학에 맞는 AI 세상을 구축',
-  },
-];
 
 const CharacterSlider = ({ isVisible, onClose }) => {
+  const router = useRouter(); // useRouter 사용
+  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const {fetchCharacters ,characters,loading}= useCharacter();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -46,6 +22,12 @@ const CharacterSlider = ({ isVisible, onClose }) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isVisible, onClose, isPopupOpen]);
+
+
+  useEffect(() => {
+    if (!manuscriptId) return;
+    fetchCharacters(manuscriptId); // 내부에서 loading 및 ideas 처리됨
+  }, [isVisible]);
 
   return (
     <>
@@ -105,10 +87,19 @@ const CharacterSlider = ({ isVisible, onClose }) => {
         </div>
 
         {/* 캐릭터 리스트 */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {/* <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {dummyCharacters.map((char, index) => (
             <CharacterItem key={index} character={char} />
           ))}
+        </div> */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {loading ? (
+              <div style={{ color: '#aaa', textAlign: 'center' }}>로딩중...</div>
+            ) : !characters || characters.length === 0 ? (
+              <div style={{ color: '#aaa', textAlign: 'center' }}>캐릭터가 없습니다.</div>
+            ) : (
+              characters.map((char, idx) => <CharacterItem key={idx} character={char}  />)
+            )}
         </div>
       </div>
 

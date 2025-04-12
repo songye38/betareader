@@ -5,8 +5,8 @@ import useEnvironment from '@/hooks/useEnvironment';
 import { useRouter } from 'next/router';
 
 const EnvironmentSlider = ({ isVisible, onClose }) => {
-    const router = useRouter(); // useRouter 사용
-    const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
+  const router = useRouter(); // useRouter 사용
+  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const {environments,fetchEnvironments ,loading,deleteEnvironment}= useEnvironment();

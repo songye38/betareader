@@ -63,6 +63,7 @@ const useCharacter = () => {
   };
 
   return {
+    characters,
     methods,
     control,
     errors,

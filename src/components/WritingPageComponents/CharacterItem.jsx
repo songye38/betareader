@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getGenderTypeKo } from '@/utils/typeMappings';
 
 const CharacterItem = ({ character, onEdit, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -6,12 +7,15 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
   const {
     name,
     role,
-    ageCategory,
     age,
-    keywords = [],
+    gender,
+    personality,
     appearance,
     goal,
+    backstory
   } = character;
+
+  console.log("character는 뭐로 들어오나",character);
 
   const backgroundColor = isHovered ? '#383940' : '#2C2D34';
 
@@ -94,13 +98,13 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
 
       {/* 나이/연령대 */}
       <div style={{ fontSize: 14 }}>
-        <strong>연령대:</strong> {ageCategory} / <strong>나이:</strong> {age}
+        <strong>성별:</strong> {getGenderTypeKo(gender)} / <strong>나이:</strong> {age}
       </div>
 
       {/* 키워드 */}
-      {keywords.length > 0 && (
+      {personality.length > 0 && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-          {keywords.map((tag, idx) => (
+          {personality.map((tag, idx) => (
             <span
               key={idx}
               style={{
@@ -114,6 +118,13 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
               #{tag}
             </span>
           ))}
+        </div>
+      )}
+
+      {/* 성장배경 */}
+      {backstory && (
+        <div style={{ fontSize: 14, whiteSpace: 'pre-wrap', lineHeight: 1.4 }}>
+          <strong>성장배경:</strong> {backstory}
         </div>
       )}
 
