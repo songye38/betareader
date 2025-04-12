@@ -38,26 +38,3 @@ const AddEpiBtn = () => {
   };
   
   export default AddEpiBtn;
-  
-
-
-
-
-
-{/* <div
-        style={{
-          width: 160,
-          height: 52,
-          paddingLeft: 20,
-          paddingRight: 20,
-          paddingTop: 12,
-          paddingBottom: 12,
-          background: "#A78EF7",
-          borderRadius: 16,
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 4,
-          display: "inline-flex",
-          cursor: "pointer", // 클릭 가능하도록 설정
-        }}
-      > */}

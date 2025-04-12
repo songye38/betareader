@@ -1,7 +1,7 @@
 import { React, useState} from 'react';
 import { getIdeaTypeKo } from '@/utils/typeMappings';
 
-const IdeaItem = ({ idea ,onDelete}) => {
+const IdeaItem = ({ idea ,onDelete,onEdit}) => {
   const { title, category, description, tags } = idea;
   console.log("💥💥💥💥💥💥id는 어떻게 들어오나",idea);
     const [isHovered, setIsHovered] = useState(false);
@@ -48,6 +48,7 @@ const IdeaItem = ({ idea ,onDelete}) => {
             cursor: 'pointer',
             transition: 'all 0.2s ease-in-out',
           }}
+          onClick={onEdit}
           onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
           onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
         >

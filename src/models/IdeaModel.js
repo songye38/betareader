@@ -60,7 +60,8 @@ export const getIdeaByManuscript = async (id,manuscriptId) => {
     .select('*')
     .eq('id', id)
     .eq('manuscript_id', manuscriptId)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .single();
 
   if (error) {
     console.error('아이디어 목록 불러오기 실패:', error.message);

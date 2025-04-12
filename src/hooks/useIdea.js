@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { createIdea,getIdeasByManuscript ,getIdeaByManuscript,deleteIdeaById} from '@/models/IdeaModel';
+import { getIdeaTypeKo } from '@/utils/typeMappings';
 
 const useIdea = () => {
   const [ideas, setIdeas] = useState([]);
@@ -44,27 +45,30 @@ const useIdea = () => {
     }
   };
 
-  const fetchIdea = async (manuscriptId) => {
+  const fetchIdea = async (id, manuscriptId) => {
     setLoading(true);
     setError(null);
+  
     try {
-      const data = await getIdeaByManuscript(id,manuscriptId);
+      const data = await getIdeaByManuscript(id, manuscriptId);
+
+      console.log("받아오는 data는",data);
       setIdea(data);
-
-
-      setValue('title', data.title);
-      setValue('dropdown',data.dropdown);  // genre 값을 선택으로 설정
-      setValue('episode', data.episode);
-      setValue('newKeywords', data.newKeywords || []);
-
+  
+      methods.reset({
+        title: data.title || '',
+        dropdown: getIdeaTypeKo(data.category) || '',
+        episode: data.description || '',
+        newKeywords: data.tags || [],
+      });
     } catch (err) {
       setError(err.message || '아이디어 불러오기 실패');
     } finally {
       setLoading(false);
     }
-
   };
-
+  
+  
   // 아이디어 추가
   const addIdea = async (idea, manuscriptId) => {
     setLoading(true);
@@ -108,7 +112,8 @@ const useIdea = () => {
     addIdea,
     handleKeywordChange,
     fetchIdea,
-    deleteIdea
+    deleteIdea,
+    idea,
   };
 };
 

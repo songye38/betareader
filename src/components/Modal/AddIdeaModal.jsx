@@ -7,12 +7,9 @@ import DropdownInput from '../FormComponents/DropdownInput';
 import CheckCommentBtn from '../Buttons/CheckCommentBtn';
 import KeywordInput from '../FormComponents/KeywordInput';
 import useIdea from '@/hooks/useIdea';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-const AddIdeaModal = ({ onClose}) => {
-    const router = useRouter(); // useRouter 사용
-    const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
-
+const AddIdeaModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
   const {
     methods,
     control,
@@ -23,13 +20,41 @@ const AddIdeaModal = ({ onClose}) => {
     loading,
     getValues,
     fetchIdeas,
+    idea,
+    setValue,
     addIdea,
+    fetchIdea
   } = useIdea();
 
   const titleValue = watch('title');
   const episodeValue = watch('episode');
   const isFormValid = titleValue && episodeValue !== '';
 
+  useEffect(() => {
+    if (ideaId && manuscriptId && isOpen) {
+      fetchIdea(ideaId, manuscriptId);
+    }
+  }, [ideaId, manuscriptId, isOpen]);
+
+  // ✨ 수정 모드면서 로딩 중이면 "로딩 중..."만 보여주기
+  if (ideaId && loading) {
+    return (
+      <div
+        style={{
+          width: '400px',
+          height: '100vh',
+          background: '#2C2D34',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: 'white',
+          fontSize: 18,
+        }}
+      >
+        로딩 중...
+      </div>
+    );
+  }
 
   return (
     <div
@@ -64,7 +89,7 @@ const AddIdeaModal = ({ onClose}) => {
               fontFamily: 'Pretendard',
             }}
           >
-            아이디어 추가
+            아이디어 {ideaId ? '수정' : '추가'}
           </div>
 
           <button
@@ -82,13 +107,14 @@ const AddIdeaModal = ({ onClose}) => {
             ✕
           </button>
         </div>
+
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit((formData) => addIdea(formData, manuscriptId))}
             style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}
           >
             <TitleInput control={control} error={errors.title} showLabel={false} title={'아이디어 제목'} name={"title"} />
-            <DropdownInput control={control} error={errors.dropdown} type={'아이디어'} name={"dropdown"}/>
+            <DropdownInput control={control} error={errors.dropdown} type={'아이디어'} name={"dropdown"} />
             <EpisodeInput control={control} error={errors.episode} title={'상세내용'} name={"episode"} />
             <KeywordInput
               control={control}
@@ -112,10 +138,10 @@ const AddIdeaModal = ({ onClose}) => {
           alignItems: 'center',
         }}
       >
-        <CheckCommentBtn 
-          disabled={!isFormValid} 
+        <CheckCommentBtn
+          disabled={!isFormValid}
           onClick={handleSubmit((formData) => addIdea(formData, manuscriptId))}
-          />
+        />
       </div>
     </div>
   );
