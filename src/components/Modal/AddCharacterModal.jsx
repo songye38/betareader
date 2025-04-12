@@ -25,6 +25,7 @@ const AddCharacterModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
     character,
     fetchCharacter,
     addCharacter,
+    editCharacter,
   } = useCharacter();
 
   useEffect(() => {
@@ -142,9 +143,16 @@ const AddCharacterModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
           alignItems: 'center',
         }}
       >
-        <CheckCommentBtn 
-          disabled={!isFormValid} 
-          onClick={handleSubmit((formData) => addCharacter(formData, manuscriptId))}
+        <CheckCommentBtn
+          title={ideaId ? '캐릭터 카드 수정' : '캐릭터 카드 저장'}
+          disabled={!isFormValid}
+          onClick={handleSubmit((formData) => {
+            if (ideaId) {
+              editCharacter(formData, ideaId, manuscriptId); // 수정
+            } else {
+              addCharacter(formData, manuscriptId); // 새로 추가
+            }
+          })}
         />
       </div>
     </div>

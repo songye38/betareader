@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const CheckCommentBtn = ({ disabled,onClick }) => {
+const CheckCommentBtn = ({ disabled,onClick,title }) => {
   return (
     <div
     onClick={onClick} // onClick 핸들러 전달
@@ -34,7 +34,7 @@ const CheckCommentBtn = ({ disabled,onClick }) => {
           wordWrap: 'break-word',
         }}
       >
-        피드백 받기
+        {title}
       </div>
     </div>
   );

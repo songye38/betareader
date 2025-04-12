@@ -37,6 +37,40 @@ export const createEnvironment = async (environment, manuscriptId) => {
   }
 };
 
+export const updateEnvironment = async (environment, environmentId, manuscriptId) => {
+  try {
+    const { title, type, description, newKeywords, note } = environment;
+
+    const { data, error } = await supabase
+      .from('environment')
+      .update({
+        title,
+        type: getEnvironmentType(environment.dropdown),
+        description,
+        reference_list: newKeywords,
+        notes: note,
+      })
+      .eq('id', environmentId)
+      .eq('manuscript_id', manuscriptId)
+      .select()
+      .single();
+
+    if (error) {
+      toast.error("세계관 수정 실패");
+      console.error('[세계관 수정 실패]', error.message);
+      throw new Error('세계관을 수정하는 도중 문제가 발생했습니다.');
+    }
+
+    toast.success("세계관 수정 성공");
+    console.log('[세계관 수정 완료]', data);
+    return data;
+  } catch (err) {
+    console.error('[updateEnvironment 예외 발생]', err.message);
+    throw err;
+  }
+};
+
+
 // 특정 manuscript_id로 아이디어 목록 가져오기
 export const getEnvironmentsByManuscript = async (manuscriptId) => {
     const { data, error } = await supabase

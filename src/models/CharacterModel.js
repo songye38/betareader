@@ -44,6 +44,54 @@ export const createCharacter = async (character,manuscriptId) => {
 };
 
 
+export const updateCharacter = async (character, characterId, manuscriptId) => {
+  try {
+    const {
+      name,
+      age,
+      appearance,
+      character_type,
+      gender,
+      goal,
+      newKeywords,
+      backstory,
+    } = character;
+
+    console.log("수정할 데이터는", character);
+
+    const { data, error } = await supabase
+      .from('character')
+      .update({
+        name,
+        role: getCharacterType(character_type),
+        age,
+        gender: getGenderType(gender),
+        appearance,
+        goal,
+        personality: newKeywords,
+        backstory,
+      })
+      .eq('id', characterId)
+      .eq('manuscript_id', manuscriptId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('📛 Supabase update error:', error);
+      toast.error('캐릭터 수정 실패: ' + error.message);
+      throw new Error('캐릭터 수정 중 오류가 발생했습니다.');
+    }
+
+    toast.success('캐릭터 수정 성공');
+    return data;
+  } catch (err) {
+    console.error('🚨 updateCharacter 함수 에러:', err);
+    toast.error('예기치 못한 오류 발생');
+    throw err;
+  }
+};
+
+
 
 
 // 특정 manuscript_id로 아이디어 목록 가져오기

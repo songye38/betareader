@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createEnvironment,getEnvironmentsByManuscript,deleteEnvironmentById,getEnvironmentByManuscript } from '@/models/EnvironmentModel';
+import { createEnvironment,getEnvironmentsByManuscript,deleteEnvironmentById,getEnvironmentByManuscript,updateEnvironment } from '@/models/EnvironmentModel';
 import { useForm } from 'react-hook-form';
 import { getEnvironmentTypeKo } from '@/utils/typeMappings';
 
@@ -104,7 +104,25 @@ const fetchEnvironment = async (id, manuscriptId) => {
     }
   };
 
+  const editEnvironment = async (updatedEnvironment, environmentId, manuscriptId) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const newData = await updateEnvironment(updatedEnvironment, environmentId, manuscriptId);
+      setEnvironments((prev) =>
+        prev.map((item) => (item.id === environmentId ? newData : item))
+      );
+      setEnvironment(newData); // ✅ setIdea → setEnvironment 으로 수정
+    } catch (err) {
+      setError(err.message || '세계관 수정 실패');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
   return {
+    editEnvironment,
     methods,
     control,
     errors,

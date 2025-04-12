@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 
 const AddIdeaModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
   const {
+    editIdea,
     methods,
     control,
     errors,
@@ -139,8 +140,15 @@ const AddIdeaModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
         }}
       >
         <CheckCommentBtn
+          title={ideaId ? '아이디어 수정' : '아이디어 저장'}
           disabled={!isFormValid}
-          onClick={handleSubmit((formData) => addIdea(formData, manuscriptId))}
+          onClick={handleSubmit((formData) => {
+            if (ideaId) {
+              editIdea(formData, ideaId, manuscriptId); // 수정
+            } else {
+              addIdea(formData, manuscriptId); // 새로 추가
+            }
+          })}
         />
       </div>
     </div>

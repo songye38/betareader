@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createCharacter,getCharactersByManuscript ,deleteCharacterById,getCharacterByManuscript} from '@/models/CharacterModel';
+import { createCharacter,getCharactersByManuscript ,deleteCharacterById,getCharacterByManuscript,updateCharacter} from '@/models/CharacterModel';
 import { useForm } from 'react-hook-form';
 import { getCharacterTypeKo,getGenderTypeKo} from '@/utils/typeMappings';
 
@@ -104,11 +104,28 @@ const deleteCharacter = async (id) => {
     setLoading(false);
   }
 };
-  
+
+const editCharacter = async (updatedCharacter, characterId, manuscriptId) => {
+  setLoading(true);
+  setError(null);
+  try {
+    const newData = await updateCharacter(updatedCharacter, characterId, manuscriptId);
+    setCharacters((prev) =>
+      prev.map((item) => (item.id === characterId ? newData : item))
+    );
+    setCharacter(newData); // 캐릭터 상세보기 등 상태 갱신용
+  } catch (err) {
+    setError(err.message || '캐릭터 수정 실패');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
 
   return {
+    editCharacter,
     character,
     fetchCharacter,
     deleteCharacter,

@@ -23,6 +23,7 @@ const AddEnvironmentModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
     ideas,
     loading,
     environment,
+    editEnvironment,
     fetchEnvironment,
     fetchEnvironments,
     addEnvironment,
@@ -142,8 +143,15 @@ const AddEnvironmentModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
         }}
       >
         <CheckCommentBtn
+          title={ideaId ? '세계관 노트 수정' : '세계관 노트 저장'}
           disabled={!isFormValid}
-          onClick={handleSubmit((formData) => addEnvironment(formData, manuscriptId))}
+          onClick={handleSubmit((formData) => {
+            if (ideaId) {
+              editEnvironment(formData, ideaId, manuscriptId); // 수정
+            } else {
+              addEnvironment(formData, manuscriptId); // 새로 추가
+            }
+          })}
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { createIdea,getIdeasByManuscript ,getIdeaByManuscript,deleteIdeaById} from '@/models/IdeaModel';
+import { createIdea,getIdeasByManuscript ,getIdeaByManuscript,deleteIdeaById,updateIdea} from '@/models/IdeaModel';
 import { getIdeaTypeKo } from '@/utils/typeMappings';
 
 const useIdea = () => {
@@ -97,7 +97,24 @@ const useIdea = () => {
     }
   };
 
+  const editIdea = async (updatedIdea, ideaId, manuscriptId) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const newData = await updateIdea(updatedIdea, ideaId, manuscriptId);
+      setIdeas((prev) =>
+        prev.map((item) => (item.id === ideaId ? newData : item))
+      );
+      setIdea(newData); // 현재 보고있는 아이디어도 갱신
+    } catch (err) {
+      setError(err.message || '아이디어 수정 실패');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
+    editIdea,
     methods,
     control,
     errors,

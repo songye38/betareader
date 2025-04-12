@@ -38,6 +38,39 @@ export const createIdea = async (idea, manuscriptId) => {
   }
 };
 
+export const updateIdea = async (idea, ideaId, manuscriptId) => {
+  console.log("수정할 idea 객체:", idea, ideaId, manuscriptId);
+
+  try {
+    const { data, error } = await supabase
+      .from('idea')
+      .update({
+        title: idea.title,
+        category: getIdeaType(idea.dropdown),
+        description: idea.episode,
+        tags: idea.newKeywords,
+      })
+      .eq('id', ideaId)
+      .eq('manuscript_id', manuscriptId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('아이디어 수정 실패:', error.message);
+      toast.error("아이디어 수정 실패");
+      throw new Error(error.message);
+    }
+
+    toast.success("아이디어 수정 성공!");
+    return data;
+  } catch (err) {
+    console.error("예외 발생:", err.message);
+    toast.error("아이디어 수정 중 예외 발생");
+    throw err;
+  }
+};
+
+
 // 특정 manuscript_id로 아이디어 목록 가져오기
 export const getIdeasByManuscript = async (manuscriptId) => {
   const { data, error } = await supabase
