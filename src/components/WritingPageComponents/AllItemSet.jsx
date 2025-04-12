@@ -11,7 +11,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
   const router = useRouter(); // useRouter 사용
   const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const [activeTab, setActiveTab] = useState('character');
-  const {fetchCharacters ,characters,}= useCharacter();
+  const {fetchCharacters ,characters,deleteCharacter}= useCharacter();
   const {environments,fetchEnvironments ,deleteEnvironment}= useEnvironment();
   const {ideas,fetchIdeas ,deleteIdea}= useIdea();
 
@@ -35,7 +35,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
       return (
         <div style={gridStyle}>
           {characters.map((char, idx) => (
-            <CharacterItem key={idx} character={char} />
+            <CharacterItem key={idx} character={char} onDelete={deleteCharacter}/>
           ))}
         </div>
       );
@@ -44,7 +44,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
       return (
         <div style={gridStyle}>
           {environments.map((env, idx) => (
-            <EnvironmentItem key={idx} environment={env} />
+            <EnvironmentItem key={idx} environment={env} onDelete={deleteEnvironment} />
           ))}
         </div>
       );
@@ -53,7 +53,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
       return (
         <div style={gridStyle}>
           {ideas.map((idea, idx) => (
-            <IdeaItem key={idx} idea={idea} />
+            <IdeaItem key={idx} idea={idea} onDelete={deleteIdea} />
           ))}
         </div>
       );
