@@ -44,7 +44,7 @@ const useEpisodeForm = () => {
   // 폼 제출 함수
   const onSubmit = async (data) => {
     if (!manuscript.id || !selectedTab.id || !data.title || !data.content) {
-      toast.error("필수 정보가 누락되었습니다.");
+      toast.info("필수 정보가 누락되었습니다.");
       return null; // 실패 시 명확하게 null 반환
     }
   

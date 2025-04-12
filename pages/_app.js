@@ -40,6 +40,7 @@ const shouldHideNavbar = hideNavbarPages.some((path) =>
       <Component {...pageProps} /> {/* 페이지별 내용 렌더링 */}
       <ToastContainer 
         position="top-right"
+        theme = 'dark'
         autoClose={1200}
         hideProgressBar={false}
         newestOnTop={true}
