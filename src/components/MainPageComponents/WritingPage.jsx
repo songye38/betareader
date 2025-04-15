@@ -38,16 +38,7 @@ const WritingPage = () => {
       <Navbar
         customNavComponent={
           <NavMainSection
-            onSave={async () => {
-              const saved = await handleSubmit(onSubmit)();
-              if (saved) {
-                useTabStore.getState().updateTab(saved.tab_id, {
-                  title: saved.title,
-                  content: saved.content,
-                  status: '임시저장됨',
-                });
-              }
-            }}
+            onSave={handleSubmit(onSubmit)} // 더 이상 async/await 필요 없음
           />
         }
       />

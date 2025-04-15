@@ -16,6 +16,8 @@ const useWritingTab = () => {
       incrementManuscriptId,
       selectedTab,
       tabs,
+      updateTab,
+
     } = useTabStore();
     const { manuscript } = useManuscriptStore();
     const { user } = useAuthStore();
@@ -74,6 +76,11 @@ const useWritingTab = () => {
         router.push(`/${user.id}/${manuscript.id}`);
       }
     };
+
+    const handleUpdateTab = (tabId, updatedFields) => {
+      if (!tabId) return;
+      updateTab(tabId, updatedFields);
+    };
   
     // ✅ 외부에서 사용하기 위해 필요한 값과 함수 return
     return {
@@ -81,6 +88,7 @@ const useWritingTab = () => {
       handleAddTab,
       handleTitleClick,
       handleTabChange,
+      handleUpdateTab,
     };
   };
   

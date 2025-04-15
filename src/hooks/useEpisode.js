@@ -6,6 +6,7 @@ import { getRecentEpisodes,getEpisodesByManuId } from '@/models/episodeModel';
 import useAuthStore from '@/store/useAuthStore';
 import useManuscriptStore from '@/store/useManuscriptStore';
 import useTabStore from '@/store/useTabStore';
+import useWritingTab from './useWritingTab';
 
 const useEpisodeForm = () => {
 
@@ -15,6 +16,8 @@ const useEpisodeForm = () => {
     const {manuscript} = useManuscriptStore();
     const {tabs,selectedTab} = useTabStore();
     const {user} = useAuthStore();
+    const { handleUpdateTab } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
+    
 
     
     useEffect(() => {
@@ -45,7 +48,7 @@ const useEpisodeForm = () => {
   const onSubmit = async (data) => {
     if (!manuscript.id || !selectedTab.id || !data.title || !data.content) {
       toast.info("필수 정보가 누락되었습니다.");
-      return null; // 실패 시 명확하게 null 반환
+      return null;
     }
   
     const requestData = {
@@ -58,34 +61,30 @@ const useEpisodeForm = () => {
   
     try {
       const response = await saveEpisode(requestData);
-  
       console.log("저장한 후 response", response);
   
       if (!response || response.error) {
-        console.error("❌ API 실패 상세 정보:", response);
         toast.error("에피소드 저장에 실패했습니다. 다시 시도해주세요.");
         return null;
       }
   
-      toast.success("에피소드가 성공적으로 저장되었습니다!");
+    // ✅ handleUpdateTab을 사용해서 상태 업데이트
+    handleUpdateTab(response.tab_id, {
+      title: response.title,
+      content: response.content,
+      status: '임시저장됨',
+    });
   
-      return response; // ✅ 성공 시 리턴!
-      
+      toast.success("에피소드가 성공적으로 저장되었습니다!");
+      return response;
+  
     } catch (error) {
       console.error("❌ 요청 중 에러 발생:", error);
-  
-      if (error.response) {
-        console.error("🔍 서버 응답 error.response:", error.response);
-      } else if (error.request) {
-        console.error("🔍 요청은 갔지만 응답 없음 error.request:", error.request);
-      } else {
-        console.error("🔍 기타 에러 메시지:", error.message);
-      }
-  
       toast.error("에피소드 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
-      return null; // 실패 시에도 명확하게 null 반환
+      return null;
     }
   };
+  
     
 
     // 최근 에피소드 5개 가져오기

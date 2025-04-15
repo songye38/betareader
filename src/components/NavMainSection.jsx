@@ -15,7 +15,7 @@ const NavMainSection = ({ onSave }) => {
       {/* 여기서 임시저장을 한다.  */}
 
       <SaveEpiBtn onClick={onSave} />
-      <CheckCommentBtn />
+      <CheckCommentBtn title={"피드백 받기"}/>
 
     </div>
   );
