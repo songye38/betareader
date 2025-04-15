@@ -11,8 +11,11 @@ import useTabStore from '@/store/useTabStore';
 import FloatingBtnSet from '@/components/MainPageComponents/FloatingBtnSet';
 import useSliderStore from '@/store/useSliderStore';
 import useEpisodeForm from '@/hooks/useEpisode';
+import { useRouter } from 'next/router';
 
 const WritingPage = () => {
+  const router = useRouter();
+  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const { tabs } = useTabStore();
   const selectedTab = tabs.find((tab) => tab.selected === true);
   const { activeTitle, handleSliderOpen } = useSliderStore();
@@ -22,10 +25,7 @@ const WritingPage = () => {
     control,
     handleSubmit,
     errors,
-    watch,
-    isFormValid,
     onSubmit,
-    setValue,
     recentEpisodes,
     fetchRecentEpisodes,
     fetchEpisodesByManuId
@@ -38,7 +38,7 @@ const WritingPage = () => {
       <Navbar
         customNavComponent={
           <NavMainSection
-            onSave={handleSubmit(onSubmit)} // 더 이상 async/await 필요 없음
+            onSave={handleSubmit((formData) => onSubmit(formData, manuscriptId))} // 더 이상 async/await 필요 없음
           />
         }
       />
@@ -46,7 +46,7 @@ const WritingPage = () => {
       <FloatingBtnSet />
 
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit((formData) => onSubmit(formData, manuscriptId))}>
 
           {/* 제목 영역 */}
           <div

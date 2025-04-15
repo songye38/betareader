@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast, Slide } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { saveEpisode } from '@/models/episodeModel'; 
 import { getRecentEpisodes,getEpisodesByManuId } from '@/models/episodeModel';
 import useAuthStore from '@/store/useAuthStore';
 import useManuscriptStore from '@/store/useManuscriptStore';
 import useTabStore from '@/store/useTabStore';
 import useWritingTab from './useWritingTab';
+import useManuscripts from './useManuscripts';
 
 const useEpisodeForm = () => {
 
@@ -17,6 +18,7 @@ const useEpisodeForm = () => {
     const {tabs,selectedTab} = useTabStore();
     const {user} = useAuthStore();
     const { handleUpdateTab } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
+    const {incrementManuscriptEpisodeCount} = useManuscripts();
     
 
     
@@ -45,18 +47,20 @@ const useEpisodeForm = () => {
   const isFormValid = titleValue && episodeValue !== '';
 
   // 폼 제출 함수
-  const onSubmit = async (data) => {
-    if (!manuscript.id || !selectedTab.id || !data.title || !data.content) {
-      toast.info("필수 정보가 누락되었습니다.");
+  const onSubmit = async (formData, manuscriptId) => {
+
+  
+    if (!manuscriptId || !selectedTab.id || !formData.title || !formData.content) {
+      toast.info("여기서 🎯🎯🎯🎯🎯🎯🎯🎯필수 정보가 누락되었습니다.");
       return null;
     }
   
     const requestData = {
       tabNo: selectedTab.no,
-      manuscriptId: manuscript.id,
+      manuscriptId: manuscriptId,
       tabId: selectedTab.id,
-      title: data.title,
-      content: data.content,
+      title: formData.title,
+      content: formData.content,
     };
   
     try {
@@ -74,6 +78,8 @@ const useEpisodeForm = () => {
       content: response.content,
       status: '임시저장됨',
     });
+
+    await incrementManuscriptEpisodeCount(manuscriptId);
   
       toast.success("에피소드가 성공적으로 저장되었습니다!");
       return response;

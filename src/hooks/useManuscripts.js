@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchManuscriptsByUserId } from '@/models/manuscriptModel';
+import { fetchManuscriptsByUserId,updateManuscriptCount } from '@/models/manuscriptModel';
 import { deleteManuscriptById } from '@/models/manuscriptModel'; // ✅ 삭제 함수 import
 import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/router';
@@ -43,7 +43,21 @@ const useManuscripts = (limit = null) => {
     }
   };
 
-  return { manuscript, loading, error, deleteManuscript }; // ✅ deleteManuscript도 반환
+  // ✅ 에피소드 수 1 증가 함수
+  const incrementManuscriptEpisodeCount = async (manuscriptId) => {
+    try {
+      const updated = await updateManuscriptCount(manuscriptId);
+      if (!updated) {
+        console.warn("에피소드 수 업데이트 실패");
+      } else {
+        console.log("에피소드 수 업데이트 성공", updated);
+      }
+    } catch (error) {
+      console.error("에피소드 수 업데이트 중 에러:", error.message);
+    }
+  };
+
+  return { manuscript, loading, error, deleteManuscript,incrementManuscriptEpisodeCount }; // ✅ deleteManuscript도 반환
 };
 
 export default useManuscripts;
