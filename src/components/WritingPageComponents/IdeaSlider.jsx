@@ -30,7 +30,7 @@ const IdeaSlider = ({ isVisible, onClose }) => {
   useEffect(() => {
     if (!manuscriptId) return;
     fetchIdeas(manuscriptId); // 내부에서 loading 및 ideas 처리됨
-  }, [isVisible]);
+  }, [isVisible,manuscriptId]);
 
   //💥💥💥💥💥💥추가됨
   const handleEdit = (ideaId) => {

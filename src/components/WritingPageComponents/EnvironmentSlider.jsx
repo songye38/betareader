@@ -26,7 +26,7 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
     useEffect(() => {
       if (!manuscriptId) return;
       fetchEnvironments(manuscriptId); // 내부에서 loading 및 ideas 처리됨
-    }, [isVisible]);
+    }, [isVisible,manuscriptId]);
 
       //💥💥💥💥💥💥추가됨
   const handleEdit = (ideaId) => {

@@ -2,41 +2,55 @@
 
 import React from 'react';
 
-const SaveEpiBtn = ({ disabled,onClick }) => {
+const SaveEpiBtn = ({ disabled, onClick }) => {
+  const baseColor = '#A78EF7';
+  const disabledColor = '#D1C4F7';
+
   return (
-    <div
-    onClick={onClick} // onClick 핸들러 전달
+    <button
+      onClick={onClick}
+      disabled={disabled}
       style={{
-        width: 'auto',
-        height: 'auto',
-        paddingLeft: 14,
-        paddingRight: 14,
-        paddingTop: 8,
-        paddingBottom: 8,
-        background: '#A78EF7',
+        padding: '8px 14px',
+        background: disabled ? disabledColor : baseColor,
         borderRadius: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 8,
-        display: 'inline-flex',
-        opacity: disabled ? 0.5 : 1, // 비활성화 상태일 때 opacity 조정
-        cursor: disabled ? 'not-allowed' : 'pointer', // 비활성화 시 커서 변경
+        color: 'white',
+        fontSize: 14,
+        fontFamily: 'Pretendard',
+        fontWeight: 600,
+        lineHeight: '20px',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        border: 'none',
+        transition: 'all 0.2s ease-in-out',
+        boxShadow: disabled
+          ? 'none'
+          : '0 2px 6px rgba(167, 142, 247, 0.3)',
+        transform: disabled ? 'none' : 'translateY(0)',
+      }}
+      onMouseDown={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.transform = 'translateY(1px)';
+        }
+      }}
+      onMouseUp={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.transform = 'translateY(0)';
+        }
+      }}
+      onMouseEnter={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.background = '#B59AF8';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.background = baseColor;
+          e.currentTarget.style.transform = 'translateY(0)';
+        }
       }}
     >
-      <div
-        style={{
-          textAlign: 'center',
-          color: 'white',
-          fontSize: 14,
-          fontFamily: 'Pretendard',
-          fontWeight: '600',
-          lineHeight: '28px',
-          wordWrap: 'break-word',
-        }}
-      >
-        임시저장
-      </div>
-    </div>
+      임시저장
+    </button>
   );
 };
 

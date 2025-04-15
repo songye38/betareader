@@ -29,7 +29,7 @@ const CharacterSlider = ({ isVisible, onClose }) => {
   useEffect(() => {
     if (!manuscriptId) return;
     fetchCharacters(manuscriptId); // 내부에서 loading 및 ideas 처리됨
-  }, [isVisible]);
+  }, [isVisible,manuscriptId]);
 
   const handleEdit = (ideaId) => {
     console.log("버튼이 눌리고 값이 들어오나?",ideaId);

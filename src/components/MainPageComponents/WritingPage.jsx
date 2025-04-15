@@ -15,14 +15,7 @@ import useEpisodeForm from '@/hooks/useEpisode';
 const WritingPage = () => {
   const { tabs } = useTabStore();
   const selectedTab = tabs.find((tab) => tab.selected === true);
-
-  const {
-    activeTitle,
-    handleSliderOpen,
-  } = useSliderStore();
-
-
-
+  const { activeTitle, handleSliderOpen } = useSliderStore();
 
   const {
     methods,
@@ -38,37 +31,29 @@ const WritingPage = () => {
     fetchEpisodesByManuId
   } = useEpisodeForm();
 
-
-
-
-
   const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크', '피드백'];
 
-  console.log("selectedTab",selectedTab);
-
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <Navbar
         customNavComponent={
-            <NavMainSection
+          <NavMainSection
             onSave={async () => {
-                const saved = await handleSubmit(onSubmit)();
-
-                console.log("그래서 saves에는 무엇이?",saved);
-                if (saved) {
+              const saved = await handleSubmit(onSubmit)();
+              if (saved) {
                 useTabStore.getState().updateTab(saved.tab_id, {
-                    title: saved.title,
-                    content: saved.content,
-                    status: '임시저장됨',
+                  title: saved.title,
+                  content: saved.content,
+                  status: '임시저장됨',
                 });
-                }
+              }
             }}
-            />
+          />
         }
-        />
-
+      />
 
       <FloatingBtnSet />
+
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -99,8 +84,10 @@ const WritingPage = () => {
                 alignItems: 'center',
               }}
             >
-              <EpisodeTitleEditor control={control} errors={errors} title={selectedTab.title} />
+              <EpisodeTitleEditor control={control} errors={errors} title={selectedTab?.title || ''} />
             </div>
+
+
 
             {/* 상단 버튼 */}
             <div
@@ -125,16 +112,29 @@ const WritingPage = () => {
             </div>
           </div>
 
-          {/* 슬라이더 및 모달 */}
-          {/* <FloatingBtnSet /> */}
-
           {/* 본문 에디터 */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', paddingBottom: '80px' }}>
             <EpisodeContentEditor control={control} errors={errors} />
           </div>
-
         </form>
       </FormProvider>
+
+      {/* ✅ 슬라이더 활성화 시 dim 처리 */}
+      {activeTitle && (
+        <div
+          onClick={() => handleSliderOpen('')} // 배경 클릭 시 슬라이더 닫기
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            zIndex: 10,
+            transition: 'opacity 0.3s ease-in-out',
+          }}
+        />
+      )}
     </div>
   );
 };
