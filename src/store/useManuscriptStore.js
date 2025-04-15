@@ -1,82 +1,44 @@
 import { create } from "zustand";
 
+// 전체 manuscript 상태를 관리하는 store
 const useManuscriptStore = create((set) => ({
   manuscript: {
-    episode_count: null,
-    id: null,
-    isSetup: false,
-    last_edited_at: null,
-    title: '',
-    user_id: null,
+    id: null, // 원고집의 id만 관리
   },
 
-  // 전체 manuscript 객체를 업데이트하는 함수
+  // manuscript 객체를 업데이트하는 함수 (id만 갱신)
   setManuscript: (data) => set({
-    manuscript: data,
+    manuscript: { id: data.id }, // id만 업데이트
   }),
 
-  // 원고 설정
-  episode: {
-    manuscript_id : null,
-    type : null,
-    content : null,
-    create_at : null,
-    last_edited_at : null,
-    title : null,
-    tab_id : null,
-    tab_no : null,
-  },
-  setEpisode: (data) => set({ episodes: data }),
-
-  // 설정 관련
-  setting: null,
-  setSetting: (setting) => set({ setting: setting }),
+  // manuscript 초기화
+  resetManuscript: () => set({
+    manuscript: { id: null },
+  }),
 }));
 
 // 세션 스토리지에 상태 저장하기
 if (typeof window !== 'undefined') {
-  useManuscriptStore.subscribe((state) => {
-    sessionStorage.setItem("manuscript", JSON.stringify(state.manuscript));
-    sessionStorage.setItem("episode", JSON.stringify(state.episode));
-    sessionStorage.setItem("setting", JSON.stringify(state.setting));
-  }, (state) => state.manuscript);  // manuscript 상태가 변경될 때마다 실행
+  // manuscript 상태가 변경될 때마다 세션 스토리지에 저장
+  useManuscriptStore.subscribe(
+    (state) => {
+      sessionStorage.setItem("manuscript", JSON.stringify(state.manuscript));
+    },
+    (state) => state.manuscript // manuscript 상태를 감지하여 저장
+  );
 
-  // 세션 스토리지에서 상태 불러오기
-  const loadFromSessionStorage = () => {
+  // 세션 스토리지에서 manuscript 불러오기
+  const loadManuscriptFromSessionStorage = () => {
     const manuscript = sessionStorage.getItem("manuscript");
-    const episode = sessionStorage.getItem("episode");
-    const setting = sessionStorage.getItem("setting");
-
-    return {
-      manuscript: manuscript ? JSON.parse(manuscript) : null,
-      episode: episode ? JSON.parse(episode) : null,
-      setting: setting ? JSON.parse(setting) : null,
-    };
+    return manuscript ? JSON.parse(manuscript) : { id: null };
   };
 
   // 초기 상태 설정 (세션 스토리지에서 불러오기)
-  const { manuscript, episode, setting } = loadFromSessionStorage();
+  const manuscript = loadManuscriptFromSessionStorage();
 
+  // 세션 스토리지에서 불러온 manuscript로 상태 초기화
   useManuscriptStore.setState({
-    manuscript: manuscript || {
-      episode_count: null,
-      id: null,
-      isSetup: false,
-      last_edited_at: null,
-      title: '',
-      user_id: null,
-    },
-    episode: episode || {
-      manuscript_id: null,
-      type: null,
-      content: null,
-      create_at: null,
-      last_edited_at: null,
-      title: null,
-      tab_id: null,
-      tab_no: null,
-    },
-    setting: setting || null,
+    manuscript: manuscript,
   });
 }
 

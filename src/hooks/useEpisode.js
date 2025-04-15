@@ -15,10 +15,13 @@ const useEpisodeForm = () => {
     const [allEpisodes, setAllEpisodes] = useState([]);
     const [isSaving, setIsSaving] = useState(false); // 자동 저장 여부
     const {manuscript} = useManuscriptStore();
-    const {tabs,selectedTab} = useTabStore();
+    const tabs = useTabStore((state) => state.tabs);
+    const selectedTab = useTabStore((state) => state.selectedTab);
     const {user} = useAuthStore();
     const { handleUpdateTab } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
     const {incrementManuscriptEpisodeCount} = useManuscripts();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     
 
     
@@ -49,45 +52,67 @@ const useEpisodeForm = () => {
   // 폼 제출 함수
   const onSubmit = async (formData, manuscriptId) => {
 
-  
-    if (!manuscriptId || !selectedTab.id || !formData.title || !formData.content) {
+    if (!manuscriptId || !selectedTab.tab_id || !formData.title || !formData.content) {
       toast.info("여기서 🎯🎯🎯🎯🎯🎯🎯🎯필수 정보가 누락되었습니다.");
       return null;
     }
-  
+
     const requestData = {
-      tabNo: selectedTab.no,
-      manuscriptId: manuscriptId,
-      tabId: selectedTab.id,
+      tabNo: selectedTab.tab_no,
+      manuscriptId,
+      tabId: selectedTab.tab_id,
       title: formData.title,
       content: formData.content,
     };
-  
+
+    setLoading(true);
+    setError(null); // 이전 에러 초기화
+
     try {
       const response = await saveEpisode(requestData);
-      console.log("저장한 후 response", response);
-  
-      if (!response || response.error) {
-        toast.error("에피소드 저장에 실패했습니다. 다시 시도해주세요.");
-        return null;
-      }
-  
-    // ✅ handleUpdateTab을 사용해서 상태 업데이트
-    handleUpdateTab(response.tab_id, {
-      title: response.title,
-      content: response.content,
-      status: '임시저장됨',
-    });
 
-    await incrementManuscriptEpisodeCount(manuscriptId);
+      if (!response || response.error) {
+        throw new Error("에피소드 저장에 실패했습니다. 다시 시도해주세요.");
+
+      }
+
+      console.log("저장한 후 response", response);
+      console.log("저장 전 tabs", tabs);
+
+
+      // 상태 업데이트는 여기!
+      handleUpdateTab(response.tab_id, {
+        title: response.title,
+        content: response.content,
+        status: '작성중',
+        created_at: response.created_at,
+        id: response.id,
+        last_edited_at: response.last_edited_at,
+        manuscript_id: response.manuscript_id,
+        selected: true,
+        tab_id: response.tab_id,
+        tab_no: response.tab_no,
+      });
+
+      console.log("tabs",tabs);
+
+      
   
+      // ✅ episode_count 증가
+      await incrementManuscriptEpisodeCount(manuscriptId);
+
       toast.success("에피소드가 성공적으로 저장되었습니다!");
       return response;
-  
-    } catch (error) {
-      console.error("❌ 요청 중 에러 발생:", error);
+
+    } catch (err) {
+      console.error("❌ 요청 중 에러 발생:", err);
+      setError(err.message || "알 수 없는 에러가 발생했습니다.");
       toast.error("에피소드 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
       return null;
+
+    } finally {
+      
+      setLoading(false);
     }
   };
   
@@ -95,26 +120,37 @@ const useEpisodeForm = () => {
 
     // 최근 에피소드 5개 가져오기
   const fetchRecentEpisodes = async () => {
+    setLoading(true);
+    setError(null); // 에러 초기화
+  
     try {
       const episodes = await getRecentEpisodes(user.id);
-      setRecentEpisodes(episodes);  // 가져온 에피소드 데이터를 상태에 저장
-    } catch (error) {
-      console.error("❌ 에피소드 가져오기 실패:", error);
+      setRecentEpisodes(episodes); // 성공 시 상태 저장
+    } catch (err) {
+      console.error("❌ 에피소드 가져오기 실패:", err);
+      setError(err.message || "최근 에피소드를 불러오는 데 실패했습니다.");
       toast.error("최근 에피소드를 불러오는 데 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
     }
   };
 
 
-
-  const fetchEpisodesByManuId = async () => {
-
+  const fetchEpisodesByManuId = async (userId,manuscriptId) => {
+    setLoading(true); // 요청 시작 시 로딩 상태 활성화
+    setError(null); // 이전 에러 초기화
+  
     try {
-      const allEpisodes = await getEpisodesByManuId(manuscript.user_id,manuscript.id);
+      const allEpisodes = await getEpisodesByManuId(userId, manuscriptId);
       setAllEpisodes(allEpisodes);  // 가져온 에피소드 데이터를 상태에 저장
-      console.log("해당 manuId에 속하는 모든 에피소드들:", allEpisodes);
-    } catch (error) {
-      console.error("❌ 에피소드 가져오기 실패:", error);
+      return allEpisodes; 
+    } catch (err) {
+      console.error("❌ 에피소드 가져오기 실패:", err);
+      setError(err.message || "에피소드를 불러오는 데 실패했습니다."); // 에러 상태 업데이트
       toast.error("최근 에피소드를 불러오는 데 실패했습니다. 다시 시도해주세요.");
+      return []; 
+    } finally {
+      setLoading(false); // 로딩 끝났으므로 로딩 상태 비활성화
     }
   };
 
@@ -130,7 +166,8 @@ const useEpisodeForm = () => {
     setValue,
     recentEpisodes,
     fetchRecentEpisodes,
-    fetchEpisodesByManuId
+    fetchEpisodesByManuId,
+    allEpisodes,
   };
 };
 

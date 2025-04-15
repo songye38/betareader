@@ -2,34 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import AllEpiItem from './AllEpiItem';
 import useWritingTab from '../../hooks/useWritingTab';
 import useTabStore from '@/store/useTabStore';
-
-const dummyEpisodes = [
-  {
-    title: '프롤로그: 각성',
-    content: '주인공은 의식을 잃고 병원에서 깨어난다. 그 순간부터 그는 사람들의 생각을 읽을 수 있게 된다...',
-    lastUpdated: '2025.04.01',
-    status: '작성중',
-  },
-  {
-    title: '1화: 도시의 어둠',
-    content: '대통령은 국가의 원수이며, 외국에 대하여 국가를 대표한다. 이 헌법시행 당시의 대법원장과 대법원판사가 아닌 법관은 제1항 단서의 규정에 불구하고 이 헌법에 의하여 대통령은 국가의 원수이며, 외국에 대하여 국가를 대표한다. 이 헌법시행 당시의 대법원장과 대법원판사가 아닌 법관은 제1항 단서의 규정에 불구하고 이 헌법에 의하여 ',
-    lastUpdated: '2025.03.30',
-    status: '피드백 받는중',
-  },
-  {
-    title: '2화: AI의 속삭임',
-    content: '인공지능이 사람을 속이고 조종하는 방법은? 이소연은 의심을 품기 시작한다.',
-    lastUpdated: '2025.03.28',
-    status: '작성중',
-  },
-];
+import useManuscriptStore from '@/store/useManuscriptStore';
 
 const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
   const { handleAddTab,handleTabChange } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
   const sliderRef = useRef(null);
   const {tabs,currentManuscriptId,selectedTab} = useTabStore(); // Zustand 사용
-
-  console.log("tabs",tabs);
+  const {manuscript} = useManuscriptStore();
 
 
   useEffect(() => {
@@ -94,7 +73,7 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
             cursor: 'pointer',
             transition: 'all 0.2s ease-in-out',
           }}
-          onClick={handleAddTab} // ✅ 여기 연결!
+          onClick={() => handleAddTab(manuscript.id)}
           onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#3A3B42'}
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2C2D34'}
         >
@@ -115,10 +94,10 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
       >
         {tabs.map((tab) => (
           <AllEpiItem
-            key={tab.id}
+            key={tab.tab_id}
             episode={tab}
             active={tab.selected} // ✅ selected가 true면 active 처리
-            onClick={() => handleTabChange(tab.id)} // ✅ 클릭 시 탭 전환
+            onClick={() => handleTabChange(tab.tab_id)} // ✅ 클릭 시 탭 전환
           />
         ))}
       </div>

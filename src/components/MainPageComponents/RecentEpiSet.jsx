@@ -10,7 +10,6 @@ const RecentEpiSet = () => {
 
   useEffect(() => {
     if (!user || !user.id) return;
-    console.log("recentEpisodes에는 어떤것들이 들어있나?",recentEpisodes)
     fetchRecentEpisodes(user.id);
   }, [user?.id]);
 

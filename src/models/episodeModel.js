@@ -52,7 +52,6 @@ export const getRecentEpisodes = async (userId) => {
         throw error;
       }
   
-      console.log("episode model 가장 최근 수정된 에피소드들:", data);
       return data;  // 데이터 반환
     } catch (error) {
       console.error("❌ 에피소드 불러오기 실패:", error);
@@ -61,18 +60,14 @@ export const getRecentEpisodes = async (userId) => {
   };
 
   export const getEpisodesByManuId = async (userId, manuscriptId) => {
+
     try {
       const { data, error } = await supabase
         .from('episode')
-        .select(`
-          *,
-          manuscript (
-            id,
-            user_id
+        .select(
+          '*'
           )
-        `)
-        .eq('manuscript.user_id', userId)  // 특정 userId의 원고만 가져옴
-        .eq('manuscript.id', manuscriptId) // 특정 manuscript_id의 에피소드만 필터링
+        .eq('manuscript_id', manuscriptId)  // 특정 userId의 원고만 가져옴
         .order('tab_no', { ascending: true }); // tab_no 기준 정렬 (작은값 → 큰값)
   
       if (error) {
@@ -80,7 +75,6 @@ export const getRecentEpisodes = async (userId) => {
         throw error;
       }
   
-      console.log("🎯 가져온 에피소드 데이터:", data);
       return data;  
     } catch (error) {
       console.error("❌ 에피소드 불러오기 실패:", error);

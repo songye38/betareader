@@ -59,11 +59,9 @@ export default function AuthListener() {
           .createSignedUrl(extractStoragePath(avatar_url), 60 * 60 * 24 * 7); // 7일 유효
 
         if (urlError) {
-          console.log("avatar_url이 안나오나?",avatar_url);
           console.error("❌ Signed URL 생성 실패:", urlError);
         } else {
           signedUrl = data.signedUrl;
-          console.log("signedUrl",signedUrl);
         }
       }
 
@@ -71,11 +69,6 @@ export default function AuthListener() {
       setProfile({
         username: profile.username,
         avatar_url: signedUrl || null,
-      });
-
-      console.log("✅ 프로필 + Signed URL 저장 완료:", {
-        username: profile.username,
-        avatar_url: signedUrl,
       });
     };
 
@@ -87,7 +80,6 @@ export default function AuthListener() {
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log("📢 Auth 이벤트:", event);
         await fetchUserData(session);
       }
     );

@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
+import dayjs from 'dayjs'; // dayjs 라이브러리 가져오기
+import relativeTime from 'dayjs/plugin/relativeTime'; // 상대 시간 플러그인
+import 'dayjs/locale/ko'; // 한국어 로케일 가져오기
 
-const statusColors = {
-  작성중: '#6071FB',
-  '피드백 받는중': '#F27878',
-};
+// dayjs에 상대 시간 플러그인 사용
+dayjs.extend(relativeTime);
+
+// dayjs에 한국어 로케일 설정
+dayjs.locale('ko');
+
+
 
 const AllEpiItem = ({ episode, active,onClick }) => {
-  const { title, content, lastUpdated, status } = episode;
+  const { title, content, last_edited_at, status } = episode;
   const [isHovered, setIsHovered] = useState(false);
+    const relativeTimeDisplay = dayjs(last_edited_at).fromNow();
 
-  const borderColor = active ? (statusColors[status] || '#999') : 'transparent';
+
+
+  const borderColor = active 
+    ? (status === "작성중" ? '#6071FB' : status === "피드백 받는중" ? '#F27878' : '#6071FB') 
+    : 'transparent';
+
 
   // 배경색 조건에 따라 다르게 적용
   const getBackgroundColor = () => {
@@ -45,7 +57,7 @@ const AllEpiItem = ({ episode, active,onClick }) => {
         <h3 style={{ fontSize: '18px', fontWeight: '600', margin: 0 }}>{title}</h3>
         <span
           style={{
-            backgroundColor: statusColors[status] || '#999',
+            backgroundColor: borderColor || '#999',
             color: 'white',
             padding: '4px 10px',
             borderRadius: '4px',
@@ -53,7 +65,7 @@ const AllEpiItem = ({ episode, active,onClick }) => {
             fontWeight: '700',
           }}
         >
-          {status}
+          {status.replace(/^['"]+|['"]+$/g, '')}
         </span>
       </div>
 
@@ -66,7 +78,7 @@ const AllEpiItem = ({ episode, active,onClick }) => {
 
       {/* 최근 작성일 */}
       <div style={{ fontSize: '12px', color: '#888888', textAlign: 'right' }}>
-        최근 작성일: {lastUpdated}
+        최근 작성일: {relativeTimeDisplay}
       </div>
     </div>
   );

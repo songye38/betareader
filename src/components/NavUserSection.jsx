@@ -12,10 +12,10 @@ const NavUserSection = ({signin}) => {
 
 
   useEffect(() => {
-          if (profile?.avatar_url !== undefined) {
-            setAvatarUrl(profile.avatar_url || null); // 없으면 null로 명시
-          }
-        }, [profile]);
+    if (profile?.avatar_url !== undefined) {
+      setAvatarUrl(profile.avatar_url || null); // 없으면 null로 명시
+    }
+  }, [profile]);
 
   // 모달 토글 함수
   const toggleModal = () => {

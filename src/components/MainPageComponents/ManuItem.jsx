@@ -2,8 +2,9 @@ import { useRouter } from 'next/router';
 import dayjs from 'dayjs'; // dayjs 라이브러리 가져오기
 import relativeTime from 'dayjs/plugin/relativeTime'; // 상대 시간 플러그인
 import 'dayjs/locale/ko'; // 한국어 로케일 가져오기
-import useManuscriptStore from '@/store/useManuscriptStore';
 import useEpisodeForm from '@/hooks/useEpisode';
+import useTabStore from '@/store/useTabStore';
+import useManuscriptStore from '@/store/useManuscriptStore';
 
 // dayjs에 상대 시간 플러그인 사용
 dayjs.extend(relativeTime);
@@ -12,10 +13,12 @@ dayjs.extend(relativeTime);
 dayjs.locale('ko');
 
 const ManuItem = ({ title, lastEditedAt, episodeCount ,userId, ManuId}) => {
-  const { fetchEpisodesByManuId } = useEpisodeForm(); // ✅ 컴포넌트 내부에서 호출
+  const { fetchEpisodesByManuId,allEpisodes } = useEpisodeForm(); // ✅ 컴포넌트 내부에서 호출
   const router = useRouter();
   const relativeTimeDisplay = dayjs(lastEditedAt).fromNow();
-  const {setManuscript} = useManuscriptStore();
+  const {setTabs} = useTabStore();
+  const setManuscript = useManuscriptStore((state) => state.setManuscript);
+
 
   const data = {
     "episode_count" : episodeCount,
@@ -26,10 +29,11 @@ const ManuItem = ({ title, lastEditedAt, episodeCount ,userId, ManuId}) => {
     'user_id' : userId
   }
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (userId && ManuId) {
-      setManuscript(data);
-      // fetchEpisodesByManuId(userId);
+      const episodes = await fetchEpisodesByManuId(userId, ManuId); 
+      setManuscript({ id: ManuId });
+      setTabs(episodes); // ✅ 받아온 데이터를 바로 사용
       router.push(`/manu/${ManuId}`);
     }
   };

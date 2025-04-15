@@ -8,8 +8,6 @@ const SaveEpiBtn = ({ disabled, onClick }) => {
   const disabledColor = '#D1C4F7';
   const {tabs,selectedTab} = useTabStore();
 
-  console.log("SaveEpiBtn 안에서의 tabs",tabs);
-
   return (
     <button
       onClick={onClick}

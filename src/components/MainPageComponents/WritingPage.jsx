@@ -11,14 +11,20 @@ import useTabStore from '@/store/useTabStore';
 import FloatingBtnSet from '@/components/MainPageComponents/FloatingBtnSet';
 import useSliderStore from '@/store/useSliderStore';
 import useEpisodeForm from '@/hooks/useEpisode';
-import { useRouter } from 'next/router';
+import useAuthStore from '@/store/useAuthStore';
+import { useEffect } from 'react';
+import useManuscriptStore from '@/store/useManuscriptStore';
+
+const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크', '피드백'];
 
 const WritingPage = () => {
-  const router = useRouter();
-  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
+  const { manuscript } = useManuscriptStore();
   const { tabs } = useTabStore();
   const selectedTab = tabs.find((tab) => tab.selected === true);
   const { activeTitle, handleSliderOpen } = useSliderStore();
+  const {user} = useAuthStore();
+
+
 
   const {
     methods,
@@ -27,18 +33,26 @@ const WritingPage = () => {
     errors,
     onSubmit,
     recentEpisodes,
+    error,
+    loading,
     fetchRecentEpisodes,
-    fetchEpisodesByManuId
+    fetchEpisodesByManuId,
+    allEpisodes,
   } = useEpisodeForm();
 
-  const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크', '피드백'];
+
+
+  useEffect(() => {
+    if (!user || !user.id|| !manuscript || ! manuscript.id) return;
+    fetchEpisodesByManuId(user.id,manuscript.id);
+  }, [user?.id]);
 
   return (
     <div style={{ position: 'relative' }}>
       <Navbar
         customNavComponent={
           <NavMainSection
-            onSave={handleSubmit((formData) => onSubmit(formData, manuscriptId))} // 더 이상 async/await 필요 없음
+            onSave={handleSubmit((formData) => onSubmit(formData, manuscript.id))} // 더 이상 async/await 필요 없음
           />
         }
       />
@@ -46,7 +60,7 @@ const WritingPage = () => {
       <FloatingBtnSet />
 
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit((formData) => onSubmit(formData, manuscriptId))}>
+        <form onSubmit={handleSubmit((formData) => onSubmit(formData, manuscript.id))}>
 
           {/* 제목 영역 */}
           <div

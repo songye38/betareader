@@ -9,8 +9,8 @@ const useManuscripts = (limit = null) => {
   const user = useAuthStore((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [manuscripts,setManuscripts] = useState([]);
   const router = useRouter();
-  const { manuscript, setManuscript } = useManuscriptStore();
 
   useEffect(() => {
     if (!user) return;
@@ -21,7 +21,7 @@ const useManuscripts = (limit = null) => {
 
       try {
         const data = await fetchManuscriptsByUserId(user.id, limit);
-        setManuscript(data);
+        setManuscripts(data); //전체 데이터 저장 
       } catch (err) {
         setError(err.message);
       }
@@ -57,7 +57,7 @@ const useManuscripts = (limit = null) => {
     }
   };
 
-  return { manuscript, loading, error, deleteManuscript,incrementManuscriptEpisodeCount }; // ✅ deleteManuscript도 반환
+  return {loading, error, deleteManuscript,incrementManuscriptEpisodeCount,manuscripts }; // ✅ deleteManuscript도 반환
 };
 
 export default useManuscripts;

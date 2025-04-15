@@ -6,7 +6,6 @@ import { Controller } from 'react-hook-form';
 
 const TitleInput_mini = ({ control, error,showLabel = true ,title}) => {
 
-  console.log("TitleInput_mini에서의 title",title);
   return (
     <div style={{ 
         width: '100%',
