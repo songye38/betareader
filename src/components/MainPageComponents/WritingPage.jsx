@@ -32,6 +32,7 @@ const WritingPage = () => {
     handleSubmit,
     errors,
     onSubmit,
+    reset,
     recentEpisodes,
     error,
     loading,
@@ -46,6 +47,15 @@ const WritingPage = () => {
     if (!user || !user.id|| !manuscript || ! manuscript.id) return;
     fetchEpisodesByManuId(user.id,manuscript.id);
   }, [user?.id]);
+
+  useEffect(() => {
+    if (selectedTab) {
+      methods.reset({
+        title: selectedTab.title || '',
+        content: selectedTab.content || '',
+      });
+    }
+  }, [selectedTab]);
 
   return (
     <div style={{ position: 'relative' }}>

@@ -42,7 +42,7 @@ const useEpisodeForm = () => {
         mode: 'onChange',
     });
   
-  const { control, handleSubmit, formState: { errors }, watch, setValue } = methods;
+  const { control, handleSubmit, formState: { errors }, watch, setValue,reset } = methods;
   
   const titleValue = watch('title');
   const episodeValue = watch('content');
@@ -157,6 +157,7 @@ const useEpisodeForm = () => {
 
   return {
     methods,
+    reset,
     control,
     handleSubmit,
     errors,
