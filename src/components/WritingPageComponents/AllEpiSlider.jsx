@@ -3,12 +3,14 @@ import AllEpiItem from './AllEpiItem';
 import useWritingTab from '../../hooks/useWritingTab';
 import useTabStore from '@/store/useTabStore';
 import useManuscriptStore from '@/store/useManuscriptStore';
+import useEpisodeForm from '@/hooks/useEpisode';
 
 const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
   const { handleAddTab,handleTabChange } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
   const sliderRef = useRef(null);
-  const {tabs,currentManuscriptId,selectedTab} = useTabStore(); // Zustand 사용
+  const {tabs} = useTabStore(); // Zustand 사용
   const {manuscript} = useManuscriptStore();
+  const {handleDeleteEpisode} = useEpisodeForm();
 
 
   useEffect(() => {
@@ -98,6 +100,7 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
             episode={tab}
             active={tab.selected} // ✅ selected가 true면 active 처리
             onClick={() => handleTabChange(tab.tab_id)} // ✅ 클릭 시 탭 전환
+            onDelete={handleDeleteEpisode}
           />
         ))}
       </div>

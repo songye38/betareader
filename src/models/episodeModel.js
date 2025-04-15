@@ -83,4 +83,25 @@ export const getRecentEpisodes = async (userId) => {
   };
   
   
-  
+  // 에피소드 삭제 함수
+export const deleteEpisode = async (episodeId) => {
+
+  console.log("episodeId",episodeId);
+  try {
+    const { data, error } = await supabase
+      .from('episode')
+      .delete()
+      .eq('id', episodeId);  // id가 episodeId와 일치하는 에피소드 삭제
+
+    if (error) {
+      console.error("❌ Supabase 에러:", error.message);
+      throw error;
+    }
+
+    console.log("에피소드 삭제 성공", data);
+    return data;  // 삭제된 데이터 반환
+  } catch (error) {
+    console.error("❌ 에피소드 삭제 실패:", error);
+    throw error;
+  }
+};

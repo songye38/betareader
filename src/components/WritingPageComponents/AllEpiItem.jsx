@@ -11,7 +11,7 @@ dayjs.locale('ko');
 
 
 
-const AllEpiItem = ({ episode, active,onClick }) => {
+const AllEpiItem = ({ episode, active,onClick,onDelete }) => {
   const { title, content, last_edited_at, status } = episode;
   const [isHovered, setIsHovered] = useState(false);
     const relativeTimeDisplay = dayjs(last_edited_at).fromNow();
@@ -55,18 +55,43 @@ const AllEpiItem = ({ episode, active,onClick }) => {
       {/* 상단: 제목 + 상태 뱃지 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h3 style={{ fontSize: '18px', fontWeight: '600', margin: 0 }}>{title}</h3>
-        <span
-          style={{
-            backgroundColor: borderColor || '#999',
-            color: 'white',
-            padding: '4px 10px',
-            borderRadius: '4px',
-            fontSize: '12px',
-            fontWeight: '700',
-          }}
-        >
-          {status.replace(/^['"]+|['"]+$/g, '')}
-        </span>
+        <div style={{ display: 'flex', gap: '4px', justifyContent: 'flex-start', alignItems: 'center' }}>
+          <span
+            style={{
+              backgroundColor: borderColor || '#999',
+              color: 'white',
+              padding: '6px 10px',
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontWeight: '500',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '20px', // 필요에 따라 height 설정
+            }}
+          >
+            {status.replace(/^['"]+|['"]+$/g, '')}
+            </span>
+          <button
+            style={{
+              padding: '6px 10px',
+              fontSize: 12,
+              fontWeight: 500,
+              color: '#FFFFFF',
+              backgroundColor: '#2C2D34',
+              border: '1px solid #3A3D46',
+              borderRadius: 6,
+              fontFamily: 'Pretendard',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease-in-out',
+            }}
+            onClick={() => onDelete?.(episode.id)} // ✅ 삭제 핸들러 실행
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
+          >
+            삭제
+          </button>
+        </div>
       </div>
 
       {/* 본문 요약 */}

@@ -95,11 +95,6 @@ const CharacterSlider = ({ isVisible, onClose }) => {
         </div>
 
         {/* 캐릭터 리스트 */}
-        {/* <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {dummyCharacters.map((char, index) => (
-            <CharacterItem key={index} character={char} />
-          ))}
-        </div> */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {loading ? (
               <div style={{ color: '#aaa', textAlign: 'center' }}>로딩중...</div>

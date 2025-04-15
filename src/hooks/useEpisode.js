@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { saveEpisode } from '@/models/episodeModel'; 
+import { saveEpisode,deleteEpisode } from '@/models/episodeModel'; 
 import { getRecentEpisodes,getEpisodesByManuId } from '@/models/episodeModel';
 import useAuthStore from '@/store/useAuthStore';
 import useManuscriptStore from '@/store/useManuscriptStore';
@@ -154,6 +154,25 @@ const useEpisodeForm = () => {
     }
   };
 
+  // 에피소드 삭제 함수
+  const handleDeleteEpisode = async (episodeId) => {
+    setLoading(true);
+    setError(null); // 에러 초기화
+
+    try {
+      const deletedData = await deleteEpisode(episodeId); // deleteEpisode 호출하여 삭제
+      // 삭제된 에피소드 리스트 업데이트
+      setAllEpisodes((prev) => prev.filter((episode) => episode.id !== episodeId));
+      toast.success("에피소드가 성공적으로 삭제되었습니다!");
+    } catch (err) {
+      console.error("❌ 에피소드 삭제 실패:", err);
+      setError(err.message || "에피소드를 삭제하는 데 실패했습니다.");
+      toast.error("에피소드를 삭제하는 데 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return {
     methods,
@@ -169,6 +188,7 @@ const useEpisodeForm = () => {
     fetchRecentEpisodes,
     fetchEpisodesByManuId,
     allEpisodes,
+    handleDeleteEpisode,
   };
 };
 
