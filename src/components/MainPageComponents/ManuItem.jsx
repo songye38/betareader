@@ -23,7 +23,6 @@ const ManuItem = ({ title, lastEditedAt, episodeCount ,userId, ManuId}) => {
   const data = {
     "episode_count" : episodeCount,
     'id' : ManuId,
-    'isSetup' : false,
     'last_edited_at' : lastEditedAt,
     'title' : title,
     'user_id' : userId
@@ -36,8 +35,6 @@ const ManuItem = ({ title, lastEditedAt, episodeCount ,userId, ManuId}) => {
       setManuscript({ id: ManuId });
       setTabs(episodes);
       const selectedTab = useTabStore.getState().selectedTab;
-      console.log("업데이트된 탭 상태", selectedTab);    
-      // router.push(`/manu/${ManuId}`);
       router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
     }
   };

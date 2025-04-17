@@ -4,7 +4,7 @@ import supabase from '@/supabase/supabaseClient';
 export const fetchManuscriptsByUserId = async (userId, limit = null) => {
   let query = supabase
     .from('manuscript')
-    .select('id, user_id, title, last_edited_at, episode_count, isSetup')
+    .select('id, user_id, title, last_edited_at, episode_count')
     .eq('user_id', userId)
     .order('last_edited_at', { ascending: false });
 
@@ -26,7 +26,7 @@ export const fetchManuscriptsByUserId = async (userId, limit = null) => {
 export const fetchManuscriptById = async (manuscriptId) => {
   const { data, error } = await supabase
     .from('manuscript')
-    .select('id, user_id, title, last_edited_at, episode_count, isSetup')
+    .select('id, user_id, title, last_edited_at, episode_count')
     .eq('id', manuscriptId) // 특정 manuscriptId로 필터링
     .single(); // 단일 원고만 반환
 
@@ -77,11 +77,15 @@ export const updateManuscriptCount = async (manuscriptId, delta = 1) => {
     }
 
     const newCount = Math.max((currentData.episode_count || 0) + delta, 0); // 0 이하로 내려가지 않게
+    const now = new Date().toISOString(); // 현재 시간 ISO 형식으로
 
-    // episode_count 업데이트
+    // episode_count + last_edited_at 업데이트
     const { data, error: updateError } = await supabase
       .from('manuscript')
-      .update({ episode_count: newCount })
+      .update({
+        episode_count: newCount,
+        last_edited_at: now,
+      })
       .eq('id', manuscriptId)
       .select()
       .single();
@@ -98,3 +102,4 @@ export const updateManuscriptCount = async (manuscriptId, delta = 1) => {
     return null;
   }
 };
+

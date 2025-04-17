@@ -4,6 +4,7 @@ import { deleteManuscriptById } from '@/models/manuscriptModel'; // ✅ 삭제 �
 import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/router';
 import useManuscriptStore from '@/store/useManuscriptStore';
+import { useCallback } from 'react';
 
 const useManuscripts = (limit = null) => {
   const user = useAuthStore((state) => state.user);
@@ -12,25 +13,44 @@ const useManuscripts = (limit = null) => {
   const [manuscripts,setManuscripts] = useState([]);
   const router = useRouter();
 
-  useEffect(() => {
+  // 🔁 외부로 분리된 함수 (useCallback으로 최적화)
+  const getManuscripts = useCallback(async () => {
     if (!user) return;
 
-    const getManuscripts = async () => {
-      setLoading(true);
-      setError(null);
+    setLoading(true);
+    setError(null);
 
-      try {
-        const data = await fetchManuscriptsByUserId(user.id, limit);
-        setManuscripts(data); //전체 데이터 저장 
-      } catch (err) {
-        setError(err.message);
+    try {
+      const data = await fetchManuscriptsByUserId(user.id, limit);
+      setManuscripts(data); // 전체 데이터 저장
+    } catch (err) {
+      setError(err.message);
+    }
+
+    setLoading(false);
+  }, [user, limit, setManuscripts, setLoading, setError]);
+
+  // ✅ 1. 메인 페이지 진입 시 호출
+  useEffect(() => {
+    if (router.pathname === '/') {
+      getManuscripts();
+    }
+  }, [router.pathname, getManuscripts]);
+
+  // ✅ 2. 브라우저 포커스 복귀 시 호출
+  useEffect(() => {
+    const handleFocus = () => {
+      if (router.pathname === '/') {
+        getManuscripts();
       }
-
-      setLoading(false);
     };
 
-    getManuscripts();
-  }, [user, router.pathname, limit]);
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [router.pathname, getManuscripts]);
+
+
+
 
   // ✅ 삭제 함수 추가
   const deleteManuscript = async (manuscriptId) => {
