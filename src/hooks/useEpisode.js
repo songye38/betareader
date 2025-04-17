@@ -19,7 +19,7 @@ const useEpisodeForm = () => {
     const selectedTab = useTabStore((state) => state.selectedTab);
     const {user} = useAuthStore();
     const { handleUpdateTab } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
-    const {incrementManuscriptEpisodeCount} = useManuscripts();
+    const {incrementManuscriptEpisodeCount,updateManuscriptEpisodeEditedAt} = useManuscripts();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     
@@ -94,14 +94,13 @@ const useEpisodeForm = () => {
       });
 
       console.log("tabs",tabs);
+      // 에피소드 수정 시 last_edited_at 갱신
+      await updateManuscriptEpisodeEditedAt(manuscriptId);
 
-      
-  
-      // ✅ episode_count 증가
-      //에피소드를 저장하고 나면 원고집의 원고 개수를 하나 늘려준다. 
+      // isNew가 true인 경우에만 episode_count 증가
       if (isNew) {
         console.log("새로 저장을 하는 상황에 보여야한다.");
-        await incrementManuscriptEpisodeCount(manuscriptId, 1);
+        await incrementManuscriptEpisodeCount(manuscriptId, 1); // 원고 개수 증가
       }
 
       toast.success("에피소드가 성공적으로 저장되었습니다!");

@@ -62,7 +62,7 @@ export const deleteManuscriptById = async (manuscriptId) => {
   return data; // 삭제된 row 정보 반환
 };
 
-export const updateManuscriptCount = async (manuscriptId, delta = 1) => {
+export const updateEpisodeCount = async (manuscriptId, delta = 1) => {
   try {
     // 현재 episode_count 가져오기
     const { data: currentData, error: fetchError } = await supabase
@@ -77,14 +77,12 @@ export const updateManuscriptCount = async (manuscriptId, delta = 1) => {
     }
 
     const newCount = Math.max((currentData.episode_count || 0) + delta, 0); // 0 이하로 내려가지 않게
-    const now = new Date().toISOString(); // 현재 시간 ISO 형식으로
 
-    // episode_count + last_edited_at 업데이트
+    // episode_count 업데이트
     const { data, error: updateError } = await supabase
       .from('manuscript')
       .update({
         episode_count: newCount,
-        last_edited_at: now,
       })
       .eq('id', manuscriptId)
       .select()
@@ -98,7 +96,35 @@ export const updateManuscriptCount = async (manuscriptId, delta = 1) => {
     return data;
 
   } catch (error) {
-    console.error('❌ updateManuscriptCount 실패:', error.message);
+    console.error('❌ updateEpisodeCount 실패:', error.message);
+    return null;
+  }
+};
+
+
+export const updateLastEditedAt = async (manuscriptId) => {
+  try {
+    const now = new Date().toISOString(); // 현재 시간 ISO 형식으로
+
+    // last_edited_at 업데이트
+    const { data, error: updateError } = await supabase
+      .from('manuscript')
+      .update({
+        last_edited_at: now,
+      })
+      .eq('id', manuscriptId)
+      .select()
+      .single();
+
+    if (updateError) {
+      console.error('📛 Update error:', updateError);
+      throw new Error('마지막 수정 시간 업데이트 중 오류가 발생했습니다.');
+    }
+
+    return data;
+
+  } catch (error) {
+    console.error('❌ updateLastEditedAt 실패:', error.message);
     return null;
   }
 };

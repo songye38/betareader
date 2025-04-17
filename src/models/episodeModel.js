@@ -47,7 +47,7 @@ export const getRecentEpisodes = async (userId) => {
           *,
           manuscript (
           id,
-            user_id
+          user_id
           )
         `)  // episode 테이블의 모든 칼럼과 manuscript 테이블의 user_id를 선택
         .eq('manuscript.user_id', userId)  // manuscript 테이블의 user_id가 매개변수 userId와 일치하는 에피소드만 필터링

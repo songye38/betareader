@@ -8,6 +8,8 @@ const RecentEpiSet = () => {
   const { recentEpisodes = [], fetchRecentEpisodes } = useEpisodeForm();
   const { user,profile } = useAuthStore(); // 로그인된 유저 정보 가져오기
 
+  console.log("recentEpisodes",recentEpisodes);
+
   useEffect(() => {
     if (!user || !user.id) return;
     fetchRecentEpisodes(user.id);
@@ -51,7 +53,12 @@ const RecentEpiSet = () => {
           }}
         >
           {recentEpisodes.map((episode) => (
-            <RecentEpiItem key={episode.id} episode={episode} />
+            <RecentEpiItem 
+              key={episode.id} 
+              episode={episode} 
+              userId = {user.id}
+              ManuId = {episode.manuscript_id}
+              />
           ))}
         </div>
       ) : (

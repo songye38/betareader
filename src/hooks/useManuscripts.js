@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchManuscriptsByUserId,updateManuscriptCount } from '@/models/manuscriptModel';
+import { fetchManuscriptsByUserId,updateEpisodeCount,updateLastEditedAt } from '@/models/manuscriptModel';
 import { deleteManuscriptById } from '@/models/manuscriptModel'; // ✅ 삭제 함수 import
 import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/router';
@@ -66,7 +66,7 @@ const useManuscripts = (limit = null) => {
   // ✅ 에피소드 수 1 증가 함수
   const incrementManuscriptEpisodeCount = async (manuscriptId, delta = 1) => {
     try {
-      const updated = await updateManuscriptCount(manuscriptId, delta); // delta 넘겨줌
+      const updated = await updateEpisodeCount(manuscriptId, delta); // delta 넘겨줌
       if (!updated) {
         console.warn("에피소드 수 업데이트 실패");
       } else {
@@ -76,9 +76,24 @@ const useManuscripts = (limit = null) => {
       console.error("에피소드 수 업데이트 중 에러:", error.message);
     }
   };
+
+
+    // ✅ manuscript의 last_edited_at 수정
+  const updateManuscriptEpisodeEditedAt = async (manuscriptId) => {
+    try {
+      const updated = await updateLastEditedAt(manuscriptId); // delta 넘겨줌
+      if (!updated) {
+        console.warn("새로운 시간 정보 가져오기 실패");
+      } else {
+        console.log("last_edited_at 업데이트 성공", updated);
+      }
+    } catch (error) {
+      console.error("last_edited_at 업데이트 중 에러:", error.message);
+    }
+  };
   
 
-  return {loading, error, deleteManuscript,incrementManuscriptEpisodeCount,manuscripts }; // ✅ deleteManuscript도 반환
+  return {loading, error, deleteManuscript,incrementManuscriptEpisodeCount,manuscripts,updateManuscriptEpisodeEditedAt }; // ✅ deleteManuscript도 반환
 };
 
 export default useManuscripts;
