@@ -51,6 +51,7 @@ const useEpisodeForm = () => {
 
   // 폼 제출 함수
   const onSubmit = async (formData, manuscriptId) => {
+    console.log("selectedTab",selectedTab.tab_id,);
 
     if (!manuscriptId || !selectedTab.tab_id || !formData.title || !formData.content) {
       toast.info("여기서 🎯🎯🎯🎯🎯🎯🎯🎯필수 정보가 누락되었습니다.");

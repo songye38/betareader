@@ -2,34 +2,38 @@ import supabase from '@/supabase/supabaseClient';
 
 // 에피소드 저장 함수
 export const saveEpisode = async (requestData) => {
+  console.log("requestdata",requestData);
   try {
     const { data, error } = await supabase
       .from('episode')
-      .insert(
-          {
-            tab_no: requestData.tabNo,
-            manuscript_id: requestData.manuscriptId,
-            title: requestData.title,
-            tab_id: requestData.tabId,
-            content: requestData.content,
-            type: requestData.type,
-          },
+      .upsert(
+        {
+          id: requestData.id, // 처음 저장이면 undefined, 수정이면 존재
+          tab_no: requestData.tabNo,
+          manuscript_id: requestData.manuscriptId,
+          title: requestData.title,
+          tab_id: requestData.tabId,
+          content: requestData.content,
+          type: requestData.type,
+        },
+        { onConflict: ['tab_id'] } // 'id'가 충돌하면 update
       )
-    .select()
-    .single();
+      .select()
+      .single();
 
     if (error) {
       console.error("❌ Supabase 에러:", error.message);
       throw error;
     }
 
-    console.log("데이터베이스 저장 성공", data);
+    console.log("✅ 에피소드 저장/수정 성공", data);
     return data;
   } catch (error) {
     console.error("❌ 에피소드 저장 실패:", error);
     throw error;
   }
 };
+
 
 export const getRecentEpisodes = async (userId) => {
     try {

@@ -31,7 +31,7 @@ const useTabStore = create((set) => ({
   
       return {
         tabs: updatedTabs,
-        selectedTab: { tab_id: firstTab.id, tab_no: firstTab.no },
+        selectedTab: { tab_id: firstTab.tab_id, tab_no: firstTab.tab_no },
         currentManuscriptId: updatedTabs.length + 1, // 탭 수 + 1로 초기화
       };
     }),
@@ -41,7 +41,7 @@ const useTabStore = create((set) => ({
   resetTabs: () =>
     set(() => ({
       tabs: [],
-      selectedTab: { id: null, no: null },
+      selectedTab: { tab_id: null, tab_no: null },
       currentManuscriptId: 1, // 🆕 currentManuscriptId도 초기화
     })),
 

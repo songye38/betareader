@@ -16,7 +16,7 @@ const ManuItem = ({ title, lastEditedAt, episodeCount ,userId, ManuId}) => {
   const { fetchEpisodesByManuId,allEpisodes } = useEpisodeForm(); // ✅ 컴포넌트 내부에서 호출
   const router = useRouter();
   const relativeTimeDisplay = dayjs(lastEditedAt).fromNow();
-  const {setTabs} = useTabStore();
+  const {setTabs,resetTabs} = useTabStore();
   const setManuscript = useManuscriptStore((state) => state.setManuscript);
 
 
@@ -32,9 +32,13 @@ const ManuItem = ({ title, lastEditedAt, episodeCount ,userId, ManuId}) => {
   const handleClick = async () => {
     if (userId && ManuId) {
       const episodes = await fetchEpisodesByManuId(userId, ManuId); 
+      resetTabs();
       setManuscript({ id: ManuId });
-      setTabs(episodes); // ✅ 받아온 데이터를 바로 사용
-      router.push(`/manu/${ManuId}`);
+      setTabs(episodes);
+      const selectedTab = useTabStore.getState().selectedTab;
+      console.log("업데이트된 탭 상태", selectedTab);    
+      // router.push(`/manu/${ManuId}`);
+      router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
     }
   };
 
