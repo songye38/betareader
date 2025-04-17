@@ -44,9 +44,9 @@ const useManuscripts = (limit = null) => {
   };
 
   // ✅ 에피소드 수 1 증가 함수
-  const incrementManuscriptEpisodeCount = async (manuscriptId) => {
+  const incrementManuscriptEpisodeCount = async (manuscriptId, delta = 1) => {
     try {
-      const updated = await updateManuscriptCount(manuscriptId);
+      const updated = await updateManuscriptCount(manuscriptId, delta); // delta 넘겨줌
       if (!updated) {
         console.warn("에피소드 수 업데이트 실패");
       } else {
@@ -56,6 +56,7 @@ const useManuscripts = (limit = null) => {
       console.error("에피소드 수 업데이트 중 에러:", error.message);
     }
   };
+  
 
   return {loading, error, deleteManuscript,incrementManuscriptEpisodeCount,manuscripts }; // ✅ deleteManuscript도 반환
 };

@@ -11,7 +11,7 @@ export function MyTabs({ activeTab, setActiveTab }) {
   const handleTabChange = (tabId) => {
     const selected = tabs.find((tab) => tab.id === tabId);
     if (!selected) return;
-    setSelectedTab(selected.id,selected.no);  // 탭 클릭 시 해당 탭으로 상태 변경
+    setSelectedTab(selected.id,selected.no,selected.id);  // 탭 클릭 시 해당 탭으로 상태 변경
 
     // 탭 클릭 시 URL을 변경하여 탭 정보를 반영
     router.push({

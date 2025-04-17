@@ -62,7 +62,7 @@ export const deleteManuscriptById = async (manuscriptId) => {
   return data; // 삭제된 row 정보 반환
 };
 
-export const updateManuscriptCount = async (manuscriptId) => {
+export const updateManuscriptCount = async (manuscriptId, delta = 1) => {
   try {
     // 현재 episode_count 가져오기
     const { data: currentData, error: fetchError } = await supabase
@@ -76,7 +76,7 @@ export const updateManuscriptCount = async (manuscriptId) => {
       throw new Error('에피소드 수를 가져오는 중 오류가 발생했습니다.');
     }
 
-    const newCount = (currentData.episode_count || 0) + 1;
+    const newCount = Math.max((currentData.episode_count || 0) + delta, 0); // 0 이하로 내려가지 않게
 
     // episode_count 업데이트
     const { data, error: updateError } = await supabase
@@ -95,6 +95,6 @@ export const updateManuscriptCount = async (manuscriptId) => {
 
   } catch (error) {
     console.error('❌ updateManuscriptCount 실패:', error.message);
-    return null; // 실패 시 명확히 null 반환
+    return null;
   }
 };

@@ -51,7 +51,7 @@ const useEpisodeForm = () => {
 
   // 폼 제출 함수
   const onSubmit = async (formData, manuscriptId) => {
-    console.log("selectedTab",selectedTab.tab_id,);
+
 
     if (!manuscriptId || !selectedTab.tab_id || !formData.title || !formData.content) {
       toast.info("여기서 🎯🎯🎯🎯🎯🎯🎯🎯필수 정보가 누락되었습니다.");
@@ -59,6 +59,7 @@ const useEpisodeForm = () => {
     }
 
     const requestData = {
+      id : selectedTab.id,
       tabNo: selectedTab.tab_no,
       manuscriptId,
       tabId: selectedTab.tab_id,
@@ -70,15 +71,12 @@ const useEpisodeForm = () => {
     setError(null); // 이전 에러 초기화
 
     try {
-      const response = await saveEpisode(requestData);
+      const { data: response, isNew } = await saveEpisode(requestData);
 
       if (!response || response.error) {
         throw new Error("에피소드 저장에 실패했습니다. 다시 시도해주세요.");
 
       }
-
-      console.log("저장한 후 response", response);
-      console.log("저장 전 tabs", tabs);
 
 
       // 상태 업데이트는 여기!
@@ -100,7 +98,11 @@ const useEpisodeForm = () => {
       
   
       // ✅ episode_count 증가
-      await incrementManuscriptEpisodeCount(manuscriptId);
+      //에피소드를 저장하고 나면 원고집의 원고 개수를 하나 늘려준다. 
+      if (isNew) {
+        console.log("새로 저장을 하는 상황에 보여야한다.");
+        await incrementManuscriptEpisodeCount(manuscriptId, 1);
+      }
 
       toast.success("에피소드가 성공적으로 저장되었습니다!");
       return response;
@@ -164,6 +166,7 @@ const useEpisodeForm = () => {
       const deletedData = await deleteEpisode(episodeId); // deleteEpisode 호출하여 삭제
       // 삭제된 에피소드 리스트 업데이트
       setAllEpisodes((prev) => prev.filter((episode) => episode.id !== episodeId));
+      await incrementManuscriptEpisodeCount(manuscriptId,-1);
       toast.success("에피소드가 성공적으로 삭제되었습니다!");
     } catch (err) {
       console.error("❌ 에피소드 삭제 실패:", err);

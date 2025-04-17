@@ -64,7 +64,7 @@ const useWritingTab = () => {
     const handleTabChange = (tabId) => {
         const selected = tabs.find((tab) => tab.tab_id === tabId);
         if (!selected) return;
-        setSelectedTab(selected.tab_id,selected.tab_no);  // 탭 클릭 시 해당 탭으로 상태 변경
+        setSelectedTab(selected.tab_id,selected.tab_no,selected.id);  // 탭 클릭 시 해당 탭으로 상태 변경
     
         // 탭 클릭 시 URL을 변경하여 탭 정보를 반영
         router.push({

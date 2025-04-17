@@ -7,6 +7,10 @@ import { MyTabs } from './MyTabs';
 import useManuscriptStore from '@/store/useManuscriptStore';
 import useAuthStore from '@/store/useAuthStore';
 
+
+
+
+//더 이상 쓰지 않는다.
 const SidebarComponent = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가

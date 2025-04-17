@@ -2,7 +2,10 @@ import supabase from '@/supabase/supabaseClient';
 
 // 에피소드 저장 함수
 export const saveEpisode = async (requestData) => {
-  console.log("requestdata",requestData);
+  const isNew = !requestData.id; // id가 없으면 새로 저장
+  console.log("requestData",requestData);
+  console.log("isNew",isNew);
+  
   try {
     const { data, error } = await supabase
       .from('episode')
@@ -27,7 +30,7 @@ export const saveEpisode = async (requestData) => {
     }
 
     console.log("✅ 에피소드 저장/수정 성공", data);
-    return data;
+    return { data, isNew }; // 신규 여부 함께 반환
   } catch (error) {
     console.error("❌ 에피소드 저장 실패:", error);
     throw error;

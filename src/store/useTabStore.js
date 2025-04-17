@@ -3,7 +3,7 @@ import { create } from "zustand";
 const useTabStore = create((set) => ({
   tabs: [],
   currentManuscriptId: 1,
-  selectedTab: { tab_id: null, tab_no: null },
+  selectedTab: { tab_id: null, tab_no: null,id : null },
 
   addTab: (newTab) =>
     set((state) => {
@@ -16,7 +16,7 @@ const useTabStore = create((set) => ({
 
       return {
         tabs: updatedTabs,
-        selectedTab: { id: newTab.id, no: newTab.no },
+        selectedTab: { tab_id: newTab.tab_id, tab_no: newTab.tab_no ,id :newTab.id },
       };
     }),
 
@@ -27,11 +27,11 @@ const useTabStore = create((set) => ({
         selected: index === 0, // 첫 번째 탭 선택
       }));
   
-      const firstTab = updatedTabs[0] || { tab_id: null, tab_no: null };
+      const firstTab = updatedTabs[0] || { tab_id: null, tab_no: null,id : null };
   
       return {
         tabs: updatedTabs,
-        selectedTab: { tab_id: firstTab.tab_id, tab_no: firstTab.tab_no },
+        selectedTab: { tab_id: firstTab.tab_id, tab_no: firstTab.tab_no,id : firstTab.id },
         currentManuscriptId: updatedTabs.length + 1, // 탭 수 + 1로 초기화
       };
     }),
@@ -41,7 +41,7 @@ const useTabStore = create((set) => ({
   resetTabs: () =>
     set(() => ({
       tabs: [],
-      selectedTab: { tab_id: null, tab_no: null },
+      selectedTab: { tab_id: null, tab_no: null,id : null },
       currentManuscriptId: 1, // 🆕 currentManuscriptId도 초기화
     })),
 
@@ -54,11 +54,11 @@ const useTabStore = create((set) => ({
       return { tabs: updatedTabs };
     }),
 
-  setSelectedTab: (tabId, tabNo) =>
+  setSelectedTab: (tabId, tabNo,id) =>
     set((state) => {
       if (tabId === null) {
         // ✅ null 값이 들어오면 selectedTab 초기화
-        return { tabs: state.tabs, selectedTab: { tab_id: null, tab_no: null } };
+        return { tabs: state.tabs, selectedTab: { tab_id: null, tab_no: null,id : null } };
       }
 
       const updatedTabs = state.tabs.map((tab) => ({
@@ -68,14 +68,14 @@ const useTabStore = create((set) => ({
 
       return {
         tabs: updatedTabs,
-        selectedTab: { tab_id: tabId, tab_no: tabNo },
+        selectedTab: { tab_id: tabId, tab_no: tabNo ,id : id},
       };
     }),
 
   // ✅ selectedTab을 초기화하는 전용 함수 추가
   resetSelectedTab: () =>
     set(() => ({
-      selectedTab: { tab_id: null, tab_no: null },
+      selectedTab: { tab_id: null, tab_no: null,id : null },
     })),
 
   incrementManuscriptId: () =>
