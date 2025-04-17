@@ -85,7 +85,7 @@ const AllEpiItem = ({ episode, active,onClick,onDelete }) => {
               cursor: 'pointer',
               transition: 'all 0.2s ease-in-out',
             }}
-            onClick={() => onDelete?.(episode.id)} // ✅ 삭제 핸들러 실행
+            onClick={onDelete} 
             onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
             onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
           >

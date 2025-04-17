@@ -12,6 +12,8 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
   const {manuscript} = useManuscriptStore();
   const {handleDeleteEpisode} = useEpisodeForm();
 
+  console.log("tabs",tabs);
+
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -100,7 +102,8 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
             episode={tab}
             active={tab.selected} // ✅ selected가 true면 active 처리
             onClick={() => handleTabChange(tab.tab_id)} // ✅ 클릭 시 탭 전환
-            onDelete={handleDeleteEpisode}
+            onDelete={() => handleDeleteEpisode(manuscript.id, tab.id)}
+            
           />
         ))}
       </div>

@@ -62,6 +62,8 @@ export const deleteManuscriptById = async (manuscriptId) => {
   return data; // 삭제된 row 정보 반환
 };
 
+
+//delta값은 기본적으로 1이고 -1은 넣으면 episode_count를 하나 줄인다. 
 export const updateEpisodeCount = async (manuscriptId, delta = 1) => {
   try {
     // 현재 episode_count 가져오기

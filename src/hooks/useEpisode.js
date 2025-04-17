@@ -9,6 +9,7 @@ import useTabStore from '@/store/useTabStore';
 import useWritingTab from './useWritingTab';
 import useManuscripts from './useManuscripts';
 
+
 const useEpisodeForm = () => {
 
     const [recentEpisodes, setRecentEpisodes] = useState([]);  // 최근 에피소드 상태
@@ -16,9 +17,10 @@ const useEpisodeForm = () => {
     const [isSaving, setIsSaving] = useState(false); // 자동 저장 여부
     const {manuscript} = useManuscriptStore();
     const tabs = useTabStore((state) => state.tabs);
+    const {setTabs} = useTabStore();
     const selectedTab = useTabStore((state) => state.selectedTab);
     const {user} = useAuthStore();
-    const { handleUpdateTab } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
+    const { handleUpdateTab ,handleAddTab} = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
     const {incrementManuscriptEpisodeCount,updateManuscriptEpisodeEditedAt} = useManuscripts();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -157,15 +159,65 @@ const useEpisodeForm = () => {
   };
 
   // 에피소드 삭제 함수
-  const handleDeleteEpisode = async (episodeId) => {
-    setLoading(true);
-    setError(null); // 에러 초기화
+  // const handleDeleteEpisode = async (manuscriptId,episodeId) => {
+  //   setLoading(true);
+  //   setError(null); // 에러 초기화
+  //   console.log("삭제하기 전 tabs",tabs);
 
+  //   try {
+  //     const deletedData = await deleteEpisode(episodeId); // deleteEpisode 호출하여 삭제
+  //     //deletedData.tab_id를 리턴받을 수 있음 
+
+
+  //     // 삭제된 에피소드 리스트 업데이트
+  //     // setAllEpisodes((prev) => prev.filter((episode) => episode.id !== episodeId));
+  //     // setTabs((prev) => prev.filter((tab) => tab.id !== episodeId));
+  //     console.log("삭제하고 난 후 deletedData",deletedData);
+  //     await incrementManuscriptEpisodeCount(manuscriptId,-1);
+  //     toast.success("에피소드가 성공적으로 삭제되었습니다!");
+  //   } catch (err) {
+  //     console.error("❌ 에피소드 삭제 실패:", err);
+  //     setError(err.message || "에피소드를 삭제하는 데 실패했습니다.");
+  //     toast.error("에피소드를 삭제하는 데 실패했습니다. 다시 시도해주세요.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const handleDeleteEpisode = async (manuscriptId, episodeId) => {
+    setLoading(true);
+    setError(null);
+  
     try {
-      const deletedData = await deleteEpisode(episodeId); // deleteEpisode 호출하여 삭제
-      // 삭제된 에피소드 리스트 업데이트
-      setAllEpisodes((prev) => prev.filter((episode) => episode.id !== episodeId));
-      await incrementManuscriptEpisodeCount(manuscriptId,-1);
+      const deletedData = await deleteEpisode(episodeId); // 서버 삭제
+      const deletedTabId = deletedData.tab_id; // 서버에서 리턴된 tab_id
+      const { tabs, selectedTab } = useTabStore.getState();
+  
+      // 삭제 후 남아있는 탭 필터링
+      const updatedTabs = tabs.filter((tab) => tab.id !== episodeId);
+      useTabStore.getState().setTabs(updatedTabs); // tabs 업데이트
+
+      console.log("삭제하고 난 후의 탭들",updatedTabs);
+      console.log("삭제하고 난 후의 탭들",tabs);
+  
+      const isDeletedTabSelected = selectedTab?.id === episodeId;
+  
+      if (isDeletedTabSelected) {
+        const deletedTabIndex = tabs.findIndex((tab) => tab.id === episodeId);
+  
+        // 다음 탭 찾기 (우선순위: 오른쪽 → 왼쪽)
+        const nextTab =
+          updatedTabs[deletedTabIndex] || // 오른쪽 탭
+          updatedTabs[deletedTabIndex - 1]; // 왼쪽 탭
+  
+        if (nextTab) {
+          useTabStore.getState().setSelectedTab(nextTab.tab_id);
+        } else {
+          // 삭제한 탭이 유일한 탭이었던 경우 → 새 탭 생성
+          await handleAddTab(manuscriptId);
+        }
+      }
+  
+      await incrementManuscriptEpisodeCount(manuscriptId, -1);
       toast.success("에피소드가 성공적으로 삭제되었습니다!");
     } catch (err) {
       console.error("❌ 에피소드 삭제 실패:", err);
@@ -175,6 +227,7 @@ const useEpisodeForm = () => {
       setLoading(false);
     }
   };
+  
 
 
   return {

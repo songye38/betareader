@@ -19,17 +19,22 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
   const relativeTimeDisplay = dayjs(episode.last_edited_at).fromNow();
   const { fetchEpisodesByManuId } = useEpisodeForm(); // ✅ 컴포넌트 내부에서 호출
   const router = useRouter();
-  const {setTabs,resetTabs} = useTabStore();
+  const {selectedTab,setTabs,resetTabs} = useTabStore();
   const setManuscript = useManuscriptStore((state) => state.setManuscript);
 
   const handleClick = async (tab_id) => {
+  
     if (userId && ManuId) {
       const episodes = await fetchEpisodesByManuId(userId, ManuId); 
       console.log("episodes",episodes);
       resetTabs();
       setManuscript({ id: ManuId });
-      setTabs(episodes);
-      router.push(`/manu/${ManuId}?tab=${tab_id}`);
+
+      //id를 넣으면 그 값이 selectedTab이 되고 없으면 그냥 첫번째걸 활성화
+      setTabs(episodes,tab_id);
+      const selectedTab = useTabStore.getState().selectedTab;
+      console.log("selectedTab",selectedTab);
+      router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
     }
   };
 

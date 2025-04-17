@@ -20,21 +20,41 @@ const useTabStore = create((set) => ({
       };
     }),
 
-  setTabs: (newTabs) =>
+    // setTabs: (newTabs) =>
+    //   set(() => {
+    //     const updatedTabs = newTabs.map((tab, index) => ({
+    //       ...tab,
+    //       selected: index === 0, // 첫 번째 탭 선택
+    //     }));
+    
+    //     const firstTab = updatedTabs[0] || { tab_id: null, tab_no: null,id : null };
+    
+    //     return {
+    //       tabs: updatedTabs,
+    //       selectedTab: { tab_id: firstTab.tab_id, tab_no: firstTab.tab_no,id : firstTab.id },
+    //       currentManuscriptId: updatedTabs.length + 1, // 탭 수 + 1로 초기화
+    //     };
+    //   }),
+  setTabs: (newTabs, targetTabId = null) =>
     set(() => {
       const updatedTabs = newTabs.map((tab, index) => ({
         ...tab,
-        selected: index === 0, // 첫 번째 탭 선택
+        selected: targetTabId ? tab.tab_id === targetTabId : index === 0, // targetTabId가 있으면 해당 탭을 선택, 없으면 첫 번째 탭을 선택
       }));
   
-      const firstTab = updatedTabs[0] || { tab_id: null, tab_no: null,id : null };
+      // targetTabId가 있을 경우 해당 tab을 selected로 설정, 없으면 첫 번째 탭을 기본 선택
+      const selectedTab = targetTabId
+        ? updatedTabs.find((tab) => tab.selected) // targetTabId가 있으면 해당 탭을 선택
+        : updatedTabs[0] || { tab_id: null, tab_no: null, id: null }; // 없으면 첫 번째 탭을 기본으로
   
       return {
         tabs: updatedTabs,
-        selectedTab: { tab_id: firstTab.tab_id, tab_no: firstTab.tab_no,id : firstTab.id },
+        selectedTab: { tab_id: selectedTab.tab_id, tab_no: selectedTab.tab_no, id: selectedTab.id },
         currentManuscriptId: updatedTabs.length + 1, // 탭 수 + 1로 초기화
       };
     }),
+  
+  
     
     
 

@@ -98,7 +98,9 @@ export const deleteEpisode = async (episodeId) => {
     const { data, error } = await supabase
       .from('episode')
       .delete()
-      .eq('id', episodeId);  // id가 episodeId와 일치하는 에피소드 삭제
+      .eq('id', episodeId) // id가 episodeId와 일치하는 에피소드 삭제
+      .select()
+      .single();
 
     if (error) {
       console.error("❌ Supabase 에러:", error.message);
