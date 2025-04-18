@@ -21,7 +21,6 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
   const router = useRouter();
   const {selectedTab,setTabs,resetTabs} = useTabStore();
   const setManuscript = useManuscriptStore((state) => state.setManuscript);
-  console.log("episode",episode);
 
   const handleClick = async (tab_id) => {
   

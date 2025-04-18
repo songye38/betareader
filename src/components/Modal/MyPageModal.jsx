@@ -57,7 +57,7 @@ const MyPageModal = ({onClose,username}) => {
         <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
             {/* <img src="/profile_img.svg" alt="Profile" width={48} height={48} /> */}
             <img
-                src={avatarUrl === undefined ? "/loading_spinner.svg" : (avatarUrl || "/write_icon.svg")}
+                src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
                 alt="Profile"
                 width={48}
                 height={48}

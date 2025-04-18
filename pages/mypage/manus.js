@@ -3,7 +3,6 @@ import MyManuItem from "@/components/MyPage/MyManuItem";
 
 const Manus = () => {
     const { manuscripts, loading, error,deleteManuscript } = useManuscripts();
-    console.log("manuscripts",manuscripts);
   
     if (loading) {
       return <div style={{ color: 'white', marginTop: '60px', textAlign: 'center' }}>불러오는 중...</div>;

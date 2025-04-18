@@ -2,12 +2,19 @@ import AddManuBtn from "../Buttons/AddManuBtn";
 import ManuItem from "./ManuItem";
 import AddManuItem from "./AddManuItem";
 import useManuscripts from "@/hooks/useManuscripts";
+import LoadingSpinner from "../etc/LoadingSpinner";
 
 const AllManuSet = ({ userId, manuscriptId }) => {
   const { manuscripts, loading, error } = useManuscripts();
 
   if (loading) {
-    return <div>로딩 중...</div>; // 로딩 상태 표시
+    return (
+      <div className="loader" style={{ position: 'absolute', top: 0, left: 0 }}>
+        <LoadingSpinner size={48} color="#FF3D00" /> {/* 로딩 스피너 사용 */}
+      </div>  
+    )
+   
+    // return <div>로딩 중...</div>; // 로딩 상태 표시
   }
 
   if (error) {

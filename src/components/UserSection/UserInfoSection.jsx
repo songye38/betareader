@@ -19,14 +19,15 @@ const UserInfoSection = () => {
         margin: '0 auto',
         padding: '24px 20px',
         borderRadius: '16px',
-        backgroundColor: '#1C1C1E',
+        // backgroundColor: '#1C1C1E',
+        background: '#2C2D34', 
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
         gap: '12px',
         fontFamily: 'Pretendard',
-        border: '1px solid #2A2A2C',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+        border: '1px #4A4E5B solid', 
+        // boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
         color: '#f5f5f7',
       }}
     >

@@ -8,7 +8,6 @@ const RecentEpiSet = () => {
   const { recentEpisodes = [], fetchRecentEpisodes } = useEpisodeForm();
   const { user,profile } = useAuthStore(); // 로그인된 유저 정보 가져오기
 
-  console.log("recentEpisodes",recentEpisodes);
 
   useEffect(() => {
     if (!user || !user.id) return;
