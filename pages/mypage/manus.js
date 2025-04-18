@@ -2,7 +2,8 @@ import useManuscripts from "@/hooks/useManuscripts";
 import MyManuItem from "@/components/MyPage/MyManuItem";
 
 const Manus = () => {
-    const { manuscript, loading, error,deleteManuscript } = useManuscripts();
+    const { manuscripts, loading, error,deleteManuscript } = useManuscripts();
+    console.log("manuscripts",manuscripts);
   
     if (loading) {
       return <div style={{ color: 'white', marginTop: '60px', textAlign: 'center' }}>불러오는 중...</div>;
@@ -12,7 +13,9 @@ const Manus = () => {
       return <div style={{ color: 'red', marginTop: '60px', textAlign: 'center' }}>에러 발생: {error}</div>;
     }
   
-    const isEmpty = !Array.isArray(manuscript) || manuscript.length === 0;
+    const isEmpty = !Array.isArray(manuscripts) || manuscripts.length === 0;
+
+    
   
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', justifyContent: 'center', alignItems: 'center', marginTop: '60px' }}>
@@ -55,7 +58,7 @@ const Manus = () => {
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: 'column', gap: '24px' }}>
-            {manuscript.map((item) => (
+            {manuscripts.map((item) => (
               <MyManuItem
                 
                 key={item.id}
@@ -63,7 +66,7 @@ const Manus = () => {
                 title={item.title}
                 num={item.episode_count}
                 day={item.last_edited_at}
-                onDelete={deleteManuscript}
+                onDelete={() => deleteManuscript(item.id)} // item.id를 넘겨줍니다.
               />
             ))}
           </div>

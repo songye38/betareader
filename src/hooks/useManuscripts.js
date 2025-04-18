@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { fetchManuscriptsByUserId,updateEpisodeCount,updateLastEditedAt } from '@/models/manuscriptModel';
+import { fetchManuscriptsByUserId,updateEpisodeCount,updateLastEditedAt,updateManuscriptTitle } from '@/models/manuscriptModel';
 import { deleteManuscriptById } from '@/models/manuscriptModel'; // ✅ 삭제 함수 import
 import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/router';
-import useManuscriptStore from '@/store/useManuscriptStore';
 import { useCallback } from 'react';
 
 const useManuscripts = (limit = null) => {
@@ -29,6 +28,11 @@ const useManuscripts = (limit = null) => {
 
     setLoading(false);
   }, [user, limit, setManuscripts, setLoading, setError]);
+
+
+  useEffect(() => {
+    getManuscripts();
+  }, [getManuscripts]);
 
   // ✅ 1. 메인 페이지 진입 시 호출
   useEffect(() => {
@@ -57,7 +61,8 @@ const useManuscripts = (limit = null) => {
     try {
       await deleteManuscriptById(manuscriptId); // 실제 삭제
       const updated = await fetchManuscriptsByUserId(user.id, limit); // 목록 갱신
-      setManuscript(updated); // 상태 갱신
+      setManuscripts(updated); // 상태 갱신
+      console.log("manuscripts",manuscripts);
     } catch (err) {
       setError(err.message);
     }
@@ -91,9 +96,29 @@ const useManuscripts = (limit = null) => {
       console.error("last_edited_at 업데이트 중 에러:", error.message);
     }
   };
-  
 
-  return {loading, error, deleteManuscript,incrementManuscriptEpisodeCount,manuscripts,updateManuscriptEpisodeEditedAt }; // ✅ deleteManuscript도 반환
+  // ✅ 제목 수정 함수
+  const updateTitle = async (manuscriptId, newTitle) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const updated = await updateManuscriptTitle(manuscriptId, newTitle);
+      if (!updated) {
+        throw new Error('제목 업데이트 실패');
+      }
+      return updated;
+    } catch (err) {
+      console.error('❌ 제목 수정 실패:', err.message);
+      setError(err);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  
+  return {updateTitle,loading, error, deleteManuscript,incrementManuscriptEpisodeCount,manuscripts,updateManuscriptEpisodeEditedAt }; // ✅ deleteManuscript도 반환
 };
 
 export default useManuscripts;

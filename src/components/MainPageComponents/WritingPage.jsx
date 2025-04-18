@@ -76,17 +76,19 @@ const WritingPage = () => {
           <div
             style={{
               paddingTop: '80px',
-              width: '100%',
               display: 'flex',
               justifyContent: 'center',
               flexDirection: 'column',
               alignItems: 'center',
               paddingBottom: '40px',
+              paddingRight:'100px',
+              paddingLeft:'100px',
             }}
           >
             <div
               style={{
-                width: '600px',
+                display: 'inline-block',
+                width: '100%',
                 color: 'white',
                 fontSize: 27,
                 fontFamily: 'Pretendard',

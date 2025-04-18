@@ -1,8 +1,9 @@
 import React from 'react';
-
 import dayjs from 'dayjs'; // dayjs 라이브러리 가져오기
 import relativeTime from 'dayjs/plugin/relativeTime'; // 상대 시간 플러그인
 import 'dayjs/locale/ko'; // 한국어 로케일 가져오기
+import EditManuTitlePopup from '../Popups/EditManuTitlePopup';
+import { useState } from 'react';
 
 // dayjs에 상대 시간 플러그인 사용
 dayjs.extend(relativeTime);
@@ -11,6 +12,9 @@ dayjs.extend(relativeTime);
 dayjs.locale('ko');
 
 const MyManuItem = ({id,title,day,num,onDelete}) => {
+  const [showEditPopup, setShowEditPopup] = useState(false);
+
+
   const relativeTimeDisplay = dayjs(day).fromNow();
   return (
     <div style={{
@@ -18,6 +22,13 @@ const MyManuItem = ({id,title,day,num,onDelete}) => {
       background: '#2C2D34', borderRadius: 20, overflow: 'hidden', border: '1px #4A4E5B solid',
       justifyContent: 'space-between', alignItems: 'center', display: 'inline-flex'
     }}>
+        {showEditPopup && (
+          <EditManuTitlePopup
+            title = {title}
+            manuscriptId = {id}
+            onClose={() => setShowEditPopup(false)} // 닫기 핸들러
+          />
+        )}
       <div style={{
         flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 12, display: 'inline-flex'
       }}>
@@ -45,24 +56,44 @@ const MyManuItem = ({id,title,day,num,onDelete}) => {
           </div>
         </div>
       </div>
-      <div 
-        onClick={() => {
-          if (confirm('정말 삭제하시겠어요?')) {
-            onDelete?.(id); // 삭제 함수 호출
-          }
-        }}
-        style={{
-          paddingTop: 8, paddingBottom: 8, paddingLeft: 16, paddingRight: 20, background: '#3A3D46',
-          borderRadius: 12, justifyContent: 'center', alignItems: 'center', gap: 4, display: 'flex',
-          cursor : 'pointer',
-        }}>
-          <img src="/delete_icon.svg" alt="Profile" width={24} height={24} />
-          <div style={{
-            textAlign: 'center', color: 'white', fontSize: 14, fontFamily: 'Pretendard',
-            fontWeight: '400', lineHeight: '19.60px', wordWrap: 'break-word'
+      <div style={{display:'flex',flexDirection:'row',gap:'12px'}}>
+        {/* 수정 */}
+        <div 
+          onClick={() => setShowEditPopup(true)} // ✅ 팝업 열기
+          style={{
+            paddingTop: 8, paddingBottom: 8, paddingLeft: 16, paddingRight: 20, background: '#3A3D46',
+            borderRadius: 12, justifyContent: 'center', alignItems: 'center', gap: 4, display: 'flex',
+            cursor : 'pointer',
           }}>
-            삭제
+            <img src="/write_icon.svg" alt="Profile" width={24} height={24} />
+            <div style={{
+              textAlign: 'center', color: 'white', fontSize: 14, fontFamily: 'Pretendard',
+              fontWeight: '400', lineHeight: '19.60px', wordWrap: 'break-word'
+            }}>
+              수정
+          </div>
         </div>
+        {/* 삭제 */}
+        <div 
+          onClick={() => {
+            if (confirm('정말 삭제하시겠어요?')) {
+              onDelete?.(id); // 삭제 함수 호출
+            }
+          }}
+          style={{
+            paddingTop: 8, paddingBottom: 8, paddingLeft: 16, paddingRight: 20, background: '#3A3D46',
+            borderRadius: 12, justifyContent: 'center', alignItems: 'center', gap: 4, display: 'flex',
+            cursor : 'pointer',
+          }}>
+            <img src="/delete_icon.svg" alt="Profile" width={24} height={24} />
+            <div style={{
+              textAlign: 'center', color: 'white', fontSize: 14, fontFamily: 'Pretendard',
+              fontWeight: '400', lineHeight: '19.60px', wordWrap: 'break-word'
+            }}>
+              삭제
+          </div>
+        </div>
+
       </div>
     </div>
   );

@@ -48,19 +48,19 @@ export const fetchManuscripts = async (userId, manuscriptId = null) => {
   return await fetchManuscriptsByUserId(userId);
 };
 
+// 원고집 id로 원고 삭제
+// export const deleteManuscriptById = async (manuscriptId) => {
+//   const { data, error } = await supabase
+//     .from('manuscript')
+//     .delete()
+//     .eq('id', manuscriptId);
 
-export const deleteManuscriptById = async (manuscriptId) => {
-  const { data, error } = await supabase
-    .from('manuscript')
-    .delete()
-    .eq('id', manuscriptId);
+//   if (error) {
+//     throw new Error('Manuscript delete error: ' + error.message);
+//   }
 
-  if (error) {
-    throw new Error('Manuscript delete error: ' + error.message);
-  }
-
-  return data; // 삭제된 row 정보 반환
-};
+//   return data; // 삭제된 row 정보 반환
+// };
 
 
 //delta값은 기본적으로 1이고 -1은 넣으면 episode_count를 하나 줄인다. 
@@ -104,6 +104,7 @@ export const updateEpisodeCount = async (manuscriptId, delta = 1) => {
 };
 
 
+// 에피소드 수정 시 last_edited_at 갱신
 export const updateLastEditedAt = async (manuscriptId) => {
   try {
     const now = new Date().toISOString(); // 현재 시간 ISO 형식으로
@@ -130,4 +131,52 @@ export const updateLastEditedAt = async (manuscriptId) => {
     return null;
   }
 };
+
+// 원고 제목 수정
+export const updateManuscriptTitle = async (manuscriptId, newTitle) => {
+  try {
+    const { data, error } = await supabase
+      .from('manuscript')
+      .update({
+        title: newTitle,
+      })
+      .eq('id', manuscriptId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('📛 Update error:', error);
+      throw new Error('제목 업데이트 중 오류가 발생했습니다.');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('❌ updateManuscriptTitle 실패:', error.message);
+    return null;
+  }
+};
+
+
+// 원고집 삭제
+export const deleteManuscriptById = async (manuscriptId) => {
+  try {
+    const { data, error } = await supabase
+      .from('manuscript')
+      .delete()
+      .eq('id', manuscriptId) // id에 맞는 원고집을 삭제
+      .single(); // 삭제된 원고 데이터를 반환
+
+    if (error) {
+      console.error('📛 Delete error:', error);
+      throw new Error('원고집 삭제 중 오류가 발생했습니다.');
+    }
+
+    return data; // 삭제된 원고 데이터를 반환
+  } catch (error) {
+    console.error('❌ deleteManuscriptById 실패:', error.message);
+    return null;
+  }
+};
+
+
 
