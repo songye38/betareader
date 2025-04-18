@@ -21,6 +21,7 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
   const router = useRouter();
   const {selectedTab,setTabs,resetTabs} = useTabStore();
   const setManuscript = useManuscriptStore((state) => state.setManuscript);
+  console.log("episode",episode);
 
   const handleClick = async (tab_id) => {
   
@@ -72,7 +73,7 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
             wordWrap: 'break-word'
           }}
         >
-          {episode.title} {/* 동적으로 제목 설정 */}
+          {episode.manuscript.title} {/* 동적으로 제목 설정 */}
         </div>
         <div 
           style={{
@@ -103,14 +104,15 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
         <div 
           style={{
             color: 'white', 
-            fontSize: 20, 
+            fontSize: 18, 
             fontFamily: 'Pretendard', 
             fontWeight: '600', 
             lineHeight: '28px', 
             wordWrap: 'break-word'
           }}
         >
-          {episode.tab_no}화 {/* 동적으로 화 번호 설정 */}
+          {episode.title}
+          {/* {episode.tab_no}화 동적으로 화 번호 설정 */}
         </div>
         <div 
           style={{

@@ -54,6 +54,8 @@ const useEpisodeForm = () => {
   // 폼 제출 함수
   const onSubmit = async (formData, manuscriptId) => {
 
+    console.log("onSubmit 호출됨",formData);
+
 
     if (!manuscriptId || !selectedTab.tab_id || !formData.title || !formData.content) {
       toast.info("여기서 🎯🎯🎯🎯🎯🎯🎯🎯필수 정보가 누락되었습니다.");
@@ -147,6 +149,7 @@ const useEpisodeForm = () => {
     try {
       const allEpisodes = await getEpisodesByManuId(userId, manuscriptId);
       setAllEpisodes(allEpisodes);  // 가져온 에피소드 데이터를 상태에 저장
+      console.log("에피소드들",allEpisodes);
       return allEpisodes; 
     } catch (err) {
       console.error("❌ 에피소드 가져오기 실패:", err);

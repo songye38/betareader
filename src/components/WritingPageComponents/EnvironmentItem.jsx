@@ -5,7 +5,7 @@ const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
   const backgroundColor = isHovered ? '#383940' : '#2C2D34';
 
-  console.log("들어온environment ,environment",environment);
+  // console.log("들어온environment ,environment",environment);
   const {
     title,
     type,

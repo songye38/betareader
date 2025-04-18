@@ -3,7 +3,7 @@ import { getIdeaTypeKo } from '@/utils/typeMappings';
 
 const IdeaItem = ({ idea ,onDelete,onEdit}) => {
   const { title, category, description, tags } = idea;
-  console.log("💥💥💥💥💥💥id는 어떻게 들어오나",idea);
+  // console.log("💥💥💥💥💥💥id는 어떻게 들어오나",idea);
     const [isHovered, setIsHovered] = useState(false);
     const backgroundColor = isHovered ? '#383940' : '#2C2D34';
 

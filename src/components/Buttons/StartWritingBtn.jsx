@@ -8,7 +8,7 @@ const StartWritingBtn = ({ manuTitle }) => {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const [loading, setLoading] = useState(false);
-  const { setManuscript } = useManuscriptStore();
+  const setManuscript = useManuscriptStore((state) => state.setManuscript);
 
   const handleClick = async () => {
     if (!user) {
@@ -28,26 +28,12 @@ const StartWritingBtn = ({ manuTitle }) => {
 
       if (error) throw new Error(`manuscript 삽입 오류: ${error.message}`);
 
-      // 2. manuscript_setting 테이블에 추가
-      const { error: settingError } = await supabase
-        .from('manuscript_setting')
-        .insert([{ manuscript_id: data.id, title: data.title }]);
-
-      if (settingError) throw new Error(`manuscript_setting 삽입 오류: ${settingError.message}`);
-
-      console.log("✅ manuscript 및 manuscript_setting 저장 완료!");
 
       // 3. zustand 상태 업데이트
-      setManuscript({
-        episode_count: null,
-        id: data.id,
-        isSetup: false,
-        last_edited_at: null,
-        title: data.title,
-        user_id: user.id,
-      });
+      setManuscript({ id: data.id });
 
       // 4. 원고 페이지로 이동
+      //TODO 이동시키는거 변경
       router.push(`/manu/${data.id}`);
     } catch (err) {
       console.error("❌ 원고집 생성 실패:", err);
