@@ -24,6 +24,8 @@ const WritingPage = () => {
   const { activeTitle, handleSliderOpen } = useSliderStore();
   const {user} = useAuthStore();
 
+  console.log("selectedTab",selectedTab);
+
 
 
   const {
@@ -57,11 +59,15 @@ const WritingPage = () => {
     }
   }, [selectedTab]);
 
+
+  // TODO 에피소드 아이디를 NavMainSection에 prop으로 넘겨줘야 함
+
   return (
     <div style={{ position: 'relative' }}>
       <Navbar
         customNavComponent={
           <NavMainSection
+            episodeId = {selectedTab?.id}
             onSave={handleSubmit((formData) => onSubmit(formData, manuscript.id))} // 더 이상 async/await 필요 없음
           />
         }

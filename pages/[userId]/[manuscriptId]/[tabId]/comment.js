@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import CommentComponent from '@/components/CommentComponent';
-import CommentHeaderComponent from '@/components/CommentHeaderComponent';
+import CommentComponent from '@/components/CommentComponents/CommentComponent';
+import CommentHeaderComponent from '@/components/CommentComponents/CommentHeaderComponent';
 
 const CommentPage = () => {
   const router = useRouter();
@@ -15,22 +15,9 @@ const CommentPage = () => {
     
   ]);
 
-  // 하트를 클릭한 컴포넌트를 위로 올리는 함수
-  const handleHeartClick = (id, newHeartedState) => {
-    // 하트 클릭 상태가 변하면 comments 배열에서 해당 댓글의 상태를 업데이트
-    const updatedComments = comments.map((comment) =>
-      comment.id === id ? { ...comment, isHearted: newHeartedState } : comment
-    );
-
-    // 하트를 클릭한 컴포넌트를 제일 위로 이동
-    updatedComments.sort((a, b) => (b.isHearted ? 1 : 0) - (a.isHearted ? 1 : 0));
-
-    setComments(updatedComments); // 상태 업데이트
-  };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <CommentHeaderComponent />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px',marginTop:'80px' }}>
       <div
         style={{
           display: 'flex',
@@ -44,8 +31,6 @@ const CommentPage = () => {
           <CommentComponent
             key={comment.id}
             id={comment.id}
-            isHearted={comment.isHearted}
-            onHeartClick={handleHeartClick}
             name = {comment.name}
             text = {comment.text}
           />

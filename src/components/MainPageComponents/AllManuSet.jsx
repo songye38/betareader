@@ -7,6 +7,7 @@ import LoadingSpinner from "../etc/LoadingSpinner";
 const AllManuSet = ({ userId, manuscriptId }) => {
   const { manuscripts, loading, error } = useManuscripts();
 
+
   if (loading) {
     return (
       <div className="loader" style={{ position: 'absolute', top: 0, left: 0 }}>

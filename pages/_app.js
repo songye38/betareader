@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
-  const hideNavbarPages = ['/test', '/manu'];
+  const hideNavbarPages = ['/test', '/manu','/feedback'];
 
 const shouldHideNavbar = hideNavbarPages.some((path) =>
   router.pathname.startsWith(path)

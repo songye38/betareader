@@ -28,7 +28,7 @@ const CommentHeaderComponent = () => {
         justifyContent: 'center', 
         alignItems: 'center', 
         width: '100%', 
-        height: '100%',
+        height: '100px',
         borderBottom: '1px solid #4A4E5B',  // 아래에 선 추가
         paddingBottom: '32px',  // 선과 내용 간의 간격을 줌
         paddingTop : '32px',
@@ -39,14 +39,10 @@ const CommentHeaderComponent = () => {
         display:'flex',
         flexDirection:'row',
         gap:'40px',
-        width:'80%',
         justifyContent: 'center', 
         alignItems: 'center', 
       }}>
-          
-        {/* 뒤로가기 아이콘 */}
-        <img src="/back_icon.svg" alt="Profile" width={24} height={24} onClick={handleGoBack} style={{cursor:'pointer'}}/>
-
+        
         {/* 텍스트 섹션 */}
         <div
           style={{
@@ -72,7 +68,7 @@ const CommentHeaderComponent = () => {
           </div>
 
           {/* 설명 */}
-          <div
+          {/* <div
             style={{
               color: '#D9DEEE',
               fontSize: 18,
@@ -83,20 +79,20 @@ const CommentHeaderComponent = () => {
             }}
           >
             1화 원고 1차 초안
-          </div>
+          </div> */}
         </div>
 
       </div>
 
       {/* 북마크 버튼 (아이콘 클릭 시 상태에 따라 변경) */}
-      <img 
+      {/* <img 
         src={isBookmarked ? "/bookmark_filled.svg" : "/save_icon.svg"} 
         alt="Bookmark" 
         width={24} 
         height={24} 
         onClick={handleBookmarkClick}  // 클릭 시 상태 변경 및 토스트 표시
         style={{ cursor: 'pointer' }}  // 클릭 가능한 커서 스타일 추가
-      />
+      /> */}
       
       {/* 토스트 메시지를 위한 컨테이너 */}
       <ToastContainer />

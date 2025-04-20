@@ -5,6 +5,7 @@ import useAuthStore from "@/store/useAuthStore"; // 사용자 상태 가져오�
 import WelcomeBackSection from "@/components/IntroComponents/WelcomeBackSection";
 
 const MainPage = () => {
+
   const { user } = useAuthStore();
 
   // 로그인 안 된 상태 → 값이 undefined일 수도 있으니 체크 강화
