@@ -60,7 +60,8 @@ const CommentPage = () => {
       <CommentHeaderComponent />
       <div
         style={{
-            paddingTop:'300px',
+            marginTop:'10px',
+            paddingTop:'600px',
             paddingBottom:'200px',
           display: 'flex',
           flexDirection: 'column',
@@ -86,7 +87,12 @@ const CommentPage = () => {
 
 
       {router.isReady && linkId && (
-         <CommentInputSection createdAt={createdAt} linkId={linkId} />
+         <CommentInputSection 
+            createdAt={createdAt} 
+            linkId={linkId} 
+            onCommentAdded={() => loadCommentsFromServer(linkId)}
+            
+        />
         )}
     </div>
   );

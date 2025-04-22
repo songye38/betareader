@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useFeedback } from '@/hooks/useFeedback';
 
 
-const CommentInputSection = ({createdAt,linkId }) => {
+const CommentInputSection = ({createdAt,linkId,onCommentAdded }) => {
   const { saveCommentToServer } = useFeedback();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -62,6 +62,7 @@ const CommentInputSection = ({createdAt,linkId }) => {
 
       if (result) {
         // toast.success('댓글이 성공적으로 등록되었어요!');
+        if (onCommentAdded) onCommentAdded();
         setName('');
         setPassword('');
         setText('');
