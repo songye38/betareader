@@ -203,4 +203,35 @@ export const fetchComments = async (linkId) => {
   };
   
   
+
+/**
+ * 링크에 대한 정보를 불러오는 함수
+ * (에피소드 제목, 작성자 이름 등)
+ * @param {string} linkId - 댓글 링크 UUID
+ * @returns {Promise<Object>} - 링크 정보 객체
+ */
+export const fetchLinkInfo = async (linkId) => {
+    console.log("🔗 링크 정보 불러오기 시작:", linkId);
+  
+    try {
+      const { data, error } = await supabase
+        .from("comment_links")
+        .select("episode_title, username") // 필요한 필드 선택
+        .eq("id", linkId)
+        .single();
+  
+      if (error) {
+        console.error("❌ 링크 정보 불러오기 실패:", error.message);
+        toast.error("링크 정보를 불러오는 중 문제가 발생했어요.");
+        throw new Error(error.message);
+      }
+  
+      console.log("📘 불러온 링크 정보:", data);
+      return data;
+    } catch (err) {
+      console.error("링크 정보 불러오기 중 예외:", err.message);
+      toast.error("알 수 없는 오류로 링크 정보를 불러오지 못했어요.");
+      throw err;
+    }
+  };
   

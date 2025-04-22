@@ -9,15 +9,19 @@ const CommentPage = () => {
   const router = useRouter();
   const { commentLinkId: linkId } = router.query;
 
-  const { checkExpired, loading,comments,loadCommentsFromServer } = useFeedback();
+  const { checkExpired, loading,comments,loadCommentsFromServer,loadInfoFromServer,info } = useFeedback();
   const [expired, setExpired] = useState(false);
   const [createdAt, setCreatedAt] = useState(null);
+
 
 
     useEffect(() => {
         if (!linkId) return;
         loadCommentsFromServer(linkId);
-    }, [linkId]);
+        loadInfoFromServer(linkId); // 여기서 같이 호출해줘도 됨
+    }, [linkId]); // linkId가 준비되면 실행
+
+    
 
 
   useEffect(() => {
@@ -39,11 +43,14 @@ const CommentPage = () => {
     };
   
     check();
-  }, [router.isReady, linkId,router.asPath,checkExpired]);
+  }, [router.isReady]);
   
 
 
   if (expired) {
+    return <div style={{ padding: '32px', textAlign: 'center', fontSize: '20px' }}>⏰ 이 링크는 만료되었습니다.</div>;
+  }
+  if (loading) {
     return <div style={{ padding: '32px', textAlign: 'center', fontSize: '20px' }}>⏰ 이 링크는 만료되었습니다.</div>;
   }
 
@@ -57,11 +64,16 @@ const CommentPage = () => {
         overflow: 'hidden',
       }}
     >
-      <CommentHeaderComponent
-        episodeTitle = {"원고집 제목"}
-        manuscriptTitle = {"원고 제목"}
-        author={"작가 이름"}
-       />
+        {info ? (
+        <CommentHeaderComponent
+            episodeTitle={info.episode_title}
+            author={info.username}
+        />
+        ) : (
+        <div style={{ padding: '16px', textAlign: 'center' }}>
+            ⏳ 링크 정보를 불러오는 중이에요...
+        </div>
+        )}
       <div
             style={{
                 display: 'flex',

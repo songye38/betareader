@@ -4,7 +4,7 @@ import { ToastContainer, toast, Slide } from 'react-toastify';
 import { useRouter } from 'next/router';
 import 'react-toastify/dist/ReactToastify.css'; // 토스트 스타일 import
 
-const CommentHeaderComponent = ({episodeTitle,manuscriptTitle,author}) => {
+const CommentHeaderComponent = ({episodeTitle,author}) => {
   const router = useRouter();
   // 북마크 상태 관리 (false: 빈 북마크, true: 채워진 북마크)
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -54,18 +54,6 @@ const CommentHeaderComponent = ({episodeTitle,manuscriptTitle,author}) => {
           }}
         >
           {/* 제목 */}
-          <div
-            style={{
-              color: 'white',
-              fontSize: 24,
-              fontFamily: 'Pretendard',
-              fontWeight: '700',
-              lineHeight: '33.60px',
-              wordWrap: 'break-word',
-            }}
-          >
-            {manuscriptTitle}
-          </div>
           <div
             style={{
               color: 'white',

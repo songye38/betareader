@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { checkAndUpdateExpiredStatus,saveComment,fetchComments,createCommentLink } from '@/models/feedbackModel'; // 같은 곳에 있다고 가정
+import { checkAndUpdateExpiredStatus,saveComment,fetchComments,createCommentLink ,fetchLinkInfo} from '@/models/feedbackModel'; // 같은 곳에 있다고 가정
 import { toast } from "react-toastify";
+import { useCallback } from 'react';
 
 export const useFeedback = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
+  const [info, setInfo] = useState(null);
 
 /**
  * 댓글 링크 생성 함수
@@ -116,6 +118,24 @@ const loadCommentsFromServer = async (linkId) => {
     }
 };
 
+const loadInfoFromServer = useCallback(async (linkId) => {
+    if (!linkId) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await fetchLinkInfo(linkId);
+      setInfo(data || null);
+    } catch (err) {
+      console.error("❌ 링크 정보 로드 실패:", err.message);
+      setError(err.message || "링크 정보를 불러올 수 없습니다.");
+      toast.error("링크 정보를 가져오는 중 오류가 발생했어요.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   
 
 return {
@@ -125,6 +145,8 @@ return {
     error,
     saveCommentToServer,
     loadCommentsFromServer,
-    comments
+    comments,
+    loadInfoFromServer,
+    info
     };
 };
