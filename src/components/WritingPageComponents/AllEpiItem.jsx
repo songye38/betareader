@@ -12,14 +12,14 @@ dayjs.locale('ko');
 
 
 const AllEpiItem = ({ episode, active,onClick,onDelete }) => {
-  const { title, content, last_edited_at, status } = episode;
+  const { title, content, last_edited_at, is_feedback_mode } = episode;
   const [isHovered, setIsHovered] = useState(false);
     const relativeTimeDisplay = dayjs(last_edited_at).fromNow();
 
 
 
-  const borderColor = active 
-    ? (status === "작성중" ? '#6071FB' : status === "피드백 받는중" ? '#F27878' : '#6071FB') 
+    const borderColor = active
+    ? is_feedback_mode ? '#F27878' : '#6071FB'
     : 'transparent';
 
 
@@ -70,7 +70,7 @@ const AllEpiItem = ({ episode, active,onClick,onDelete }) => {
               height: '20px', // 필요에 따라 height 설정
             }}
           >
-            {status.replace(/^['"]+|['"]+$/g, '')}
+            {is_feedback_mode ? '피드백 받는중' : '작성중'}
             </span>
           <button
             style={{
