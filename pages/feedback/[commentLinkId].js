@@ -19,7 +19,11 @@ const CommentPage = () => {
   ]);
 
   useEffect(() => {
-    if (!router.isReady || !linkId) return;
+    if (!router.isReady || !linkId){
+        console.log("linkid",linkId)
+        console.error('링크 ID가 없습니다.');
+        return;
+    }
   
     const check = async () => {
       const { expired, created_at } = await checkExpired(linkId);
@@ -33,7 +37,7 @@ const CommentPage = () => {
     };
   
     check();
-  }, [router.isReady, linkId]);
+  }, [router.isReady, linkId,router.asPath]);
   
 
 
@@ -77,7 +81,9 @@ const CommentPage = () => {
 
 
 
-      <CommentInputSection createdAt = {createdAt}/>
+      {router.isReady && linkId && (
+         <CommentInputSection createdAt={createdAt} linkId={linkId} />
+        )}
     </div>
   );
 };

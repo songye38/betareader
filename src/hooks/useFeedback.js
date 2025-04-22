@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createCommentLink } from '@/models/feedbackModel';
-import { checkAndUpdateExpiredStatus } from '@/models/feedbackModel'; // 같은 곳에 있다고 가정
+import { checkAndUpdateExpiredStatus,saveComment } from '@/models/feedbackModel'; // 같은 곳에 있다고 가정
 
 export const useFeedback = () => {
   const [loading, setLoading] = useState(false);
@@ -31,24 +31,6 @@ export const useFeedback = () => {
    * @param {string} linkId - 댓글 링크 UUID
    * @returns {Promise<boolean>} - true: 만료됨 / false: 유효함
    */
-//   const checkExpired = async (linkId) => {
-//     setLoading(true);
-//     setError(null);
-  
-//     try {
-//       console.log("1. checkExpired 호출됨, linkId:", linkId); // 1. linkId가 정상인지
-//       const result = await checkAndUpdateExpiredStatus(linkId);
-//       console.log("2. checkExpired → result:", result); // 2. 응답 구조 확인
-  
-//       return result;
-//     } catch (err) {
-//       console.error("checkExpired 에러:", err); // 3. 예외 로그
-//       setError(err.message || "링크 만료 확인 실패");
-//       return { expired: true };
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
 
 const checkExpired = async (linkId) => {
     setLoading(true);
@@ -78,14 +60,37 @@ const checkExpired = async (linkId) => {
       setLoading(false);
     }
   };
+
+/**
+ * 댓글 등록
+ * @param {{ linkId: string, content: string, password: string, name?: string }} commentData
+ * @returns {Promise<object|null>} 저장된 댓글 객체 or null
+ */
+const saveCommentToServer = async (commentData) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+        const savedComment = await saveComment(commentData);
+        return savedComment;
+    } catch (err) {
+        console.error("addComment 에러:", err);
+        setError(err.message || "댓글 저장 실패");
+        toast.error("댓글 저장 중 오류가 발생했어요.");
+        return null;
+    } finally {
+        setLoading(false);
+    }
+};
   
   
   
 
-  return {
+return {
     addCommentLink,
     checkExpired,
     loading,
     error,
-  };
+    saveCommentToServer,
+    };
 };

@@ -33,7 +33,9 @@ const shouldHideNavbar = hideNavbarPages.some((path) =>
 
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} ${poppins.className}`}>
-      <AuthListener /> {/* ✅ 로그인 상태 감지 및 Zustand 업데이트 */}
+      {/* feedback 페이지에서는 AuthListener를 렌더링하지 않음 */}
+      {!shouldHideNavbar && <AuthListener />} {/* ✅ 로그인 상태 감지 및 Zustand 업데이트 */}
+      {/* <AuthListener /> ✅ 로그인 상태 감지 및 Zustand 업데이트 */}
       {/* <Navbar />  */}
 
       {!shouldHideNavbar && <Navbar />}

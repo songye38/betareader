@@ -1,8 +1,10 @@
 import React, { useState ,useEffect} from 'react';
 import { toast } from 'react-toastify';
+import { useFeedback } from '@/hooks/useFeedback';
 
 
-const CommentInputSection = ({ onSubmit,createdAt }) => {
+const CommentInputSection = ({createdAt,linkId }) => {
+  const { saveCommentToServer } = useFeedback();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [text, setText] = useState('');
@@ -37,8 +39,11 @@ const CommentInputSection = ({ onSubmit,createdAt }) => {
   }, [createdAt]);
 
   const handleSubmit = async () => {
+    if(!linkId) {
+        return;
+    }
     if (password.length < 4) {
-      toast.error('비밀번호는 최소 4자 이상이어야 해요.');
+       toast.error('비밀번호는 최소 4자 이상이어야 해요.');
       return;
     }
 
@@ -47,20 +52,22 @@ const CommentInputSection = ({ onSubmit,createdAt }) => {
       return;
     }
 
-    setLoading(true);
     try {
-      await onSubmit({
-        name: name.trim() === '' ? '익명' : name.trim(),
+      const result = await saveCommentToServer({
+        linkId,
+        content: text.trim(),
         password,
-        text: text.trim(),
+        name: name.trim() === '' ? '익명' : name.trim(),
       });
-      setName('');
-      setPassword('');
-      setText('');
+
+      if (result) {
+        // toast.success('댓글이 성공적으로 등록되었어요!');
+        setName('');
+        setPassword('');
+        setText('');
+      }
     } catch (err) {
-      toast.error('댓글 제출 중 문제가 발생했어요.');
-    } finally {
-      setLoading(false);
+       toast.error('댓글 제출 중 문제가 발생했어요.');
     }
   };
 
