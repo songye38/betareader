@@ -57,32 +57,33 @@ const CommentPage = () => {
         overflow: 'hidden',
       }}
     >
-      <CommentHeaderComponent />
+      <CommentHeaderComponent
+        episodeTitle = {"원고집 제목"}
+        manuscriptTitle = {"원고 제목"}
+        author={"작가 이름"}
+       />
       <div
-        style={{
-            marginTop:'10px',
-            paddingTop:'600px',
-            paddingBottom:'200px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '15px',
-          height: 'calc(100vh - 120px)',
-          overflowY: 'auto',
-          width: '100%',
-        //   paddingTop: '140px',
-        }}
-      >
-        {comments.map((comment) => (
-          <CommentComponent
-            key={comment.id}
-            id={comment.id}
-            name={comment.name}
-            text={comment.content}
-          />
-        ))}
-      </div>
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start', // 위에서부터 차지하도록 설정
+                alignItems: 'center',
+                gap: '15px',
+                width: '100%',
+                minHeight: '100vh', // 최소 높이를 100vh로 설정
+                paddingTop: '10px', // 위쪽 여백
+                overflowY: 'auto', // 내용이 넘칠 경우 스크롤바 표시
+            }}
+            >
+            {comments.map((comment) => (
+                <CommentComponent
+                key={comment.id}
+                id={comment.id}
+                name={comment.name}
+                text={comment.content}
+                />
+            ))}
+        </div>
 
 
 
@@ -90,8 +91,7 @@ const CommentPage = () => {
          <CommentInputSection 
             createdAt={createdAt} 
             linkId={linkId} 
-            onCommentAdded={() => loadCommentsFromServer(linkId)}
-            
+            onCommentAdded={() => loadCommentsFromServer(linkId)}  
         />
         )}
     </div>

@@ -4,7 +4,7 @@ import { ToastContainer, toast, Slide } from 'react-toastify';
 import { useRouter } from 'next/router';
 import 'react-toastify/dist/ReactToastify.css'; // 토스트 스타일 import
 
-const CommentHeaderComponent = () => {
+const CommentHeaderComponent = ({episodeTitle,manuscriptTitle,author}) => {
   const router = useRouter();
   // 북마크 상태 관리 (false: 빈 북마크, true: 채워진 북마크)
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -64,7 +64,31 @@ const CommentHeaderComponent = () => {
               wordWrap: 'break-word',
             }}
           >
-            웹소설 1의 1화
+            {manuscriptTitle}
+          </div>
+          <div
+            style={{
+              color: 'white',
+              fontSize: 24,
+              fontFamily: 'Pretendard',
+              fontWeight: '700',
+              lineHeight: '33.60px',
+              wordWrap: 'break-word',
+            }}
+          >
+            {episodeTitle}
+          </div>
+          <div
+            style={{
+              color: 'white',
+              fontSize: 24,
+              fontFamily: 'Pretendard',
+              fontWeight: '700',
+              lineHeight: '33.60px',
+              wordWrap: 'break-word',
+            }}
+          >
+            {author}
           </div>
 
           {/* 설명 */}

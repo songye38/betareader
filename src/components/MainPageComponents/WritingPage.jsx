@@ -22,9 +22,10 @@ const WritingPage = () => {
   const { tabs } = useTabStore();
   const selectedTab = tabs.find((tab) => tab.selected === true);
   const { activeTitle, handleSliderOpen } = useSliderStore();
-  const {user} = useAuthStore();
+  const {user,profile} = useAuthStore();
 
   console.log("selectedTab",selectedTab);
+  console.log("user에는 어떤 정보가 있나?",profile);
 
 
 
@@ -68,6 +69,9 @@ const WritingPage = () => {
         customNavComponent={
           <NavMainSection
             episodeId = {selectedTab?.id}
+            episodeTitle = {selectedTab.title}
+            username = {profile?.username}
+            userId = {user?.id}
             onSave={handleSubmit((formData) => onSubmit(formData, manuscript.id))} // 더 이상 async/await 필요 없음
           />
         }

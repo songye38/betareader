@@ -12,10 +12,13 @@ export const hashPassword = async (password) => {
 /**
  * 댓글 링크 생성 함수
  * @param {number} episodeId - 에피소드 ID
+ * @param {text} episodeTitle - 에피소드 Title
+ * @param {text} username - 사용자 이름
+ * @param {UUID} userId - 사용자 ID
  * @param {number} minRequiredComments - 최소 피드백 개수 (5, 10, 15, 20 중 하나)
  * @returns {Promise<object>} - 생성된 댓글 링크 row
  */
-export const createCommentLink = async (episodeId, minRequiredComments) => {
+export const createCommentLink = async (episodeId, minRequiredComments,episodeTitle,username,userId) => {
   console.log("댓글 링크 생성 시작:", episodeId, minRequiredComments);
 
   try {
@@ -25,6 +28,9 @@ export const createCommentLink = async (episodeId, minRequiredComments) => {
         {
           episode_id: episodeId,
           min_required_comments: minRequiredComments,
+          episode_title : episodeTitle,
+          username : username,
+          user_id : userId,
         },
       ])
       .select()

@@ -3,9 +3,8 @@ import SaveEpiBtn from './Buttons/SaveEpiBtn';
 import CheckCommentBtn from './Buttons/CheckCommentBtn';
 import FeedbackSettingModal from './FeedbackComponents/FeedbackSettingModal';
 import { useFeedback } from '@/hooks/useFeedback';
-// const addCommentLink = async (episodeId, minRequiredComments) => {
 
-const NavMainSection = ({ onSave,episodeId }) => {
+const NavMainSection = ({ onSave,episodeId,episodeTitle,username,userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selected, setSelected] = useState(5); // ✅ 기본값 5개로 초기화
   const { addCommentLink } = useFeedback(); // 피드백 훅 사용
@@ -17,10 +16,11 @@ const NavMainSection = ({ onSave,episodeId }) => {
     setSelected(option); // ✅ 선택한 개수 상태 업데이트
   };
 
+
   const handleShare = async () => {
     console.log(`📤 피드백 요청: 최소 ${selected}개`);
     try {
-      const result = await addCommentLink(episodeId, selected);
+      const result = await addCommentLink(episodeId, selected,episodeTitle,username,userId);
       if (result) {
         console.log("✅ 생성된 링크:", `${window.location.origin}/feedback/${result.id}`);
       }
