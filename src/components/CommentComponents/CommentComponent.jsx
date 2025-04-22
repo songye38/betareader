@@ -4,7 +4,7 @@ const CommentComponent = ({ id,name,text }) => {
 
 
   return (
-    <div style={{ width: '80%', height: '100%', display: 'flex', flexDirection: 'row', position: 'relative' }}>
+    <div style={{ width: '80%', height: 'auto', display: 'flex', flexDirection: 'row', position: 'relative' }}>
 
 
       {/* 첫 번째 섹션 */}

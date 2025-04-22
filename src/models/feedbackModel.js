@@ -165,5 +165,36 @@ export const saveComment = async ({ linkId, content, password, name }) => {
     }
 };
   
+
+/**
+ * 특정 링크에 달린 모든 댓글을 불러오는 함수
+ * @param {string} linkId - 댓글 링크 UUID
+ * @returns {Promise<Array>} - 댓글 배열
+ */
+export const fetchComments = async (linkId) => {
+    console.log("💬 댓글 불러오기 시작:", linkId);
+  
+    try {
+      const { data, error } = await supabase
+        .from("comments")
+        .select("id, content, name, created_at, is_ai") // 필요한 필드만 선택
+        .eq("link_id", linkId)
+        .order("created_at", { ascending: false });
+  
+      if (error) {
+        console.error("❌ 댓글 불러오기 실패:", error.message);
+        toast.error("댓글을 불러오는 중 문제가 발생했어요.");
+        throw new Error(error.message);
+      }
+  
+      console.log("📦 불러온 댓글:", data);
+      return data;
+    } catch (err) {
+      console.error("댓글 불러오기 중 예외:", err.message);
+      toast.error("알 수 없는 오류로 댓글을 불러오지 못했어요.");
+      throw err;
+    }
+  };
+  
   
   

@@ -9,14 +9,16 @@ const CommentPage = () => {
   const router = useRouter();
   const { commentLinkId: linkId } = router.query;
 
-  const { checkExpired, loading } = useFeedback();
+  const { checkExpired, loading,comments,loadCommentsFromServer } = useFeedback();
   const [expired, setExpired] = useState(false);
   const [createdAt, setCreatedAt] = useState(null);
-  const [comments, setComments] = useState([
-    { id: 1, isHearted: false, name: '박송이', text: '너무 좋아요' },
-    { id: 2, isHearted: false, name: '박재현', text: '음 별로네요' },
-    { id: 3, isHearted: false, name: '박장희', text: '킹크랩 너무 맛있겠다.' },
-  ]);
+
+
+    useEffect(() => {
+        if (!linkId) return;
+        loadCommentsFromServer(linkId);
+    }, [linkId]);
+
 
   useEffect(() => {
     if (!router.isReady || !linkId){
@@ -37,7 +39,7 @@ const CommentPage = () => {
     };
   
     check();
-  }, [router.isReady, linkId,router.asPath]);
+  }, [router.isReady, linkId,router.asPath,checkExpired]);
   
 
 
@@ -58,6 +60,8 @@ const CommentPage = () => {
       <CommentHeaderComponent />
       <div
         style={{
+            paddingTop:'300px',
+            paddingBottom:'200px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -66,7 +70,7 @@ const CommentPage = () => {
           height: 'calc(100vh - 120px)',
           overflowY: 'auto',
           width: '100%',
-          paddingTop: '140px',
+        //   paddingTop: '140px',
         }}
       >
         {comments.map((comment) => (
@@ -74,7 +78,7 @@ const CommentPage = () => {
             key={comment.id}
             id={comment.id}
             name={comment.name}
-            text={comment.text}
+            text={comment.content}
           />
         ))}
       </div>

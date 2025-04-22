@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { createCommentLink } from '@/models/feedbackModel';
-import { checkAndUpdateExpiredStatus,saveComment } from '@/models/feedbackModel'; // 같은 곳에 있다고 가정
+import { checkAndUpdateExpiredStatus,saveComment,fetchComments,createCommentLink } from '@/models/feedbackModel'; // 같은 곳에 있다고 가정
+import { toast } from "react-toastify";
 
 export const useFeedback = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [comments, setComments] = useState([]);
 
   /**
    * 댓글 링크 생성 함수
@@ -83,7 +84,35 @@ const saveCommentToServer = async (commentData) => {
     }
 };
   
-  
+/**
+ * 특정 링크에 속한 댓글을 불러오는 커스텀 훅
+ * @param {string} linkId - 댓글 링크 UUID
+ * @returns {{
+*   comments: Array,
+*   loading: boolean,
+*   error: string | null,
+*   refresh: () => Promise<void>
+* }}
+*/
+
+const loadCommentsFromServer = async (linkId) => {
+    if (!linkId) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+        const fetched = await fetchComments(linkId);
+        setComments(fetched || []);
+    } catch (err) {
+        console.error("💥 댓글 로드 실패:", err.message);
+        setError(err.message || "댓글 불러오기 실패");
+        toast.error("댓글을 불러오는 중 오류가 발생했어요.");
+    } finally {
+        setLoading(false);
+    }
+};
+
   
 
 return {
@@ -92,5 +121,7 @@ return {
     loading,
     error,
     saveCommentToServer,
+    loadCommentsFromServer,
+    comments
     };
 };
