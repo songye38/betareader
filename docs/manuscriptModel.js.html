@@ -1,4 +1,32 @@
-import supabase from '@/supabase/supabaseClient';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: manuscriptModel.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: manuscriptModel.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import supabase from '@/supabase/supabaseClient';
 
 /**
  * 특정 사용자 아이디를 기반으로 원고(manuscript) 목록을 조회하는 함수
@@ -9,7 +37,7 @@ import supabase from '@/supabase/supabaseClient';
  *
  * @param {string} userId - 조회할 대상 사용자의 ID (필수)
  * @param {number|null} [limit=null] - 가져올 원고 개수 제한 (선택)
- * @returns {Promise<Array<Object>>} 원고 리스트 배열
+ * @returns {Promise&lt;Array&lt;Object>>} 원고 리스트 배열
  *
  * @throws {Error} 쿼리 실패 시 에러 메시지를 포함한 예외 발생
  *
@@ -45,7 +73,7 @@ export const fetchManuscriptsByUserId = async (userId, limit = null) => {
  * - 반환 항목: id, user_id, title, last_edited_at, episode_count
  *
  * @param {string} manuscriptId - 조회할 원고의 ID (필수)
- * @returns {Promise<Object>} 단일 원고 객체
+ * @returns {Promise&lt;Object>} 단일 원고 객체
  *
  * @throws {Error} 쿼리 실패 시 에러 메시지를 포함한 예외 발생
  *
@@ -77,7 +105,7 @@ export const fetchManuscriptById = async (manuscriptId) => {
  *
  * @param {string} userId - 조회할 사용자 ID (필수)
  * @param {string|null} [manuscriptId=null] - 조회할 단일 원고 ID (선택)
- * @returns {Promise<Object|Array<Object>>} 단일 원고 객체 또는 원고 리스트 배열
+ * @returns {Promise&lt;Object|Array&lt;Object>>} 단일 원고 객체 또는 원고 리스트 배열
  *
  * @throws {Error} 내부 호출 함수 중 하나가 실패할 경우 예외 발생
  *
@@ -105,11 +133,11 @@ export const fetchManuscripts = async (userId, manuscriptId = null) => {
  *
  * - 현재 episode_count 값을 불러온 후, delta 만큼 더하거나 빼서 다시 저장
  * - 결과적으로 episode_count는 최소 0 이상으로 유지됨
- * - 증가(delta > 0)나 감소(delta < 0) 모두 처리 가능
+ * - 증가(delta > 0)나 감소(delta &lt; 0) 모두 처리 가능
  *
  * @param {string} manuscriptId - 에피소드 수를 업데이트할 원고 ID (필수)
  * @param {number} [delta=1] - 변경할 에피소드 수 (기본값: +1, 음수 가능)
- * @returns {Promise<Object|null>} 업데이트된 원고 객체 또는 실패 시 null
+ * @returns {Promise&lt;Object|null>} 업데이트된 원고 객체 또는 실패 시 null
  *
  * @throws {Error} 데이터 조회 또는 업데이트 중 오류가 발생할 수 있음 (내부 try-catch로 로그 처리됨)
  *
@@ -165,7 +193,7 @@ export const updateEpisodeCount = async (manuscriptId, delta = 1) => {
  * - 일반적으로 원고 수정 시 호출되어 변경 사항이 있음을 기록함
  *
  * @param {string} manuscriptId - 마지막 수정 시간을 갱신할 원고 ID (필수)
- * @returns {Promise<Object|null>} 업데이트된 원고 객체 또는 실패 시 null
+ * @returns {Promise&lt;Object|null>} 업데이트된 원고 객체 또는 실패 시 null
  *
  * @throws {Error} DB 업데이트 중 오류 발생 가능 (내부 try-catch로 처리되어 로그 출력 및 null 반환)
  *
@@ -208,7 +236,7 @@ export const updateLastEditedAt = async (manuscriptId) => {
  *
  * @param {string} manuscriptId - 제목을 수정할 원고의 ID (필수)
  * @param {string} newTitle - 새로 설정할 제목 문자열 (필수)
- * @returns {Promise<Object|null>} 업데이트된 원고 객체 또는 실패 시 null
+ * @returns {Promise&lt;Object|null>} 업데이트된 원고 객체 또는 실패 시 null
  *
  * @throws {Error} DB 업데이트 중 오류 발생 가능 (내부 try-catch로 처리됨)
  *
@@ -247,7 +275,7 @@ export const updateManuscriptTitle = async (manuscriptId, newTitle) => {
  * - 삭제 후 삭제된 데이터를 반환 (예: title, id 등)
  *
  * @param {string} manuscriptId - 삭제할 원고의 ID (필수)
- * @returns {Promise<Object|null>} 삭제된 원고 데이터 또는 실패 시 null
+ * @returns {Promise&lt;Object|null>} 삭제된 원고 데이터 또는 실패 시 null
  *
  * @throws {Error} 삭제 처리 중 오류 발생 시 예외 (내부 try-catch로 로그 출력 및 null 반환)
  *
@@ -277,3 +305,26 @@ export const deleteManuscriptById = async (manuscriptId) => {
 
 
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#checkAndUpdateExpiredStatus">checkAndUpdateExpiredStatus</a></li><li><a href="global.html#createCommentLink">createCommentLink</a></li><li><a href="global.html#deleteManuscriptById">deleteManuscriptById</a></li><li><a href="global.html#fetchComments">fetchComments</a></li><li><a href="global.html#fetchLinkInfo">fetchLinkInfo</a></li><li><a href="global.html#fetchManuscriptById">fetchManuscriptById</a></li><li><a href="global.html#fetchManuscripts">fetchManuscripts</a></li><li><a href="global.html#fetchManuscriptsByUserId">fetchManuscriptsByUserId</a></li><li><a href="global.html#getProfileGoals">getProfileGoals</a></li><li><a href="global.html#updateEpisodeCount">updateEpisodeCount</a></li><li><a href="global.html#updateLastEditedAt">updateLastEditedAt</a></li><li><a href="global.html#updateManuscriptTitle">updateManuscriptTitle</a></li><li><a href="global.html#updateProfileGoals">updateProfileGoals</a></li><li><a href="global.html#uploadProfileImage">uploadProfileImage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 09:35:18 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

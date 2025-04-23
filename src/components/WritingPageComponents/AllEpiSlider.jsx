@@ -12,7 +12,8 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
   const {manuscript} = useManuscriptStore();
   const {handleDeleteEpisode} = useEpisodeForm();
 
-  console.log("tabs",tabs);
+  console.log("tabs에는 어떤 정보가 들어있나?",tabs);
+  // 서버에서 가져와서 tabs에 가져온다면 is_feedback_mode 항목이 있고 여기에 피드백 받는중인건지 표시됨
 
 
   useEffect(() => {

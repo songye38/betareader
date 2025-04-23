@@ -24,11 +24,6 @@ const WritingPage = () => {
   const { activeTitle, handleSliderOpen } = useSliderStore();
   const {user,profile} = useAuthStore();
 
-  console.log("selectedTab",selectedTab);
-  console.log("user에는 어떤 정보가 있나?",profile);
-
-
-
   const {
     methods,
     control,
@@ -68,6 +63,7 @@ const WritingPage = () => {
       <Navbar
         customNavComponent={
           <NavMainSection
+            is_feedback_mode = {false}
             episodeId = {selectedTab?.id}
             episodeTitle = {selectedTab.title}
             username = {profile?.username}

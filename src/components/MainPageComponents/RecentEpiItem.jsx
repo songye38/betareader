@@ -21,6 +21,8 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
   const router = useRouter();
   const {selectedTab,setTabs,resetTabs} = useTabStore();
   const setManuscript = useManuscriptStore((state) => state.setManuscript);
+  const borderColor = episode.is_feedback_mode ? '#F27878' : '#6071FB'
+
 
   const handleClick = async (tab_id) => {
   
@@ -60,6 +62,7 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
         cursor : 'pointer',
       }}
     >
+      
       {/* 상단 내용: 제목과 시간 */}
       <div style={{ alignSelf: 'stretch', justifyContent: 'space-between', alignItems: 'center', display: 'inline-flex' }}>
         <div 
@@ -74,6 +77,7 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
         >
           {episode.manuscript.title} {/* 동적으로 제목 설정 */}
         </div>
+        
         <div 
           style={{
             color: '#7B8091', 
@@ -132,6 +136,23 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
         >
           {episode.content} {/* 동적으로 내용 설정 */}
         </div>
+        <span
+            style={{
+              backgroundColor: borderColor || '#999',
+              color: 'white',
+              padding: '6px 10px',
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontWeight: '500',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '20px', // 필요에 따라 height 설정
+            }}
+          >
+            {episode.is_feedback_mode ? '피드백 받는중' : '작성중'}
+            </span>
+
       </div>
     </div>
   );

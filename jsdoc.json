@@ -1,0 +1,8 @@
+{
+    "source": {
+      "include": ["src/models"]
+    },
+    "opts": {
+      "destination": "docs/models"
+    }
+  }
