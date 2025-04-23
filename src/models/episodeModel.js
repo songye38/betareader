@@ -115,3 +115,26 @@ export const deleteEpisode = async (episodeId) => {
     throw error;
   }
 };
+
+// 에피소드의 is_feedback_mode 수정 함수
+export const updateEpisodeFeedbackMode = async (episodeId, newFeedbackMode) => {
+  try {
+    // 'episodeId'에 해당하는 에피소드의 'is_feedback_mode' 값을 'newFeedbackMode'로 수정
+    const { data, error } = await supabase
+      .from('episode')
+      .update({ is_feedback_mode: newFeedbackMode })  // 수정할 컬럼과 값을 지정
+      .eq('id', episodeId)  // episodeId와 일치하는 항목을 찾아서 수정
+      .single();  // 하나의 결과만 반환받기 위해 .single() 사용
+
+    if (error) {
+      console.error("❌ Supabase 에러:", error.message);
+      throw error;
+    }
+
+    console.log("is_feedback_mode 업데이트 성공", data);
+    return data;  // 수정된 데이터 반환
+  } catch (error) {
+    console.error("❌ 에피소드 수정 실패:", error);
+    throw error;
+  }
+};

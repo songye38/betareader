@@ -63,6 +63,7 @@ const WritingPage = () => {
       <Navbar
         customNavComponent={
           <NavMainSection
+            tabId = {selectedTab?.tab_id}
             is_feedback_mode = {false}
             episodeId = {selectedTab?.id}
             userId = {user?.id}

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { saveEpisode,deleteEpisode } from '@/models/episodeModel'; 
-import { getRecentEpisodes,getEpisodesByManuId } from '@/models/episodeModel';
+import { getRecentEpisodes,getEpisodesByManuId,updateEpisodeFeedbackMode } from '@/models/episodeModel';
 import useAuthStore from '@/store/useAuthStore';
 import useManuscriptStore from '@/store/useManuscriptStore';
 import useTabStore from '@/store/useTabStore';
@@ -87,7 +87,7 @@ const useEpisodeForm = () => {
       handleUpdateTab(response.tab_id, {
         title: response.title,
         content: response.content,
-        status: '작성중',
+        is_feedback_mode: false,
         created_at: response.created_at,
         id: response.id,
         last_edited_at: response.last_edited_at,
@@ -161,31 +161,7 @@ const useEpisodeForm = () => {
     }
   };
 
-  // 에피소드 삭제 함수
-  // const handleDeleteEpisode = async (manuscriptId,episodeId) => {
-  //   setLoading(true);
-  //   setError(null); // 에러 초기화
-  //   console.log("삭제하기 전 tabs",tabs);
 
-  //   try {
-  //     const deletedData = await deleteEpisode(episodeId); // deleteEpisode 호출하여 삭제
-  //     //deletedData.tab_id를 리턴받을 수 있음 
-
-
-  //     // 삭제된 에피소드 리스트 업데이트
-  //     // setAllEpisodes((prev) => prev.filter((episode) => episode.id !== episodeId));
-  //     // setTabs((prev) => prev.filter((tab) => tab.id !== episodeId));
-  //     console.log("삭제하고 난 후 deletedData",deletedData);
-  //     await incrementManuscriptEpisodeCount(manuscriptId,-1);
-  //     toast.success("에피소드가 성공적으로 삭제되었습니다!");
-  //   } catch (err) {
-  //     console.error("❌ 에피소드 삭제 실패:", err);
-  //     setError(err.message || "에피소드를 삭제하는 데 실패했습니다.");
-  //     toast.error("에피소드를 삭제하는 데 실패했습니다. 다시 시도해주세요.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const handleDeleteEpisode = async (manuscriptId, episodeId) => {
     setLoading(true);
     setError(null);
@@ -231,6 +207,17 @@ const useEpisodeForm = () => {
     }
   };
   
+    // `is_feedback_mode` 업데이트 함수 호출
+    const handleUpdateFeedbackMode = async (episodeId, newFeedbackMode) => {
+      try {
+        const updatedEpisode = await updateEpisodeFeedbackMode(episodeId, newFeedbackMode);
+        toast.success("피드백 모드가 성공적으로 업데이트되었습니다!");
+        return updatedEpisode;
+      } catch (err) {
+        console.error("❌ 피드백 모드 업데이트 실패:", err);
+        toast.error("피드백 모드 업데이트에 실패했습니다.");
+      }
+    };
 
 
   return {
@@ -248,6 +235,7 @@ const useEpisodeForm = () => {
     fetchEpisodesByManuId,
     allEpisodes,
     handleDeleteEpisode,
+    handleUpdateFeedbackMode
   };
 };
 

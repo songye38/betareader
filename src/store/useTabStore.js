@@ -20,21 +20,6 @@ const useTabStore = create((set) => ({
       };
     }),
 
-    // setTabs: (newTabs) =>
-    //   set(() => {
-    //     const updatedTabs = newTabs.map((tab, index) => ({
-    //       ...tab,
-    //       selected: index === 0, // 첫 번째 탭 선택
-    //     }));
-    
-    //     const firstTab = updatedTabs[0] || { tab_id: null, tab_no: null,id : null };
-    
-    //     return {
-    //       tabs: updatedTabs,
-    //       selectedTab: { tab_id: firstTab.tab_id, tab_no: firstTab.tab_no,id : firstTab.id },
-    //       currentManuscriptId: updatedTabs.length + 1, // 탭 수 + 1로 초기화
-    //     };
-    //   }),
   setTabs: (newTabs, targetTabId = null) =>
     set(() => {
       const updatedTabs = newTabs.map((tab, index) => ({
