@@ -7,7 +7,7 @@ import CopyFeedbackLink from "@/components/Popups/CopyFeedbackLink";
 import { useState } from "react";
 
 const MainPage = () => {
-    const [showEditPopup, setShowEditPopup] = useState(false);
+
 
   const { user } = useAuthStore();
 
@@ -45,14 +45,6 @@ const MainPage = () => {
       <UserSectionComponent />
       <RecentEpiSet />
       <AllManuSet />
-
-      {showEditPopup && (
-          <CopyFeedbackLink 
-          onClose={() => setShowEditPopup(false)}
-          linkUrl={ `https://feedback.example.com/${user.id}` } // 예시 URL
-        />
-        )}
-      
     </div>
   );
 };

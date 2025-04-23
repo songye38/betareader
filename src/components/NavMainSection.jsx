@@ -5,8 +5,11 @@ import FeedbackSettingModal from './FeedbackComponents/FeedbackSettingModal';
 import { useFeedback } from '@/hooks/useFeedback';
 import useWritingTab from '@/hooks/useWritingTab';
 import useEpisodeForm from '@/hooks/useEpisode';
+import CopyFeedbackLink from './Popups/CopyFeedbackLink';
 
 const NavMainSection = ({ onSave,episodeId,userId,tabId }) => {
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
   const {handleUpdateFeedbackMode} = useEpisodeForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selected, setSelected] = useState(5); // ✅ 기본값 5개로 초기화
@@ -41,8 +44,11 @@ const NavMainSection = ({ onSave,episodeId,userId,tabId }) => {
           console.log("✅ 서버에서 피드백 모드 업데이트 완료:", updatedEpisode);
         }
 
+        setLinkUrl(`${window.location.origin}/feedback/${result.id}`); // ✅ 링크 URL 설정
+
       }
       handleCloseModal(); // ✅ 성공했을 때만 닫기
+      setShowEditPopup(true)
     } catch (e) {
       console.error("링크 생성 실패:", e);
     }
@@ -68,6 +74,12 @@ const NavMainSection = ({ onSave,episodeId,userId,tabId }) => {
           onClose={handleCloseModal}
         />
       )}
+        {showEditPopup && (
+          <CopyFeedbackLink 
+            onClose={() => setShowEditPopup(false)}
+            linkUrl={linkUrl} // 예시 URL
+        />
+        )}
     </div>
   );
 };
