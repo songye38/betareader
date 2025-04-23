@@ -1,6 +1,16 @@
 import React from 'react';
+import dayjs from 'dayjs'; // dayjs 라이브러리 가져오기
+import relativeTime from 'dayjs/plugin/relativeTime'; // 상대 시간 플러그인
+import 'dayjs/locale/ko'; // 한국어 로케일 가져오기
 
-const AlarmItem = ({ commenterName, episodeTitle, timeAgo, onClick }) => {
+// dayjs에 상대 시간 플러그인 사용
+dayjs.extend(relativeTime);
+
+// dayjs에 한국어 로케일 설정
+dayjs.locale('ko');
+
+const AlarmItem = ({ message , timeAgo, onClick ,isNew}) => {
+      const relativeTimeDisplay = dayjs(timeAgo).fromNow();
   return (
     <div
       onClick={onClick}
@@ -38,18 +48,35 @@ const AlarmItem = ({ commenterName, episodeTitle, timeAgo, onClick }) => {
             marginBottom: '2px',
           }}
         >
-          <b>{commenterName}</b>님이 <b>{episodeTitle}</b>에 댓글을 남겼어요.
+          <b>{message}</b>
         </span>
-        <span
-          style={{
-            color: '#B0B0B0',
-            fontSize: '12px',
-            fontFamily: 'Pretendard',
-            lineHeight: '16px',
-          }}
-        >
-          {timeAgo}
-        </span>
+        <div style={{ display: 'flex', gap: '4px',flexDirection:'row',alignItems:'center' }}>
+            {isNew && (
+                                <span
+                                style={{
+                                    color: '#B0B0B0',
+                                    fontSize: '12px',
+                                    fontFamily: 'Pretendard',
+                                    lineHeight: '16px',
+                                }}
+                                >
+                                새로운 댓글
+                                </span>
+            
+            )}
+
+            
+            <span
+            style={{
+                color: '#B0B0B0',
+                fontSize: '12px',
+                fontFamily: 'Pretendard',
+                lineHeight: '16px',
+            }}
+            >
+            {relativeTimeDisplay}
+            </span>
+        </div>
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'; // useRouter import
 import NavSignSection from './NavSignSection';
 import useAuthStore from '@/store/useAuthStore';
 import NavUserSection from './NavUserSection';
-import MyPageModal from './Modal/MyPageModal';
 
 
 

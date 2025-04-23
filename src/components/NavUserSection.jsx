@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { useRouter } from 'next/router'; // useRouter import
 import MyPageModal from './Modal/MyPageModal';
 import useAuthStore from '@/store/useAuthStore';
+import useNotifications from '@/hooks/useNotification';
 
 const NavUserSection = ({signin}) => {
   const user = useAuthStore((state) => state.user);
@@ -9,6 +10,7 @@ const NavUserSection = ({signin}) => {
   const router = useRouter(); // useRouter 사용
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
   const [avatarUrl, setAvatarUrl] = useState(undefined);
+  const { notifications, loading, error, refetch } = useNotifications(user.id);
 
 
   useEffect(() => {
@@ -19,6 +21,7 @@ const NavUserSection = ({signin}) => {
 
   // 모달 토글 함수
   const toggleModal = () => {
+    refetch(); // 알림 다시 가져오기
     setIsModalOpen((prevState) => !prevState); // 모달 상태 변경
   };
 
@@ -44,14 +47,7 @@ const NavUserSection = ({signin}) => {
           display: 'inline-flex',
         }}
       >
-        {/* 프로필 아이콘 부분 */}
-        {/* <img
-          src="/profile_img.svg"
-          alt="Profile"
-          width={32}
-          height={32}
-          onClick={toggleModal}
-        /> */}
+
           <img
             src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
             alt="Profile"

@@ -4,12 +4,17 @@ import useAuthStore from '@/store/useAuthStore';
 import supabase from '@/supabase/supabaseClient';
 import { useState,useEffect } from 'react';
 import AlarmItem from './AlarmItem';
+import useNotifications from '@/hooks/useNotification';
 
 const MyPageModal = ({onClose,username}) => {
     const logout = useAuthStore((state) => state.logout);
     const profile = useAuthStore((state) => state.profile);
+    const { user } = useAuthStore(); // 로그인된 유저 정보 가져오기
+    const { notifications, loading, error } = useNotifications(user.id);
     const router = useRouter(); // useRouter 훅 사용
     const [avatarUrl, setAvatarUrl] = useState(undefined);
+
+    console.log("notifications" ,notifications);
 
 
     useEffect(() => {
@@ -131,31 +136,24 @@ const MyPageModal = ({onClose,username}) => {
             msOverflowStyle: 'none',       // IE 10+
         }}
         >
-        <AlarmItem
+        {notifications.map((notification) => (
+            <AlarmItem
+                key={notification.id}
+                message = {notification.message}
+                timeAgo={notification.created_at} // 생성 시점으로부터 경과한 시간
+                isNew={notification.isNew} // ✅ 요거!
+                // onClick={() => router.push(`/comment/${notification.link_id}`)}
+            />
+            ))}
+
+            {/* 
+            <AlarmItem
             commenterName="유저123"
             episodeTitle="첫 번째 에피소드"
             timeAgo="5분 전"
-            onClick={() => router.push(`/comment/${linkId}`)}
-        />
-        <AlarmItem
-            commenterName="유저123"
-            episodeTitle="첫 번째 에피소드"
-            timeAgo="5분 전"
-            onClick={() => router.push(`/comment/${linkId}`)}
-        />
-        <AlarmItem
-            commenterName="유저123"
-            episodeTitle="첫 번째 에피소드"
-            timeAgo="5분 전"
-            onClick={() => router.push(`/comment/${linkId}`)}
-        />
-        <AlarmItem
-            commenterName="유저123"
-            episodeTitle="첫 번째 에피소드"
-            timeAgo="5분 전"
-            onClick={() => router.push(`/comment/${linkId}`)}
-        />
-        {/* ...더 많은 알람 */}
+            onClick={() => router.push(/comment/${linkId})}
+        /> */}
+
         </div>
 
     </div>
