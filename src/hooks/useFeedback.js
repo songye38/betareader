@@ -12,17 +12,15 @@ export const useFeedback = () => {
 /**
  * 댓글 링크 생성 함수
  * @param {number} episodeId - 에피소드 ID
- * @param {text} episodeTitle - 에피소드 Title
- * @param {text} username - 사용자 이름
  * @param {UUID} userId - 사용자 ID
  * @param {number} minRequiredComments - 최소 피드백 개수 (5, 10, 15, 20 중 하나)
  * @returns {Promise<object>} - 생성된 댓글 링크 row
  */
-  const addCommentLink = async (episodeId, minRequiredComments,episodeTitle,username,userId) => {
+  const addCommentLink = async (episodeId, minRequiredComments,userId) => {
     setLoading(true);
     setError(null);
     try {
-      const newLink = await createCommentLink(episodeId, minRequiredComments,episodeTitle,username,userId);
+      const newLink = await createCommentLink(episodeId, minRequiredComments,userId);
       return newLink;
     } catch (err) {
       setError(err.message || '댓글 링크 생성 실패');

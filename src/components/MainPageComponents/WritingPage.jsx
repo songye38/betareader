@@ -65,8 +65,6 @@ const WritingPage = () => {
           <NavMainSection
             is_feedback_mode = {false}
             episodeId = {selectedTab?.id}
-            episodeTitle = {selectedTab.title}
-            username = {profile?.username}
             userId = {user?.id}
             onSave={handleSubmit((formData) => onSubmit(formData, manuscript.id))} // 더 이상 async/await 필요 없음
           />

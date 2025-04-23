@@ -12,13 +12,11 @@ export const hashPassword = async (password) => {
 /**
  * 댓글 링크 생성 함수
  * @param {number} episodeId - 에피소드 ID
- * @param {text} episodeTitle - 에피소드 Title
- * @param {text} username - 사용자 이름
  * @param {UUID} userId - 사용자 ID
  * @param {number} minRequiredComments - 최소 피드백 개수 (5, 10, 15, 20 중 하나)
  * @returns {Promise<object>} - 생성된 댓글 링크 row
  */
-export const createCommentLink = async (episodeId, minRequiredComments,episodeTitle,username,userId) => {
+export const createCommentLink = async (episodeId, minRequiredComments,userId) => {
   console.log("댓글 링크 생성 시작:", episodeId, minRequiredComments);
 
   try {
@@ -28,8 +26,6 @@ export const createCommentLink = async (episodeId, minRequiredComments,episodeTi
         {
           episode_id: episodeId,
           min_required_comments: minRequiredComments,
-          episode_title : episodeTitle,
-          username : username,
           user_id : userId,
         },
       ])
@@ -205,33 +201,70 @@ export const fetchComments = async (linkId) => {
   
 
 /**
- * 링크에 대한 정보를 불러오는 함수
- * (에피소드 제목, 작성자 이름 등)
+ * 링크 ID를 기반으로 에피소드와 작성자의 정보를 가져옵니다.
+ *
  * @param {string} linkId - 댓글 링크 UUID
- * @returns {Promise<Object>} - 링크 정보 객체
- */
+ * @returns {Promise<{
+*   episodeTitle: string,
+*   episodeContent: string,
+*   username: string
+* }>} 에피소드 제목, 내용, 작성자 이름을 포함한 객체를 반환
+*
+* @throws {Error} 링크 정보 또는 관련 데이터를 가져오는 도중 문제가 발생하면 예외를 던집니다.
+*/
+
 export const fetchLinkInfo = async (linkId) => {
     console.log("🔗 링크 정보 불러오기 시작:", linkId);
   
     try {
-      const { data, error } = await supabase
+      // 먼저 comment_links에서 episode_id, user_id 가져오기
+      const { data: linkData, error: linkError } = await supabase
         .from("comment_links")
-        .select("episode_title, username") // 필요한 필드 선택
+        .select("episode_id, user_id")
         .eq("id", linkId)
         .single();
   
-      if (error) {
-        console.error("❌ 링크 정보 불러오기 실패:", error.message);
+      if (linkError || !linkData) {
+        console.error("❌ 링크 기본 정보 불러오기 실패:", linkError?.message);
         toast.error("링크 정보를 불러오는 중 문제가 발생했어요.");
-        throw new Error(error.message);
+        throw new Error(linkError?.message);
       }
   
-      console.log("📘 불러온 링크 정보:", data);
-      return data;
+      const { episode_id, user_id } = linkData;
+  
+      // 🔁 episode, profile 정보 병렬로 불러오기
+      const [episodeRes, profileRes] = await Promise.all([
+        supabase
+          .from("episode")
+          .select("title, content")
+          .eq("id", episode_id)
+          .single(),
+        supabase
+          .from("profile")
+          .select("username")
+          .eq("user_id", user_id)
+          .single(),
+      ]);
+  
+      if (episodeRes.error || profileRes.error) {
+        console.error("❌ 세부 정보 불러오기 실패:", episodeRes.error?.message || profileRes.error?.message);
+        toast.error("에피소드 또는 사용자 정보를 불러오지 못했어요.");
+        throw new Error(episodeRes.error?.message || profileRes.error?.message);
+      }
+  
+      const result = {
+        episodeTitle: episodeRes.data.title,
+        episodeContent: episodeRes.data.content,
+        username: profileRes.data.username,
+      };
+  
+      console.log("📘 최종 링크 관련 정보:", result);
+      return result;
     } catch (err) {
-      console.error("링크 정보 불러오기 중 예외:", err.message);
+      console.error("링크 정보 최종 예외:", err.message);
       toast.error("알 수 없는 오류로 링크 정보를 불러오지 못했어요.");
       throw err;
     }
   };
+  
   
