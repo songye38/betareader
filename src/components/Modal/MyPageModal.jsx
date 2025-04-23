@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'; // useRouter import
 import useAuthStore from '@/store/useAuthStore';
 import supabase from '@/supabase/supabaseClient';
 import { useState,useEffect } from 'react';
+import AlarmItem from './AlarmItem';
 
 const MyPageModal = ({onClose,username}) => {
     const logout = useAuthStore((state) => state.logout);
@@ -81,121 +82,82 @@ const MyPageModal = ({onClose,username}) => {
 
                 </div>
         </div>
-        <div style={{
-            display: 'inline-flex',          // flexbox로 변경
-            alignItems: 'center',           // 수직 중앙 정렬
-            justifyContent: 'center',       // 수평 중앙 정렬
-            padding: '6px',                 // 아이콘과 border 사이의 간격
-            border: '1px solid #636466',    // border 설정 (원하는 색상, 두께로 조정 가능)
-            borderRadius: '12px',           // 둥근 테두리 (원 모양으로 만들기 위한 설정)
-            boxSizing: 'border-box'         // border가 이미지 크기에 영향을 미치지 않도록 설정
-        }}>
-            <img src="/write_icon.svg" alt="Profile" width={24} height={24} onClick={() => handleNavigation('/mypage/profile')} />
+        <div style={{display:'flex',flexDirection:'row',gap:'0px'}}>
+            {/* 내 정보 수정하기 */}
+            <div style={{
+                display: 'inline-flex',          // flexbox로 변경
+                alignItems: 'center',           // 수직 중앙 정렬
+                justifyContent: 'center',       // 수평 중앙 정렬
+                padding: '6px',                 // 아이콘과 border 사이의 간격
+                // border: '1px solid #636466',    // border 설정 (원하는 색상, 두께로 조정 가능)
+                borderRadius: '12px',           // 둥근 테두리 (원 모양으로 만들기 위한 설정)
+                boxSizing: 'border-box'         // border가 이미지 크기에 영향을 미치지 않도록 설정
+            }}>
+                <img src="/write_icon.svg" alt="Profile" width={24} height={24} onClick={() => handleNavigation('/mypage/profile')} />
 
+            </div>
+            {/* 로그아웃 */}
+            <div 
+                onClick={handleLogout}
+                style={{
+                    display: 'inline-flex',          // flexbox로 변경
+                    alignItems: 'center',           // 수직 중앙 정렬
+                    justifyContent: 'center',       // 수평 중앙 정렬
+                    padding: '6px',                 // 아이콘과 border 사이의 간격
+                    // border: '1px solid #636466',    // border 설정 (원하는 색상, 두께로 조정 가능)
+                    borderRadius: '12px',           // 둥근 테두리 (원 모양으로 만들기 위한 설정)
+                    boxSizing: 'border-box'         // border가 이미지 크기에 영향을 미치지 않도록 설정
+                }}>
+                    <img src="/logout_icon.svg" alt="Profile" width={24} height={24} onClick={() => handleNavigation('/mypage/profile')} />
+
+            </div>
         </div>
-
 
 
       </div>
 
-      {/* Menu Items */}
-      {/* 연재물 설정 */}
-      <div style={{display:'flex',flexDirection:'column',gap:'12px'}} >
-        <div 
-            onClick={() => handleNavigation('/mypage/manus')}
-            style={{
-            alignSelf: 'stretch',
-            paddingLeft: 13,
-            paddingRight: 13,
-            paddingTop: 10,
-            paddingBottom: 10,
-            borderRadius: 12,
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: 10,
-            display: 'inline-flex',
-            cursor:'pointer'
-            }}
-        >
-            <img src="/book_icon.svg" alt="Profile" width={24} height={24} />
-            <div 
-            style={{
-                color: 'white',
-                fontSize: 16,
-                fontFamily: 'Pretendard',
-                fontWeight: '500',
-                lineHeight: '22.40px',
-                wordWrap: 'break-word'
-            }}
-            >
-            연재물 설정
-            </div>
-        </div>
 
 
-        {/* 북마크 */}
-        <div 
-            onClick={() => handleNavigation('/mypage/bookmarks')}
-            style={{
-            alignSelf: 'stretch',
-            paddingLeft: 13,
-            paddingRight: 13,
-            paddingTop: 10,
-            paddingBottom: 10,
-            borderRadius: 12,
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: 10,
-            display: 'inline-flex',
-            cursor:'pointer'
-            }}
+      
+      <div
+        style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            maxHeight: '200px', // ✅ 최대 높이 설정
+            overflowY: 'auto',  // ✅ 세로 스크롤 활성화
+            // 스크롤바 숨기기
+            scrollbarWidth: 'none',        // Firefox
+            msOverflowStyle: 'none',       // IE 10+
+        }}
         >
-            <img src="/bookmark_default.svg" alt="Profile" width={24} height={24} />
-            <div 
-            style={{
-                color: 'white',
-                fontSize: 16,
-                fontFamily: 'Pretendard',
-                fontWeight: '500',
-                lineHeight: '22.40px',
-                wordWrap: 'break-word'
-            }}
-            >
-            북마크
-            </div>
+        <AlarmItem
+            commenterName="유저123"
+            episodeTitle="첫 번째 에피소드"
+            timeAgo="5분 전"
+            onClick={() => router.push(`/comment/${linkId}`)}
+        />
+        <AlarmItem
+            commenterName="유저123"
+            episodeTitle="첫 번째 에피소드"
+            timeAgo="5분 전"
+            onClick={() => router.push(`/comment/${linkId}`)}
+        />
+        <AlarmItem
+            commenterName="유저123"
+            episodeTitle="첫 번째 에피소드"
+            timeAgo="5분 전"
+            onClick={() => router.push(`/comment/${linkId}`)}
+        />
+        <AlarmItem
+            commenterName="유저123"
+            episodeTitle="첫 번째 에피소드"
+            timeAgo="5분 전"
+            onClick={() => router.push(`/comment/${linkId}`)}
+        />
+        {/* ...더 많은 알람 */}
         </div>
-        {/* 로그아웃 */}
-        <div 
-            onClick={handleLogout}
-            style={{
-            alignSelf: 'stretch',
-            paddingLeft: 13,
-            paddingRight: 13,
-            paddingTop: 10,
-            paddingBottom: 10,
-            borderRadius: 12,
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: 10,
-            display: 'inline-flex',
-            cursor:'pointer'
-            }}
-        >
-            <img src="/logout_icon.svg" alt="Profile" width={24} height={24} />
-            <div 
-            style={{
-                color: 'white',
-                fontSize: 16,
-                fontFamily: 'Pretendard',
-                fontWeight: '500',
-                lineHeight: '22.40px',
-                wordWrap: 'break-word'
-            }}
-            >
-            로그아웃
-            </div>
-        </div>
-    </div>
+
     </div>
     
   );

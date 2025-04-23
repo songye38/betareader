@@ -85,6 +85,9 @@ const CommentPage = () => {
         flexDirection: 'column',
         gap: '24px',
         overflow: 'hidden',
+        alignItems: 'center',        // ✅ 가로 중앙 정렬
+        width: '100%',              // 필요 시 최대 너비 설정
+        marginBottom:'40px',
       }}
     >
       {info ? (

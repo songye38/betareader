@@ -22,7 +22,7 @@ const CommentComponent = ({ id,name,text }) => {
           justifyContent: 'space-between',
           alignItems: 'flex-end',
           display: 'inline-flex',
-          marginLeft: 50, // 이미지가 겹치므로 좌측 여백을 주어 텍스트가 잘리지 않게 조정
+          // marginLeft: 50, // 이미지가 겹치므로 좌측 여백을 주어 텍스트가 잘리지 않게 조정
         }}
       >
         <div

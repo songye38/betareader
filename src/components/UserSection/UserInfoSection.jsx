@@ -1,10 +1,16 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/router';
 import useAuthStore from '@/store/useAuthStore';
 
 const UserInfoSection = () => {
+  const router = useRouter();
   const { profile } = useAuthStore();
+
+  const handleNavigation = (path) => {
+    router.push(path); // 경로 이동
+};
 
   // profile이 없을 때는 null 반환하거나 로딩 처리
   if (!profile) {
@@ -52,6 +58,7 @@ const UserInfoSection = () => {
 
       {/* 마이페이지 버튼 */}
       <button
+        onClick={() => handleNavigation('/mypage/profile')}
         style={{
           fontSize: '14px',
           color: '#A1A1AA',
