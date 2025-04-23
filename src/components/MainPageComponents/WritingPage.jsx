@@ -64,7 +64,7 @@ const WritingPage = () => {
         customNavComponent={
           <NavMainSection
             tabId = {selectedTab?.tab_id}
-            is_feedback_mode = {false}
+            is_feedback_mode = {selectedTab?.is_feedback_mode}
             episodeId = {selectedTab?.id}
             userId = {user?.id}
             onSave={handleSubmit((formData) => onSubmit(formData, manuscript.id))} // 더 이상 async/await 필요 없음

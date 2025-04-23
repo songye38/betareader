@@ -7,7 +7,7 @@ import useWritingTab from '@/hooks/useWritingTab';
 import useEpisodeForm from '@/hooks/useEpisode';
 import CopyFeedbackLink from './Popups/CopyFeedbackLink';
 
-const NavMainSection = ({ onSave,episodeId,userId,tabId }) => {
+const NavMainSection = ({ onSave,episodeId,userId,tabId ,is_feedback_mode}) => {
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
   const {handleUpdateFeedbackMode} = useEpisodeForm();
@@ -54,7 +54,6 @@ const NavMainSection = ({ onSave,episodeId,userId,tabId }) => {
     }
   };
   
-
   return (
     <div style={{
       width: 'auto',
@@ -63,25 +62,42 @@ const NavMainSection = ({ onSave,episodeId,userId,tabId }) => {
       flexDirection: 'row',
       gap: '10px',
     }}>
-      <SaveEpiBtn onClick={onSave} />
-      <CheckCommentBtn title="피드백 받기" onClick={handleOpenModal} />
-
+      {is_feedback_mode ? (
+        // 피드백 모드일 때만 보이는 버튼
+        <button
+          onClick={() => {
+            setLinkUrl(`${window.location.origin}/feedback/${episodeId}`);
+            setShowEditPopup(true);
+          }}
+          style={{ padding: '8px 12px', borderRadius: '6px', background: '#0070f3', color: '#fff' }}
+        >
+          피드백 링크 복사하기
+        </button>
+      ) : (
+        <>
+          <SaveEpiBtn onClick={onSave} />
+          <CheckCommentBtn title="피드백 받기" onClick={handleOpenModal} />
+        </>
+      )}
+  
       {isModalOpen && (
         <FeedbackSettingModal
           selected={selected}
-          onSelect={handleSelect}
+          onSelect={setSelected}
           onShare={handleShare}
           onClose={handleCloseModal}
         />
       )}
-        {showEditPopup && (
-          <CopyFeedbackLink 
-            onClose={() => setShowEditPopup(false)}
-            linkUrl={linkUrl} // 예시 URL
+  
+      {showEditPopup && (
+        <CopyFeedbackLink 
+          onClose={() => setShowEditPopup(false)}
+          linkUrl={linkUrl}
         />
-        )}
+      )}
     </div>
   );
+  
 };
 
 export default NavMainSection;
