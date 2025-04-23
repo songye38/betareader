@@ -3,40 +3,13 @@ import { toast } from 'react-toastify';
 import { useFeedback } from '@/hooks/useFeedback';
 
 
-const CommentInputSection = ({createdAt,linkId,onCommentAdded }) => {
+const CommentInputSection = ({linkId,onCommentAdded }) => {
   const { saveCommentToServer } = useFeedback();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(true); // 댓글 입력란이 열려있는지 여부
-  const [remaining, setRemaining] = useState('');
 
-  useEffect(() => {
-    const updateRemainingTime = () => {
-      const createdTime = new Date(createdAt);
-      const now = new Date();
-      const totalMs = 24 * 60 * 60 * 1000;
-      const elapsedMs = now - createdTime;
-      const remainingMs = totalMs - elapsedMs;
-
-      if (remainingMs <= 0) {
-        setRemaining('00:00:00');
-        return;
-      }
-
-      const hours = String(Math.floor(remainingMs / (1000 * 60 * 60))).padStart(2, '0');
-      const minutes = String(Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-      const seconds = String(Math.floor((remainingMs % (1000 * 60)) / 1000)).padStart(2, '0');
-
-      setRemaining(`${hours}:${minutes}:${seconds}`);
-    };
-
-    updateRemainingTime(); // 초기값 바로 계산
-
-    const interval = setInterval(updateRemainingTime, 1000); // 매 초마다 업데이트
-    return () => clearInterval(interval); // 언마운트 시 정리
-  }, [createdAt]);
 
   const handleSubmit = async () => {
     if(!linkId) {
@@ -75,10 +48,7 @@ const CommentInputSection = ({createdAt,linkId,onCommentAdded }) => {
   return (
     <div
       style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
+        width : '80%',
         backgroundColor: '#1E1F24',
         borderRadius: 12,
         padding: '40px 40px',
@@ -91,33 +61,6 @@ const CommentInputSection = ({createdAt,linkId,onCommentAdded }) => {
       }}
     >
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px',flexDirection:'row' }}>
-        {/* 만약 만료되지 않았다면 생성 시간도 표시하거나 추가 로직을 넣을 수 있음 */}
-        <div style={{ textAlign: 'center',fontWeight:'600' ,fontSize: '14px',padding:'12px',border:'1px solid #8A94FF',borderRadius:'8px',backgroundColor:'#2A2B31'}}>
-          ⏰ 남은 시간: {remaining}
-        </div>
-
-        <div style={{ fontSize: '20px', fontWeight: '700' ,height:'100%'}}>댓글 작성하기</div>
-        
-        {/* 화살표 버튼 */}
-        <div style={{ textAlign: 'right' }}>
-            <button
-            onClick={() => setIsOpen(!isOpen)}
-            style={{
-                backgroundColor: 'transparent',
-                border: 'none',
-                color: '#8A94FF',
-                cursor: 'pointer',
-                fontSize: '24px',
-            }}
-            >
-            {/* SVG 아이콘을 사용 */}
-            <img
-                src={isOpen ? '/arrow_up_icon.svg' : '/arrow_icon.svg'}
-                alt="Arrow Icon"
-                style={{ width: '32px', height: '32px' }} // 적당한 크기 조정
-            />
-            </button>
-        </div>
     </div>
 
       
@@ -129,9 +72,6 @@ const CommentInputSection = ({createdAt,linkId,onCommentAdded }) => {
           display: 'flex',
           flexDirection: 'row',
           gap: '24px',
-          overflow: 'hidden',
-          transition: 'height 0.3s ease', // 부드러운 높이 변경 애니메이션
-          height: isOpen ? 'auto' : 0, // 열릴 때는 자동, 닫힐 때는 0으로 설정
         }}
       >
         {/* 이름 + 비밀번호 (세로 정렬) */}

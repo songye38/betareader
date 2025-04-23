@@ -12,46 +12,47 @@ const useManuscripts = (limit = null) => {
   const [manuscripts,setManuscripts] = useState([]);
   const router = useRouter();
 
-  // 🔁 외부로 분리된 함수 (useCallback으로 최적화)
-  const getManuscripts = useCallback(async () => {
-    if (!user) return;
+// 외부로 분리된 함수 (useCallback 없이)
+const getManuscripts = async () => {
+  if (!user) return;
 
-    setLoading(true);
-    setError(null);
+  setLoading(true);
+  setError(null);
 
-    try {
-      const data = await fetchManuscriptsByUserId(user.id, limit);
-      setManuscripts(data); // 전체 데이터 저장
-    } catch (err) {
-      setError(err.message);
-    }
+  try {
+    const data = await fetchManuscriptsByUserId(user.id, limit);
+    setManuscripts(data); // 전체 데이터 저장
+  } catch (err) {
+    setError(err.message);
+  }
 
-    setLoading(false);
-  }, [user, limit, setManuscripts, setLoading, setError]);
+  setLoading(false);
+};
 
 
-  useEffect(() => {
-    getManuscripts();
-  }, [getManuscripts]);
 
-  // ✅ 1. 메인 페이지 진입 시 호출
-  useEffect(() => {
-    if (router.pathname === '/') {
-      getManuscripts();
-    }
-  }, [router.pathname, getManuscripts]);
+  // useEffect(() => {
+  //   getManuscripts();
+  // }, [getManuscripts]);
 
-  // ✅ 2. 브라우저 포커스 복귀 시 호출
-  useEffect(() => {
-    const handleFocus = () => {
-      if (router.pathname === '/') {
-        getManuscripts();
-      }
-    };
+  // // ✅ 1. 메인 페이지 진입 시 호출
+  // useEffect(() => {
+  //   if (router.pathname === '/') {
+  //     getManuscripts();
+  //   }
+  // }, [router.pathname, getManuscripts]);
 
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, [router.pathname, getManuscripts]);
+  // // ✅ 2. 브라우저 포커스 복귀 시 호출
+  // useEffect(() => {
+  //   const handleFocus = () => {
+  //     if (router.pathname === '/') {
+  //       getManuscripts();
+  //     }
+  //   };
+
+  //   window.addEventListener('focus', handleFocus);
+  //   return () => window.removeEventListener('focus', handleFocus);
+  // }, [router.pathname, getManuscripts]);
 
 
 
@@ -118,7 +119,7 @@ const useManuscripts = (limit = null) => {
   };
 
   
-  return {updateTitle,loading, error, deleteManuscript,incrementManuscriptEpisodeCount,manuscripts,updateManuscriptEpisodeEditedAt }; // ✅ deleteManuscript도 반환
+  return {getManuscripts,updateTitle,loading, error, deleteManuscript,incrementManuscriptEpisodeCount,manuscripts,updateManuscriptEpisodeEditedAt }; // ✅ deleteManuscript도 반환
 };
 
 export default useManuscripts;

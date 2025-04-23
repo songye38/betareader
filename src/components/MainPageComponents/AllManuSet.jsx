@@ -3,9 +3,18 @@ import ManuItem from "./ManuItem";
 import AddManuItem from "./AddManuItem";
 import useManuscripts from "@/hooks/useManuscripts";
 import LoadingSpinner from "../etc/LoadingSpinner";
+import useAuthStore from "@/store/useAuthStore";
+import { useEffect } from "react";
 
-const AllManuSet = ({ userId, manuscriptId }) => {
-  const { manuscripts, loading, error } = useManuscripts();
+const AllManuSet = () => {
+  const { manuscripts, loading, error,getManuscripts } = useManuscripts();
+  const { user } = useAuthStore(); // 로그인된 유저 정보 가져오기
+  
+    useEffect(() => {
+      if (!user || !user.id) return;
+       getManuscripts();
+    }, [user?.id]);
+
 
 
   if (loading) {

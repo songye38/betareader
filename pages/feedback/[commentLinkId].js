@@ -44,6 +44,7 @@ const CommentPage = () => {
   
     check();
   }, [router.isReady]);
+
   
 
 
@@ -60,12 +61,12 @@ const CommentPage = () => {
         display: 'flex',
         flexDirection: 'column',
         gap: '24px',
-        height: '100vh',
         overflow: 'hidden',
       }}
     >
         {info ? (
         <CommentHeaderComponent
+            createdAt={createdAt} 
             episodeTitle={info.episode_title}
             author={info.username}
         />
@@ -73,6 +74,12 @@ const CommentPage = () => {
         <div style={{ padding: '16px', textAlign: 'center' }}>
             ⏳ 링크 정보를 불러오는 중이에요...
         </div>
+        )}
+              {router.isReady && linkId && (
+         <CommentInputSection 
+            linkId={linkId} 
+            onCommentAdded={() => loadCommentsFromServer(linkId)}  
+        />
         )}
       <div
             style={{
@@ -82,7 +89,6 @@ const CommentPage = () => {
                 alignItems: 'center',
                 gap: '15px',
                 width: '100%',
-                minHeight: '100vh', // 최소 높이를 100vh로 설정
                 paddingTop: '10px', // 위쪽 여백
                 overflowY: 'auto', // 내용이 넘칠 경우 스크롤바 표시
             }}
@@ -99,13 +105,7 @@ const CommentPage = () => {
 
 
 
-      {router.isReady && linkId && (
-         <CommentInputSection 
-            createdAt={createdAt} 
-            linkId={linkId} 
-            onCommentAdded={() => loadCommentsFromServer(linkId)}  
-        />
-        )}
+
     </div>
   );
 };

@@ -55,8 +55,8 @@ const NavUserSection = ({signin}) => {
           <img
             src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
             alt="Profile"
-            width={48}
-            height={48}
+            width={36}
+            height={36}
             onClick={toggleModal}
             style={{
                 borderRadius: '50%',
