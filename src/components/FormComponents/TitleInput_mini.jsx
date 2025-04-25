@@ -4,7 +4,7 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-const TitleInput_mini = ({ control, error,showLabel = true ,title}) => {
+const TitleInput_mini = ({ control, error,showLabel = true ,title,disabled=false}) => {
 
   return (
     <div style={{ 
@@ -15,11 +15,12 @@ const TitleInput_mini = ({ control, error,showLabel = true ,title}) => {
         control={control}
         render={({ field }) => (
           <input
+          disabled={disabled} // ✅ 입력 막기
           placeholder="제목을 입력해주세요." 
             {...field}
             style={{
               height: '20px', //제목부분
-              color: 'white',
+              color: disabled ? 'rgba(255, 255, 255, 0.5)' : 'white', // ✅ 흐리게 처리
               fontSize: '24px',
               fontFamily: 'Pretendard',
               fontWeight: '600',

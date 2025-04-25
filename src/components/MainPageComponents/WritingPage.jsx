@@ -106,7 +106,12 @@ const WritingPage = () => {
                 alignItems: 'center',
               }}
             >
-              <EpisodeTitleEditor control={control} errors={errors} title={selectedTab?.title || ''} />
+              <EpisodeTitleEditor 
+                control={control} 
+                errors={errors} 
+                title={selectedTab?.title || ''} 
+                disabled={selectedTab?.is_feedback_mode === true}
+              />
             </div>
 
 
