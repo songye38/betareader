@@ -37,7 +37,9 @@ const RecentEpiItem = ({ episode, userId, ManuId }) => {
       setTabs(episodes, tab_id);
       const selectedTab = useTabStore.getState().selectedTab;
       console.log("selectedTab", selectedTab);
-      useSliderStore.getState().setActiveSlider('feedback');
+      if (episode.is_feedback_mode) {
+        useSliderStore.getState().setActiveSlider('feedback');
+      }
       router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
 
     }

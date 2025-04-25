@@ -24,9 +24,6 @@ const MyPageModal = ({ onClose, username }) => {
     }, [profile]);
 
 
-
-
-
     const handleNavigation = (path) => {
         router.push(path); // 경로 이동
         onClose(); // 모달 닫기
@@ -61,7 +58,6 @@ const MyPageModal = ({ onClose, username }) => {
         >
             <div style={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', paddingBottom: '20px', borderBottom: '1.2px solid #636466' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    {/* <img src="/profile_img.svg" alt="Profile" width={48} height={48} /> */}
                     <img
                         src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
                         alt="Profile"
@@ -114,15 +110,9 @@ const MyPageModal = ({ onClose, username }) => {
                             boxSizing: 'border-box'         // border가 이미지 크기에 영향을 미치지 않도록 설정
                         }}>
                         <img src="/logout_icon.svg" alt="Profile" width={24} height={24} onClick={() => handleNavigation('/mypage/profile')} />
-
                     </div>
                 </div>
-
-
             </div>
-
-
-
 
             <div
                 style={{
@@ -139,25 +129,16 @@ const MyPageModal = ({ onClose, username }) => {
                 {notifications.map((notification) => (
                     <AlarmItem
                         key={notification.id}
+                        manuId = {notification.manuscript_id}
+                        tabId = {notification.tab_id}
                         message={notification.message}
                         timeAgo={notification.created_at} // 생성 시점으로부터 경과한 시간
                         isNew={notification.isNew} // ✅ 요거!
                     // onClick={() => router.push(`/comment/${notification.link_id}`)}
                     />
                 ))}
-
-                {/* 
-            <AlarmItem
-            commenterName="유저123"
-            episodeTitle="첫 번째 에피소드"
-            timeAgo="5분 전"
-            onClick={() => router.push(/comment/${linkId})}
-        /> */}
-
             </div>
-
         </div>
-
     );
 };
 
