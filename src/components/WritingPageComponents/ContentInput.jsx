@@ -6,6 +6,10 @@ import { Controller } from 'react-hook-form';
 const ContentInput = ({ control, error}) => {
   const textareaRef = useRef(null);
 
+  useEffect(() => {
+    handleResize();
+  }, []);
+
   const handleResize = () => {
     const textarea = textareaRef.current;
     if (textarea) {
