@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createEnvironment,getEnvironmentsByManuscript,deleteEnvironmentById,getEnvironmentByManuscript,updateEnvironment } from '@/models/EnvironmentModel';
+import { createEnvironment, getEnvironmentsByManuscript, deleteEnvironmentById, getEnvironmentByManuscript, updateEnvironment } from '@/models/EnvironmentModel';
 import { useForm } from 'react-hook-form';
 import { getEnvironmentTypeKo } from '@/utils/typeMappings';
 
@@ -11,28 +11,28 @@ const useEnvironment = () => {
 
 
 
-      const methods = useForm({
-        defaultValues: {
-          title : '',
-          dropdown : '',
-          description : '',
-          newKeywords: [],
-          note : '',
-        },
-        mode: 'onChange',
-      });
-    
-      const { control, handleSubmit, formState: { errors }, watch, setValue ,getValues} = methods;
+  const methods = useForm({
+    defaultValues: {
+      title: '',
+      dropdown: '',
+      description: '',
+      newKeywords: [],
+      note: '',
+    },
+    mode: 'onChange',
+  });
 
-      const handleKeywordChange = (updatedKeywords) => {
-        console.log("handleKeywordChange 호출됨");
-  
-        //TODO 이 부분 잠시 블럭처ㅣㄹ
-        setValue('newKeywords', updatedKeywords);
-        
-        // watch로 최신 상태 가져오기
-        console.log("키워드 업데이트:", watch("newKeywords")); 
-    }
+  const { control, handleSubmit, formState: { errors }, watch, setValue, getValues } = methods;
+
+  const handleKeywordChange = (updatedKeywords) => {
+    console.log("handleKeywordChange 호출됨");
+
+    //TODO 이 부분 잠시 블럭처ㅣㄹ
+    setValue('newKeywords', updatedKeywords);
+
+    // watch로 최신 상태 가져오기
+    console.log("키워드 업데이트:", watch("newKeywords"));
+  }
 
 
 
@@ -51,34 +51,34 @@ const useEnvironment = () => {
     }
   };
 
-const fetchEnvironment = async (id, manuscriptId) => {
-  setLoading(true);
-  setError(null);
+  const fetchEnvironment = async (id, manuscriptId) => {
+    setLoading(true);
+    setError(null);
 
-  try {
-    const data = await getEnvironmentByManuscript(id, manuscriptId);
+    try {
+      const data = await getEnvironmentByManuscript(id, manuscriptId);
 
-    console.log("받아오는 data는",data);
-    setEnvironment(data);
+      console.log("받아오는 data는", data);
+      setEnvironment(data);
 
-    methods.reset({
-      title: data.title || '',
-      dropdown: getEnvironmentTypeKo(data.type) || '',
-      description: data.description || '',
-      newKeywords: data.reference_list || [],
-      note : data.notes || '',
-    });
-  } catch (err) {
-    setError(err.message || '세계관 불러오기 실패');
-  } finally {
-    setLoading(false);
-  }
-};
+      methods.reset({
+        title: data.title || '',
+        dropdown: getEnvironmentTypeKo(data.type) || '',
+        description: data.description || '',
+        newKeywords: data.reference_list || [],
+        note: data.notes || '',
+      });
+    } catch (err) {
+      setError(err.message || '세계관 불러오기 실패');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // 아이디어 추가
   const addEnvironment = async (environment, manuscriptId) => {
 
-    console.log("여기 들어오나?",environment);
+    console.log("여기 들어오나?", environment);
     setLoading(true);
     setError(null);
     try {
@@ -119,7 +119,7 @@ const fetchEnvironment = async (id, manuscriptId) => {
       setLoading(false);
     }
   };
-  
+
 
   return {
     editEnvironment,

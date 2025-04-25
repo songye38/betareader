@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchManuscriptsByUserId,updateEpisodeCount,updateLastEditedAt,updateManuscriptTitle } from '@/models/manuscriptModel';
+import { fetchManuscriptsByUserId, updateEpisodeCount, updateLastEditedAt, updateManuscriptTitle } from '@/models/manuscriptModel';
 import { deleteManuscriptById } from '@/models/manuscriptModel'; // ✅ 삭제 함수 import
 import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/router';
@@ -9,25 +9,25 @@ const useManuscripts = (limit = null) => {
   const user = useAuthStore((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [manuscripts,setManuscripts] = useState([]);
+  const [manuscripts, setManuscripts] = useState([]);
   const router = useRouter();
 
-// 외부로 분리된 함수 (useCallback 없이)
-const getManuscripts = async () => {
-  if (!user) return;
+  // 외부로 분리된 함수 (useCallback 없이)
+  const getManuscripts = async () => {
+    if (!user) return;
 
-  setLoading(true);
-  setError(null);
+    setLoading(true);
+    setError(null);
 
-  try {
-    const data = await fetchManuscriptsByUserId(user.id, limit);
-    setManuscripts(data); // 전체 데이터 저장
-  } catch (err) {
-    setError(err.message);
-  }
+    try {
+      const data = await fetchManuscriptsByUserId(user.id, limit);
+      setManuscripts(data); // 전체 데이터 저장
+    } catch (err) {
+      setError(err.message);
+    }
 
-  setLoading(false);
-};
+    setLoading(false);
+  };
 
 
 
@@ -63,7 +63,7 @@ const getManuscripts = async () => {
       await deleteManuscriptById(manuscriptId); // 실제 삭제
       const updated = await fetchManuscriptsByUserId(user.id, limit); // 목록 갱신
       setManuscripts(updated); // 상태 갱신
-      console.log("manuscripts",manuscripts);
+      console.log("manuscripts", manuscripts);
     } catch (err) {
       setError(err.message);
     }
@@ -84,7 +84,7 @@ const getManuscripts = async () => {
   };
 
 
-    // ✅ manuscript의 last_edited_at 수정
+  // ✅ manuscript의 last_edited_at 수정
   const updateManuscriptEpisodeEditedAt = async (manuscriptId) => {
     try {
       const updated = await updateLastEditedAt(manuscriptId); // delta 넘겨줌
@@ -118,8 +118,8 @@ const getManuscripts = async () => {
     }
   };
 
-  
-  return {getManuscripts,updateTitle,loading, error, deleteManuscript,incrementManuscriptEpisodeCount,manuscripts,updateManuscriptEpisodeEditedAt }; // ✅ deleteManuscript도 반환
+
+  return { getManuscripts, updateTitle, loading, error, deleteManuscript, incrementManuscriptEpisodeCount, manuscripts, updateManuscriptEpisodeEditedAt }; // ✅ deleteManuscript도 반환
 };
 
 export default useManuscripts;

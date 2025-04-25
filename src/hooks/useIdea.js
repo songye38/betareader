@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { createIdea,getIdeasByManuscript ,getIdeaByManuscript,deleteIdeaById,updateIdea} from '@/models/IdeaModel';
+import { createIdea, getIdeasByManuscript, getIdeaByManuscript, deleteIdeaById, updateIdea } from '@/models/IdeaModel';
 import { getIdeaTypeKo } from '@/utils/typeMappings';
 
 const useIdea = () => {
@@ -9,26 +9,26 @@ const useIdea = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-    const methods = useForm({
-      defaultValues: {
-        title : '',
-        dropdown : '',
-        episode : '',
-        newKeywords: [],
-      },
-      mode: 'onChange',
-    });
-  
-    const { control, handleSubmit, formState: { errors }, watch, setValue ,getValues} = methods;
+  const methods = useForm({
+    defaultValues: {
+      title: '',
+      dropdown: '',
+      episode: '',
+      newKeywords: [],
+    },
+    mode: 'onChange',
+  });
 
-    const handleKeywordChange = (updatedKeywords) => {
-      console.log("handleKeywordChange 호출됨");
+  const { control, handleSubmit, formState: { errors }, watch, setValue, getValues } = methods;
 
-      //TODO 이 부분 잠시 블럭처ㅣㄹ
-      setValue('newKeywords', updatedKeywords);
-      
-      // watch로 최신 상태 가져오기
-      console.log("키워드 업데이트:", watch("newKeywords")); 
+  const handleKeywordChange = (updatedKeywords) => {
+    console.log("handleKeywordChange 호출됨");
+
+    //TODO 이 부분 잠시 블럭처ㅣㄹ
+    setValue('newKeywords', updatedKeywords);
+
+    // watch로 최신 상태 가져오기
+    console.log("키워드 업데이트:", watch("newKeywords"));
   }
 
   // 아이디어 목록 불러오기
@@ -48,13 +48,13 @@ const useIdea = () => {
   const fetchIdea = async (id, manuscriptId) => {
     setLoading(true);
     setError(null);
-  
+
     try {
       const data = await getIdeaByManuscript(id, manuscriptId);
 
-      console.log("받아오는 data는",data);
+      console.log("받아오는 data는", data);
       setIdea(data);
-  
+
       methods.reset({
         title: data.title || '',
         dropdown: getIdeaTypeKo(data.category) || '',
@@ -67,8 +67,8 @@ const useIdea = () => {
       setLoading(false);
     }
   };
-  
-  
+
+
   // 아이디어 추가
   const addIdea = async (idea, manuscriptId) => {
     setLoading(true);

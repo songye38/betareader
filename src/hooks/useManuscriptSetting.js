@@ -9,7 +9,7 @@ import { toast, Slide } from 'react-toastify';
 
 const useManuscriptSetting = () => {
 
-    // useRouter 훅을 사용하여 URL 쿼리 파라미터 접근
+  // useRouter 훅을 사용하여 URL 쿼리 파라미터 접근
   const router = useRouter();  // useRouter 훅 사용
   const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
 
@@ -25,7 +25,7 @@ const useManuscriptSetting = () => {
     mode: 'onChange',
   });
 
-  const { control, handleSubmit, formState: { errors }, watch, setValue ,getValues} = methods;
+  const { control, handleSubmit, formState: { errors }, watch, setValue, getValues } = methods;
   const [loading, setLoading] = useState(false);
   const [initialData, setInitialData] = useState(null); // 초기 데이터 상태 추가
 
@@ -58,7 +58,7 @@ const useManuscriptSetting = () => {
 
       // 가져온 데이터로 폼에 기본값 설정
       setInitialData(data);
-      
+
       // 필드 값 설정
       setValue('title', data.title);
       setValue('genre', data.genre);  // genre 값을 선택으로 설정
@@ -78,48 +78,48 @@ const useManuscriptSetting = () => {
   const handleKeywordChange = (updatedKeywords) => {
     console.log("handleKeywordChange 호출됨");
     setValue('newKeywords', updatedKeywords);
-    
-    // watch로 최신 상태 가져오기
-    console.log("키워드 업데이트:", watch("newKeywords")); 
-}
 
-const onSubmit = async (data) => {
+    // watch로 최신 상태 가져오기
+    console.log("키워드 업데이트:", watch("newKeywords"));
+  }
+
+  const onSubmit = async (data) => {
     console.log("📌 onSubmit 호출됨!");
-  
+
     if (!manuscriptId) {
       toast.error('manuscriptId를 찾을 수 없습니다.', { position: 'bottom-center', autoClose: 1200, theme: 'dark', transition: Slide });
       return;
     }
-  
+
     try {
       setLoading(true);
-  
+
       // 기존 데이터 가져오기 (manuscript_id 기준)
       const { data: existingData, error: fetchError } = await supabase
         .from('manuscript_setting')
         .select('*')
         .eq('manuscript_id', manuscriptId)
         .single();
-  
+
       if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116: No rows found
         throw new Error(`데이터 조회 오류: ${fetchError.message}`);
       }
-  
+
       // 기존 값과 새로운 데이터를 병합 (null 값 덮어쓰기 방지)
       const updatedData = {
         ...existingData, // 기존 데이터 유지
         ...data, // 새로운 데이터 덮어쓰기
         manuscript_id: manuscriptId, // manuscript_id 유지
       };
-  
+
       // 변환 함수 적용
       const transformedData = transformManuscriptSettingData(updatedData);
-  
+
       // 데이터 업데이트
       const { error } = await supabase
         .from('manuscript_setting')
         .upsert([transformedData], { onConflict: ['manuscript_id'] }); // 중복 키 기준 업데이트
-  
+
       if (error) {
         console.error("❌ 설정 저장 실패:", error.message);
         toast.error('설정 저장에 실패했습니다.', { position: 'bottom-center', autoClose: 1200, theme: 'dark', transition: Slide });
@@ -133,7 +133,7 @@ const onSubmit = async (data) => {
       setLoading(false);
     }
   };
-  
+
 
   return {
     methods,

@@ -6,13 +6,13 @@ import useManuscriptStore from '@/store/useManuscriptStore';
 import useEpisodeForm from '@/hooks/useEpisode';
 
 const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
-  const { handleAddTab,handleTabChange } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
+  const { handleAddTab, handleTabChange } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
   const sliderRef = useRef(null);
-  const {tabs} = useTabStore(); // Zustand 사용
-  const {manuscript} = useManuscriptStore();
-  const {handleDeleteEpisode} = useEpisodeForm();
+  const { tabs } = useTabStore(); // Zustand 사용
+  const { manuscript } = useManuscriptStore();
+  const { handleDeleteEpisode } = useEpisodeForm();
 
-  console.log("tabs에는 어떤 정보가 들어있나?",tabs);
+  console.log("tabs에는 어떤 정보가 들어있나?", tabs);
   // 서버에서 가져와서 tabs에 가져온다면 is_feedback_mode 항목이 있고 여기에 피드백 받는중인건지 표시됨
 
 
@@ -104,7 +104,7 @@ const AllEpiSlider = ({ isVisible, onClose, activeTitle }) => {
             active={tab.selected} // ✅ selected가 true면 active 처리
             onClick={() => handleTabChange(tab.tab_id)} // ✅ 클릭 시 탭 전환
             onDelete={() => handleDeleteEpisode(manuscript.id, tab.id)}
-            
+
           />
         ))}
       </div>

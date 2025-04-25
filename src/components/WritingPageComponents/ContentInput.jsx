@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
-const ContentInput = ({ control, error,disabled = false}) => {
+const ContentInput = ({ control, error, disabled = false }) => {
   const textareaRef = useRef(null);
 
   useEffect(() => {

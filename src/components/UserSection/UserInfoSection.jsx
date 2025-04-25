@@ -10,7 +10,7 @@ const UserInfoSection = () => {
 
   const handleNavigation = (path) => {
     router.push(path); // 경로 이동
-};
+  };
 
   // profile이 없을 때는 null 반환하거나 로딩 처리
   if (!profile) {
@@ -26,13 +26,13 @@ const UserInfoSection = () => {
         padding: '24px 20px',
         borderRadius: '16px',
         // backgroundColor: '#1C1C1E',
-        background: '#2C2D34', 
+        background: '#2C2D34',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
         gap: '12px',
         fontFamily: 'Pretendard',
-        border: '1px #4A4E5B solid', 
+        border: '1px #4A4E5B solid',
         // boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
         color: '#f5f5f7',
       }}

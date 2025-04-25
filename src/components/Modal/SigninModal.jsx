@@ -41,7 +41,7 @@ const SigninModal = ({ isOpen, onClose }) => {
           {/* Signin Modal 내용 */}
           <Signin />
         </div>
-        
+
         {/* X 아이콘 클릭 시 팝업 닫기 */}
         <img
           src="/close_icon.svg"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getGenderTypeKo,getCharacterTypeKo } from '@/utils/typeMappings';
+import { getGenderTypeKo, getCharacterTypeKo } from '@/utils/typeMappings';
 
 const CharacterItem = ({ character, onEdit, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -119,7 +119,7 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
       )}
 
       {/* 나이/연령대 */}
-            <div style={{ fontSize: 14 }}>
+      <div style={{ fontSize: 14 }}>
         <strong>성별:</strong> {getGenderTypeKo(gender)} / <strong>나이:</strong> {age}
       </div>
 

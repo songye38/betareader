@@ -6,7 +6,7 @@ import { getIdeaType } from '@/utils/typeMappings';
 
 
 export const createIdea = async (idea, manuscriptId) => {
-  console.log("idea 객체에는 무엇이 들어오나", idea,manuscriptId);
+  console.log("idea 객체에는 무엇이 들어오나", idea, manuscriptId);
 
   try {
     const { data, error } = await supabase
@@ -87,7 +87,7 @@ export const getIdeasByManuscript = async (manuscriptId) => {
   return data;
 };
 
-export const getIdeaByManuscript = async (id,manuscriptId) => {
+export const getIdeaByManuscript = async (id, manuscriptId) => {
   const { data, error } = await supabase
     .from('idea')
     .select('*')

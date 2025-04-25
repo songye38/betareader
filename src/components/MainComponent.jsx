@@ -3,7 +3,7 @@ import StartComponent from './StartComponent';
 
 const MainComponent = () => {
   return (
-      <StartComponent />
+    <StartComponent />
   );
 };
 

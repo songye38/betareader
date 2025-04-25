@@ -13,7 +13,7 @@ export const createEnvironment = async (environment, manuscriptId) => {
         {
           manuscript_id: manuscriptId,
           title,
-          type : getEnvironmentType(environment.dropdown),
+          type: getEnvironmentType(environment.dropdown),
           description,
           reference_list: newKeywords,
           notes: note,
@@ -73,21 +73,21 @@ export const updateEnvironment = async (environment, environmentId, manuscriptId
 
 // 특정 manuscript_id로 아이디어 목록 가져오기
 export const getEnvironmentsByManuscript = async (manuscriptId) => {
-    const { data, error } = await supabase
-      .from('environment')
-      .select('*')
-      .eq('manuscript_id', manuscriptId)
-      .order('created_at', { ascending: false });
-  
-    if (error) {
-      console.error('세계관 목록 불러오기 실패:', error.message);
-      throw new Error('세계관을 불러오는 중 오류가 발생했습니다.');
-    }
-  
-    return data;
-  };
+  const { data, error } = await supabase
+    .from('environment')
+    .select('*')
+    .eq('manuscript_id', manuscriptId)
+    .order('created_at', { ascending: false });
 
-export const getEnvironmentByManuscript = async (id,manuscriptId) => {
+  if (error) {
+    console.error('세계관 목록 불러오기 실패:', error.message);
+    throw new Error('세계관을 불러오는 중 오류가 발생했습니다.');
+  }
+
+  return data;
+};
+
+export const getEnvironmentByManuscript = async (id, manuscriptId) => {
   const { data, error } = await supabase
     .from('environment')
     .select('*')

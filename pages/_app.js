@@ -25,11 +25,11 @@ const geistMono = Geist_Mono({
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
-  const hideNavbarPages = ['/test', '/manu','/feedback'];
+  const hideNavbarPages = ['/test', '/manu', '/feedback'];
 
-const shouldHideNavbar = hideNavbarPages.some((path) =>
-  router.pathname.startsWith(path)
-);
+  const shouldHideNavbar = hideNavbarPages.some((path) =>
+    router.pathname.startsWith(path)
+  );
 
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} ${poppins.className}`}>
@@ -40,9 +40,9 @@ const shouldHideNavbar = hideNavbarPages.some((path) =>
 
       {!shouldHideNavbar && <Navbar />}
       <Component {...pageProps} /> {/* 페이지별 내용 렌더링 */}
-      <ToastContainer 
+      <ToastContainer
         position="top-right"
-        theme = 'dark'
+        theme='dark'
         autoClose={1200}
         hideProgressBar={false}
         newestOnTop={true}

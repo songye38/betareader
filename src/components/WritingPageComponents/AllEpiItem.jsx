@@ -11,14 +11,14 @@ dayjs.locale('ko');
 
 
 
-const AllEpiItem = ({ episode, active,onClick,onDelete }) => {
+const AllEpiItem = ({ episode, active, onClick, onDelete }) => {
   const { title, content, last_edited_at, is_feedback_mode } = episode;
   const [isHovered, setIsHovered] = useState(false);
-    const relativeTimeDisplay = dayjs(last_edited_at).fromNow();
+  const relativeTimeDisplay = dayjs(last_edited_at).fromNow();
 
 
 
-    const borderColor = active
+  const borderColor = active
     ? is_feedback_mode ? '#F27878' : '#6071FB'
     : 'transparent';
 
@@ -71,28 +71,28 @@ const AllEpiItem = ({ episode, active,onClick,onDelete }) => {
             }}
           >
             {is_feedback_mode ? '피드백 받는중' : '작성중'}
-            </span>
-            {!is_feedback_mode && (
-              <button
-                style={{
-                  padding: '6px 10px',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#FFFFFF',
-                  backgroundColor: '#2C2D34',
-                  border: '1px solid #3A3D46',
-                  borderRadius: 6,
-                  fontFamily: 'Pretendard',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease-in-out',
-                }}
-                onClick={onDelete}
-                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
-                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
-              >
-                삭제
-              </button>
-            )}
+          </span>
+          {!is_feedback_mode && (
+            <button
+              style={{
+                padding: '6px 10px',
+                fontSize: 12,
+                fontWeight: 500,
+                color: '#FFFFFF',
+                backgroundColor: '#2C2D34',
+                border: '1px solid #3A3D46',
+                borderRadius: 6,
+                fontFamily: 'Pretendard',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease-in-out',
+              }}
+              onClick={onDelete}
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#3A3B42')}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2C2D34')}
+            >
+              삭제
+            </button>
+          )}
 
         </div>
       </div>

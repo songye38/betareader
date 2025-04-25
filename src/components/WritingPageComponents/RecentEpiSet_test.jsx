@@ -10,21 +10,21 @@ const mockEpisodes = [
     title: '1화: 운명의 만남',
     summary: '주인공이 낯선 도시에서 의문의 인물을 만난다.',
     updatedAt: '2024-03-01',
-    tab_no :'제목이 길어지면?'
+    tab_no: '제목이 길어지면?'
   },
   {
     id: '2',
     title: '2화: 그림자 속 비밀',
     summary: '숨겨진 과거의 단서가 드러난다.',
     updatedAt: '2024-03-05',
-    tab_no:'1'
+    tab_no: '1'
   },
   {
     id: '3',
     title: '3화: 결정의 시간',
     summary: '중대한 선택 앞에 선 주인공.',
     updatedAt: '2024-03-10',
-    tab_no : '2'
+    tab_no: '2'
   },
 ];
 
@@ -83,7 +83,7 @@ const RecentEpiSet_test = () => {
         ))}
       </div>
 
-      
+
 
 
     </div>

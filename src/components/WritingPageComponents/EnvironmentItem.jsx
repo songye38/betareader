@@ -1,4 +1,4 @@
-import {React,useState }from 'react';
+import { React, useState } from 'react';
 import { getEnvironmentTypeKo } from '@/utils/typeMappings';
 
 const EnvironmentItem = ({ environment, onEdit, onDelete }) => {

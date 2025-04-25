@@ -32,7 +32,7 @@ const MainPage = () => {
 
   // 로그인된 상태
   return (
-    <div 
+    <div
       style={{
         marginTop: "80px",
         display: "flex",

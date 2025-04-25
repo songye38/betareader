@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router'; // useRouter import
 import MyPageModal from './Modal/MyPageModal';
 import useAuthStore from '@/store/useAuthStore';
 import useNotifications from '@/hooks/useNotification';
 
-const NavUserSection = ({signin}) => {
+const NavUserSection = ({ signin }) => {
   const user = useAuthStore((state) => state.user);
   const profile = useAuthStore((state) => state.profile);
   const router = useRouter(); // useRouter 사용
@@ -48,17 +48,17 @@ const NavUserSection = ({signin}) => {
         }}
       >
 
-          <img
-            src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
-            alt="Profile"
-            width={36}
-            height={36}
-            onClick={toggleModal}
-            style={{
-                borderRadius: '50%',
-                objectFit: 'cover',
-            }}
-          />
+        <img
+          src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
+          alt="Profile"
+          width={36}
+          height={36}
+          onClick={toggleModal}
+          style={{
+            borderRadius: '50%',
+            objectFit: 'cover',
+          }}
+        />
 
         {/* 드롭다운 화살표 아이콘 */}
         <div data-svg-wrapper style={{ position: 'relative' }}>
@@ -87,8 +87,8 @@ const NavUserSection = ({signin}) => {
           }}
         >
 
-          
-          <MyPageModal onClose={toggleModal} username = {profile.username} />
+
+          <MyPageModal onClose={toggleModal} username={profile.username} />
         </div>
       )}
     </div>

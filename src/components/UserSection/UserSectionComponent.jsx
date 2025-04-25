@@ -6,7 +6,7 @@ import UserGoalSection from './UserGoalSection';
 
 
 const UserSectionComponent = () => {
-  
+
 
   return (
     <div
@@ -37,15 +37,15 @@ const UserSectionComponent = () => {
 
 
       <div style={{ display: "flex", flexDirection: "row", gap: "24px" }}>
-        <div style={{width:'50%'}}>
-            <UserInfoSection />
+        <div style={{ width: '50%' }}>
+          <UserInfoSection />
         </div>
-        <div style={{width:'50%'}}>
-         <UserGoalSection />
+        <div style={{ width: '50%' }}>
+          <UserGoalSection />
         </div>
       </div>
 
-      
+
 
 
     </div>

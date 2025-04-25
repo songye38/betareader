@@ -11,7 +11,7 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
   const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const {environments,fetchEnvironments ,loading,deleteEnvironment}= useEnvironment();
+  const { environments, fetchEnvironments, loading, deleteEnvironment } = useEnvironment();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -23,18 +23,18 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isVisible, onClose, isPopupOpen]);
 
-    useEffect(() => {
-      if (!manuscriptId) return;
-      fetchEnvironments(manuscriptId); // 내부에서 loading 및 ideas 처리됨
-    }, [isVisible,manuscriptId]);
+  useEffect(() => {
+    if (!manuscriptId) return;
+    fetchEnvironments(manuscriptId); // 내부에서 loading 및 ideas 처리됨
+  }, [isVisible, manuscriptId]);
 
-      //💥💥💥💥💥💥추가됨
+  //💥💥💥💥💥💥추가됨
   const handleEdit = (ideaId) => {
-    console.log("버튼이 눌리고 값이 들어오나?",ideaId);
+    console.log("버튼이 눌리고 값이 들어오나?", ideaId);
     setEditingIdeaId(ideaId); // 수정할 아이디 설정
     setIsModalOpen(true);     // 모달 열기
   };
-  
+
 
   return (
     <>
@@ -108,7 +108,7 @@ const EnvironmentSlider = ({ isVisible, onClose }) => {
           ) : (
             environments.map((env, idx) => <EnvironmentItem key={idx} environment={env} onDelete={deleteEnvironment} onEdit={() => handleEdit(env.id)} />)
           )}
-      </div>
+        </div>
 
 
       </div>

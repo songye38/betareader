@@ -9,77 +9,74 @@ dayjs.extend(relativeTime);
 // dayjs에 한국어 로케일 설정
 dayjs.locale('ko');
 
-const AlarmItem = ({ message , timeAgo, onClick ,isNew}) => {
-      const relativeTimeDisplay = dayjs(timeAgo).fromNow();
-  return (
-    <div
-      onClick={onClick}
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#3A3B41',
-        padding: '12px 16px',
-        borderRadius: '12px',
-        gap: '12px',
-        cursor: 'pointer',
-        width: '100%',
-        boxSizing: 'border-box',
-        border: '1px solid #52545A',
-        transition: 'background 0.2s ease-in-out',
-      }}
-    >
-      <img
-        src="/notification-text.svg"
-        alt="알림"
-        width={24}
-        height={24}
-        style={{ flexShrink: 0 }}
-      />
-
-      <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-        <span
-          style={{
-            color: '#FFFFFF',
-            fontSize: '14px',
-            fontFamily: 'Pretendard',
-            fontWeight: 500,
-            lineHeight: '20px',
-            marginBottom: '2px',
-          }}
-        >
-          <b>{message}</b>
-        </span>
-        <div style={{ display: 'flex', gap: '4px',flexDirection:'row',alignItems:'center' }}>
-            {isNew && (
-                                <span
-                                style={{
-                                    color: '#B0B0B0',
-                                    fontSize: '12px',
-                                    fontFamily: 'Pretendard',
-                                    lineHeight: '16px',
-                                }}
-                                >
-                                새로운 댓글
-                                </span>
-            
-            )}
-
-            
-            <span
+const AlarmItem = ({ message, timeAgo, onClick, isNew }) => {
+    const relativeTimeDisplay = dayjs(timeAgo).fromNow();
+    return (
+        <div
+            onClick={onClick}
             style={{
-                color: '#B0B0B0',
-                fontSize: '12px',
-                fontFamily: 'Pretendard',
-                lineHeight: '16px',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#3A3B41',
+                padding: '12px 16px',
+                borderRadius: '12px',
+                gap: '12px',
+                cursor: 'pointer',
+                width: '100%',
+                boxSizing: 'border-box',
+                border: '1px solid #52545A',
+                transition: 'background 0.2s ease-in-out',
             }}
-            >
-            {relativeTimeDisplay}
-            </span>
+        >
+            <img
+                src="/notification-text.svg"
+                alt="알림"
+                width={24}
+                height={24}
+                style={{ flexShrink: 0 }}
+            />
+
+            <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                <span
+                    style={{
+                        color: '#FFFFFF',
+                        fontSize: '14px',
+                        fontFamily: 'Pretendard',
+                        fontWeight: 500,
+                        lineHeight: '20px',
+                        marginBottom: '2px',
+                    }}
+                >
+                    <b>{message}</b>
+                </span>
+                <div style={{ display: 'flex', gap: '4px', flexDirection: 'row', alignItems: 'center' }}>
+                    {isNew && (
+                        <span
+                            style={{
+                                color: '#B0B0B0',
+                                fontSize: '12px',
+                                fontFamily: 'Pretendard',
+                                lineHeight: '16px',
+                            }}
+                        >
+                            새로운 댓글
+                        </span>
+                    )}
+                    <span
+                        style={{
+                            color: '#B0B0B0',
+                            fontSize: '12px',
+                            fontFamily: 'Pretendard',
+                            lineHeight: '16px',
+                        }}
+                    >
+                        {relativeTimeDisplay}
+                    </span>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default AlarmItem;

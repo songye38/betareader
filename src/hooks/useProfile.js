@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { updateProfileGoals, getProfileGoals,updateProfileUsername,uploadProfileImage} from '@/models/profileModel';
+import { updateProfileGoals, getProfileGoals, updateProfileUsername, uploadProfileImage } from '@/models/profileModel';
 import useAuthStore from '@/store/useAuthStore';
 import supabase from '@/supabase/supabaseClient';
 
@@ -7,7 +7,7 @@ export function useProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [goals, setGoals] = useState(null); // 불러온 goals 저장용
-  const { setProfile, profile,updateProfile } = useAuthStore.getState(); // 👈 store에서 함수 가져오기
+  const { setProfile, profile, updateProfile } = useAuthStore.getState(); // 👈 store에서 함수 가져오기
 
   // ✅ goals 업데이트 함수
   async function updateGoals(userId, newGoals) {

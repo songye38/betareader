@@ -118,13 +118,13 @@ const StartComponent = ({ isSetup }) => {
 export default StartComponent;
 
 const containerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-start', // 🔼 위쪽 정렬
-    height: '100vh',
-    width: '100%',
-    paddingTop: '10vh', // 🔼 원하는 만큼 조절 (예: 10vh)
-  };
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'flex-start', // 🔼 위쪽 정렬
+  height: '100vh',
+  width: '100%',
+  paddingTop: '10vh', // 🔼 원하는 만큼 조절 (예: 10vh)
+};
 
 const contentWrapperStyle = {
   display: 'flex',

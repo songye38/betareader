@@ -14,7 +14,7 @@ dayjs.locale('ko');
 const RecentEpiItem_mini = ({ episode }) => {
   const relativeTimeDisplay = dayjs(episode.last_edited_at).fromNow();
   return (
-    <div 
+    <div
       style={{
         width: '100%',
         height: 162,

@@ -12,7 +12,7 @@ const CharacterSlider = ({ isVisible, onClose }) => {
   const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const {fetchCharacters ,characters,loading,deleteCharacter}= useCharacter();
+  const { fetchCharacters, characters, loading, deleteCharacter } = useCharacter();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -29,10 +29,10 @@ const CharacterSlider = ({ isVisible, onClose }) => {
   useEffect(() => {
     if (!manuscriptId) return;
     fetchCharacters(manuscriptId); // 내부에서 loading 및 ideas 처리됨
-  }, [isVisible,manuscriptId]);
+  }, [isVisible, manuscriptId]);
 
   const handleEdit = (ideaId) => {
-    console.log("버튼이 눌리고 값이 들어오나?",ideaId);
+    console.log("버튼이 눌리고 값이 들어오나?", ideaId);
     setEditingIdeaId(ideaId); // 수정할 아이디 설정
     setIsModalOpen(true);     // 모달 열기
   };
@@ -96,13 +96,13 @@ const CharacterSlider = ({ isVisible, onClose }) => {
 
         {/* 캐릭터 리스트 */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {loading ? (
-              <div style={{ color: '#aaa', textAlign: 'center' }}>로딩중...</div>
-            ) : !characters || characters.length === 0 ? (
-              <div style={{ color: '#aaa', textAlign: 'center' }}>캐릭터가 없습니다.</div>
-            ) : (
-              characters.map((char, idx) => <CharacterItem key={idx} character={char} onDelete={deleteCharacter} onEdit={() => handleEdit(char.id)} />)
-            )}
+          {loading ? (
+            <div style={{ color: '#aaa', textAlign: 'center' }}>로딩중...</div>
+          ) : !characters || characters.length === 0 ? (
+            <div style={{ color: '#aaa', textAlign: 'center' }}>캐릭터가 없습니다.</div>
+          ) : (
+            characters.map((char, idx) => <CharacterItem key={idx} character={char} onDelete={deleteCharacter} onEdit={() => handleEdit(char.id)} />)
+          )}
         </div>
       </div>
 
@@ -120,13 +120,13 @@ const CharacterSlider = ({ isVisible, onClose }) => {
           }}
         >
           <AddCharacterModal
-              isOpen={isModalOpen}
-              onClose={() => {
-                setIsModalOpen(false);
-                setEditingIdeaId(null); // 닫을 때 초기화
-              }}
-              ideaId={editingIdeaId} // 수정할 아이디어 id 전달
-              manuscriptId={manuscriptId}
+            isOpen={isModalOpen}
+            onClose={() => {
+              setIsModalOpen(false);
+              setEditingIdeaId(null); // 닫을 때 초기화
+            }}
+            ideaId={editingIdeaId} // 수정할 아이디어 id 전달
+            manuscriptId={manuscriptId}
           />
         </div>
       )}

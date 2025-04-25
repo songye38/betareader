@@ -8,12 +8,12 @@ export default function AuthListener() {
 
   function extractStoragePath(fullUrl) {
     const baseUrl = "https://aypubingbgvofmsrbrut.supabase.co/storage/v1/object/public/profile-image/";
-  
+
     if (!fullUrl.startsWith(baseUrl)) {
       console.warn("⚠️ 예상된 base URL이 아닙니다. 반환값은 원본입니다.");
       return fullUrl; // or return null; 원하는 방식으로 처리 가능
     }
-  
+
     return fullUrl.replace(baseUrl, "");
   }
 

@@ -8,17 +8,17 @@ const Signin = () => {
 
 
   const onSubmit = async (data) => {
-  
-      try {
-        // 로그인 처리
-        const result = await handleEmailSignIn(data.email, data.password);
-  
-        // 회원가입 성공 시 콘솔 출력
-        console.log("회원가입 성공", result);
-      } catch (error) {
-        console.error("회원가입 오류", error);
-      }
-    };
+
+    try {
+      // 로그인 처리
+      const result = await handleEmailSignIn(data.email, data.password);
+
+      // 회원가입 성공 시 콘솔 출력
+      console.log("회원가입 성공", result);
+    } catch (error) {
+      console.error("회원가입 오류", error);
+    }
+  };
 
   return (
     <div className="signin-container">

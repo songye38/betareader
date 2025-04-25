@@ -7,13 +7,13 @@ import useAuthStore from "@/store/useAuthStore";
 import { useEffect } from "react";
 
 const AllManuSet = () => {
-  const { manuscripts, loading, error,getManuscripts } = useManuscripts();
+  const { manuscripts, loading, error, getManuscripts } = useManuscripts();
   const { user } = useAuthStore(); // 로그인된 유저 정보 가져오기
-  
-    useEffect(() => {
-      if (!user || !user.id) return;
-       getManuscripts();
-    }, [user?.id]);
+
+  useEffect(() => {
+    if (!user || !user.id) return;
+    getManuscripts();
+  }, [user?.id]);
 
 
 
@@ -21,9 +21,9 @@ const AllManuSet = () => {
     return (
       <div className="loader" style={{ position: 'absolute', top: 0, left: 0 }}>
         <LoadingSpinner size={48} color="#FF3D00" /> {/* 로딩 스피너 사용 */}
-      </div>  
+      </div>
     )
-   
+
     // return <div>로딩 중...</div>; // 로딩 상태 표시
   }
 
@@ -32,7 +32,7 @@ const AllManuSet = () => {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "20px",marginBottom:'60px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginBottom: '60px' }}>
       <div
         style={{
           width: 1096,
@@ -66,8 +66,8 @@ const AllManuSet = () => {
               title={manuscript.title}
               lastEditedAt={manuscript.last_edited_at}
               episodeCount={manuscript.episode_count}
-              userId = {manuscript.user_id}
-              ManuId = {manuscript.id}
+              userId={manuscript.user_id}
+              ManuId={manuscript.id}
             />
           ))
         ) : (

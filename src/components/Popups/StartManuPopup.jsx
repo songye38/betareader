@@ -2,7 +2,7 @@
 import { useState } from "react";
 import StartWritingBtn from "../Buttons/StartWritingBtn";
 
-const StartManuPopup = ({onClose}) => {
+const StartManuPopup = ({ onClose }) => {
   const [title, setTitle] = useState(""); // 제목 입력값 상태
 
 
@@ -117,7 +117,7 @@ const StartManuPopup = ({onClose}) => {
       </div>
 
       {/* 버튼 추가 */}
-      <StartWritingBtn manuTitle = {title} />
+      <StartWritingBtn manuTitle={title} />
     </div>
   );
 };

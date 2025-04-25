@@ -2,7 +2,7 @@ import React from 'react';
 
 const UploadingEpi = () => {
   return (
-    <div 
+    <div
       style={{
         width: 446,
         height: 307,
@@ -25,8 +25,8 @@ const UploadingEpi = () => {
           <rect x="0.5" width="91" height="91" rx="20" fill="#A78EF7" />
         </svg>
       </div>
-      
-      <div 
+
+      <div
         style={{
           flexDirection: 'column',
           justifyContent: 'flex-start',
@@ -35,7 +35,7 @@ const UploadingEpi = () => {
           display: 'flex'
         }}
       >
-        <div 
+        <div
           style={{
             textAlign: 'center',
             color: 'white',
@@ -49,7 +49,7 @@ const UploadingEpi = () => {
           원고 업로드 중...<br />베타리더들이 읽고 있는 중...
         </div>
 
-        <div 
+        <div
           style={{
             textAlign: 'center',
             color: '#BFC3D3',

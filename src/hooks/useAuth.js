@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { signInWithEmail, signInWithOAuth, signOut,signUpWithEmail } from '../models/authModel';
+import { signInWithEmail, signInWithOAuth, signOut, signUpWithEmail } from '../models/authModel';
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ export const useAuth = () => {
 
   // 회원가입 기능
   const handleSignUp = async (email, password, nickname) => {
-    console.log("handle sign upu hook",email, password, nickname);
+    console.log("handle sign upu hook", email, password, nickname);
     setLoading(true);
     setError(null);
     try {

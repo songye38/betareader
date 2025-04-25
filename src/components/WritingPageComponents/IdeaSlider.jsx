@@ -14,7 +14,7 @@ const IdeaSlider = ({ isVisible, onClose }) => {
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // ⬅️ 추가
-  const {ideas,fetchIdeas ,loading,deleteIdea}= useIdea();
+  const { ideas, fetchIdeas, loading, deleteIdea } = useIdea();
 
 
   useEffect(() => {
@@ -30,15 +30,15 @@ const IdeaSlider = ({ isVisible, onClose }) => {
   useEffect(() => {
     if (!manuscriptId) return;
     fetchIdeas(manuscriptId); // 내부에서 loading 및 ideas 처리됨
-  }, [isVisible,manuscriptId]);
+  }, [isVisible, manuscriptId]);
 
   //💥💥💥💥💥💥추가됨
   const handleEdit = (ideaId) => {
-    console.log("버튼이 눌리고 값이 들어오나?",ideaId);
+    console.log("버튼이 눌리고 값이 들어오나?", ideaId);
     setEditingIdeaId(ideaId); // 수정할 아이디 설정
     setIsModalOpen(true);     // 모달 열기
   };
-  
+
 
   return (
     <>
@@ -111,7 +111,7 @@ const IdeaSlider = ({ isVisible, onClose }) => {
           ) : (
             ideas.map((idea, idx) => <IdeaItem key={idx} idea={idea} onDelete={deleteIdea} onEdit={() => handleEdit(idea.id)} />)
           )}
-      </div>
+        </div>
       </div>
 
       {/* 아이디어 추가 슬라이드 */}

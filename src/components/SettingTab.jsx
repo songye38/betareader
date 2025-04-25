@@ -1,7 +1,7 @@
-const SettingTab = ({selected,onClick}) => {
+const SettingTab = ({ selected, onClick }) => {
   return (
     <div
-    onClick ={onClick}
+      onClick={onClick}
       style={{
         display: 'flex',
         width: '13.75rem',

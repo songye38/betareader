@@ -22,7 +22,7 @@ const WritingPage = () => {
   const { tabs } = useTabStore();
   const selectedTab = tabs.find((tab) => tab.selected === true);
   const { activeTitle, handleSliderOpen } = useSliderStore();
-  const {user,profile} = useAuthStore();
+  const { user, profile } = useAuthStore();
 
   const {
     methods,
@@ -42,8 +42,8 @@ const WritingPage = () => {
 
 
   useEffect(() => {
-    if (!user || !user.id|| !manuscript || ! manuscript.id) return;
-    fetchEpisodesByManuId(user.id,manuscript.id);
+    if (!user || !user.id || !manuscript || !manuscript.id) return;
+    fetchEpisodesByManuId(user.id, manuscript.id);
   }, [user?.id]);
 
   useEffect(() => {
@@ -63,10 +63,10 @@ const WritingPage = () => {
       <Navbar
         customNavComponent={
           <NavMainSection
-            tabId = {selectedTab?.tab_id}
-            is_feedback_mode = {selectedTab?.is_feedback_mode}
-            episodeId = {selectedTab?.id}
-            userId = {user?.id}
+            tabId={selectedTab?.tab_id}
+            is_feedback_mode={selectedTab?.is_feedback_mode}
+            episodeId={selectedTab?.id}
+            userId={user?.id}
             onSave={handleSubmit((formData) => onSubmit(formData, manuscript.id))} // 더 이상 async/await 필요 없음
           />
         }
@@ -86,8 +86,8 @@ const WritingPage = () => {
               flexDirection: 'column',
               alignItems: 'center',
               paddingBottom: '40px',
-              paddingRight:'100px',
-              paddingLeft:'100px',
+              paddingRight: '100px',
+              paddingLeft: '100px',
             }}
           >
             <div
@@ -106,10 +106,10 @@ const WritingPage = () => {
                 alignItems: 'center',
               }}
             >
-              <EpisodeTitleEditor 
-                control={control} 
-                errors={errors} 
-                title={selectedTab?.title || ''} 
+              <EpisodeTitleEditor
+                control={control}
+                errors={errors}
+                title={selectedTab?.title || ''}
                 disabled={selectedTab?.is_feedback_mode === true}
               />
             </div>
@@ -141,11 +141,11 @@ const WritingPage = () => {
 
           {/* 본문 에디터 */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', paddingBottom: '80px' }}>
-            <EpisodeContentEditor 
-              control={control} 
-              errors={errors} 
+            <EpisodeContentEditor
+              control={control}
+              errors={errors}
               disabled={selectedTab?.is_feedback_mode === true}
-              />
+            />
           </div>
         </form>
       </FormProvider>

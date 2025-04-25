@@ -117,7 +117,7 @@ const AddCharacterModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
             <TitleInput control={control} error={errors.title} showLabel={false} title={'캐릭터 이름'} name={"name"} />
             <DropdownInput control={control} error={errors.dropdown} type={'캐릭터'} name={"character_type"} />
             <DropdownInput control={control} error={errors.dropdown} type={'성별'} name={"gender"} />
-            <TitleInput control={control} error={errors.title} showLabel={false} title={'나이'}  name={'age'}/>
+            <TitleInput control={control} error={errors.title} showLabel={false} title={'나이'} name={'age'} />
             <KeywordInput
               control={control}
               error={errors.newKeywords}
@@ -128,7 +128,7 @@ const AddCharacterModal = ({ onClose, ideaId, manuscriptId, isOpen }) => {
             />
             <EpisodeInput control={control} error={errors.episode} title={'성장배경'} name={"backstory"} />
             <EpisodeInput control={control} error={errors.episode} title={'외형특징'} name={"appearance"} />
-            <EpisodeInput control={control} error={errors.episode} title={'주요목표'} name={"goal"}/>
+            <EpisodeInput control={control} error={errors.episode} title={'주요목표'} name={"goal"} />
           </form>
         </FormProvider>
       </div>

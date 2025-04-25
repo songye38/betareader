@@ -5,13 +5,13 @@ import EpisodeInput from './FormComponents/EpisodeInput';
 import CheckCommentBtn from './Buttons/CheckCommentBtn';
 import useTabStore from '@/store/useTabStore';
 import useEpisodeForm from '@/hooks/useEpisode';
-import { useEffect, useState,useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const EpisodeFormComponent = () => {
   const { tabs, selectedTab } = useTabStore();
   const selectedTabFromStore = tabs.find((tab) => tab.id === selectedTab?.id) || null;
   const prevTabRef = useRef(null); // 이전 탭을 저장하는 useRef 추가
-  
+
   const {
     methods,
     control,
@@ -23,10 +23,10 @@ const EpisodeFormComponent = () => {
   } = useEpisodeForm();
 
 
-    // 폼 유효성 검사
-    const titleValue = watch('title');
-    const episodeValue = watch('episode');
-    const isFormValid = titleValue && episodeValue  !== '';
+  // 폼 유효성 검사
+  const titleValue = watch('title');
+  const episodeValue = watch('episode');
+  const isFormValid = titleValue && episodeValue !== '';
 
 
   return (

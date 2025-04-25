@@ -84,43 +84,43 @@ const SettingFormComponent = ({ onClose }) => {
 
       {/* FormProvider로 감싸기 */}
       <FormProvider {...methods}>
-        <form 
-          onSubmit={handleSubmit(onSubmit)} 
+        <form
+          onSubmit={handleSubmit(onSubmit)}
           style={{ display: 'flex', flexDirection: 'column', gap: '18px', width: '100%' }}
         >
           {/* 제목 입력 */}
           <TitleInput control={control} error={errors.title} showLabel={true} />
 
           <div style={{ display: 'flex', flexDirection: 'row', gap: '18px' }}>
-            <GenreInput 
-              control={control} 
-              error={errors.genre} 
+            <GenreInput
+              control={control}
+              error={errors.genre}
               getValues={getValues} // getValues 전달
-              loading = {loading}
+              loading={loading}
             />
-            <AgeInput 
-              control={control} 
-              error={errors.ageCategory} 
+            <AgeInput
+              control={control}
+              error={errors.ageCategory}
               getValues={getValues} // getValues 전달
-              loading = {loading}
+              loading={loading}
             />
           </div>
 
           <PlotInput control={control} error={errors.plot} />
 
-          <KeywordInput 
-            control={control} 
-            error={errors.newKeywords} 
-            onKeywordChange={handleKeywordChange} 
+          <KeywordInput
+            control={control}
+            error={errors.newKeywords}
+            onKeywordChange={handleKeywordChange}
             getValues={getValues} // getValues 전달
-            loading = {loading}
+            loading={loading}
           />
 
-          <CharactersInput 
-            control={control} 
-            error={errors.characters} 
+          <CharactersInput
+            control={control}
+            error={errors.characters}
             getValues={getValues} // getValues 전달
-            loading = {loading}
+            loading={loading}
           />
 
           {/* 저장 버튼 */}

@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import CharacterItem from './CharacterItem';
 import EnvironmentItem from './EnvironmentItem';
 import IdeaItem from './IdeaItem';
@@ -11,17 +11,17 @@ const AllItemSet = ({ isVisible, onClose }) => {
   const router = useRouter(); // useRouter 사용
   const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const [activeTab, setActiveTab] = useState('character');
-  const {fetchCharacters ,characters,deleteCharacter}= useCharacter();
-  const {environments,fetchEnvironments ,deleteEnvironment}= useEnvironment();
-  const {ideas,fetchIdeas ,deleteIdea}= useIdea();
+  const { fetchCharacters, characters, deleteCharacter } = useCharacter();
+  const { environments, fetchEnvironments, deleteEnvironment } = useEnvironment();
+  const { ideas, fetchIdeas, deleteIdea } = useIdea();
 
 
-    useEffect(() => {
-      if (!manuscriptId) return;
-      fetchCharacters(manuscriptId); // 내부에서 loading 및 ideas 처리됨
-      fetchEnvironments(manuscriptId);
-      fetchIdeas(manuscriptId);
-    }, [isVisible]);
+  useEffect(() => {
+    if (!manuscriptId) return;
+    fetchCharacters(manuscriptId); // 내부에서 loading 및 ideas 처리됨
+    fetchEnvironments(manuscriptId);
+    fetchIdeas(manuscriptId);
+  }, [isVisible]);
 
 
   const renderContent = () => {
@@ -35,7 +35,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
       return (
         <div style={gridStyle}>
           {characters.map((char, idx) => (
-            <CharacterItem key={idx} character={char} onDelete={deleteCharacter}/>
+            <CharacterItem key={idx} character={char} onDelete={deleteCharacter} />
           ))}
         </div>
       );
@@ -121,7 +121,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
             border: 'none',
             color: '#FFFFFF',
             cursor: 'pointer',
-            padding:'8px',
+            padding: '8px',
           }}
         >
           ✕

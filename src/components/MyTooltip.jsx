@@ -68,18 +68,18 @@ const MyTooltip = () => {
             연재물 기본 설정집 입력
           </div>
           <div
-              style={{
-                width: 340,
-                color: '#1E1F24',
-                fontSize: 16,
-                fontFamily: 'Pretendard',
-                fontWeight: '400',
-                lineHeight: '22.40px',
-                wordWrap: 'break-word',
-                wordBreak: 'keep-all', // ✅ 단어가 잘리지 않도록 설정
-                overflowWrap: 'break-word', // ✅ 긴 단어가 넘칠 경우 자동 줄바꿈
-              }}
-            >
+            style={{
+              width: 340,
+              color: '#1E1F24',
+              fontSize: 16,
+              fontFamily: 'Pretendard',
+              fontWeight: '400',
+              lineHeight: '22.40px',
+              wordWrap: 'break-word',
+              wordBreak: 'keep-all', // ✅ 단어가 잘리지 않도록 설정
+              overflowWrap: 'break-word', // ✅ 긴 단어가 넘칠 경우 자동 줄바꿈
+            }}
+          >
             원고지를 작성하고, 작품의 성격에 맞는 가상 독자를 생성하려면 제목, 장르 등 연재물의 기본 설정 입력이 필요해요. 원고지 작성에 앞서 기본 설정집을 입력해주세요.
           </div>
         </div>
