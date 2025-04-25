@@ -136,7 +136,11 @@ const WritingPage = () => {
 
           {/* 본문 에디터 */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', paddingBottom: '80px' }}>
-            <EpisodeContentEditor control={control} errors={errors} />
+            <EpisodeContentEditor 
+              control={control} 
+              errors={errors} 
+              disabled={selectedTab?.is_feedback_mode === true}
+              />
           </div>
         </form>
       </FormProvider>

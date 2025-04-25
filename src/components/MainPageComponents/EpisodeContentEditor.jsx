@@ -1,7 +1,7 @@
 import useTabStore from "@/store/useTabStore";
 import ContentInput from "@/components/WritingPageComponents/ContentInput";
 
-const EpisodeContentEditor = ({ control, errors }) => {
+const EpisodeContentEditor = ({ control, errors,disabled }) => {
   const { tabs, selectedTab } = useTabStore();
   const currentTab = tabs.find((t) => t.tab_id === selectedTab?.tab_id);
 
@@ -12,6 +12,8 @@ const EpisodeContentEditor = ({ control, errors }) => {
       <ContentInput
         control={control}
         error={errors.content}
+        disabled = {disabled}
+
       />
     </>
   );

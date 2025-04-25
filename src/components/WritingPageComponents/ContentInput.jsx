@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
-const ContentInput = ({ control, error}) => {
+const ContentInput = ({ control, error,disabled = false}) => {
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -44,6 +44,7 @@ const ContentInput = ({ control, error}) => {
               textareaRef.current = e;
               field.ref(e);
             }}
+            disabled={disabled}
             onInput={(e) => {
               field.onChange(e); // form value 업데이트
               handleResize(); // 높이 조절
@@ -52,7 +53,7 @@ const ContentInput = ({ control, error}) => {
               width: '80%',
               minHeight: '200px',
               padding: '10px',
-              color: 'white',
+              color: disabled ? 'rgba(255, 255, 255, 0.5)' : 'white', // ✅ 흐리게 처리
               fontSize: '18px',
               fontFamily: 'Pretendard',
               fontWeight: '400',
