@@ -85,7 +85,7 @@ const NavMainSection = ({ onSave,episodeId,userId,tabId ,is_feedback_mode}) => {
             transform: 'translateY(0)',
           }}
         >
-          피드백 링크
+          피드백 링크 
         </button>
       ) : (
         <>

@@ -16,37 +16,59 @@ export const hashPassword = async (password) => {
  * @param {number} minRequiredComments - 최소 피드백 개수 (5, 10, 15, 20 중 하나)
  * @returns {Promise<object>} - 생성된 댓글 링크 row
  */
-export const createCommentLink = async (episodeId, minRequiredComments,userId) => {
-  console.log("댓글 링크 생성 시작:", episodeId, minRequiredComments);
-
-  try {
-    const { data, error } = await supabase
-      .from("comment_links")
-      .insert([
-        {
-          episode_id: episodeId,
-          min_required_comments: minRequiredComments,
-          user_id : userId,
-        },
-      ])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("댓글 링크 생성 실패:", error.message);
-      toast.error("댓글 링크 생성 실패");
-      throw new Error(error.message);
+export const createCommentLink = async (episodeId, minRequiredComments, userId) => {
+    console.log("댓글 링크 생성 시작:", episodeId, minRequiredComments);
+  
+    try {
+      // ✅ 기존 링크 개수 확인
+      const { data: existingLinks, error: fetchError } = await supabase
+        .from("comment_links")
+        .select("id")
+        .eq("episode_id", episodeId);
+  
+      if (fetchError) {
+        console.error("기존 링크 조회 실패:", fetchError.message);
+        toast.error("기존 피드백 링크 조회 실패");
+        throw new Error(fetchError.message);
+      }
+  
+      const sessionOrder = existingLinks.length + 1;
+  
+      if (sessionOrder > 3) {
+        toast.error("최대 3개의 피드백만 생성할 수 있습니다.");
+        throw new Error("피드백 세션 초과");
+      }
+  
+      // ✅ 새 피드백 링크 생성
+      const { data, error } = await supabase
+        .from("comment_links")
+        .insert([
+          {
+            episode_id: episodeId,
+            min_required_comments: minRequiredComments,
+            user_id: userId,
+            session_order: sessionOrder, // ⬅ 추가된 부분!
+          },
+        ])
+        .select()
+        .single();
+  
+      if (error) {
+        console.error("댓글 링크 생성 실패:", error.message);
+        toast.error("댓글 링크 생성 실패");
+        throw new Error(error.message);
+      }
+  
+      toast.success(`🟢 ${sessionOrder}차 피드백 링크가 생성되었습니다!`);
+      console.log("생성된 댓글 링크:", data);
+      return data;
+    } catch (err) {
+      console.error("댓글 링크 생성 중 예외:", err.message);
+      toast.error("댓글 링크 생성 중 오류 발생");
+      throw err;
     }
-
-    toast.success("댓글 링크가 생성되었습니다!");
-    console.log("생성된 댓글 링크:", data);
-    return data;
-  } catch (err) {
-    console.error("댓글 링크 생성 중 예외:", err.message);
-    toast.error("댓글 링크 생성 중 오류 발생");
-    throw err;
-  }
-};
+  };
+  
 
 
 /**
