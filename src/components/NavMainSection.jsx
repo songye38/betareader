@@ -65,13 +65,27 @@ const NavMainSection = ({ onSave,episodeId,userId,tabId ,is_feedback_mode}) => {
       {is_feedback_mode ? (
         // 피드백 모드일 때만 보이는 버튼
         <button
-          onClick={() => {
-            setLinkUrl(`${window.location.origin}/feedback/${episodeId}`);
-            setShowEditPopup(true);
+        onClick={() => {
+          setLinkUrl(`${window.location.origin}/feedback/${episodeId}`);
+          setShowEditPopup(true);
+        }}
+          style={{
+            padding: '8px 14px',
+            background: '#A78EF7',
+            borderRadius: 8,
+            color: 'white',
+            fontSize: 14,
+            fontFamily: 'Pretendard',
+            fontWeight: 600,
+            lineHeight: '20px',
+            cursor: 'pointer',
+            border: 'none',
+            transition: 'all 0.2s ease-in-out',
+            boxShadow: '0 2px 6px rgba(167, 142, 247, 0.3)',
+            transform: 'translateY(0)',
           }}
-          style={{ padding: '8px 12px', borderRadius: '6px', background: '#0070f3', color: '#fff' }}
         >
-          피드백 링크 복사하기
+          피드백 링크
         </button>
       ) : (
         <>
