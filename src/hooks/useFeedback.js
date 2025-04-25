@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { checkAndUpdateExpiredStatus,saveComment,fetchComments,createCommentLink ,fetchLinkInfo} from '@/models/feedbackModel'; // 같은 곳에 있다고 가정
+import { checkAndUpdateExpiredStatus,saveComment,fetchComments,createCommentLink ,fetchLinkInfo,fetchCommentsByEpisodeId} from '@/models/feedbackModel'; // 같은 곳에 있다고 가정
 import { toast } from "react-toastify";
 import { useCallback } from 'react';
 
@@ -8,6 +8,7 @@ export const useFeedback = () => {
   const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
   const [info, setInfo] = useState(null);
+  const [commentsBySession, setCommentsBySession] = useState({});
 
 /**
  * 댓글 링크 생성 함수
@@ -124,6 +125,30 @@ const loadInfoFromServer = useCallback(async (linkId) => {
     }
   }, []);
 
+
+/**
+ * 특정 episode_id에 해당하는 세션별 댓글들을 불러옵니다
+ * @param {number} episodeId - 에피소드 ID
+ * @returns {Promise<void>}
+ */
+const loadCommentsByEpisodeId = async (episodeId) => {
+    if (!episodeId) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+        const grouped = await fetchCommentsByEpisodeId(episodeId);
+        setCommentsBySession(grouped || {});
+    } catch (err) {
+        console.error("❌ 세션별 댓글 로딩 실패:", err.message);
+        setError(err.message || "댓글을 불러오는 중 오류 발생");
+        toast.error("댓글을 세션별로 불러오는 데 실패했어요.");
+    } finally {
+        setLoading(false);
+    }
+  };
+  
   
 
 return {
@@ -135,6 +160,8 @@ return {
     loadCommentsFromServer,
     comments,
     loadInfoFromServer,
-    info
+    info,
+    loadCommentsByEpisodeId,
+    commentsBySession
     };
 };

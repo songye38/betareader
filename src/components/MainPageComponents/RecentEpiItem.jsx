@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import useEpisodeForm from '@/hooks/useEpisode';
 import useTabStore from '@/store/useTabStore';
 import useManuscriptStore from '@/store/useManuscriptStore';
+import useSliderStore from '@/store/useSliderStore';
 
 // dayjs에 상대 시간 플러그인 사용
 dayjs.extend(relativeTime);
@@ -36,7 +37,9 @@ const RecentEpiItem = ({ episode,userId, ManuId }) => {
       setTabs(episodes,tab_id);
       const selectedTab = useTabStore.getState().selectedTab;
       console.log("selectedTab",selectedTab);
+      useSliderStore.getState().setActiveSlider('feedback');
       router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
+      
     }
   };
 

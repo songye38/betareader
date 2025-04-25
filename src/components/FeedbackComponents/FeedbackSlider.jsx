@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import FeedbackSet from './FeedbackSet';
 import InsightSet from './InsightSet';
+import { useEffect } from 'react';
+import { useFeedback } from '@/hooks/useFeedback';
+import useTabStore from '@/store/useTabStore';
 
 const MAIN_PURPLE = '#8B5CF6'; // 메인 보라색
 
@@ -9,7 +12,15 @@ const MAX_PREMIUM_ROUNDS = 5; // 예시
 const MEMBERSHIP_ENABLED = true;
 
 const FeedbackSlider = ({ isVisible, onClose, isPremiumUser = false }) => {
+  const selectedTab = useTabStore((state) => state.selectedTab);
+  console.log("selectedTab 어떤 정보가 잇나?",selectedTab);
   const [activeRound, setActiveRound] = useState(1);
+  const {
+    loadCommentsByEpisodeId,
+    commentsBySession,
+    loading,
+    error
+  } = useFeedback();
 
   const totalRounds = isPremiumUser ? MAX_PREMIUM_ROUNDS : MAX_FREE_ROUNDS;
   const usedRounds = 3; // 실제론 props로 전달받거나 계산
@@ -18,7 +29,18 @@ const FeedbackSlider = ({ isVisible, onClose, isPremiumUser = false }) => {
     status: i + 1 <= usedRounds ? '완료' : '미작성',
   }));
 
+  useEffect(() => {
+    if (selectedTab.id) {
+      loadCommentsByEpisodeId(selectedTab.id);
+      
+    }
+  }, [selectedTab.id]);
+
+  console.log("commentsBySession",commentsBySession);
+
   if (!isVisible) return null;
+
+
 
   const renderTab = ({ round, status }) => (
     <button
@@ -119,8 +141,9 @@ const FeedbackSlider = ({ isVisible, onClose, isPremiumUser = false }) => {
 
         {/* 현재 회차에 맞는 섹션 */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
-          <FeedbackSet round={activeRound} />
+          <FeedbackSet round={activeRound} comments={commentsBySession[activeRound] || []} loading={loading} />
           <InsightSet round={activeRound} />
+
         </div>
       </div>
     </div>
