@@ -1,12 +1,23 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'react-toastify';
 
 const CheckCommentBtn = ({ disabled,onClick,title }) => {
   console.log("disabled",disabled);
+
+
+  const handleClick = (e) => {
+    if (disabled) {
+      toast.info('먼저 저장해주세요:)');
+      return;
+    }
+    onClick(e);
+  };
+
   return (
     <div
-    onClick={onClick} // onClick 핸들러 전달
+      onClick={handleClick}
       style={{
         width: 'auto',
         height: 'auto',
@@ -21,7 +32,7 @@ const CheckCommentBtn = ({ disabled,onClick,title }) => {
         gap: 8,
         display: 'inline-flex',
         opacity: disabled ? 0.5 : 1, // 비활성화 상태일 때 opacity 조정
-        cursor: disabled ? 'not-allowed' : 'pointer', // 비활성화 시 커서 변경
+        cursor: disabled ? 'not-allowed' : 'pointer', // 비활성화 시 커서 변경pointer
       }}
     >
       <div

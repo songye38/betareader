@@ -109,7 +109,7 @@ const NavMainSection = ({ onSave, episodeId, userId, tabId, is_feedback_mode }) 
         <>
           {/* 피드백 모드가 아니면 보이는 버튼들 */}
           <SaveEpiBtn onClick={onSave} />
-          <CheckCommentBtn title="피드백 받기" onClick={handleOpenModal} disabled={episodeId === undefined} />
+          <CheckCommentBtn title="피드백 받기" onClick={handleOpenModal} disabled={episodeId === ""} />
         </>
       )}
 
