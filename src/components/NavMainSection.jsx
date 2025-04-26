@@ -24,6 +24,8 @@ const NavMainSection = ({ onSave, episodeId, userId, tabId, is_feedback_mode }) 
     setSelected(option); // ✅ 선택한 개수 상태 업데이트
   };
 
+  console.log("NavMainSection에서의 episodeId", episodeId);
+
 
   const handleShare = async () => {
     console.log(`📤 피드백 요청: 최소 ${selected}개`);
@@ -75,7 +77,7 @@ const NavMainSection = ({ onSave, episodeId, userId, tabId, is_feedback_mode }) 
           <button
             onClick={async () => {
               // 링크 복사 처리
-              //TODO 복사되는 링크 새롭게 가져와야 함
+              //TODO [SCRUM-13] 복사되는 링크 새롭게 가져와야 함
               try {
                 await navigator.clipboard.writeText(`${window.location.origin}/feedback/${episodeId}`);
                 toast.success("링크가 복사되었습니다!"); // 성공적으로 복사되었음을 사용자에게 알림
@@ -107,7 +109,7 @@ const NavMainSection = ({ onSave, episodeId, userId, tabId, is_feedback_mode }) 
         <>
           {/* 피드백 모드가 아니면 보이는 버튼들 */}
           <SaveEpiBtn onClick={onSave} />
-          <CheckCommentBtn title="피드백 받기" onClick={handleOpenModal} />
+          <CheckCommentBtn title="피드백 받기" onClick={handleOpenModal} disabled={episodeId === undefined} />
         </>
       )}
 

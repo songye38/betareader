@@ -29,14 +29,12 @@ const RecentEpiItem = ({ episode, userId, ManuId }) => {
 
     if (userId && ManuId) {
       const episodes = await fetchEpisodesByManuId(userId, ManuId);
-      console.log("episodes", episodes);
       resetTabs();
       setManuscript({ id: ManuId });
 
       //id를 넣으면 그 값이 selectedTab이 되고 없으면 그냥 첫번째걸 활성화
       setTabs(episodes, tab_id);
       const selectedTab = useTabStore.getState().selectedTab;
-      console.log("selectedTab", selectedTab);
       if (episode.is_feedback_mode) {
         useSliderStore.getState().setActiveSlider('feedback');
       }

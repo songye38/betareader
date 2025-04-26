@@ -152,7 +152,6 @@ const useEpisodeForm = () => {
     try {
       const allEpisodes = await getEpisodesByManuId(userId, manuscriptId);
       setAllEpisodes(allEpisodes);  // 가져온 에피소드 데이터를 상태에 저장
-      console.log("에피소드들", allEpisodes);
       return allEpisodes;
     } catch (err) {
       console.error("❌ 에피소드 가져오기 실패:", err);

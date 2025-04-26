@@ -110,7 +110,7 @@ const FeedbackSettingModal = ({ selected = 5, onSelect, onShare, onClose }) => {
             </div>
             <div>
               BetaView는 당신의 글을 바라보는 24시간의 시선입니다.<br />
-              링크를 통해 피드백을 받고, 부족한 반응은 AI가 채워드려요.
+              링크를 통해 피드백을 받고, 부족한 피드백은 AI가 채워드립니다.
             </div>
           </div>
         </div>

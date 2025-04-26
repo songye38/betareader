@@ -38,6 +38,7 @@ const WritingPage = () => {
   useEffect(() => {
     if (!user || !user.id || !manuscript || !manuscript.id) return;
     fetchEpisodesByManuId(user.id, manuscript.id);
+    console.log("WritingPage에서의 selectedTab.id",selectedTab.id);
   }, [user?.id]);
 
   useEffect(() => {

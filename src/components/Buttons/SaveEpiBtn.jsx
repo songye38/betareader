@@ -11,14 +11,13 @@ const SaveEpiBtn = ({ disabled, onClick }) => {
       onClick={onClick}
       disabled={disabled}
       style={{
-        padding: '8px 14px',
+        padding: '6px 14px',
         background: disabled ? disabledColor : baseColor,
         borderRadius: 8,
         color: 'white',
         fontSize: 14,
         fontFamily: 'Pretendard',
         fontWeight: 600,
-        lineHeight: '20px',
         cursor: disabled ? 'not-allowed' : 'pointer',
         border: 'none',
         transition: 'all 0.2s ease-in-out',
@@ -49,7 +48,7 @@ const SaveEpiBtn = ({ disabled, onClick }) => {
         }
       }}
     >
-      임시저장
+      저장하기
     </button>
   );
 };

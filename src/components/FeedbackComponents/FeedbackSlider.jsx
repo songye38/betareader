@@ -13,7 +13,6 @@ const MEMBERSHIP_ENABLED = true;
 
 const FeedbackSlider = ({ isVisible, onClose, isPremiumUser = false }) => {
   const selectedTab = useTabStore((state) => state.selectedTab);
-  console.log("selectedTab 어떤 정보가 잇나?",selectedTab);
   const [activeRound, setActiveRound] = useState(1);
   const {
     loadCommentsByEpisodeId,
@@ -35,7 +34,6 @@ const FeedbackSlider = ({ isVisible, onClose, isPremiumUser = false }) => {
     }
   }, [selectedTab.id]);
 
-  console.log("commentsBySession",commentsBySession);
 
   if (!isVisible) return null;
 

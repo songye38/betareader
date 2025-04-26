@@ -13,6 +13,7 @@ const NavUserSection = ({ signin }) => {
   const { notifications, loading, error, refetch } = useNotifications(user.id);
 
 
+
   useEffect(() => {
     if (profile?.avatar_url !== undefined) {
       setAvatarUrl(profile.avatar_url || null); // 없으면 null로 명시

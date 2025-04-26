@@ -3,6 +3,7 @@
 import React from 'react';
 
 const CheckCommentBtn = ({ disabled,onClick,title }) => {
+  console.log("disabled",disabled);
   return (
     <div
     onClick={onClick} // onClick 핸들러 전달

@@ -6,8 +6,6 @@ import WritingPage from '@/components/MainPageComponents/WritingPage';
 import useTabStore from '@/store/useTabStore';
 
 const WritingFloatingMenu = () => {
-
-  console.log("이건 보이나/");
   const { tabs } = useTabStore();
 
   return (
