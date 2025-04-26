@@ -23,8 +23,6 @@ const EditManuTitlePopup = ({ onClose, title, manuscriptId }) => {
   };
 
 
-
-
   return (
     <div style={{
       position: "fixed",

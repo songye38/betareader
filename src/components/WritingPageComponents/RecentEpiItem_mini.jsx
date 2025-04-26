@@ -4,10 +4,8 @@ import dayjs from 'dayjs'; // dayjs 라이브러리 가져오기
 import relativeTime from 'dayjs/plugin/relativeTime'; // 상대 시간 플러그인
 import 'dayjs/locale/ko'; // 한국어 로케일 가져오기
 
-// dayjs에 상대 시간 플러그인 사용
-dayjs.extend(relativeTime);
 
-// dayjs에 한국어 로케일 설정
+dayjs.extend(relativeTime);
 dayjs.locale('ko');
 
 

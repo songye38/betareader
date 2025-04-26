@@ -105,7 +105,6 @@ const MyPageModal = ({ onClose, username }) => {
                             alignItems: 'center',           // 수직 중앙 정렬
                             justifyContent: 'center',       // 수평 중앙 정렬
                             padding: '6px',                 // 아이콘과 border 사이의 간격
-                            // border: '1px solid #636466',    // border 설정 (원하는 색상, 두께로 조정 가능)
                             borderRadius: '12px',           // 둥근 테두리 (원 모양으로 만들기 위한 설정)
                             boxSizing: 'border-box'         // border가 이미지 크기에 영향을 미치지 않도록 설정
                         }}>
@@ -121,22 +120,27 @@ const MyPageModal = ({ onClose, username }) => {
                     gap: '12px',
                     maxHeight: '200px', // ✅ 최대 높이 설정
                     overflowY: 'auto',  // ✅ 세로 스크롤 활성화
-                    // 스크롤바 숨기기
                     scrollbarWidth: 'none',        // Firefox
                     msOverflowStyle: 'none',       // IE 10+
                 }}
             >
-                {notifications.map((notification) => (
-                    <AlarmItem
-                        key={notification.id}
-                        manuId = {notification.manuscript_id}
-                        tabId = {notification.tab_id}
-                        message={notification.message}
-                        timeAgo={notification.created_at} // 생성 시점으로부터 경과한 시간
-                        isNew={notification.isNew} // ✅ 요거!
-                    // onClick={() => router.push(`/comment/${notification.link_id}`)}
-                    />
-                ))}
+                {notifications.length === 0 ? (
+                    <div style={{ color: 'white', fontSize: '16px', fontWeight: '500', textAlign: 'center' }}>
+                        모든 알람을 확인했습니다.
+                    </div>
+                ) : (
+                    notifications.map((notification) => (
+                        <AlarmItem
+                            key={notification.id}
+                            notiId={notification.id}
+                            manuId={notification.manuscript_id}
+                            tabId={notification.tab_id}
+                            message={notification.message}
+                            timeAgo={notification.created_at} // 생성 시점으로부터 경과한 시간
+                            isNew={notification.isNew} // ✅ 요거!
+                        />
+                    ))
+                )}
             </div>
         </div>
     );

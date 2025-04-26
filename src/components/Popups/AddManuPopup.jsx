@@ -1,13 +1,10 @@
 
 'use client';
 import { useState } from "react";
-
-
-
 import AddManuBtn from "../Buttons/AddManuBtn";
 
-const AddManuPopup = () => {
 
+const AddManuPopup = () => {
   const [isVisible, setIsVisible] = useState(true); // 팝업의 보임 여부 상태
 
   const closePopup = () => {

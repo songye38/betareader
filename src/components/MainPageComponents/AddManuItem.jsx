@@ -2,8 +2,6 @@
 import React from 'react';
 import AddManuBtn from '../Buttons/AddManuBtn';
 
-
-
 const AddManuItem = () => {
   return (
     <div

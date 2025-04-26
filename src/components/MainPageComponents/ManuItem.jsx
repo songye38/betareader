@@ -13,10 +13,10 @@ dayjs.extend(relativeTime);
 dayjs.locale('ko');
 
 const ManuItem = ({ title, lastEditedAt, episodeCount, userId, ManuId }) => {
-  const { fetchEpisodesByManuId, allEpisodes } = useEpisodeForm(); // ✅ 컴포넌트 내부에서 호출
+  const { fetchEpisodesByManuId } = useEpisodeForm(); // ✅ 컴포넌트 내부에서 호출
   const router = useRouter();
   const relativeTimeDisplay = dayjs(lastEditedAt).fromNow();
-  const { selectedTab, setTabs, resetTabs } = useTabStore();
+  const { setTabs, resetTabs } = useTabStore();
   const setManuscript = useManuscriptStore((state) => state.setManuscript);
 
 

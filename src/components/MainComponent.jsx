@@ -6,5 +6,4 @@ const MainComponent = () => {
     <StartComponent />
   );
 };
-
 export default MainComponent;

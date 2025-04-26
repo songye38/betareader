@@ -6,7 +6,7 @@ import useAuthStore from '@/store/useAuthStore';
 const RecentEpiSet = () => {
   // useEpisodeForm 훅에서 필요한 데이터를 가져옵니다.
   const { recentEpisodes = [], fetchRecentEpisodes } = useEpisodeForm();
-  const { user, profile } = useAuthStore(); // 로그인된 유저 정보 가져오기
+  const { user } = useAuthStore(); // 로그인된 유저 정보 가져오기
 
 
   useEffect(() => {

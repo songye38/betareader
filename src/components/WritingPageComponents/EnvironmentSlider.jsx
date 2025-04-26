@@ -7,8 +7,8 @@ import { useRouter } from 'next/router';
 const EnvironmentSlider = ({ isVisible, onClose }) => {
   const [isModalOpen, setIsModalOpen] = useState(false); //💥💥💥💥💥💥추가됨
   const [editingIdeaId, setEditingIdeaId] = useState(null); //💥💥💥💥💥💥추가됨
-  const router = useRouter(); // useRouter 사용
-  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
+  const router = useRouter(); 
+  const { manuscriptId } = router.query; 
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { environments, fetchEnvironments, loading, deleteEnvironment } = useEnvironment();

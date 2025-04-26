@@ -192,6 +192,7 @@ export const saveComment = async ({ linkId, content, password, name }) => {
 
 /**
  * 특정 링크에 달린 모든 댓글을 불러오는 함수
+ * 링크 공유 페이지에서 댓글을 보여줄 때 사용하는 함수
  * @param {string} linkId - 댓글 링크 UUID
  * @returns {Promise<Array>} - 댓글 배열
  */
@@ -293,6 +294,10 @@ export const fetchLinkInfo = async (linkId) => {
 };
 
 
+/** 
+* 에피소드 id별로 댓글을 불러오는 함수 
+*/
+
 
 export const fetchCommentsByEpisodeId = async (episodeId) => {
     console.log("💬 댓글 세션별로 불러오기 시작:", episodeId);
@@ -350,3 +355,5 @@ export const fetchCommentsByEpisodeId = async (episodeId) => {
         throw err;
     }
 };
+
+

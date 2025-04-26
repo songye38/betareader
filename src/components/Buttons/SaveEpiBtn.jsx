@@ -1,12 +1,10 @@
 'use client';
 
 import React from 'react';
-import useTabStore from '@/store/useTabStore';
 
 const SaveEpiBtn = ({ disabled, onClick }) => {
   const baseColor = '#A78EF7';
   const disabledColor = '#D1C4F7';
-  const {tabs,selectedTab} = useTabStore();
 
   return (
     <button

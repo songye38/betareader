@@ -9,7 +9,7 @@ const Button1 = ({ onClick, type, status }) => {
     justifyContent: 'center',  // 수평 중앙 정렬
     alignItems: 'center',      // 수직 중앙 정렬
     gap: '0.25rem',
-    background: type === "default" 
+    background: type === "default"
       ? (status === "false" ? "gray" : "#A78EF7")  // status가 "false"일 때 gray
       : "#2C2D34",
     border: 'none',
@@ -26,28 +26,26 @@ const Button1 = ({ onClick, type, status }) => {
   // type이 'down'일 때만 absolute 위치 적용
   const buttonStyle = type === 'down'
     ? {
-        ...baseStyle,
-        position: 'absolute',
-        bottom: '22px',
-        width: '12rem',
-      }
+      ...baseStyle,
+      position: 'absolute',
+      bottom: '22px',
+      width: '12rem',
+    }
     : baseStyle; // default 스타일은 position 관련 속성 제거
 
   const buttonText = type === 'down' ? '원고지 추가' : '작성하기';
   const iconSrc = type === 'down' ? '/plus_icon.svg' : '/write_icon.svg';
 
   return (
-    <button 
+    <button
       onClick={status !== 'false' ? onClick : null}  // disabled일 경우 클릭 이벤트 비활성화
       style={buttonStyle}
       disabled={status === 'false'}  // disabled 상태일 때 버튼 비활성화
     >
-      {/* SVG Icon */}
+
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <img src={iconSrc} alt="Profile" width={24} height={24} />
       </div>
-
-      {/* Text */}
       <span>{buttonText}</span>
     </button>
   );

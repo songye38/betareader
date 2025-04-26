@@ -6,8 +6,8 @@ import useCharacter from '@/hooks/useCharacter';
 
 
 const CharacterSlider = ({ isVisible, onClose }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false); //💥💥💥💥💥💥추가됨
-  const [editingIdeaId, setEditingIdeaId] = useState(null); //💥💥💥💥💥💥추가됨
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [editingIdeaId, setEditingIdeaId] = useState(null); 
   const router = useRouter(); // useRouter 사용
   const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
   const sliderRef = useRef(null);

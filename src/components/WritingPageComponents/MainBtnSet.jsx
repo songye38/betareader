@@ -30,9 +30,6 @@ const MainBtnSet = () => {
       >
         원고집 설정
       </div>
-
-
-
       <div style={{ display: "flex", flexDirection: "row", gap: "24px" }}>
         {/* AddEpiBtn도 동일한 1/4 비율로 감싸줌 */}
         <div style={{ flex: '1 1 calc(25% - 18px)' }}>

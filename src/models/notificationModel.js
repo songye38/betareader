@@ -28,3 +28,30 @@ export const subscribeToNotifications = (userId, onNewNotification, onError) => 
         supabase.removeChannel(channel);
     };
 };
+
+/**
+ * 알림을 읽음 처리하는 함수
+ * @param {string} notificationId - 알림의 UUID
+ * @returns {Promise<boolean>} - 성공 여부 반환
+ */
+export const markNotificationAsRead = async (notificationId) => {
+    console.log("🔔 알림 읽음 처리 시작:", notificationId);
+
+    try {
+        const { error } = await supabase
+            .from("notifications")
+            .update({ read: true })
+            .eq("id", notificationId);
+
+        if (error) {
+            console.error("❌ 알림 읽음 처리 실패:", error.message);
+            return false;
+        }
+
+        console.log("✅ 알림 읽음 처리 완료");
+        return true;
+    } catch (err) {
+        console.error("예외 발생:", err.message);
+        return false;
+    }
+};

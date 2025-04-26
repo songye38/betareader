@@ -20,7 +20,7 @@ const RecentEpiItem = ({ episode, userId, ManuId }) => {
   const relativeTimeDisplay = dayjs(episode.last_edited_at).fromNow();
   const { fetchEpisodesByManuId } = useEpisodeForm(); // ✅ 컴포넌트 내부에서 호출
   const router = useRouter();
-  const { selectedTab, setTabs, resetTabs } = useTabStore();
+  const { setTabs, resetTabs } = useTabStore();
   const setManuscript = useManuscriptStore((state) => state.setManuscript);
   const borderColor = episode.is_feedback_mode ? '#F27878' : '#6071FB'
 

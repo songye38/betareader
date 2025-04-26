@@ -8,8 +8,8 @@ import useEnvironment from '@/hooks/useEnvironment';
 import useIdea from '@/hooks/useIdea';
 
 const AllItemSet = ({ isVisible, onClose }) => {
-  const router = useRouter(); // useRouter 사용
-  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
+  const router = useRouter();
+  const { manuscriptId } = router.query; 
   const [activeTab, setActiveTab] = useState('character');
   const { fetchCharacters, characters, deleteCharacter } = useCharacter();
   const { environments, fetchEnvironments, deleteEnvironment } = useEnvironment();
@@ -18,7 +18,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
 
   useEffect(() => {
     if (!manuscriptId) return;
-    fetchCharacters(manuscriptId); // 내부에서 loading 및 ideas 처리됨
+    fetchCharacters(manuscriptId); 
     fetchEnvironments(manuscriptId);
     fetchIdeas(manuscriptId);
   }, [isVisible]);
@@ -86,7 +86,7 @@ const AllItemSet = ({ isVisible, onClose }) => {
         fontFamily: 'Pretendard',
       }}
     >
-      {/* 상단 탭 + 닫기 버튼 */}
+
       <div
         style={{
           display: 'flex',

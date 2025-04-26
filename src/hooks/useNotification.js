@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { subscribeToNotifications } from '@/models/notificationModel';
+import { subscribeToNotifications,markNotificationAsRead } from '@/models/notificationModel';
 import supabase from '@/supabase/supabaseClient';
 
 const useNotifications = (userId) => {
@@ -16,6 +16,7 @@ const useNotifications = (userId) => {
             .from('notifications')
             .select('*')
             .eq('user_id', userId)
+            .eq('read', false) 
             .order('created_at', { ascending: false });
 
         if (error) {
@@ -55,8 +56,32 @@ const useNotifications = (userId) => {
         };
     }, [userId]);
 
+        /**
+     * 알림을 읽음 처리합니다.
+     * @param {string} notificationId - 알림 UUID
+     * @returns {Promise<boolean>} - 성공 여부 반환
+     */
+    const markNotificationAsReadById = async (notificationId) => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const result = await markNotificationAsRead(notificationId);
+            if (result) {
+                console.log("알림이 읽음 처리되었습니다.");
+            }
+            return result;
+        } catch (err) {
+            console.error("❌ 알림 처리 실패:", err.message);
+            setError(err.message || "알림 처리 중 오류 발생");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // ✅ fetchInitialNotifications도 리턴에 포함
-    return { notifications, loading, error, refetch: fetchInitialNotifications };
+    return { notifications, loading, error, refetch: fetchInitialNotifications,markNotificationAsReadById };
 };
 
 export default useNotifications;

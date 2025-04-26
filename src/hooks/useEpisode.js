@@ -17,7 +17,6 @@ const useEpisodeForm = () => {
   const [isSaving, setIsSaving] = useState(false); // 자동 저장 여부
   const { manuscript } = useManuscriptStore();
   const tabs = useTabStore((state) => state.tabs);
-  const { setTabs } = useTabStore();
   const selectedTab = useTabStore((state) => state.selectedTab);
   const { user } = useAuthStore();
   const { handleUpdateTab, handleAddTab } = useWritingTab(); // ✅ 훅 호출해서 함수 가져오기
@@ -56,9 +55,13 @@ const useEpisodeForm = () => {
 
     console.log("onSubmit 호출됨", formData);
 
+    if (!formData.title) {
+      toast.info("제목을 입력해주세요.");
+      return null;
+    }
 
-    if (!manuscriptId || !selectedTab.tab_id || !formData.title || !formData.content) {
-      toast.info("여기서 🎯🎯🎯🎯🎯🎯🎯🎯필수 정보가 누락되었습니다.");
+    if (!manuscriptId || !selectedTab.tab_id) {
+      console.log("manuscriptId || tabId가 누락되었습니다. ");
       return null;
     }
 

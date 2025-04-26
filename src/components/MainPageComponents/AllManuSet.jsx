@@ -23,8 +23,6 @@ const AllManuSet = () => {
         <LoadingSpinner size={48} color="#FF3D00" /> {/* 로딩 스피너 사용 */}
       </div>
     )
-
-    // return <div>로딩 중...</div>; // 로딩 상태 표시
   }
 
   if (error) {

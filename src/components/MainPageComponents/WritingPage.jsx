@@ -22,7 +22,7 @@ const WritingPage = () => {
   const { tabs } = useTabStore();
   const selectedTab = tabs.find((tab) => tab.selected === true);
   const { activeTitle, handleSliderOpen } = useSliderStore();
-  const { user, profile } = useAuthStore();
+  const { user } = useAuthStore();
 
   const {
     methods,
@@ -30,13 +30,7 @@ const WritingPage = () => {
     handleSubmit,
     errors,
     onSubmit,
-    reset,
-    recentEpisodes,
-    error,
-    loading,
-    fetchRecentEpisodes,
     fetchEpisodesByManuId,
-    allEpisodes,
   } = useEpisodeForm();
 
 

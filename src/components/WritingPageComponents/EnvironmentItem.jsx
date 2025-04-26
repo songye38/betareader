@@ -5,14 +5,6 @@ const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
   const backgroundColor = isHovered ? '#383940' : '#2C2D34';
 
-  // console.log("들어온environment ,environment",environment);
-  const {
-    title,
-    type,
-    description,
-    references = [],
-  } = environment;
-
   return (
     <div
       style={{
@@ -89,7 +81,7 @@ const EnvironmentItem = ({ environment, onEdit, onDelete }) => {
       <div style={{ fontSize: 14, color: '#A0A0A0', marginTop: '20px' }}>{getEnvironmentTypeKo(environment.type) || '카테고리 없음'}</div>
 
       {/* 상세 설명 */}
-      {description && (
+      {environment.description && (
         <div style={{ fontSize: 14, whiteSpace: 'pre-wrap', lineHeight: 1.4 }}>
           <strong>상세설명:</strong> {environment.description}
         </div>

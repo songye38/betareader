@@ -3,10 +3,7 @@ import dayjs from 'dayjs'; // dayjs 라이브러리 가져오기
 import relativeTime from 'dayjs/plugin/relativeTime'; // 상대 시간 플러그인
 import 'dayjs/locale/ko'; // 한국어 로케일 가져오기
 
-// dayjs에 상대 시간 플러그인 사용
 dayjs.extend(relativeTime);
-
-// dayjs에 한국어 로케일 설정
 dayjs.locale('ko');
 
 
@@ -15,9 +12,6 @@ const AllEpiItem = ({ episode, active, onClick, onDelete }) => {
   const { title, content, last_edited_at, is_feedback_mode } = episode;
   const [isHovered, setIsHovered] = useState(false);
   const relativeTimeDisplay = dayjs(last_edited_at).fromNow();
-
-
-
   const borderColor = active
     ? is_feedback_mode ? '#F27878' : '#6071FB'
     : 'transparent';
@@ -67,7 +61,7 @@ const AllEpiItem = ({ episode, active, onClick, onDelete }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              height: '20px', // 필요에 따라 height 설정
+              height: '20px', 
             }}
           >
             {is_feedback_mode ? '피드백 받는중' : '작성중'}

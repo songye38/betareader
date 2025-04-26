@@ -15,7 +15,6 @@ const CharacterItem = ({ character, onEdit, onDelete }) => {
     backstory
   } = character;
 
-  // console.log("character는 뭐로 들어오나",character);
 
   const backgroundColor = isHovered ? '#383940' : '#2C2D34';
 

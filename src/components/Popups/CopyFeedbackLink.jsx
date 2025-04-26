@@ -121,7 +121,6 @@ const CopyFeedbackLink = ({ linkUrl, onClose }) => {
           {linkUrl}
         </div>
 
-        {/* 버튼 추가 */}
         <div
           onClick={handleClick}
           style={{

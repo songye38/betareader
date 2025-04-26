@@ -1,7 +1,7 @@
 const SettingSaveBtn = ({ disabled }) => {
   return (
     <button
-      type="submit" // ✅ 폼 제출을 트리거
+      type="submit" 
       disabled={disabled}
       style={{
         width: 368,
@@ -17,7 +17,7 @@ const SettingSaveBtn = ({ disabled }) => {
         gap: 8,
         display: 'inline-flex',
         cursor: disabled ? 'not-allowed' : 'pointer',
-        border: 'none', // ✅ 버튼 기본 스타일 제거
+        border: 'none', 
       }}
     >
       <div

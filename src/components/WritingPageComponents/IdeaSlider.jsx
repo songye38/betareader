@@ -7,13 +7,12 @@ import { toast } from 'react-toastify';
 
 
 const IdeaSlider = ({ isVisible, onClose }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false); //💥💥💥💥💥💥추가됨
-  const [editingIdeaId, setEditingIdeaId] = useState(null); //💥💥💥💥💥💥추가됨
-  const router = useRouter(); // useRouter 사용
-  const { manuscriptId } = router.query; // URL에서 manuscriptId 추출
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [editingIdeaId, setEditingIdeaId] = useState(null); 
+  const router = useRouter(); 
+  const { manuscriptId } = router.query; 
   const sliderRef = useRef(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // ⬅️ 추가
   const { ideas, fetchIdeas, loading, deleteIdea } = useIdea();
 
 
@@ -32,9 +31,8 @@ const IdeaSlider = ({ isVisible, onClose }) => {
     fetchIdeas(manuscriptId); // 내부에서 loading 및 ideas 처리됨
   }, [isVisible, manuscriptId]);
 
-  //💥💥💥💥💥💥추가됨
+
   const handleEdit = (ideaId) => {
-    console.log("버튼이 눌리고 값이 들어오나?", ideaId);
     setEditingIdeaId(ideaId); // 수정할 아이디 설정
     setIsModalOpen(true);     // 모달 열기
   };
@@ -129,10 +127,6 @@ const IdeaSlider = ({ isVisible, onClose }) => {
             boxShadow: '2px 0 6px rgba(0,0,0,0.4)',
           }}
         >
-          {/* <AddIdeaModal
-            onClose={() => setIsPopupOpen(false)}
-            ideaId={selectedIdeaId}
-          /> */}
           <AddIdeaModal
             isOpen={isModalOpen}
             onClose={() => {

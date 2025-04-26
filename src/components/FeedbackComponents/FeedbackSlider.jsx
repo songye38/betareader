@@ -19,7 +19,6 @@ const FeedbackSlider = ({ isVisible, onClose, isPremiumUser = false }) => {
     loadCommentsByEpisodeId,
     commentsBySession,
     loading,
-    error
   } = useFeedback();
 
   const totalRounds = isPremiumUser ? MAX_PREMIUM_ROUNDS : MAX_FREE_ROUNDS;

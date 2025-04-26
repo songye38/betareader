@@ -8,6 +8,8 @@ import useTabStore from '@/store/useTabStore';
 import useEpisodeForm from '@/hooks/useEpisode';
 import useAuthStore from '@/store/useAuthStore';
 import useManuscriptStore from '@/store/useManuscriptStore';
+import { useFeedback } from '@/hooks/useFeedback';
+import useNotifications from '@/hooks/useNotification';
 
 // dayjs에 상대 시간 플러그인 사용
 dayjs.extend(relativeTime);
@@ -16,7 +18,8 @@ dayjs.extend(relativeTime);
 dayjs.locale('ko');
 
 
-const AlarmItem = ({ message, timeAgo, onClick, isNew,manuId,tabId }) => {
+const AlarmItem = ({ message, timeAgo,manuId,tabId,notiId,isNew }) => {
+    const {markNotificationAsReadById} = useNotifications();
     const { setManuscript } = useManuscriptStore(); // 원고 상태 업데이트 함수 가져오기
     const { user } = useAuthStore(); // 로그인된 유저 정보 가져오기
     const {fetchEpisodesByManuId} = useEpisodeForm();
@@ -25,11 +28,9 @@ const AlarmItem = ({ message, timeAgo, onClick, isNew,manuId,tabId }) => {
     const relativeTimeDisplay = dayjs(timeAgo).fromNow();
 
 
-    //TODO 여기 있는걸 다 해야 한다. 
-    // 필요한 것 userId, ManuId,TabId 세가지가 필요하다. 
     const handleClick = async() => {
 
-        if (user.id && manuId&&tabId) {
+        if (user.id && manuId&&tabId&&notiId) {
           const episodes = await fetchEpisodesByManuId(user.id, manuId);
           console.log("episodes", episodes);
           resetTabs();
@@ -40,6 +41,7 @@ const AlarmItem = ({ message, timeAgo, onClick, isNew,manuId,tabId }) => {
           const selectedTab = useTabStore.getState().selectedTab;
           console.log("selectedTab", selectedTab);
           useSliderStore.getState().setActiveSlider('feedback');
+          await markNotificationAsReadById(notiId); 
           router.push(`/manu/${manuId}?tab=${selectedTab.tab_id}`);
     
         }

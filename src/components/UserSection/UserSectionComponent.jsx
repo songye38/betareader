@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import UserInfoSection from './UserInfoSection';
 import UserGoalSection from './UserGoalSection';
 
 
-
-
 const UserSectionComponent = () => {
-
 
   return (
     <div
@@ -33,9 +30,6 @@ const UserSectionComponent = () => {
       >
         My BetaSpace
       </div>
-
-
-
       <div style={{ display: "flex", flexDirection: "row", gap: "24px" }}>
         <div style={{ width: '50%' }}>
           <UserInfoSection />
@@ -44,10 +38,6 @@ const UserSectionComponent = () => {
           <UserGoalSection />
         </div>
       </div>
-
-
-
-
     </div>
   );
 };

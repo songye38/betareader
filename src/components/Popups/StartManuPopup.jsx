@@ -5,9 +5,6 @@ import StartWritingBtn from "../Buttons/StartWritingBtn";
 const StartManuPopup = ({ onClose }) => {
   const [title, setTitle] = useState(""); // 제목 입력값 상태
 
-
-
-
   return (
     <div
       style={{

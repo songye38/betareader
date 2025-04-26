@@ -32,5 +32,4 @@ const EpisodeTab = ({ id, label, selected, onClick }) => {
     </div>
   );
 };
-
 export default EpisodeTab;
