@@ -3,8 +3,6 @@ import AllManuSet from "@/components/MainPageComponents/AllManuSet";
 import UserSectionComponent from "@/components/UserSection/UserSectionComponent";
 import useAuthStore from "@/store/useAuthStore"; // 사용자 상태 가져오기
 import WelcomeBackSection from "@/components/IntroComponents/WelcomeBackSection";
-import CopyFeedbackLink from "@/components/Popups/CopyFeedbackLink";
-import { useState } from "react";
 
 const MainPage = () => {
 

@@ -87,4 +87,40 @@ const useTabStore = create((set) => ({
     set((state) => ({ currentManuscriptId: state.currentManuscriptId + 1 })),
 }));
 
+
+
+// 세션 스토리지에 상태 저장하기
+if (typeof window !== 'undefined') {
+  // selectedTab 상태가 변경될 때마다 세션 스토리지에 저장
+  useTabStore.subscribe(
+    (state) => {
+      sessionStorage.setItem("selectedTab", JSON.stringify(state.selectedTab));
+    },
+    (state) => state.selectedTab // selectedTab 상태를 감지하여 저장
+  );
+
+  // 세션 스토리지에서 selectedTab 불러오기
+  const loadSelectedTabFromSessionStorage = () => {
+    const selectedTab = sessionStorage.getItem("selectedTab");
+    return selectedTab ? JSON.parse(selectedTab) : { tab_id: null, tab_no: null, id: null };
+  };
+
+  // 초기 상태 설정 (세션 스토리지에서 불러오기)
+  const selectedTab = loadSelectedTabFromSessionStorage();
+
+  // 세션 스토리지에서 불러온 selectedTab 상태 초기화
+  useTabStore.setState({
+    selectedTab: selectedTab,
+  });
+}
+
+
+
+
+
+
+
+
+
+
 export default useTabStore;

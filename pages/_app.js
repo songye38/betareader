@@ -35,8 +35,6 @@ export default function App({ Component, pageProps }) {
     <div className={`${geistSans.variable} ${geistMono.variable} ${poppins.className}`}>
       {/* feedback 페이지에서는 AuthListener를 렌더링하지 않음 */}
       {!shouldHideNavbar && <AuthListener />} {/* ✅ 로그인 상태 감지 및 Zustand 업데이트 */}
-      {/* <AuthListener /> ✅ 로그인 상태 감지 및 Zustand 업데이트 */}
-      {/* <Navbar />  */}
 
       {!shouldHideNavbar && <Navbar />}
       <Component {...pageProps} /> {/* 페이지별 내용 렌더링 */}
