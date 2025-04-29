@@ -6,7 +6,7 @@ const Signup = () => {
   const { control, handleSubmit } = useForm();
 
 
-  // TODO OAuth 로그인도 해야한다.
+  // TODO [SCRUM-32] OAuth 로그인도 해야한다.
   const { handleSignUp, handleOAuthSignIn, loading, error } = useAuth();
   const onSubmit = async (data) => {
 

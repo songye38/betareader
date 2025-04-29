@@ -80,7 +80,6 @@ export const useFeedback = () => {
         } catch (err) {
             console.error("addComment 에러:", err);
             setError(err.message || "댓글 저장 실패");
-            toast.error("댓글 저장 중 오류가 발생했어요.");
             return null;
         } finally {
             setLoading(false);
@@ -101,7 +100,6 @@ export const useFeedback = () => {
         } catch (err) {
             console.error("💥 댓글 로드 실패:", err.message);
             setError(err.message || "댓글 불러오기 실패");
-            toast.error("댓글을 불러오는 중 오류가 발생했어요.");
         } finally {
             setLoading(false);
         }
@@ -119,7 +117,6 @@ export const useFeedback = () => {
         } catch (err) {
             console.error("❌ 링크 정보 로드 실패:", err.message);
             setError(err.message || "링크 정보를 불러올 수 없습니다.");
-            toast.error("링크 정보를 가져오는 중 오류가 발생했어요.");
         } finally {
             setLoading(false);
         }
@@ -143,7 +140,6 @@ export const useFeedback = () => {
         } catch (err) {
             console.error("❌ 세션별 댓글 로딩 실패:", err.message);
             setError(err.message || "댓글을 불러오는 중 오류 발생");
-            toast.error("댓글을 세션별로 불러오는 데 실패했어요.");
         } finally {
             setLoading(false);
         }

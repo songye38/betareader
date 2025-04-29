@@ -8,7 +8,7 @@ import NavUserSection from './NavUserSection';
 
 // test
 
-// TODO :화면 어디든지 클릭하면 모달이 사라지도록 해야함
+// TODO [SCRUM-31] :화면 어디든지 클릭하면 모달이 사라지도록 해야함
 const poppins = Poppins({
   weight: ['800'],
   subsets: ['latin'],

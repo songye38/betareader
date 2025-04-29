@@ -23,8 +23,6 @@ const useIdea = () => {
 
   const handleKeywordChange = (updatedKeywords) => {
     console.log("handleKeywordChange 호출됨");
-
-    //TODO 이 부분 잠시 블럭처ㅣㄹ
     setValue('newKeywords', updatedKeywords);
 
     // watch로 최신 상태 가져오기

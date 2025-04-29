@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { fetchManuscriptsByUserId, updateEpisodeCount, updateLastEditedAt, updateManuscriptTitle } from '@/models/manuscriptModel';
 import { deleteManuscriptById } from '@/models/manuscriptModel'; // ✅ 삭제 함수 import
 import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
 
 const useManuscripts = (limit = null) => {
   const user = useAuthStore((state) => state.user);

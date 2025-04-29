@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
 import useTabStore from "@/store/useTabStore"; // Zustand 사용
 import useManuscriptStore from "@/store/useManuscriptStore";
 import useAuthStore from "@/store/useAuthStore";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 
 const useWritingTab = () => {
   const router = useRouter();

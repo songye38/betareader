@@ -274,7 +274,7 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', width: '956px', paddingBottom: '30px' }}>
         {/* 회원탈퇴 버튼 */}
         <button
-          // TODO 나중에 실제 회원탈퇴 기능과 연결해야 한다. 
+          // TODO [SCRUM-30] 나중에 실제 회원탈퇴 기능과 연결해야 한다. 
           onClick={() => alert("회원 탈퇴 기능이 실행됩니다.")}
           style={{
             width: "88px",

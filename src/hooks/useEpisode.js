@@ -114,9 +114,8 @@ const useEpisodeForm = () => {
       return response;
 
     } catch (err) {
-      console.error("❌ 요청 중 에러 발생:", err);
+      console.error("❌ 에피소드 저장 중 오류가 발생했습니다.:", err);
       setError(err.message || "알 수 없는 에러가 발생했습니다.");
-      toast.error("에피소드 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
       return null;
 
     } finally {
@@ -129,6 +128,7 @@ const useEpisodeForm = () => {
 
   // 최근 에피소드 5개 가져오기
   const fetchRecentEpisodes = async () => {
+    console.log("fetchRecentEpisodes 호출됨");
     setLoading(true);
     setError(null); // 에러 초기화
 
@@ -136,9 +136,8 @@ const useEpisodeForm = () => {
       const episodes = await getRecentEpisodes(user.id);
       setRecentEpisodes(episodes); // 성공 시 상태 저장
     } catch (err) {
-      console.error("❌ 에피소드 가져오기 실패:", err);
+      console.error("❌ 최근 에피소드 가져오기 실패:", err);
       setError(err.message || "최근 에피소드를 불러오는 데 실패했습니다.");
-      toast.error("최근 에피소드를 불러오는 데 실패했습니다. 다시 시도해주세요.");
     } finally {
       setLoading(false);
     }
@@ -154,9 +153,8 @@ const useEpisodeForm = () => {
       setAllEpisodes(allEpisodes);  // 가져온 에피소드 데이터를 상태에 저장
       return allEpisodes;
     } catch (err) {
-      console.error("❌ 에피소드 가져오기 실패:", err);
+      console.error("❌ 최근 에피소드 가져오기 실패:", err);
       setError(err.message || "에피소드를 불러오는 데 실패했습니다."); // 에러 상태 업데이트
-      toast.error("최근 에피소드를 불러오는 데 실패했습니다. 다시 시도해주세요.");
       return [];
     } finally {
       setLoading(false); // 로딩 끝났으므로 로딩 상태 비활성화
@@ -203,7 +201,6 @@ const useEpisodeForm = () => {
     } catch (err) {
       console.error("❌ 에피소드 삭제 실패:", err);
       setError(err.message || "에피소드를 삭제하는 데 실패했습니다.");
-      toast.error("에피소드를 삭제하는 데 실패했습니다. 다시 시도해주세요.");
     } finally {
       setLoading(false);
     }
@@ -217,7 +214,6 @@ const useEpisodeForm = () => {
       return updatedEpisode;
     } catch (err) {
       console.error("❌ 피드백 모드 업데이트 실패:", err);
-      toast.error("피드백 모드 업데이트에 실패했습니다.");
     }
   };
 

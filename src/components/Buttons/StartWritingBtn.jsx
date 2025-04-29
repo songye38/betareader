@@ -33,7 +33,6 @@ const StartWritingBtn = ({ manuTitle }) => {
       setManuscript({ id: data.id });
 
       // 4. 원고 페이지로 이동
-      //TODO 이동시키는거 변경
       router.push(`/manu/${data.id}`);
     } catch (err) {
       console.error("❌ 원고집 생성 실패:", err);
