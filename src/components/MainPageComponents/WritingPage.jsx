@@ -34,7 +34,11 @@ const WritingPage = () => {
   } = useEpisodeForm();
 
   useEffect(() => {
-    if (!user || !user.id || !manuscript || !manuscript.id) return;
+    if (!user || !user.id || !manuscript || !manuscript.id) {
+      console.log("이런 상황인가?");
+      return;
+    }
+    console.log("정보들은 다 있는건가/");
     fetchEpisodesByManuId(user.id, manuscript.id);
     console.log("selectedTab", selectedTab);
   }, [user?.id]);
