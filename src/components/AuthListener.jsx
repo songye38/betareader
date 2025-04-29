@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import * as Sentry from "@sentry/nextjs"; // ✅ 추가
 import supabase from "../supabase/supabaseClient";
 import useAuthStore from "../store/useAuthStore";
 
@@ -8,12 +9,10 @@ export default function AuthListener() {
 
   function extractStoragePath(fullUrl) {
     const baseUrl = "https://aypubingbgvofmsrbrut.supabase.co/storage/v1/object/public/profile-image/";
-
     if (!fullUrl.startsWith(baseUrl)) {
       console.warn("⚠️ 예상된 base URL이 아닙니다. 반환값은 원본입니다.");
-      return fullUrl; // or return null; 원하는 방식으로 처리 가능
+      return fullUrl;
     }
-
     return fullUrl.replace(baseUrl, "");
   }
 
@@ -29,49 +28,88 @@ export default function AuthListener() {
       let avatar_url = null;
       setUser({ id: user.id, email: user.email });
 
-      // 1. 기본 프로필 정보 가져오기
-      const { data: profile, error } = await supabase
-        .from("profile")
-        .select("username, avatar_url") // avatar_url → 사실은 storage 경로
-        .eq("user_id", session.user.id)
-        .single();
+      try {
+        const { data: profile, error } = await supabase
+          .from("profile")
+          .select("username, avatar_url")
+          .eq("user_id", session.user.id)
+          .single();
 
-      if (error) {
-        console.error("❌ 프로필 가져오기 실패:", error);
-        setProfile(null);
-        return;
-      }
-
-      // 프로필 데이터가 존재할 경우
-      if (profile) {
-        avatar_url = profile.avatar_url;
-      }
-
-      // 2. signed URL 생성
-      let signedUrl = null;
-      if (avatar_url) {
-        const { data, error: urlError } = await supabase.storage
-          .from("profile-image")
-          .createSignedUrl(extractStoragePath(avatar_url), 60 * 60 * 24 * 7); // 7일 유효
-
-        if (urlError) {
-          console.error("❌ Signed URL 생성 실패:", urlError);
-        } else {
-          signedUrl = data.signedUrl;
+        if (error) {
+          console.error("❌ 프로필 가져오기 실패:", error);
+          Sentry.captureException(error, {
+            contexts: {
+              auth: {
+                phase: "fetch profile",
+                userId: user.id,
+                email: user.email,
+              },
+            },
+          });
+          setProfile(null);
+          return;
         }
-      }
 
-      // 3. 상태 저장: avatar_url 대신 signedUrl을 저장해도 되고, 따로 분리해서도 저장 가능
-      setProfile({
-        username: profile.username,
-        avatar_url: signedUrl || null,
-      });
+        if (profile) {
+          avatar_url = profile.avatar_url;
+        }
+
+        let signedUrl = null;
+        if (avatar_url) {
+          const { data, error: urlError } = await supabase.storage
+            .from("profile-image")
+            .createSignedUrl(extractStoragePath(avatar_url), 60 * 60 * 24 * 7);
+
+          if (urlError) {
+            console.error("❌ Signed URL 생성 실패:", urlError);
+            Sentry.captureException(urlError, {
+              contexts: {
+                auth: {
+                  phase: "create signed URL",
+                  userId: user.id,
+                  email: user.email,
+                  avatar_url,
+                },
+              },
+            });
+          } else {
+            signedUrl = data.signedUrl;
+          }
+        }
+
+        setProfile({
+          username: profile.username,
+          avatar_url: signedUrl || null,
+        });
+      } catch (error) {
+        console.error("❌ fetchUserData 전체 실패:", error);
+        Sentry.captureException(error, {
+          contexts: {
+            auth: {
+              phase: "fetchUserData overall failure",
+              sessionExists: !!session,
+            },
+          },
+        });
+      }
     };
 
     const getUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      await fetchUserData(session);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        await fetchUserData(session);
+      } catch (error) {
+        console.error("❌ getUser 실패:", error);
+        Sentry.captureException(error, {
+          contexts: {
+            auth: {
+              phase: "getUser session fetch",
+            },
+          },
+        });
+      }
     };
+
     getUser();
 
     const { data: listener } = supabase.auth.onAuthStateChange(
@@ -87,4 +125,3 @@ export default function AuthListener() {
 
   return null;
 }
-
