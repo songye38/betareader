@@ -1,13 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
-import { subscribeToNotifications,markNotificationAsRead } from '@/models/notificationModel';
+import { subscribeToNotifications, markNotificationAsRead } from '@/models/notificationModel';
 import supabase from '@/supabase/supabaseClient';
 
 const useNotifications = (userId) => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [hasUnread, setHasUnread] = useState(false); // 👈 추가!
 
-    // ✅ 외부에서 호출 가능한 fetch 함수로 바꿈
+    // ✅ 외부 호출용
     const fetchInitialNotifications = useCallback(async () => {
         if (!userId) return;
 
@@ -16,29 +17,29 @@ const useNotifications = (userId) => {
             .from('notifications')
             .select('*')
             .eq('user_id', userId)
-            .eq('read', false) 
+            .eq('read', false)
             .order('created_at', { ascending: false });
 
         if (error) {
             setError(error.message);
         } else {
             setNotifications(data);
+            setHasUnread(data.length > 0); // 👈 읽지 않은 알림 있는지 체크
         }
         setLoading(false);
     }, [userId]);
 
-    // ✅ 컴포넌트 마운트시 최초 1회만 호출
     useEffect(() => {
         fetchInitialNotifications();
     }, [fetchInitialNotifications]);
 
-    // ✅ 실시간 알림 구독
     useEffect(() => {
         if (!userId) return;
 
         const handleNewNotification = (newNotification) => {
             const enhanced = { ...newNotification, isNew: true };
             setNotifications((prev) => [enhanced, ...prev]);
+            setHasUnread(true); // 👈 새 알림 오면 무조건 빨간점 표시
         };
 
         const handleError = (err) => {
@@ -56,11 +57,6 @@ const useNotifications = (userId) => {
         };
     }, [userId]);
 
-        /**
-     * 알림을 읽음 처리합니다.
-     * @param {string} notificationId - 알림 UUID
-     * @returns {Promise<boolean>} - 성공 여부 반환
-     */
     const markNotificationAsReadById = async (notificationId) => {
         setLoading(true);
         setError(null);
@@ -69,6 +65,8 @@ const useNotifications = (userId) => {
             const result = await markNotificationAsRead(notificationId);
             if (result) {
                 console.log("알림이 읽음 처리되었습니다.");
+                // 읽음 처리 후 다시 데이터 새로고침
+                await fetchInitialNotifications();
             }
             return result;
         } catch (err) {
@@ -80,8 +78,14 @@ const useNotifications = (userId) => {
         }
     };
 
-    // ✅ fetchInitialNotifications도 리턴에 포함
-    return { notifications, loading, error, refetch: fetchInitialNotifications,markNotificationAsReadById };
+    return {
+        notifications,
+        loading,
+        error,
+        hasUnread, // 👈 여기를 리턴에 추가!
+        refetch: fetchInitialNotifications,
+        markNotificationAsReadById,
+    };
 };
 
 export default useNotifications;

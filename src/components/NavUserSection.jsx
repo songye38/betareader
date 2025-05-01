@@ -10,7 +10,7 @@ const NavUserSection = ({ signin }) => {
   const router = useRouter(); // useRouter 사용
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
   const [avatarUrl, setAvatarUrl] = useState(undefined);
-  const { notifications, loading, error, refetch } = useNotifications(user.id);
+  const { notifications, loading, error, refetch, hasUnread } = useNotifications(user.id);
 
 
 
@@ -48,18 +48,31 @@ const NavUserSection = ({ signin }) => {
           display: 'inline-flex',
         }}
       >
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <img
+            src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
+            alt="Profile"
+            width={36}
+            height={36}
+            onClick={toggleModal}
+            style={{
+              borderRadius: '50%',
+              objectFit: 'cover',
+            }}
+          />
+          {hasUnread && (   // ✅ 읽지 않은 알림이 있을 때만 표시
+            <div style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '999px',
+              backgroundColor: 'red',
+              position: 'absolute',
+              top: '0px',     // 위로 붙이기
+              right: '-10px', // 오른쪽에 붙이기
+            }} />
+          )}
+        </div>
 
-        <img
-          src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
-          alt="Profile"
-          width={36}
-          height={36}
-          onClick={toggleModal}
-          style={{
-            borderRadius: '50%',
-            objectFit: 'cover',
-          }}
-        />
 
         {/* 드롭다운 화살표 아이콘 */}
         <div data-svg-wrapper style={{ position: 'relative' }}>
