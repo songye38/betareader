@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState ,useMemo} from 'react';
 import FeedbackSet from './FeedbackSet';
 import InsightSet from './InsightSet';
 import { useEffect } from 'react';
 import { useFeedback } from '@/hooks/useFeedback';
 import useTabStore from '@/store/useTabStore';
+import { useInsight } from '@/hooks/useInsight';
 
 const MAIN_PURPLE = '#8B5CF6'; // 메인 보라색
 
@@ -17,8 +18,21 @@ const FeedbackSlider = ({ isVisible, onClose, isPremiumUser = false }) => {
   const {
     loadCommentsByEpisodeId,
     commentsBySession,
-    loading,
+    loading: commentsLoading,
   } = useFeedback();
+
+  const {
+    loadInsightsByEpisodeId,
+    insightsBySession,
+    loading: insightsLoading,
+  } = useInsight();
+
+  // 여기서 합치기!
+  const isLoading = useMemo(() => {
+    return commentsLoading || insightsLoading;
+  }, [commentsLoading, insightsLoading]);
+
+
 
   const totalRounds = isPremiumUser ? MAX_PREMIUM_ROUNDS : MAX_FREE_ROUNDS;
   const usedRounds = 3; // 실제론 props로 전달받거나 계산
@@ -30,7 +44,7 @@ const FeedbackSlider = ({ isVisible, onClose, isPremiumUser = false }) => {
   useEffect(() => {
     if (selectedTab.id) {
       loadCommentsByEpisodeId(selectedTab.id);
-      
+      loadInsightsByEpisodeId(selectedTab.id);
     }
   }, [selectedTab.id]);
 
@@ -138,8 +152,9 @@ const FeedbackSlider = ({ isVisible, onClose, isPremiumUser = false }) => {
 
         {/* 현재 회차에 맞는 섹션 */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
-          <FeedbackSet round={activeRound} comments={commentsBySession[activeRound] || []} loading={loading} />
-          <InsightSet round={activeRound} />
+          <FeedbackSet round={activeRound} comments={commentsBySession[activeRound] || []} loading={commentsLoading} />
+          <InsightSet round={activeRound} insights={insightsBySession[activeRound] || []} loading={insightsLoading} />
+          {/* <InsightSet round={activeRound} /> */}
 
         </div>
       </div>

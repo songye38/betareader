@@ -45,7 +45,7 @@ const RecentEpiItem = ({ episode, userId, ManuId }) => {
       }
       // router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
       if (selectedTab.tab_id) {
-        router.push(`/manu/${manuId}?tab=${selectedTab.tab_id}`);
+        router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
       } else {
         console.error('selectedTab.tab_id is missing');
       }
