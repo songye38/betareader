@@ -3,7 +3,7 @@ import FeedbackItem from './FeedbackItem'; // 실제 경로에 맞게 조정해�
 
 
 
-const FeedbackSet = ({ round, comments = [], loading = false }) => {
+const FeedbackSet = ({ round, commentsBySession,comments = [], loading = false }) => {
 
   console.log("comments",comments);
   const formatDate = (timestamp) => timestamp.slice(0, 10);
@@ -45,6 +45,8 @@ const FeedbackSet = ({ round, comments = [], loading = false }) => {
             timestamp={formatDate(feedback.created_at)} // 필요한 경우 포맷 변경
           />
         ))
+
+        
       )}
     </div>
   );

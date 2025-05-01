@@ -304,9 +304,10 @@ export const fetchCommentsByEpisodeId = async (episodeId) => {
 
     try {
         // 1️⃣ 먼저 comment_links 테이블에서 해당 episode의 모든 세션을 가져옴
+        // 1️⃣ 먼저 comment_links 테이블에서 해당 episode의 모든 세션을 가져옴
         const { data: links, error: linkError } = await supabase
             .from("comment_links")
-            .select("id, session_order")
+            .select("id, session_order, expired")   // ✅ expired도 함께 조회
             .eq("episode_id", episodeId);
 
         if (linkError) {
@@ -337,18 +338,29 @@ export const fetchCommentsByEpisodeId = async (episodeId) => {
         // 3️⃣ session_order 기준으로 그룹핑
         const linkMap = {};
         links.forEach(link => {
-            linkMap[link.id] = link.session_order;
+            linkMap[link.id] = {
+                session_order: link.session_order,
+                expired: link.expired,
+            };
         });
 
         const grouped = {};
         comments.forEach(comment => {
-            const session = linkMap[comment.link_id] || 1;
-            if (!grouped[session]) grouped[session] = [];
-            grouped[session].push(comment);
+            const sessionInfo = linkMap[comment.link_id] || { session_order: 1, expired: false };
+            const session = sessionInfo.session_order;
+
+            if (!grouped[session]) {
+                grouped[session] = {
+                    expired: sessionInfo.expired,  // ✅ 세션별 expired 정보 저장
+                    comments: [],
+                };
+            }
+            grouped[session].comments.push(comment);
         });
 
-        console.log("📦 세션별 댓글 그룹핑 완료:", grouped);
+        console.log("📦 세션별 댓글 그룹핑 완료 (expired 포함):", grouped);
         return grouped;
+
     } catch (err) {
         console.error("댓글 세션별 불러오기 중 예외:", err.message);
         toast.error("알 수 없는 오류로 댓글을 불러오지 못했어요.");

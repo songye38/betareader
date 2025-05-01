@@ -5,14 +5,17 @@
 import { toast } from "react-toastify";
 import supabase from "@/supabase/supabaseClient";
 
+/**
+ * 에피소드 id별로 인사이트를 불러오는 함수 
+ */
 export const fetchInsightsByEpisodeId = async (episodeId) => {
-    console.log("💬 댓글 세션별로 불러오기 시작:", episodeId);
+    console.log("💬 인사이트 세션별로 불러오기 시작:", episodeId);
 
     try {
-        // 1️⃣ 먼저 comment_links 테이블에서 해당 episode의 모든 세션을 가져옴
+        // 1️⃣ 먼저 comment_links 테이블에서 해당 episode의 모든 세션을 가져옴 (expired 추가!)
         const { data: links, error: linkError } = await supabase
             .from("comment_links")
-            .select("id, session_order")
+            .select("id, session_order, expired") // ✅ expired도 가져옴
             .eq("episode_id", episodeId);
 
         if (linkError) {
@@ -25,7 +28,7 @@ export const fetchInsightsByEpisodeId = async (episodeId) => {
             return {}; // 댓글 없으면 빈 객체 리턴
         }
 
-        // 2️⃣ 각 링크 id에 해당하는 댓글 불러오기
+        // 2️⃣ 각 링크 id에 해당하는 인사이트 불러오기
         const linkIds = links.map(link => link.id);
 
         const { data: insights, error: insightsError } = await supabase
@@ -42,15 +45,23 @@ export const fetchInsightsByEpisodeId = async (episodeId) => {
 
         // 3️⃣ session_order 기준으로 그룹핑
         const linkMap = {};
+        const expiredMap = {}; // ✅ expired 상태도 저장
+
         links.forEach(link => {
             linkMap[link.id] = link.session_order;
+            expiredMap[link.session_order] = link.expired; // session_order별 expired 저장
         });
 
         const grouped = {};
         insights.forEach(insight => {
             const session = linkMap[insight.link_id] || 1;
-            if (!grouped[session]) grouped[session] = [];
-            grouped[session].push(insight);
+            if (!grouped[session]) {
+                grouped[session] = {
+                    expired: expiredMap[session] || false, // ✅ expired 정보 넣기
+                    insights: [],
+                };
+            }
+            grouped[session].insights.push(insight);
         });
 
         console.log("📦 세션별 인사이트 그룹핑 완료:", grouped);
@@ -61,3 +72,4 @@ export const fetchInsightsByEpisodeId = async (episodeId) => {
         throw err;
     }
 };
+
