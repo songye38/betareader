@@ -1,7 +1,7 @@
 import useTabStore from "@/store/useTabStore";
 import ContentInput from "@/components/WritingPageComponents/ContentInput";
 
-const EpisodeContentEditor = ({ control, errors, disabled }) => {
+const EpisodeContentEditor = ({ control, errors, disabled,onContentChange }) => {
 
   return (
     <>
@@ -9,6 +9,7 @@ const EpisodeContentEditor = ({ control, errors, disabled }) => {
         control={control}
         error={errors.content}
         disabled={disabled}
+        onChangeDetected={onContentChange}
 
       />
     </>

@@ -12,7 +12,7 @@ import FloatingBtnSet from '@/components/MainPageComponents/FloatingBtnSet';
 import useSliderStore from '@/store/useSliderStore';
 import useEpisodeForm from '@/hooks/useEpisode';
 import useAuthStore from '@/store/useAuthStore';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import useManuscriptStore from '@/store/useManuscriptStore';
 
 const titles = ['전체 에피소드', '아이디어', '캐릭터 카드', '세계관 노트', '북마크', '피드백'];
@@ -23,6 +23,8 @@ const WritingPage = () => {
   const selectedTab = tabs.find((tab) => tab.selected === true);
   const { activeTitle, handleSliderOpen } = useSliderStore();
   const { user } = useAuthStore();
+  const [isTitleChanged, setIsTitleChanged] = useState(false);
+  const [isContentChanged, setIsContentChanged] = useState(false);
 
   const {
     methods,
@@ -52,6 +54,18 @@ const WritingPage = () => {
     }
   }, [selectedTab]);
 
+  const handleTitleChange = () => {
+    console.log('타이틀 변경 감지!');
+    setIsTitleChanged(true);
+  };
+
+  const handleContentChange = () => {
+    console.log('내용 변경 감지!');
+    setIsContentChanged(true);
+  };
+
+
+
 
   // TODO 에피소드 아이디를 NavMainSection에 prop으로 넘겨줘야 함
 
@@ -60,6 +74,10 @@ const WritingPage = () => {
       <Navbar
         customNavComponent={
           <NavMainSection
+            isTitleChanged={isTitleChanged}
+            setIsTitleChanged={setIsTitleChanged}
+            isContentChanged = {isContentChanged}
+            setIsContentChanged={setIsContentChanged}
             tabId={selectedTab?.tab_id}
             is_feedback_mode={selectedTab?.is_feedback_mode}
             episodeId={selectedTab?.id}
@@ -108,6 +126,7 @@ const WritingPage = () => {
                 errors={errors}
                 title={selectedTab?.title || ''}
                 disabled={selectedTab?.is_feedback_mode === true}
+                onTitleChange={handleTitleChange}
               />
             </div>
 
@@ -125,6 +144,7 @@ const WritingPage = () => {
                 alignItems: 'center',
               }}
             >
+              {/* 메뉴바 */}
               {titles.map((title) => (
                 <WritingFloatingBtn
                   key={title}
@@ -142,6 +162,7 @@ const WritingPage = () => {
               control={control}
               errors={errors}
               disabled={selectedTab?.is_feedback_mode === true}
+              onContentChange={handleContentChange}
             />
           </div>
         </form>

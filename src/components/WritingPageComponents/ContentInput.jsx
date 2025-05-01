@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
-const ContentInput = ({ control, error, disabled = false }) => {
+const ContentInput = ({ control, error, disabled = false,onChangeDetected }) => {
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -46,8 +46,11 @@ const ContentInput = ({ control, error, disabled = false }) => {
             }}
             disabled={disabled}
             onInput={(e) => {
-              field.onChange(e); // form value 업데이트
-              handleResize(); // 높이 조절
+              field.onChange(e);   // form 값 업데이트
+              handleResize();      // 높이 조절
+              if (onChangeDetected) {
+                onChangeDetected(); // ✅ 부모에게 알리기
+              }
             }}
             style={{
               width: '80%',

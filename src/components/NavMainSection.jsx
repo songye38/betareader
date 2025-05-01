@@ -8,7 +8,7 @@ import useEpisodeForm from '@/hooks/useEpisode';
 import CopyFeedbackLink from './Popups/CopyFeedbackLink';
 import { toast } from 'react-toastify';
 
-const NavMainSection = ({ onSave, episodeId, userId, tabId, is_feedback_mode }) => {
+const NavMainSection = ({ onSave, episodeId, userId, tabId, is_feedback_mode,isTitleChanged,setIsTitleChanged,isContentChanged,setIsContentChanged }) => {
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
   const { handleUpdateFeedbackMode } = useEpisodeForm();
@@ -23,6 +23,12 @@ const NavMainSection = ({ onSave, episodeId, userId, tabId, is_feedback_mode }) 
   // const handleSelect = (option) => {
   //   setSelected(option); 
   // };
+
+  const handleSave = async () => {
+    await onSave(); // 원래 넘어온 저장 함수 호출
+    setIsTitleChanged(false); // ✅ 저장 완료 후 isTitleChanged 초기화
+    setIsContentChanged(false);
+  };
 
 
 
@@ -105,8 +111,12 @@ const NavMainSection = ({ onSave, episodeId, userId, tabId, is_feedback_mode }) 
       ) : (
         <>
           {/* 피드백 모드가 아니면 보이는 버튼들 */}
-          <SaveEpiBtn onClick={onSave} />
-          <CheckCommentBtn title="피드백 받기" onClick={handleOpenModal} disabled={episodeId === ""} />
+          <SaveEpiBtn onClick={handleSave} />
+          <CheckCommentBtn 
+            title="피드백 받기" 
+            onClick={handleOpenModal} 
+            disabled={episodeId === "" || isTitleChanged || isContentChanged} 
+          />
         </>
       )}
       {isModalOpen && (

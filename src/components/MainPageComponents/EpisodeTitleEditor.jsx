@@ -1,7 +1,7 @@
 import useTabStore from "@/store/useTabStore";
 import TitleInput_mini from "../FormComponents/TitleInput_mini";
 
-const EpisodeTitleEditor = ({ control, errors, title, disabled }) => {
+const EpisodeTitleEditor = ({ control, errors, title, disabled,onTitleChange }) => {
 
   return (
     <>
@@ -10,6 +10,7 @@ const EpisodeTitleEditor = ({ control, errors, title, disabled }) => {
         error={errors.content}
         title={title}
         disabled={disabled}
+        onChangeDetected={onTitleChange}
       />
     </>
   );
