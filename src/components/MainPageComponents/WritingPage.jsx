@@ -26,6 +26,8 @@ const WritingPage = () => {
   const [isTitleChanged, setIsTitleChanged] = useState(false);
   const [isContentChanged, setIsContentChanged] = useState(false);
 
+  console.log("tabs",tabs);
+
   const {
     methods,
     control,

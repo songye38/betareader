@@ -27,6 +27,11 @@ const RecentEpiItem = ({ episode, userId, ManuId }) => {
 
   const handleClick = async (tab_id) => {
 
+    if (!(userId && ManuId)) {
+      console.error('필수 파라미터가 부족합니다.', { userId: user.id, manuId, tabId, notiId });
+      return;
+    }
+
     if (userId && ManuId) {
       const episodes = await fetchEpisodesByManuId(userId, ManuId);
       resetTabs();
@@ -38,7 +43,12 @@ const RecentEpiItem = ({ episode, userId, ManuId }) => {
       if (episode.is_feedback_mode) {
         useSliderStore.getState().setActiveSlider('feedback');
       }
-      router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
+      // router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
+      if (selectedTab.tab_id) {
+        router.push(`/manu/${manuId}?tab=${selectedTab.tab_id}`);
+      } else {
+        console.error('selectedTab.tab_id is missing');
+      }
 
     }
   };

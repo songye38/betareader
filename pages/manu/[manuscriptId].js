@@ -18,6 +18,11 @@ const WritingFloatingMenu = () => {
   const {fetchEpisodesByManuId} = useEpisodeForm();
 
   const handleClick = async (tab_id, manuId) => {
+
+    if (!(manuId && tab_id)) {
+      console.error('필수 파라미터가 부족합니다.', { userId: user.id, manuId, tabId, notiId });
+      return;
+    }
     if (user.id && manuId) {
       const episodes = await fetchEpisodesByManuId(user.id, manuId);
       resetTabs();
@@ -28,7 +33,11 @@ const WritingFloatingMenu = () => {
         setActiveSlider('feedback');
       }
 
-      router.push(`/manu/${manuId}?tab=${selectedTab.tab_id}`);
+      if (selectedTab.tab_id) {
+        router.push(`/manu/${manuId}?tab=${selectedTab.tab_id}`);
+      } else {
+        console.error('selectedTab.tab_id is missing');
+      }
     }
   };
 

@@ -5,6 +5,8 @@ const useSliderStore = create((set) => ({
   activeSlider: null,  // 현재 활성화된 슬라이더
   isAllItemSetOpen: false,
   showModal: false, // 기존 모달 상태
+  activeRound : null,
+
 
   // 슬라이더를 열 때 호출되는 함수
   handleSliderOpen: (title) => {
@@ -42,6 +44,16 @@ const useSliderStore = create((set) => ({
   setActiveSlider: (slider) => {
     set({ activeSlider: slider }); // 특정 슬라이더를 활성화
   },
+
+    // activeRound를 설정하는 함수
+    setActiveRound: (round) => {
+      set({ activeRound: round });
+    },
+  
+    // activeRound를 초기화하는 함수
+    resetActiveRound: () => {
+      set({ activeRound: null });
+    },
 }));
 
 export default useSliderStore;
