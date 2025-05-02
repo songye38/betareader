@@ -94,9 +94,43 @@ export default function AuthListener() {
       }
     };
 
+    // const getUser = async () => {
+    //   try {
+    //     const { data: { session } } = await supabase.auth.getSession();
+    //     await fetchUserData(session);
+    //   } catch (error) {
+    //     console.error("❌ getUser 실패:", error);
+    //     Sentry.captureException(error, {
+    //       contexts: {
+    //         auth: {
+    //           phase: "getUser session fetch",
+    //         },
+    //       },
+    //     });
+    //   }
+    // };
     const getUser = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session }, error } = await supabase.auth.getSession();
+    
+        if (error) {
+          console.error("❌ 세션 가져오기 실패:", error.message);
+          Sentry.captureException(error, {
+            contexts: {
+              auth: {
+                phase: "getUser session fetch",
+              },
+            },
+          });
+          return;
+        }
+    
+        if (!session) {
+          console.warn("⚠️ 세션이 없습니다. 로그인 필요.");
+          // 필요하면 여기서 로그인 페이지로 이동하거나 처리할 수 있음
+          return;
+        }
+    
         await fetchUserData(session);
       } catch (error) {
         console.error("❌ getUser 실패:", error);
@@ -109,6 +143,7 @@ export default function AuthListener() {
         });
       }
     };
+    
 
     getUser();
 

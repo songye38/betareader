@@ -31,17 +31,39 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
   }, [profile]);
 
 
+  // useEffect(() => {
+  //   const getSession = async () => {
+  //     const { data, error } = await supabase.auth.getSession();
+  //     if (error) {
+  //       console.error("세션 가져오기 실패:", error);
+  //     } else {
+  //       setUserId(data.session.user.id);
+  //     }
+  //   };
+  //   getSession();
+  // }, []);
   useEffect(() => {
     const getSession = async () => {
       const { data, error } = await supabase.auth.getSession();
+  
       if (error) {
         console.error("세션 가져오기 실패:", error);
-      } else {
-        setUserId(data.session.user.id);
+        return;
       }
+  
+      if (!data.session) {
+        console.warn("세션이 없습니다. 로그인 페이지로 이동합니다.");
+        router.push('/'); // ✅ 로그인 페이지로 보내거나
+        return;
+      }
+  
+      setUserId(data.session.user.id);
+      console.log("✅ 세션 정상. userId 세팅 완료:", data.session.user.id);
     };
+  
     getSession();
   }, []);
+  
 
   // 변경 내용 저장 버튼 클릭 시 호출될 함수
   const handleSubmit = async () => {

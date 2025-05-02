@@ -12,17 +12,41 @@ const UserGoalSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // ✅ 세션 불러오기
+  // useEffect(() => {
+  //   const getSession = async () => {
+  //     const { data, error } = await supabase.auth.getSession();
+  //     if (error) {
+  //       console.error('세션 가져오기 실패:', error);
+  //     } else {
+  //       setSession(data?.session);
+  //     }
+  //   };
+  //   getSession();
+  // }, []);
   useEffect(() => {
     const getSession = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error('세션 가져오기 실패:', error);
-      } else {
-        setSession(data?.session);
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+  
+        if (error) {
+          console.error('❌ 세션 가져오기 실패:', error.message);
+          return;
+        }
+  
+        if (!session) {
+          console.warn('⚠️ 세션이 없습니다.');
+          return;
+        }
+  
+        setSession(session);
+      } catch (err) {
+        console.error('❌ getSession 실행 중 에러 발생:', err);
       }
     };
+  
     getSession();
   }, []);
+  
 
   const userId = session?.user?.id;
 
