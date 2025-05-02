@@ -5,6 +5,7 @@ import supabase from '@/supabase/supabaseClient';
 import { useState, useEffect } from 'react';
 import AlarmItem from './AlarmItem';
 import useNotifications from '@/hooks/useNotification';
+import useGlobalClickClose from '@/hooks/useGlobalClickClose'; // ✅ useGlobalClickClose import
 
 const MyPageModal = ({ onClose, username }) => {
     const logout = useAuthStore((state) => state.logout);
@@ -15,7 +16,7 @@ const MyPageModal = ({ onClose, username }) => {
     const [avatarUrl, setAvatarUrl] = useState(undefined);
 
     console.log("notifications", notifications);
-
+    const modalRef = useGlobalClickClose(true, onClose); // 🔥 모달 열려있다고 설정
 
     useEffect(() => {
         if (profile?.avatar_url !== undefined) {
@@ -42,6 +43,7 @@ const MyPageModal = ({ onClose, username }) => {
 
     return (
         <div
+            ref={modalRef}
             style={{
                 width: 345,
                 height: 'auto',
@@ -131,7 +133,7 @@ const MyPageModal = ({ onClose, username }) => {
                 ) : (
                     notifications.map((notification) => (
                         <AlarmItem
-                            notiType = {notification.type}
+                            notiType={notification.type}
                             key={notification.id}
                             notiId={notification.id}
                             manuId={notification.manuscript_id}

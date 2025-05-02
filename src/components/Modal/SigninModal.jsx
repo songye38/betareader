@@ -4,6 +4,7 @@ import Signin from '../Signin';
 
 const SigninModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null; // 모달이 닫히면 렌더링하지 않음
+  
 
   return (
     <div
