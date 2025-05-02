@@ -1,24 +1,46 @@
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'react-toastify';
 
 const Signin = () => {
   const { control, handleSubmit } = useForm();
   const { handleEmailSignIn, loading, error } = useAuth();
 
 
+  // const onSubmit = async (data) => {
+
+  //   try {
+  //     // 로그인 처리
+  //     const result = await handleEmailSignIn(data.email, data.password);
+
+  //     // 회원가입 성공 시 콘솔 출력
+  //     console.log("회원가입 성공", result);
+  //   } catch (error) {
+  //     console.error("회원가입 오류", error);
+  //   }
+  // };
+
   const onSubmit = async (data) => {
-
     try {
-      // 로그인 처리
       const result = await handleEmailSignIn(data.email, data.password);
-
-      // 회원가입 성공 시 콘솔 출력
-      console.log("회원가입 성공", result);
+  
+      console.log("로그인 결과", result);
+  
+      if (result?.isDeleted) {
+        // 탈퇴된 계정이라면 토스트 메시지 표시
+        toast.error("탈퇴된 계정입니다. 복구하려면 관리자에게 문의하세요.");
+      } else {
+        // 로그인 성공
+        console.log("로그인 성공", result);
+        // 로그인 후 화면 이동 등 추가 작업을 할 수 있습니다.
+      }
     } catch (error) {
-      console.error("회원가입 오류", error);
+      console.error("로그인 오류", error);
+      toast.error(error.message); // 에러가 있다면 토스트로 표시
     }
   };
+  
 
   return (
     <div className="signin-container">
