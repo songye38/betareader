@@ -18,7 +18,7 @@ dayjs.extend(relativeTime);
 dayjs.locale('ko');
 
 
-const AlarmItem = ({ message, timeAgo, manuId, tabId, notiId, isNew }) => {
+const AlarmItem = ({ message, timeAgo, manuId, tabId, notiId, isNew,notiType }) => {
     const { markNotificationAsReadById } = useNotifications();
     const { setManuscript } = useManuscriptStore(); // 원고 상태 업데이트 함수 가져오기
     const { user } = useAuthStore(); // 로그인된 유저 정보 가져오기
@@ -72,10 +72,6 @@ const AlarmItem = ({ message, timeAgo, manuId, tabId, notiId, isNew }) => {
         }
       };
       
-
-
-
-
     return (
         <div
             onClick={handleClick}
@@ -95,7 +91,7 @@ const AlarmItem = ({ message, timeAgo, manuId, tabId, notiId, isNew }) => {
             }}
         >
             <img
-                src="/notification-text.svg"
+                src={notiType === 'Comment' ? '/notification-text.svg' : '/insight_icon.svg'}
                 alt="알림"
                 width={24}
                 height={24}

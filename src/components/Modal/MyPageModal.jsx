@@ -131,6 +131,7 @@ const MyPageModal = ({ onClose, username }) => {
                 ) : (
                     notifications.map((notification) => (
                         <AlarmItem
+                            notiType = {notification.type}
                             key={notification.id}
                             notiId={notification.id}
                             manuId={notification.manuscript_id}
