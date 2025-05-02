@@ -134,6 +134,7 @@ const useEpisodeForm = () => {
 
     try {
       const episodes = await getRecentEpisodes(user.id);
+      console.log("fetch 할때의 user id ",user.id);
       setRecentEpisodes(episodes); // 성공 시 상태 저장
     } catch (err) {
       console.error("❌ 최근 에피소드 가져오기 실패:", err);

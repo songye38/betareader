@@ -13,6 +13,7 @@ const RecentEpiSet = () => {
 
   useEffect(() => {
     if (!user || !user.id) return;
+    console.log("RecentEpiSet user.id", user.id);
     fetchRecentEpisodes(user.id);
   }, [user?.id]);
 
@@ -41,7 +42,7 @@ const RecentEpiSet = () => {
           wordWrap: 'break-word',
         }}
       >
-        최근 작성한 원고 제목
+        최근 작성한 원고 목록
       </div>
 
       {/* 최근 에피소드가 있을 때만 표시 */}
@@ -65,7 +66,10 @@ const RecentEpiSet = () => {
           ))}
         </div>
       ) : (
-        <p style={{ color: 'gray', textAlign: 'center' }}>최근 작성한 원고가 없습니다.</p>
+        <p style={{ color: 'gray', textAlign: 'center' }}>
+          최근 작성한 원고가 없습니다. <br />
+          먼저 원고집을 추가해주시고 그 안에 원고를 추가해주세요.
+        </p>
       )}
     </div>
   );

@@ -38,34 +38,86 @@ export const saveEpisode = async (requestData) => {
 };
 
 
+// export const getRecentEpisodes = async (userId) => {
+//   try {
+//     // episode 테이블과 manuscript 테이블을 join하여 데이터를 가져옴
+//     const { data, error } = await supabase
+//       .from('episode')
+//       .select(`
+//           *,
+//           manuscript (
+//           id,
+//           user_id,
+//           title
+//           )
+//         `)  // episode 테이블의 모든 칼럼과 manuscript 테이블의 user_id를 선택
+//       .eq('manuscript.user_id', userId)  // manuscript 테이블의 user_id가 매개변수 userId와 일치하는 에피소드만 필터링
+//       .order('last_edited_at', { ascending: false })  // 최신순으로 정렬
+//       .limit(5);  // 최대 5개만 가져오기
+
+//     if (error) {
+//       console.error("❌ Supabase 에러:", error.message);
+//       throw error;
+//     }
+
+//     console.log("api에서 가져온 데이터 결과", data);
+//     return data;  // 데이터 반환
+    
+//   } catch (error) {
+//     console.error("❌ 에피소드 불러오기 실패:", error);
+//     throw error;
+//   }
+// };
+
 export const getRecentEpisodes = async (userId) => {
   try {
-    // episode 테이블과 manuscript 테이블을 join하여 데이터를 가져옴
-    const { data, error } = await supabase
+    // 1단계: userId로 manuscript id들 가져오기
+    const { data: manuscripts, error: manuscriptError } = await supabase
+      .from('manuscript')
+      .select('id')
+      .eq('user_id', userId);
+
+    if (manuscriptError) {
+      console.error("❌ manuscript 가져오기 에러:", manuscriptError.message);
+      throw manuscriptError;
+    }
+
+    const manuscriptIds = manuscripts.map(m => m.id); // id 배열
+
+    if (manuscriptIds.length === 0) {
+      // manuscript가 없으면 바로 빈 배열 반환
+      return [];
+    }
+
+    // 2단계: manuscriptIds를 가진 episode 가져오기
+    const { data: episodes, error: episodeError } = await supabase
       .from('episode')
       .select(`
-          *,
-          manuscript (
+        *,
+        manuscript (
           id,
           user_id,
           title
-          )
-        `)  // episode 테이블의 모든 칼럼과 manuscript 테이블의 user_id를 선택
-      .eq('manuscript.user_id', userId)  // manuscript 테이블의 user_id가 매개변수 userId와 일치하는 에피소드만 필터링
-      .order('last_edited_at', { ascending: false })  // 최신순으로 정렬
-      .limit(5);  // 최대 5개만 가져오기
+        )
+      `)
+      .in('manuscript_id', manuscriptIds) // 여러 manuscript_id로 조회
+      .order('last_edited_at', { ascending: false })
+      .limit(5);
 
-    if (error) {
-      console.error("❌ Supabase 에러:", error.message);
-      throw error;
+    if (episodeError) {
+      console.error("❌ episode 가져오기 에러:", episodeError.message);
+      throw episodeError;
     }
 
-    return data;  // 데이터 반환
+    console.log("api에서 가져온 최종 데이터:", episodes);
+    return episodes;
+    
   } catch (error) {
     console.error("❌ 에피소드 불러오기 실패:", error);
     throw error;
   }
 };
+
 
 export const getEpisodesByManuId = async (userId, manuscriptId) => {
 
