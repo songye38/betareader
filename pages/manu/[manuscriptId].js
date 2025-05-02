@@ -7,97 +7,85 @@ import WritingPage from '@/components/MainPageComponents/WritingPage';
 import useTabStore from '@/store/useTabStore';
 import useSliderStore from '@/store/useSliderStore';
 import useEpisodeForm from '@/hooks/useEpisode';
-import useAuthStore from '@/store/useAuthStore';
 
 const WritingFloatingMenu = () => {
   const { tabs, resetTabs, setTabs } = useTabStore();
   const { setActiveSlider } = useSliderStore();
   const router = useRouter();
-  const { user } = useAuthStore(); // user 상태 가져오기
-  const [hasAccess, setHasAccess] = useState(true); // ✅ 접근 권한 상태 추가
+  const [userId, setUserId] = useState(null);
+  const [hasAccess, setHasAccess] = useState(true);
   const { fetchEpisodesByManuId } = useEpisodeForm();
+  const [isReload, setIsReload] = useState(false);
 
-  const handleClick = async (tab_id, manuId) => {
-    console.log("함수가 호출되는가?");
-    console.log("user id는?", user.id);
-    // user.id가 null인 경우 handleClick 함수 실행하지 않도록 조건 추가
-    if (!user?.id) {
-      console.warn("⚠️ user.id가 없어서 handleClick이 실행되지 않습니다.");
-      return;
+  const getLocalStorageData = (key) => {
+    if (typeof window !== 'undefined') {
+      const storedData = localStorage.getItem(key);
+      if (storedData) {
+        try {
+          return JSON.parse(storedData);
+        } catch (err) {
+          console.error(`❌ ${key} 파싱 실패:`, err);
+        }
+      }
     }
-    if (!(manuId && tab_id)) {
-      console.error('필수 파라미터가 부족합니다.', { userId: user.id, manuId, tabId });
-      return;
-    }
+    return null;
+  };
 
-    const episodes = await fetchEpisodesByManuId(user.id, manuId);
-    resetTabs();
-    setTabs(episodes, tab_id);
-    console.log("episodes에 내용이 채워지는가?", episodes);
+  const fetchEpisodeData = async () => {
+    const manuscript = getLocalStorageData('manuscript');
+    const selectedTab = getLocalStorageData('selectedTab');
 
-    const selectedTab = useTabStore.getState().selectedTab;
-    if (selectedTab?.is_feedback_mode) {
-      setActiveSlider('feedback');
-    }
+    console.log("로컬 스토리지에서 가져온 데이터", { manuscript, selectedTab });
 
-    if (selectedTab.tab_id) {
-      router.push(`/manu/${manuId}?tab=${selectedTab.tab_id}`);
+    if (userId && manuscript?.id && selectedTab?.tab_id) {
+      const episodes = await fetchEpisodesByManuId(userId, manuscript.id);
+      resetTabs();
+      setTabs(episodes, selectedTab.tab_id); // 여기도 오타 고침 (tab_id)
+      console.log("episodes에 내용이 채워지는가?", episodes);
+
+      if (selectedTab?.is_feedback_mode) {
+        setActiveSlider('feedback');
+      }
+
+      if (selectedTab?.tab_id) {
+        router.push(`/manu/${manuscript.id}?tab=${selectedTab.tab_id}`);
+      } else {
+        console.error('selectedTab.tab_id is missing');
+      }
     } else {
-      console.error('selectedTab.tab_id is missing');
+      console.warn("⚠️ 필요한 데이터가 부족합니다.");
     }
   };
 
-
-  // ✅ auth-storage 확인해서 접근권한 체크하기 위한 용도
+  // 새로고침 감지
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const authStorageStr = localStorage.getItem('auth-storage');
-
-      if (authStorageStr) {
-        try {
-          const authStorage = JSON.parse(authStorageStr);
-
-          // user가 null이면 접근 권한이 없다고 판단
-          if (authStorage?.state?.user === null) {
-            console.warn('⚠️ user가 null이라서 접근 권한이 없습니다.');
-            setHasAccess(false); // 접근권한 없으면 false
-          }
-        } catch (err) {
-          console.error('❌ auth-storage 파싱 실패:', err);
-        }
-      } else {
-        console.warn('⚠️ auth-storage가 존재하지 않음');
-        setHasAccess(false); // auth-storage가 없으면 접근 권한 없음
+      const entries = performance.getEntriesByType("navigation");
+      if (entries.length > 0 && entries[0].type === "reload") {
+        console.log("✅ 새로고침 감지");
+        setIsReload(true);
       }
     }
   }, []);
 
+  // 최초 렌더링 때 userId 가져오기
   useEffect(() => {
-    console.log("📦 페이지가 새롭게 렌더링됨");
-    // 페이지가 처음 로드될 때 바로 로컬 스토리지에서 manuscript와 selectedTab 정보를 가져오기
-    try {
-      const manuscriptStr = localStorage.getItem('manuscript');
-      const selectedTabStr = localStorage.getItem('selectedTab');
-
-      if (manuscriptStr && selectedTabStr) {
-        const manuscript = JSON.parse(manuscriptStr);
-        const selectedTab = JSON.parse(selectedTabStr);
-
-        console.log("📦 로컬 스토리지에서 불러온 manuscript:", manuscript);
-        console.log("📦 로컬 스토리지에서 불러온 selectedTab:", selectedTab);
-
-        if (manuscript?.id && selectedTab?.tab_id) {
-          handleClick(selectedTab.tab_id, manuscript.id);
-        }
-      } else {
-        console.warn("⚠️ 로컬 스토리지에 manuscript나 selectedTab이 없음");
-      }
-    } catch (err) {
-      console.error("❌ 로컬 스토리지 파싱 실패:", err);
+    const userData = getLocalStorageData('auth-storage');
+    if (userData?.state?.user?.id) {
+      setUserId(userData.state.user.id); // userId만 세팅
+    } else {
+      console.warn('접근권한이 없습니다.');
+      setHasAccess(false);
     }
-  }, []); // 의존성 배열을 빈 배열로 설정하여 페이지 로드 시 한 번만 실행되도록 설정
+  }, []);
 
-  // ✅ 렌더링
+  // userId가 세팅되거나 새로고침 시 데이터 가져오기
+  useEffect(() => {
+    if (userId) {
+      fetchEpisodeData();
+    }
+  }, [userId, isReload]); // userId가 생기거나 새로고침이 감지되면
+
   if (!hasAccess) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center', fontSize: '1.2rem', color: 'white' }}>
