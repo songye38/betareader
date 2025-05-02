@@ -51,7 +51,7 @@ const UserInfoSection = () => {
           fontWeight: 500,
         }}
       >
-        PRO 멤버십
+        BASIC 멤버십
       </div>
 
       {/* 마이페이지 버튼 */}

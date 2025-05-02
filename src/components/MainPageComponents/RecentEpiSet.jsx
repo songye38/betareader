@@ -16,6 +16,8 @@ const RecentEpiSet = () => {
     fetchRecentEpisodes(user.id);
   }, [user?.id]);
 
+  console.log("recentEpisodes", recentEpisodes);
+
   return (
     <div
       style={{

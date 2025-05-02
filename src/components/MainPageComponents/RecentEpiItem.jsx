@@ -17,6 +17,7 @@ dayjs.locale('ko');
 
 
 const RecentEpiItem = ({ episode, userId, ManuId }) => {
+  console.log("RecentEpiItem episode", episode);
   const relativeTimeDisplay = dayjs(episode.last_edited_at).fromNow();
   const { fetchEpisodesByManuId } = useEpisodeForm(); // ✅ 컴포넌트 내부에서 호출
   const router = useRouter();
@@ -88,7 +89,9 @@ const RecentEpiItem = ({ episode, userId, ManuId }) => {
             wordWrap: 'break-word'
           }}
         >
-          {episode.manuscript.title} {/* 동적으로 제목 설정 */}
+          {/* {episode.manuscript.title}  */}
+          {/* 동적으로 제목 설정 */}
+          {episode.title}
         </div>
 
         <div

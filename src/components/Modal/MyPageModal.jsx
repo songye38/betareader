@@ -59,7 +59,7 @@ const MyPageModal = ({ onClose, username }) => {
             <div style={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', paddingBottom: '20px', borderBottom: '1.2px solid #636466' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <img
-                        src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
+                        src={avatarUrl === undefined ? "/default_user_profile_img.png" : (avatarUrl || "/default_user_profile_img.png")}
                         alt="Profile"
                         width={48}
                         height={48}
@@ -108,7 +108,7 @@ const MyPageModal = ({ onClose, username }) => {
                             borderRadius: '12px',           // 둥근 테두리 (원 모양으로 만들기 위한 설정)
                             boxSizing: 'border-box'         // border가 이미지 크기에 영향을 미치지 않도록 설정
                         }}>
-                        <img src="/logout_icon.svg" alt="Profile" width={24} height={24} onClick={() => handleNavigation('/mypage/profile')} />
+                        <img src="/logout_icon.svg" alt="Profile" width={24} height={24} />
                     </div>
                 </div>
             </div>

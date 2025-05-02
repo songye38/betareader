@@ -50,7 +50,7 @@ const NavUserSection = ({ signin }) => {
       >
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <img
-            src={avatarUrl === undefined ? "/profile_basic_img.svg" : (avatarUrl || "/write_icon.svg")}
+            src={avatarUrl === undefined ? "/default_user_profile_img.png" : (avatarUrl || "/default_user_profile_img.png")}
             alt="Profile"
             width={36}
             height={36}
