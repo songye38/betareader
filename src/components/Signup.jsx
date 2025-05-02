@@ -1,6 +1,7 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
   const { control, handleSubmit } = useForm();
@@ -12,6 +13,12 @@ const Signup = () => {
 
     try {
       // 회원가입 처리
+
+      // 비밀번호 길이 검사
+      if (data.password.length < 6) {
+        toast.error("비밀번호는 최소 6자 이상이어야 합니다.");
+        return; // 여기서 멈춤 (회원가입 시도 X)
+      }
       const result = await handleSignUp(data.email, data.password, data.nickname);
 
       // 회원가입 성공 시 콘솔 출력

@@ -31,8 +31,6 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
   }, [profile]);
 
 
-
-
   useEffect(() => {
     const getSession = async () => {
       const { data, error } = await supabase.auth.getSession();
@@ -100,16 +98,46 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
     }
   };
 
-
-
-
-
-
-
-
-
-
-
+  const handleWithdraw = async () => {
+    const confirmed = window.confirm("정말 탈퇴하시겠습니까?");
+    if (!confirmed) {
+      console.log("탈퇴가 취소되었습니다.");
+      return;
+    }
+  
+    try {
+      const { data: user, error: userError } = await supabase.auth.getUser();
+      if (userError || !user?.user) {
+        alert('로그인 정보를 찾을 수 없습니다.');
+        return;
+      }
+  
+      const response = await fetch('/api/withdraw', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.user.id }),
+      });
+  
+      const result = await response.json();
+  
+      if (response.ok) {
+        alert('회원 탈퇴가 완료되었습니다.');
+  
+        // 🔥 여기서 세션 끊기
+        await supabase.auth.signOut();
+  
+        // 원하는 곳으로 리다이렉트 (예: 홈 화면)
+        window.location.href = '/';  // 홈으로 이동
+      } else {
+        alert(`탈퇴 실패: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('탈퇴 요청 실패:', error);
+      alert('탈퇴 중 오류가 발생했습니다.');
+    }
+  };
+  
+  
 
 
 
@@ -275,7 +303,7 @@ const Profile = () => { // 컴포넌트 이름 대문자로 수정
         {/* 회원탈퇴 버튼 */}
         <button
           // TODO [SCRUM-30] 나중에 실제 회원탈퇴 기능과 연결해야 한다. 
-          onClick={() => alert("회원 탈퇴 기능이 실행됩니다.")}
+          onClick={handleWithdraw}
           style={{
             width: "88px",
             height: "36px",
