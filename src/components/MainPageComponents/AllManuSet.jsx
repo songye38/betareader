@@ -10,6 +10,8 @@ const AllManuSet = () => {
   const { manuscripts, loading, error, getManuscripts } = useManuscripts();
   const { user } = useAuthStore(); // 로그인된 유저 정보 가져오기
 
+  console.log("AllManuSet -> manuscripts", manuscripts);
+
   useEffect(() => {
     if (!user || !user.id) return;
     getManuscripts();

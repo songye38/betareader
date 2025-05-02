@@ -43,7 +43,7 @@ const ManuItem = ({ title, lastEditedAt, episodeCount, userId, ManuId }) => {
       const selectedTab = useTabStore.getState().selectedTab;
       console.log("manu item selectedTab", selectedTab);
       if (selectedTab.tab_id) {
-        router.push(`/manu/${manuId}?tab=${selectedTab.tab_id}`);
+        router.push(`/manu/${ManuId}?tab=${selectedTab.tab_id}`);
       } else {
         console.error('selectedTab.tab_id is missing');
       }
