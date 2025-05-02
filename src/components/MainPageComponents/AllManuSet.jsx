@@ -52,7 +52,7 @@ const AllManuSet = () => {
         >
           모든 원고집
         </div>
-        <AddManuBtn />
+        {manuscripts.length > 0 && <AddManuBtn />}
       </div>
 
       {/* 원고집이 있다면 표시 */}
