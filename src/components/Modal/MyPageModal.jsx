@@ -32,6 +32,7 @@ const MyPageModal = ({ onClose, username }) => {
 
 
     const handleLogout = async () => {
+        console.log("로그아웃 클릭");
         const { error } = await supabase.auth.signOut();
         if (error) {
             console.error("로그아웃 오류:", error.message);
