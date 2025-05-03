@@ -8,7 +8,7 @@ import useEpisodeForm from '@/hooks/useEpisode';
 import useTabStore from '@/store/useTabStore';
 import useManuscriptStore from '@/store/useManuscriptStore';
 import useSliderStore from '@/store/useSliderStore';
-import './RecentEpiItem.css'; // css 파일 임포트
+import styles from './RecentEpiItem.module.css'; // CSS Modules 사용
 
 dayjs.extend(relativeTime);
 dayjs.locale('ko');
@@ -43,19 +43,19 @@ const RecentEpiItem = ({ episode, userId, ManuId }) => {
   };
 
   return (
-    <div className="recent-epi-item" onClick={() => handleClick(episode.tab_id)}>
+    <div className={styles.recentEpiItem} onClick={() => handleClick(episode.tab_id)}>
       {/* 상단: 제목 + 시간 */}
-      <div className="recent-epi-top">
-        <div className="recent-epi-top-title">{episode.title}</div>
-        <div className="recent-epi-top-time">{relativeTimeDisplay}</div>
+      <div className={styles.recentEpiTop}>
+        <div className={styles.recentEpiTopTitle}>{episode.title}</div>
+        <div className={styles.recentEpiTopTime}>{relativeTimeDisplay}</div>
       </div>
 
       {/* 하단: 화 제목 + 내용 + 상태 */}
-      <div className="recent-epi-bottom">
-        <div className="recent-epi-bottom-title">{episode.title}</div>
-        <div className="recent-epi-bottom-content">{episode.content}</div>
+      <div className={styles.recentEpiBottom}>
+        <div className={styles.recentEpiBottomTitle}>{episode.title}</div>
+        <div className={styles.recentEpiBottomContent}>{episode.content}</div>
         <span
-          className="recent-epi-status"
+          className={styles.recentEpiStatus}
           style={{ backgroundColor: borderColor }}
         >
           {episode.is_feedback_mode ? '피드백 받는중' : '작성중'}

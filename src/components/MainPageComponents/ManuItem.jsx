@@ -5,7 +5,7 @@ import 'dayjs/locale/ko';
 import useEpisodeForm from '@/hooks/useEpisode';
 import useTabStore from '@/store/useTabStore';
 import useManuscriptStore from '@/store/useManuscriptStore';
-import './ManuItem.css'; // css 파일 임포트
+import styles from './ManuItem.module.css'; // CSS 모듈 임포트
 
 dayjs.extend(relativeTime);
 dayjs.locale('ko');
@@ -36,16 +36,16 @@ const ManuItem = ({ title, lastEditedAt, episodeCount, userId, ManuId }) => {
   };
 
   return (
-    <div className="manu-item" onClick={handleClick}>
-      <div className="manu-item-inner">
-        <div className="manu-item-title-box">
+    <div className={styles.manuItem} onClick={handleClick}>
+      <div className={styles.manuItemInner}>
+        <div className={styles.manuItemTitleBox}>
           <img src="/book_icon.svg" alt="Profile" width={24} height={24} />
-          <div className="manu-item-title">{title}</div>
+          <div className={styles.manuItemTitle}>{title}</div>
         </div>
-        <div className="manu-item-info-box">
-          <div className="manu-item-episode-count">{episodeCount}개의 원고지</div>
-          <div className="manu-item-dot" />
-          <div className="manu-item-time">{relativeTimeDisplay}</div>
+        <div className={styles.manuItemInfoBox}>
+          <div className={styles.manuItemEpisodeCount}>{episodeCount}개의 원고지</div>
+          <div className={styles.manuItemDot} />
+          <div className={styles.manuItemTime}>{relativeTimeDisplay}</div>
         </div>
       </div>
     </div>

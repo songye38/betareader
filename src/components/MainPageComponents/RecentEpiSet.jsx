@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import RecentEpiItem from './RecentEpiItem';
 import useEpisodeForm from '@/hooks/useEpisode';
 import useAuthStore from '@/store/useAuthStore';
-import './RecentEpiSet.css'; // css 파일 임포트
+import styles from './RecentEpiSet.module.css'; // CSS 모듈 임포트
 
 const RecentEpiSet = () => {
   const { recentEpisodes = [], fetchRecentEpisodes } = useEpisodeForm();
@@ -14,13 +14,13 @@ const RecentEpiSet = () => {
   }, [user?.id]);
 
   return (
-    <div className="recent-epi-container">
-      <div className="recent-epi-title">
+    <div className={styles.recentEpiContainer}>
+      <div className={styles.recentEpiTitle}>
         최근 작성한 원고 목록
       </div>
 
       {recentEpisodes.length > 0 ? (
-        <div className="recent-epi-list">
+        <div className={styles.recentEpiList}>
           {recentEpisodes.map((episode) => (
             <RecentEpiItem
               key={episode.id}
@@ -31,7 +31,7 @@ const RecentEpiSet = () => {
           ))}
         </div>
       ) : (
-        <p className="recent-epi-empty">
+        <p className={styles.recentEpiEmpty}>
           최근 작성한 원고가 없습니다. <br />
           먼저 원고집을 추가해주시고 그 안에 원고를 추가해주세요.
         </p>

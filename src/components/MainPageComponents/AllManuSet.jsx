@@ -5,7 +5,7 @@ import useManuscripts from "@/hooks/useManuscripts";
 import LoadingSpinner from "../etc/LoadingSpinner";
 import useAuthStore from "@/store/useAuthStore";
 import { useEffect } from "react";
-import './AllManuSet.css'; // css 파일 임포트
+import styles from './AllManuSet.module.css'; // CSS 모듈 임포트
 
 const AllManuSet = () => {
   const { manuscripts, loading, error, getManuscripts } = useManuscripts();
@@ -18,7 +18,7 @@ const AllManuSet = () => {
 
   if (loading) {
     return (
-      <div className="loader">
+      <div className={styles.loader}>
         <LoadingSpinner size={48} color="#FF3D00" />
       </div>
     )
@@ -29,13 +29,13 @@ const AllManuSet = () => {
   }
 
   return (
-    <div className="all-manu-container">
-      <div className="all-manu-header">
-        <div className="all-manu-title">모든 원고집</div>
+    <div className={styles.allManuContainer}>
+      <div className={styles.allManuHeader}>
+        <div className={styles.allManuTitle}>모든 원고집</div>
         {manuscripts.length > 0 && <AddManuBtn />}
       </div>
 
-      <div className="all-manu-list">
+      <div className={styles.allManuList}>
         {manuscripts.length > 0 ? (
           manuscripts.map((manuscript) => (
             <ManuItem
@@ -48,7 +48,7 @@ const AllManuSet = () => {
             />
           ))
         ) : (
-          <div className="all-manu-empty">
+          <div className={styles.allManuEmpty}>
             <AddManuItem />
           </div>
         )}
