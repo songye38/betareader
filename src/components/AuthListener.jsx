@@ -45,7 +45,9 @@ export default function AuthListener() {
           .eq("user_id", user.id)
           .single();
 
-        console.log('📥 profile fetch result:', profile, error);
+        // 여기서 로그를 확인
+        console.log('📥 profile fetch result:', profile);
+        console.log('📥 profile fetch error:', error);
 
         // 에러 처리 및 프로필이 없을 경우 처리
         if (error) {
