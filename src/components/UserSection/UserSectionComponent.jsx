@@ -1,19 +1,19 @@
 import React from 'react';
 import UserInfoSection from './UserInfoSection';
 import UserGoalSection from './UserGoalSection';
-import './UserSectionComponent.css'; // << css 파일 임포트
+import styles from './UserSectionComponent.module.css'; // CSS 모듈 import
 
 const UserSectionComponent = () => {
   return (
-    <div className="user-section-container">
-      <div className="user-section-title">
+    <div className={styles.userSectionContainer}>
+      <div className={styles.userSectionTitle}>
         My BetaSpace
       </div>
-      <div className="user-section-content">
-        <div className="user-section-half">
+      <div className={styles.userSectionContent}>
+        <div className={styles.userSectionHalf}>
           <UserInfoSection />
         </div>
-        <div className="user-section-half">
+        <div className={styles.userSectionHalf}>
           <UserGoalSection />
         </div>
       </div>
