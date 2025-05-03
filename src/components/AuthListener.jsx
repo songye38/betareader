@@ -7,6 +7,7 @@ export default function AuthListener() {
   const setUser = useAuthStore((state) => state.setUser);
   const setProfile = useAuthStore((state) => state.setProfile);
 
+  // 저장된 프로필 이미지 경로에서 실제 경로로 변환
   function extractStoragePath(fullUrl) {
     const baseUrl = "https://aypubingbgvofmsrbrut.supabase.co/storage/v1/object/public/profile-image/";
     if (!fullUrl.startsWith(baseUrl)) {
@@ -22,6 +23,7 @@ export default function AuthListener() {
     const fetchUserData = async (session) => {
       console.log('🧩 [fetchUserData] 시작, session:', session);
 
+      // 세션 확인
       if (!session?.user || !session?.access_token) {
         console.warn("⚠️ [fetchUserData] 유효하지 않은 세션입니다.");
         setUser(null);
@@ -35,13 +37,15 @@ export default function AuthListener() {
 
       try {
         console.log('📥 [fetchUserData] 프로필 조회 시작');
+        
+        // 프로필 데이터 가져오기
         const { data: profile, error } = await supabase
           .from("profile")
-          .select("username, avatar_url, user_id") // user_id 필드도 가져옵니다.
+          .select("username, avatar_url, user_id")  // user_id도 함께 가져옵니다.
           .eq("user_id", user.id)
           .single();
 
-        console.log('📥 profile fetch result:', profile, error);  // <-- 🔥 추가
+        console.log('📥 profile fetch result:', profile, error);
 
         if (error) {
           console.error("❌ [fetchUserData] 프로필 가져오기 실패:", error);
@@ -58,11 +62,22 @@ export default function AuthListener() {
           return;
         }
 
-        console.log('✅ [fetchUserData] 프로필 가져옴:', profile);
+        // profile이 제대로 가져왔는지 확인
+        if (!profile) {
+          console.warn("⚠️ [fetchUserData] 프로필이 없습니다.");
+          return;
+        }
 
         // 세션의 user.id와 프로필의 user_id 비교
-        console.log('🎯session.user.id:', session.user.id);
-        console.log('🎯profile.user_id:', profile.user_id);
+        console.log('session.user.id:', session.user.id);
+        console.log('profile.user_id:', profile.user_id);
+
+        if (session.user.id !== profile.user_id) {
+          console.warn("⚠️ [fetchUserData] 세션의 user.id와 프로필의 user_id가 일치하지 않음");
+          return;
+        }
+
+        console.log('✅ [fetchUserData] 프로필 가져옴:', profile);
 
         if (profile?.avatar_url) {
           avatar_url = profile.avatar_url;
@@ -97,6 +112,7 @@ export default function AuthListener() {
           username: profile.username,
           avatar_url: signedUrl || null,
         });
+
         console.log('🎯 [fetchUserData] 최종 프로필 설정 완료');
       } catch (error) {
         console.error("❌ [fetchUserData] 전체 실패:", error);
@@ -115,6 +131,7 @@ export default function AuthListener() {
     const getUser = async () => {
       console.log('🧩 [getUser] 호출됨');
       try {
+        // 세션 가져오기
         const { data: { session }, error } = await supabase.auth.getSession();
 
         console.log('📡 [getUser] getSession 결과:', session, error);
@@ -149,6 +166,7 @@ export default function AuthListener() {
       }
     };
 
+    // 세션 정보를 가져와서 사용
     getUser();
 
     const { data: listener } = supabase.auth.onAuthStateChange(
@@ -177,6 +195,7 @@ export default function AuthListener() {
       }
     );
 
+    // 언마운트 시 리스너 제거
     return () => {
       console.log('🛑 [AuthListener] 언마운트');
       listener?.subscription?.unsubscribe();
