@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import * as Sentry from "@sentry/nextjs"; // ✅ 추가
+import * as Sentry from "@sentry/nextjs";
 import supabase from "../supabase/supabaseClient";
 import useAuthStore from "../store/useAuthStore";
 
@@ -18,7 +18,8 @@ export default function AuthListener() {
 
   useEffect(() => {
     const fetchUserData = async (session) => {
-      if (!session?.user) {
+      if (!session?.user || !session?.access_token) {
+        console.warn("⚠️ 유효하지 않은 세션입니다.");
         setUser(null);
         setProfile(null);
         return;
@@ -32,7 +33,7 @@ export default function AuthListener() {
         const { data: profile, error } = await supabase
           .from("profile")
           .select("username, avatar_url")
-          .eq("user_id", session.user.id)
+          .eq("user_id", user.id)
           .single();
 
         if (error) {
@@ -50,7 +51,7 @@ export default function AuthListener() {
           return;
         }
 
-        if (profile) {
+        if (profile?.avatar_url) {
           avatar_url = profile.avatar_url;
         }
 
@@ -91,28 +92,14 @@ export default function AuthListener() {
             },
           },
         });
+        setProfile(null);
       }
     };
 
-    // const getUser = async () => {
-    //   try {
-    //     const { data: { session } } = await supabase.auth.getSession();
-    //     await fetchUserData(session);
-    //   } catch (error) {
-    //     console.error("❌ getUser 실패:", error);
-    //     Sentry.captureException(error, {
-    //       contexts: {
-    //         auth: {
-    //           phase: "getUser session fetch",
-    //         },
-    //       },
-    //     });
-    //   }
-    // };
     const getUser = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
-    
+
         if (error) {
           console.error("❌ 세션 가져오기 실패:", error.message);
           Sentry.captureException(error, {
@@ -124,32 +111,49 @@ export default function AuthListener() {
           });
           return;
         }
-    
+
         if (!session) {
           console.warn("⚠️ 세션이 없습니다. 로그인 필요.");
-          // 필요하면 여기서 로그인 페이지로 이동하거나 처리할 수 있음
           return;
         }
-    
+
         await fetchUserData(session);
       } catch (error) {
-        console.error("❌ getUser 실패:", error);
+        console.error("❌ getUser 전체 실패:", error);
         Sentry.captureException(error, {
           contexts: {
             auth: {
-              phase: "getUser session fetch",
+              phase: "getUser session fetch (overall failure)",
             },
           },
         });
       }
     };
-    
 
     getUser();
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        await fetchUserData(session);
+        try {
+          if (!session) {
+            console.warn("⚠️ onAuthStateChange: 세션 없음");
+            setUser(null);
+            setProfile(null);
+            return;
+          }
+          await fetchUserData(session);
+        } catch (error) {
+          console.error("❌ onAuthStateChange 에러:", error);
+          Sentry.captureException(error, {
+            contexts: {
+              auth: {
+                phase: "onAuthStateChange",
+                event,
+                sessionExists: !!session,
+              },
+            },
+          });
+        }
       }
     );
 
