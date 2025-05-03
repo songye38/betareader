@@ -41,6 +41,8 @@ export default function AuthListener() {
           .eq("user_id", user.id)
           .single();
 
+        console.log('📥 profile fetch result:', profile, error);  // <-- 🔥 추가
+
         if (error) {
           console.error("❌ [fetchUserData] 프로필 가져오기 실패:", error);
           Sentry.captureException(error, {
