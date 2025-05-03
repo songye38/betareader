@@ -32,6 +32,11 @@
 
 /* --- 모바일 대응 (반응형) 추가! --- */
 @media (max-width: 768px) {
+
+  .userSectionContainer {
+    width: 90%;
+  }
+
   .userSectionContent {
     flex-direction: column;
   }

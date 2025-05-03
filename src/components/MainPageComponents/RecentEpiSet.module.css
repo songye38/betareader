@@ -37,7 +37,7 @@
 /* --- 모바일 대응 --- */
 @media (max-width: 768px) {
   .recentEpiContainer {
-    width: 80%;
+    width: 90%;
     padding: 16px;
   }
 
