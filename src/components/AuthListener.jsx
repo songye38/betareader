@@ -47,6 +47,7 @@ export default function AuthListener() {
 
         console.log('📥 profile fetch result:', profile, error);
 
+        // 에러 처리 및 프로필이 없을 경우 처리
         if (error) {
           console.error("❌ [fetchUserData] 프로필 가져오기 실패:", error);
           Sentry.captureException(error, {
@@ -62,7 +63,6 @@ export default function AuthListener() {
           return;
         }
 
-        // profile이 제대로 가져왔는지 확인
         if (!profile) {
           console.warn("⚠️ [fetchUserData] 프로필이 없습니다.");
           return;
