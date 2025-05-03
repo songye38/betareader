@@ -26,7 +26,7 @@ export default function AuthListener() {
         console.warn("⚠️ [fetchUserData] 유효하지 않은 세션입니다.");
         setUser(null);
         setProfile(null);
-        return;
+        return false;
       }
 
       const user = session.user;
@@ -47,12 +47,12 @@ export default function AuthListener() {
             contexts: { auth: { phase: "fetch profile", userId: user.id, email: user.email } },
           });
           setProfile(null);
-          return;
+          return false;
         }
 
         if (profile.user_id !== user.id) {
           console.warn("⚠️ [fetchUserData] 세션의 user.id와 프로필의 user_id 불일치");
-          return;
+          return false;
         }
 
         let signedUrl = null;
@@ -78,6 +78,7 @@ export default function AuthListener() {
         });
 
         console.log('🎯 [fetchUserData] 최종 프로필 설정 완료');
+        return true;
 
       } catch (error) {
         console.error("❌ [fetchUserData] 전체 실패:", error);
@@ -85,7 +86,33 @@ export default function AuthListener() {
           contexts: { auth: { phase: "fetchUserData overall failure" } },
         });
         setProfile(null);
+        return false;
       }
+    };
+
+    const fetchUserDataWithRetry = async (session, maxRetries = 3, delayMs = 2000) => {
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        console.log(`🔄 [fetchUserDataWithRetry] 시도 ${attempt}/${maxRetries}`);
+        const success = await fetchUserData(session);
+
+        if (success) {
+          console.log('✅ [fetchUserDataWithRetry] 프로필 가져오기 성공');
+          return;
+        }
+
+        if (attempt < maxRetries) {
+          console.log(`⏳ [fetchUserDataWithRetry] ${delayMs}ms 후 재시도 예정`);
+          await new Promise(resolve => setTimeout(resolve, delayMs));
+        }
+      }
+
+      console.error('❌ [fetchUserDataWithRetry] 모든 시도 실패');
+      Sentry.captureMessage('모든 프로필 가져오기 시도 실패', {
+        level: 'error',
+        contexts: { auth: { phase: "fetchUserData retries exhausted" } }
+      });
+      setUser(null);
+      setProfile(null);
     };
 
     const initializeAuth = async () => {
@@ -101,23 +128,17 @@ export default function AuthListener() {
       }
 
       if (session) {
-        console.log('✅ [initializeAuth] 초기 세션 발견, fetchUserData 실행');
-        await fetchUserData(session);
+        console.log('✅ [initializeAuth] 초기 세션 발견, fetchUserDataWithRetry 실행');
+        await fetchUserDataWithRetry(session);
       } else {
         console.warn('⚠️ [initializeAuth] 초기 세션 없음, auth 이벤트 대기');
       }
     };
 
-    // 초기 세션 가져오기
     initializeAuth();
 
-    // 인증 상태 변경 리스너 등록
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('📡 [onAuthStateChange] 이벤트 발생:', event);
-
-      if (event === "INITIAL_SESSION") {
-        console.log('🆗 [onAuthStateChange] 초기 세션 감지');
-      }
 
       if (!session) {
         console.warn('⚠️ [onAuthStateChange] 세션 없음, 상태 초기화');
@@ -126,10 +147,9 @@ export default function AuthListener() {
         return;
       }
 
-      await fetchUserData(session);
+      await fetchUserDataWithRetry(session);
     });
 
-    // 컴포넌트 언마운트 시 리스너 제거
     return () => {
       console.log('🛑 [AuthListener] 컴포넌트 언마운트 - 리스너 제거');
       authListener?.subscription?.unsubscribe();
