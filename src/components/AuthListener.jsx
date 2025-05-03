@@ -7,7 +7,6 @@ export default function AuthListener() {
   const setUser = useAuthStore((state) => state.setUser);
   const setProfile = useAuthStore((state) => state.setProfile);
 
-  // 저장된 프로필 이미지 경로에서 실제 경로로 변환
   function extractStoragePath(fullUrl) {
     const baseUrl = "https://aypubingbgvofmsrbrut.supabase.co/storage/v1/object/public/profile-image/";
     if (!fullUrl.startsWith(baseUrl)) {
@@ -23,7 +22,7 @@ export default function AuthListener() {
     const fetchUserData = async (session) => {
       console.log('🧩 [fetchUserData] 시작, session:', session);
 
-      // 세션 확인
+      // 세션이 없다면 바로 종료
       if (!session?.user || !session?.access_token) {
         console.warn("⚠️ [fetchUserData] 유효하지 않은 세션입니다.");
         setUser(null);
@@ -37,19 +36,18 @@ export default function AuthListener() {
 
       try {
         console.log('📥 [fetchUserData] 프로필 조회 시작');
-        
+
         // 프로필 데이터 가져오기
         const { data: profile, error } = await supabase
           .from("profile")
-          .select("username, avatar_url, user_id")  // user_id도 함께 가져옵니다.
+          .select("username, avatar_url, user_id")
           .eq("user_id", user.id)
           .single();
 
-        // 여기서 로그를 확인
+        // 데이터와 오류를 확인
         console.log('📥 profile fetch result:', profile);
         console.log('📥 profile fetch error:', error);
 
-        // 에러 처리 및 프로필이 없을 경우 처리
         if (error) {
           console.error("❌ [fetchUserData] 프로필 가져오기 실패:", error);
           Sentry.captureException(error, {
