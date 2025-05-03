@@ -17,9 +17,13 @@ export default function AuthListener() {
   }
 
   useEffect(() => {
+    console.log('🌀 [AuthListener] useEffect triggered');
+
     const fetchUserData = async (session) => {
+      console.log('🧩 [fetchUserData] 시작, session:', session);
+
       if (!session?.user || !session?.access_token) {
-        console.warn("⚠️ 유효하지 않은 세션입니다.");
+        console.warn("⚠️ [fetchUserData] 유효하지 않은 세션입니다.");
         setUser(null);
         setProfile(null);
         return;
@@ -30,6 +34,7 @@ export default function AuthListener() {
       setUser({ id: user.id, email: user.email });
 
       try {
+        console.log('📥 [fetchUserData] 프로필 조회 시작');
         const { data: profile, error } = await supabase
           .from("profile")
           .select("username, avatar_url")
@@ -37,7 +42,7 @@ export default function AuthListener() {
           .single();
 
         if (error) {
-          console.error("❌ 프로필 가져오기 실패:", error);
+          console.error("❌ [fetchUserData] 프로필 가져오기 실패:", error);
           Sentry.captureException(error, {
             contexts: {
               auth: {
@@ -51,18 +56,21 @@ export default function AuthListener() {
           return;
         }
 
+        console.log('✅ [fetchUserData] 프로필 가져옴:', profile);
+
         if (profile?.avatar_url) {
           avatar_url = profile.avatar_url;
         }
 
         let signedUrl = null;
         if (avatar_url) {
+          console.log('🔏 [fetchUserData] Signed URL 생성 시도');
           const { data, error: urlError } = await supabase.storage
             .from("profile-image")
             .createSignedUrl(extractStoragePath(avatar_url), 60 * 60 * 24 * 7);
 
           if (urlError) {
-            console.error("❌ Signed URL 생성 실패:", urlError);
+            console.error("❌ [fetchUserData] Signed URL 생성 실패:", urlError);
             Sentry.captureException(urlError, {
               contexts: {
                 auth: {
@@ -74,6 +82,7 @@ export default function AuthListener() {
               },
             });
           } else {
+            console.log('✅ [fetchUserData] Signed URL 생성 성공:', data);
             signedUrl = data.signedUrl;
           }
         }
@@ -82,8 +91,9 @@ export default function AuthListener() {
           username: profile.username,
           avatar_url: signedUrl || null,
         });
+        console.log('🎯 [fetchUserData] 최종 프로필 설정 완료');
       } catch (error) {
-        console.error("❌ fetchUserData 전체 실패:", error);
+        console.error("❌ [fetchUserData] 전체 실패:", error);
         Sentry.captureException(error, {
           contexts: {
             auth: {
@@ -97,13 +107,14 @@ export default function AuthListener() {
     };
 
     const getUser = async () => {
+      console.log('🧩 [getUser] 호출됨');
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
 
-        console.log('session:', session);
+        console.log('📡 [getUser] getSession 결과:', session, error);
 
         if (error) {
-          console.error("❌ 세션 가져오기 실패:", error.message);
+          console.error("❌ [getUser] 세션 가져오기 실패:", error.message);
           Sentry.captureException(error, {
             contexts: {
               auth: {
@@ -115,13 +126,13 @@ export default function AuthListener() {
         }
 
         if (!session) {
-          console.warn("⚠️ 세션이 없습니다. 로그인 필요.");
+          console.warn("⚠️ [getUser] 세션이 없습니다. 로그인 필요.");
           return;
         }
 
         await fetchUserData(session);
       } catch (error) {
-        console.error("❌ getUser 전체 실패:", error);
+        console.error("❌ [getUser] 전체 실패:", error);
         Sentry.captureException(error, {
           contexts: {
             auth: {
@@ -136,16 +147,17 @@ export default function AuthListener() {
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('📡 [onAuthStateChange] 발생:', event, session);
         try {
           if (!session) {
-            console.warn("⚠️ onAuthStateChange: 세션 없음");
+            console.warn("⚠️ [onAuthStateChange] 세션 없음");
             setUser(null);
             setProfile(null);
             return;
           }
           await fetchUserData(session);
         } catch (error) {
-          console.error("❌ onAuthStateChange 에러:", error);
+          console.error("❌ [onAuthStateChange] 에러:", error);
           Sentry.captureException(error, {
             contexts: {
               auth: {
@@ -160,6 +172,7 @@ export default function AuthListener() {
     );
 
     return () => {
+      console.log('🛑 [AuthListener] 언마운트');
       listener?.subscription?.unsubscribe();
     };
   }, [setUser, setProfile]);
