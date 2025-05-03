@@ -60,7 +60,7 @@ export default function AuthListener() {
           console.log('🔏 [fetchUserData] Signed URL 생성 시도');
           const { data, error: urlError } = await supabase.storage
             .from("profile-image")
-            .createSignedUrl(extractStoragePath(profile.avatar_url), 60 * 60 * 24 * 7); // 7일
+            .createSignedUrl(extractStoragePath(profile.avatar_url), 60 * 60 * 24 * 7);
 
           if (urlError) {
             console.error("❌ [fetchUserData] Signed URL 생성 실패:", urlError);
@@ -90,7 +90,7 @@ export default function AuthListener() {
       }
     };
 
-    const fetchUserDataWithRetry = async (session, maxRetries = 3, delayMs = 2000) => {
+    const fetchUserDataWithRetry = async (session, maxRetries = 3, delayMs = 1000) => {
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
         console.log(`🔄 [fetchUserDataWithRetry] 시도 ${attempt}/${maxRetries}`);
         const success = await fetchUserData(session);
@@ -101,18 +101,13 @@ export default function AuthListener() {
         }
 
         if (attempt < maxRetries) {
-          console.log(`⏳ [fetchUserDataWithRetry] ${delayMs}ms 후 재시도 예정`);
+          console.log(`⏳ [fetchUserDataWithRetry] ${delayMs}ms 대기 후 재시도 준비`);
           await new Promise(resolve => setTimeout(resolve, delayMs));
         }
       }
 
-      console.error('❌ [fetchUserDataWithRetry] 모든 시도 실패');
-      Sentry.captureMessage('모든 프로필 가져오기 시도 실패', {
-        level: 'error',
-        contexts: { auth: { phase: "fetchUserData retries exhausted" } }
-      });
-      setUser(null);
-      setProfile(null);
+      console.error('❌ [fetchUserDataWithRetry] 모든 재시도 실패');
+      alert('프로필을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.');
     };
 
     const initializeAuth = async () => {
