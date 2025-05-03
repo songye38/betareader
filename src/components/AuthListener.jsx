@@ -37,7 +37,7 @@ export default function AuthListener() {
         console.log('📥 [fetchUserData] 프로필 조회 시작');
         const { data: profile, error } = await supabase
           .from("profile")
-          .select("username, avatar_url")
+          .select("username, avatar_url, user_id") // user_id 필드도 가져옵니다.
           .eq("user_id", user.id)
           .single();
 
@@ -59,6 +59,10 @@ export default function AuthListener() {
         }
 
         console.log('✅ [fetchUserData] 프로필 가져옴:', profile);
+
+        // 세션의 user.id와 프로필의 user_id 비교
+        console.log('🎯session.user.id:', session.user.id);
+        console.log('🎯profile.user_id:', profile.user_id);
 
         if (profile?.avatar_url) {
           avatar_url = profile.avatar_url;
