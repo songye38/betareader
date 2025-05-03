@@ -7,6 +7,7 @@ import WritingPage from '@/components/MainPageComponents/WritingPage';
 import useTabStore from '@/store/useTabStore';
 import useSliderStore from '@/store/useSliderStore';
 import useEpisodeForm from '@/hooks/useEpisode';
+import MobileAlert from '@/components/MobileAlert';
 
 const WritingFloatingMenu = () => {
   const { tabs, resetTabs, setTabs } = useTabStore();
@@ -96,6 +97,7 @@ const WritingFloatingMenu = () => {
 
   return (
     <div>
+      <MobileAlert /> 
       {tabs.length === 0 ? <StartPage /> : <WritingPage />}
     </div>
   );
