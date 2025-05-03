@@ -100,6 +100,8 @@ export default function AuthListener() {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
 
+        console.log('session:', session);
+
         if (error) {
           console.error("❌ 세션 가져오기 실패:", error.message);
           Sentry.captureException(error, {
