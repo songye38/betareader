@@ -5,60 +5,37 @@ import useManuscripts from "@/hooks/useManuscripts";
 import LoadingSpinner from "../etc/LoadingSpinner";
 import useAuthStore from "@/store/useAuthStore";
 import { useEffect } from "react";
+import './AllManuSet.css'; // css 파일 임포트
 
 const AllManuSet = () => {
   const { manuscripts, loading, error, getManuscripts } = useManuscripts();
-  const { user } = useAuthStore(); // 로그인된 유저 정보 가져오기
-
-  console.log("AllManuSet -> manuscripts", manuscripts);
+  const { user } = useAuthStore();
 
   useEffect(() => {
     if (!user || !user.id) return;
     getManuscripts();
   }, [user?.id]);
 
-
-
   if (loading) {
     return (
-      <div className="loader" style={{ position: 'absolute', top: 0, left: 0 }}>
-        <LoadingSpinner size={48} color="#FF3D00" /> {/* 로딩 스피너 사용 */}
+      <div className="loader">
+        <LoadingSpinner size={48} color="#FF3D00" />
       </div>
     )
   }
 
   if (error) {
-    return <div>에러 발생: {error}</div>; // 에러 메시지 표시
+    return <div>에러 발생: {error}</div>;
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginBottom: '60px' }}>
-      <div
-        style={{
-          width: 1096,
-          height: 40,
-          justifyContent: "space-between",
-          alignItems: "center",
-          display: "inline-flex",
-        }}
-      >
-        <div
-          style={{
-            color: "white",
-            fontSize: 24,
-            fontFamily: "Pretendard",
-            fontWeight: "700",
-            lineHeight: "33.60px",
-            wordWrap: "break-word",
-          }}
-        >
-          모든 원고집
-        </div>
+    <div className="all-manu-container">
+      <div className="all-manu-header">
+        <div className="all-manu-title">모든 원고집</div>
         {manuscripts.length > 0 && <AddManuBtn />}
       </div>
 
-      {/* 원고집이 있다면 표시 */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      <div className="all-manu-list">
         {manuscripts.length > 0 ? (
           manuscripts.map((manuscript) => (
             <ManuItem
@@ -71,14 +48,7 @@ const AllManuSet = () => {
             />
           ))
         ) : (
-          <div
-            style={{
-              backgroundColor: "#1E1F24",
-              borderRadius: "20px",
-              paddingTop: "46px",
-              paddingBottom: "46px",
-            }}
-          >
+          <div className="all-manu-empty">
             <AddManuItem />
           </div>
         )}

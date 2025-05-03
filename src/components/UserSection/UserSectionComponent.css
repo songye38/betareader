@@ -1,0 +1,45 @@
+/* UserSectionComponent.css */
+
+.user-section-container {
+    width: 80%;
+    /* max-width: 1000px; */
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    background-color: #1E1F24;
+    border-radius: 32px;
+    overflow-x: auto;
+    margin: 0 auto;
+  }
+  
+  .user-section-title {
+    color: white;
+    font-size: 20px;
+    font-family: Pretendard, sans-serif;
+    font-weight: 700;
+    line-height: 33.6px;
+    word-wrap: break-word;
+  }
+  
+  .user-section-content {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+  }
+  
+  .user-section-half {
+    width: 50%;
+  }
+  
+  /* --- 모바일 대응 (반응형) 추가! --- */
+  @media (max-width: 768px) {
+    .user-section-content {
+      flex-direction: column;
+    }
+  
+    .user-section-half {
+      width: 100%;
+    }
+  }
+  
