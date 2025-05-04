@@ -18,9 +18,19 @@ export default function AuthListener() {
 
   useEffect(() => {
     console.log('🌀 [AuthListener] useEffect triggered');
+    Sentry.addBreadcrumb({
+      category: 'auth',
+      message: '[AuthListener] useEffect triggered',
+      level: 'info',
+    });
 
     const fetchUserData = async (session) => {
       console.log('🧩 [fetchUserData] 시작, session:', session);
+      Sentry.addBreadcrumb({
+        category: 'auth',
+        message: '[fetchUserData] 시작',
+        level: 'info',
+      });
 
       if (!session?.user || !session?.access_token) {
         console.warn("⚠️ [fetchUserData] 유효하지 않은 세션입니다.");
@@ -43,6 +53,11 @@ export default function AuthListener() {
 
         if (error || !profile) {
           console.error("❌ [fetchUserData] 프로필 가져오기 실패:", error);
+          Sentry.addBreadcrumb({
+            category: 'auth',
+            message: '[fetchUserData] 프로필 가져오기 실패',
+            level: 'error',
+          });
           Sentry.captureException(error || new Error('No profile found'), {
             contexts: { auth: { phase: "fetch profile", userId: user.id, email: user.email } },
           });
@@ -64,6 +79,11 @@ export default function AuthListener() {
 
           if (urlError) {
             console.error("❌ [fetchUserData] Signed URL 생성 실패:", urlError);
+            Sentry.addBreadcrumb({
+              category: 'auth',
+              message: '[fetchUserData] Signed URL 생성 실패',
+              level: 'error',
+            });
             Sentry.captureException(urlError, {
               contexts: { auth: { phase: "create signed URL", userId: user.id, email: user.email } },
             });
@@ -82,6 +102,11 @@ export default function AuthListener() {
 
       } catch (error) {
         console.error("❌ [fetchUserData] 전체 실패:", error);
+        Sentry.addBreadcrumb({
+          category: 'auth',
+          message: '[fetchUserData] 전체 실패',
+          level: 'error',
+        });
         Sentry.captureException(error, {
           contexts: { auth: { phase: "fetchUserData overall failure" } },
         });
@@ -93,6 +118,12 @@ export default function AuthListener() {
     const fetchUserDataWithRetry = async (session, maxRetries = 3, delayMs = 1000) => {
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
         console.log(`🔄 [fetchUserDataWithRetry] 시도 ${attempt}/${maxRetries}`);
+        Sentry.addBreadcrumb({
+          category: 'auth',
+          message: `[fetchUserDataWithRetry] 시도 ${attempt}/${maxRetries}`,
+          level: 'info',
+        });
+
         const success = await fetchUserData(session);
 
         if (success) {
@@ -107,11 +138,21 @@ export default function AuthListener() {
       }
 
       console.error('❌ [fetchUserDataWithRetry] 모든 재시도 실패');
+      Sentry.addBreadcrumb({
+        category: 'auth',
+        message: '[fetchUserDataWithRetry] 모든 재시도 실패',
+        level: 'error',
+      });
       alert('프로필을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.');
     };
 
     const initializeAuth = async () => {
       console.log('🚀 [initializeAuth] 호출됨');
+      Sentry.addBreadcrumb({
+        category: 'auth',
+        message: '[initializeAuth] 호출됨',
+        level: 'info',
+      });
 
       const { data, error } = await supabase.auth.getSession();
       const session = data?.session;
@@ -134,6 +175,11 @@ export default function AuthListener() {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('📡 [onAuthStateChange] 이벤트 발생:', event);
+      Sentry.addBreadcrumb({
+        category: 'auth',
+        message: `[onAuthStateChange] 이벤트: ${event}`,
+        level: 'info',
+      });
 
       if (!session) {
         console.warn('⚠️ [onAuthStateChange] 세션 없음, 상태 초기화');
@@ -147,6 +193,11 @@ export default function AuthListener() {
 
     return () => {
       console.log('🛑 [AuthListener] 컴포넌트 언마운트 - 리스너 제거');
+      Sentry.addBreadcrumb({
+        category: 'auth',
+        message: '[AuthListener] 컴포넌트 언마운트',
+        level: 'info',
+      });
       authListener?.subscription?.unsubscribe();
     };
 
