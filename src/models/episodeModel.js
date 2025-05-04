@@ -1,11 +1,15 @@
 import supabase from '@/supabase/supabaseClient';
-import * as Sentry from '@sentry/react'; // Sentry import 추가
+import * as Sentry from '@sentry/react'; // Sentry import
 
-// 에피소드 저장 함수
+// --- 에피소드 저장 ---
 export const saveEpisode = async (requestData) => {
   const isNew = !requestData.id;
-  console.log("requestData", requestData);
-  console.log("isNew", isNew);
+
+  Sentry.addBreadcrumb({
+    category: 'episode',
+    message: `saveEpisode 시작 (isNew: ${isNew})`,
+    level: 'info',
+  });
 
   try {
     const { data, error } = await supabase
@@ -30,19 +34,29 @@ export const saveEpisode = async (requestData) => {
       throw error;
     }
 
+    Sentry.addBreadcrumb({
+      category: 'episode',
+      message: 'saveEpisode 성공',
+      level: 'info',
+    });
+
     console.log("✅ 에피소드 저장/수정 성공", data);
     return { data, isNew };
   } catch (error) {
-    Sentry.captureException(error, {
-      extra: { requestData, isNew }, // 추가된 부분
-    });
+    Sentry.captureException(error, { extra: { requestData, isNew } });
     console.error("❌ 에피소드 저장 실패:", error);
     throw error;
   }
 };
 
-// 최근 에피소드 가져오기
+// --- 최근 에피소드 가져오기 ---
 export const getRecentEpisodes = async (userId) => {
+  Sentry.addBreadcrumb({
+    category: 'episode',
+    message: `getRecentEpisodes 시작 (userId: ${userId})`,
+    level: 'info',
+  });
+
   try {
     const { data: manuscripts, error: manuscriptError } = await supabase
       .from('manuscript')
@@ -54,11 +68,16 @@ export const getRecentEpisodes = async (userId) => {
       throw manuscriptError;
     }
 
-    const manuscriptIds = manuscripts.map(m => m.id);
-
-    if (manuscriptIds.length === 0) {
+    if (!manuscripts || manuscripts.length === 0) {
+      console.warn("⚠️ 해당 userId에 manuscripts 없음", userId);
+      Sentry.captureMessage('manuscripts 없음', {
+        level: 'warning',
+        extra: { userId },
+      });
       return [];
     }
+
+    const manuscriptIds = manuscripts.map(m => m.id);
 
     const { data: episodes, error: episodeError } = await supabase
       .from('episode')
@@ -79,20 +98,38 @@ export const getRecentEpisodes = async (userId) => {
       throw episodeError;
     }
 
-    console.log("api에서 가져온 최종 데이터:", episodes);
-    return episodes;
-    
-  } catch (error) {
-    Sentry.captureException(error, {
-      extra: { userId }, // 추가된 부분
+    if (!episodes || episodes.length === 0) {
+      console.warn("⚠️ manuscripts에는 있으나 episodes 없음", manuscriptIds);
+      Sentry.captureMessage('episodes 없음', {
+        level: 'warning',
+        extra: { userId, manuscriptIds },
+      });
+      return [];
+    }
+
+    Sentry.addBreadcrumb({
+      category: 'episode',
+      message: 'getRecentEpisodes 성공',
+      level: 'info',
     });
+
+    console.log("✅ api에서 가져온 최종 데이터:", episodes);
+    return episodes;
+  } catch (error) {
+    Sentry.captureException(error, { extra: { userId } });
     console.error("❌ 에피소드 불러오기 실패:", error);
     throw error;
   }
 };
 
-// 특정 원고의 에피소드 가져오기
+// --- 특정 원고의 에피소드 가져오기 ---
 export const getEpisodesByManuId = async (userId, manuscriptId) => {
+  Sentry.addBreadcrumb({
+    category: 'episode',
+    message: `getEpisodesByManuId 시작 (manuscriptId: ${manuscriptId})`,
+    level: 'info',
+  });
+
   try {
     const { data, error } = await supabase
       .from('episode')
@@ -105,19 +142,37 @@ export const getEpisodesByManuId = async (userId, manuscriptId) => {
       throw error;
     }
 
+    if (!data || data.length === 0) {
+      console.warn("⚠️ manuscriptId에 연결된 episodes 없음", manuscriptId);
+      Sentry.captureMessage('episodes 없음 (manuscript)', {
+        level: 'warning',
+        extra: { userId, manuscriptId },
+      });
+      return [];
+    }
+
+    Sentry.addBreadcrumb({
+      category: 'episode',
+      message: 'getEpisodesByManuId 성공',
+      level: 'info',
+    });
+
+    console.log("✅ 에피소드 리스트 가져오기 성공", data);
     return data;
   } catch (error) {
-    Sentry.captureException(error, {
-      extra: { userId, manuscriptId }, // 추가된 부분
-    });
+    Sentry.captureException(error, { extra: { userId, manuscriptId } });
     console.error("❌ 에피소드 불러오기 실패:", error);
     throw error;
   }
 };
 
-// 에피소드 삭제 함수
+// --- 에피소드 삭제 ---
 export const deleteEpisode = async (episodeId) => {
-  console.log("episodeId", episodeId);
+  Sentry.addBreadcrumb({
+    category: 'episode',
+    message: `deleteEpisode 시작 (episodeId: ${episodeId})`,
+    level: 'info',
+  });
 
   try {
     const { data, error } = await supabase
@@ -131,19 +186,29 @@ export const deleteEpisode = async (episodeId) => {
       throw error;
     }
 
-    console.log("에피소드 삭제 성공", data);
+    Sentry.addBreadcrumb({
+      category: 'episode',
+      message: 'deleteEpisode 성공',
+      level: 'info',
+    });
+
+    console.log("✅ 에피소드 삭제 성공", data);
     return data;
   } catch (error) {
-    Sentry.captureException(error, {
-      extra: { episodeId }, // 추가된 부분
-    });
+    Sentry.captureException(error, { extra: { episodeId } });
     console.error("❌ 에피소드 삭제 실패:", error);
     throw error;
   }
 };
 
-// 에피소드의 is_feedback_mode 수정 함수
+// --- 피드백 모드 수정 ---
 export const updateEpisodeFeedbackMode = async (episodeId, newFeedbackMode) => {
+  Sentry.addBreadcrumb({
+    category: 'episode',
+    message: `updateEpisodeFeedbackMode 시작 (episodeId: ${episodeId})`,
+    level: 'info',
+  });
+
   try {
     const { data, error } = await supabase
       .from('episode')
@@ -156,12 +221,16 @@ export const updateEpisodeFeedbackMode = async (episodeId, newFeedbackMode) => {
       throw error;
     }
 
-    console.log("is_feedback_mode 업데이트 성공", data);
+    Sentry.addBreadcrumb({
+      category: 'episode',
+      message: 'updateEpisodeFeedbackMode 성공',
+      level: 'info',
+    });
+
+    console.log("✅ is_feedback_mode 업데이트 성공", data);
     return data;
   } catch (error) {
-    Sentry.captureException(error, {
-      extra: { episodeId, newFeedbackMode }, // 추가된 부분
-    });
+    Sentry.captureException(error, { extra: { episodeId, newFeedbackMode } });
     console.error("❌ 에피소드 수정 실패:", error);
     throw error;
   }
