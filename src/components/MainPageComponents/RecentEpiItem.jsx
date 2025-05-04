@@ -46,7 +46,7 @@ const RecentEpiItem = ({ episode, userId, ManuId }) => {
     <div className={styles.recentEpiItem} onClick={() => handleClick(episode.tab_id)}>
       {/* 상단: 제목 + 시간 */}
       <div className={styles.recentEpiTop}>
-        <div className={styles.recentEpiTopTitle}>{episode.title}</div>
+        <div className={styles.recentEpiTopTitle}>{episode.manuscript.title}</div>
         <div className={styles.recentEpiTopTime}>{relativeTimeDisplay}</div>
       </div>
 
