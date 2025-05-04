@@ -112,28 +112,53 @@ export default function AuthListener() {
 
     const initializeAuth = async () => {
       console.log('🚀 [initializeAuth] 호출됨');
+    
+      if (!supabase?.auth) {
+        console.error('❌ supabase나 supabase.auth가 정의되지 않았습니다!');
+        return;
+      }
+    
       Sentry.addBreadcrumb({
         category: 'auth',
         message: '[initializeAuth] 호출됨',
         level: 'info',
       });
-
-      const { data, error } = await supabase.auth.getSession();
-      const session = data?.session;
-
-      if (error) {
-        console.error('❌ [initializeAuth] getSession 실패:', error);
-        Sentry.captureException(error, { contexts: { auth: { phase: "initial getSession" } } });
-        return;
-      }
-
-      if (session) {
-        console.log('✅ [initializeAuth] 초기 세션 발견, fetchUserData 실행');
-        await fetchUserData(session);
-      } else {
-        console.warn('⚠️ [initializeAuth] 초기 세션 없음, auth 이벤트 대기');
+    
+      const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), ms));
+    
+      try {
+        console.log('✅ supabase.auth.getSession() 호출 직전');
+        
+        const { data, error } = await Promise.race([
+          supabase.auth.getSession(),
+          timeout(5000) // 5초 안에 응답 없으면 실패 처리
+        ]);
+    
+        console.log('✅ supabase.auth.getSession() 호출 완료');
+    
+        const session = data?.session;
+        console.log("initializeAuth에서의 session", session);
+    
+        if (error) {
+          console.error('❌ [initializeAuth] getSession 실패:', error);
+          Sentry.captureException(error, { contexts: { auth: { phase: "initial getSession" } } });
+          return;
+        }
+    
+        if (session) {
+          console.log('✅ [initializeAuth] 초기 세션 발견, fetchUserData 실행');
+          await fetchUserData(session);
+        } else {
+          console.warn('⚠️ [initializeAuth] 초기 세션 없음, auth 이벤트 대기');
+        }
+      } catch (err) {
+        console.error('🔥 [initializeAuth] 예외 발생:', err);
+        Sentry.captureException(err, { contexts: { auth: { phase: "initializeAuth" } } });
       }
     };
+    
+    
+
 
     initializeAuth();
 

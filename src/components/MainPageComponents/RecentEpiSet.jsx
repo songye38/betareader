@@ -5,16 +5,29 @@ import useAuthStore from '@/store/useAuthStore';
 import styles from './RecentEpiSet.module.css'; // CSS 모듈 임포트
 
 const RecentEpiSet = () => {
-  const { recentEpisodes = [], fetchRecentEpisodes } = useEpisodeForm();
-  const { user } = useAuthStore();
+  const { recentEpisodes, fetchRecentEpisodes } = useEpisodeForm();
+  const { user, profile } = useAuthStore();
 
   useEffect(() => {
-    if (!user || !user.id) return;
+    if (!user?.id || !profile?.username) return;
 
-    
     fetchRecentEpisodes(user.id);
-    console.log("RecentEpiSet -> user.id",user.id);
-  }, [user?.id]);
+    console.log("RecentEpiSet -> user.id", user.id);
+  }, [user?.id, profile?.username]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className={styles.recentEpiContainer}>

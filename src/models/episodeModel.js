@@ -51,6 +51,7 @@ export const saveEpisode = async (requestData) => {
 
 // --- 최근 에피소드 가져오기 ---
 export const getRecentEpisodes = async (userId) => {
+  console.log("getRecentEpisodes함수 호출")
   Sentry.addBreadcrumb({
     category: 'episode',
     message: `getRecentEpisodes 시작 (userId: ${userId})`,
