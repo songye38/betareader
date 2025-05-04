@@ -26,15 +26,6 @@ const useEpisodeForm = () => {
 
 
 
-  useEffect(() => {
-    if (manuscript) {
-      //fetchEpisodesByManuId();
-    }
-    if (tabs) {
-      //fetchRecentEpisodes();
-    }
-  }, [manuscript, tabs]);
-
   const methods = useForm({
     defaultValues: {
       title: '무제',
@@ -129,6 +120,7 @@ const useEpisodeForm = () => {
   // 최근 에피소드 5개 가져오기
   const fetchRecentEpisodes = async () => {
     console.log("fetchRecentEpisodes 호출됨");
+    console.log("fetchRecentEpisodes 호출됨 user.id",user.id);
     setLoading(true);
     setError(null); // 에러 초기화
 
@@ -136,6 +128,7 @@ const useEpisodeForm = () => {
       const episodes = await getRecentEpisodes(user.id);
       console.log("fetch 할때의 user id ",user.id);
       setRecentEpisodes(episodes); // 성공 시 상태 저장
+      console.log("episodes가져오기 성공했는가?",episodes);
     } catch (err) {
       console.error("❌ 최근 에피소드 가져오기 실패:", err);
       setError(err.message || "최근 에피소드를 불러오는 데 실패했습니다.");

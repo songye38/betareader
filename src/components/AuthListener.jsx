@@ -47,7 +47,7 @@ export default function AuthListener() {
 
         const { data: profile, error } = await supabase
           .from("profile")
-          .select("username, avatar_url, user_id")
+          .select("username, avatar_url")
           .eq("user_id", user.id)
           .single();
 
@@ -65,11 +65,6 @@ export default function AuthListener() {
           return false;
         }
 
-        if (profile.user_id !== user.id) {
-          console.warn("⚠️ [fetchUserData] 세션의 user.id와 프로필의 user_id 불일치");
-          return false;
-        }
-
         let signedUrl = null;
         if (profile.avatar_url) {
           console.log('🔏 [fetchUserData] Signed URL 생성 시도');
@@ -84,7 +79,7 @@ export default function AuthListener() {
               message: '[fetchUserData] Signed URL 생성 실패',
               level: 'error',
             });
-            Sentry.captureException(urlError, {
+            Sentry.captureException(urlError instanceof Error ? urlError : new Error(urlError.message || 'Unknown signed URL error'), {
               contexts: { auth: { phase: "create signed URL", userId: user.id, email: user.email } },
             });
           } else {
@@ -115,37 +110,6 @@ export default function AuthListener() {
       }
     };
 
-    const fetchUserDataWithRetry = async (session, maxRetries = 3, delayMs = 1000) => {
-      for (let attempt = 1; attempt <= maxRetries; attempt++) {
-        console.log(`🔄 [fetchUserDataWithRetry] 시도 ${attempt}/${maxRetries}`);
-        Sentry.addBreadcrumb({
-          category: 'auth',
-          message: `[fetchUserDataWithRetry] 시도 ${attempt}/${maxRetries}`,
-          level: 'info',
-        });
-
-        const success = await fetchUserData(session);
-
-        if (success) {
-          console.log('✅ [fetchUserDataWithRetry] 프로필 가져오기 성공');
-          return;
-        }
-
-        if (attempt < maxRetries) {
-          console.log(`⏳ [fetchUserDataWithRetry] ${delayMs}ms 대기 후 재시도 준비`);
-          await new Promise(resolve => setTimeout(resolve, delayMs));
-        }
-      }
-
-      console.error('❌ [fetchUserDataWithRetry] 모든 재시도 실패');
-      Sentry.addBreadcrumb({
-        category: 'auth',
-        message: '[fetchUserDataWithRetry] 모든 재시도 실패',
-        level: 'error',
-      });
-      alert('프로필을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.');
-    };
-
     const initializeAuth = async () => {
       console.log('🚀 [initializeAuth] 호출됨');
       Sentry.addBreadcrumb({
@@ -164,8 +128,8 @@ export default function AuthListener() {
       }
 
       if (session) {
-        console.log('✅ [initializeAuth] 초기 세션 발견, fetchUserDataWithRetry 실행');
-        await fetchUserDataWithRetry(session);
+        console.log('✅ [initializeAuth] 초기 세션 발견, fetchUserData 실행');
+        await fetchUserData(session);
       } else {
         console.warn('⚠️ [initializeAuth] 초기 세션 없음, auth 이벤트 대기');
       }
@@ -188,7 +152,7 @@ export default function AuthListener() {
         return;
       }
 
-      await fetchUserDataWithRetry(session);
+      await fetchUserData(session);
     });
 
     return () => {

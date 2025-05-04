@@ -10,7 +10,10 @@ const RecentEpiSet = () => {
 
   useEffect(() => {
     if (!user || !user.id) return;
+
+    
     fetchRecentEpisodes(user.id);
+    console.log("RecentEpiSet -> user.id",user.id);
   }, [user?.id]);
 
   return (
