@@ -1,25 +1,44 @@
 import supabase from '../supabase/supabaseClient';
+import * as Sentry from '@sentry/react'; // 1. Sentry import 추가
 
 // 일반 이메일 로그인
 export const signInWithEmail = async (email, password) => {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) throw error;
-  return data;
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    Sentry.captureException(error); // 2. 에러 발생 시 Sentry로 기록
+    console.error("signInWithEmail 오류:", error);
+    throw error; // 에러를 다시 던져야 상위에서 처리 가능
+  }
 };
 
 // OAuth 로그인 (카카오)
 export const signInWithOAuth = async (provider) => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider,
-    options: { redirectTo: `${window.location.origin}/auth/callback` },
-  });
-  if (error) throw error;
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (error) throw error;
+  } catch (error) {
+    Sentry.captureException(error);
+    console.error("signInWithOAuth 오류:", error);
+    throw error;
+  }
 };
 
 // 로그아웃
 export const signOut = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) throw error;
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  } catch (error) {
+    Sentry.captureException(error);
+    console.error("signOut 오류:", error);
+    throw error;
+  }
 };
 
 // 회원가입 (이메일 + 닉네임)
@@ -47,7 +66,7 @@ export const signUpWithEmail = async (email, password, nickname) => {
     const { error: dbError } = await supabase
       .from("profile")
       .upsert({
-        user_id: user.id, // Supabase에서 제공하는 user.id
+        user_id: user.id,
         username: nickname,
       });
 
@@ -69,8 +88,9 @@ export const signUpWithEmail = async (email, password, nickname) => {
 
     console.log("자동 로그인 성공:", loginData);
 
-    return loginData; // 세션 정보 반환
+    return loginData;
   } catch (error) {
+    Sentry.captureException(error); // 3. 최종 catch에서 Sentry 로깅
     console.error("회원가입 오류:", error);
     throw error;
   }

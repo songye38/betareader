@@ -1,22 +1,7 @@
 import supabase from '@/supabase/supabaseClient';
+import * as Sentry from '@sentry/react'; // Sentry import 추가!
 
-/**
- * 특정 사용자 아이디를 기반으로 원고(manuscript) 목록을 조회하는 함수
- *
- * - Supabase의 'manuscript' 테이블에서 user_id가 일치하는 row들을 가져옴
- * - 최근 수정된 순으로 정렬됨 (`last_edited_at` 기준 내림차순)
- * - limit 파라미터가 지정되면 최대 해당 개수만큼만 가져옴
- *
- * @param {string} userId - 조회할 대상 사용자의 ID (필수)
- * @param {number|null} [limit=null] - 가져올 원고 개수 제한 (선택)
- * @returns {Promise<Array<Object>>} 원고 리스트 배열
- *
- * @throws {Error} 쿼리 실패 시 에러 메시지를 포함한 예외 발생
- *
- * @example
- * const manuscripts = await fetchManuscriptsByUserId('abc123');
- * const recent = await fetchManuscriptsByUserId('abc123', 5); // 최신 5개
- */
+/** --- fetchManuscriptsByUserId --- */
 export const fetchManuscriptsByUserId = async (userId, limit = null) => {
   let query = supabase
     .from('manuscript')
@@ -31,96 +16,51 @@ export const fetchManuscriptsByUserId = async (userId, limit = null) => {
   const { data, error } = await query;
 
   if (error) {
+    Sentry.captureException(error, {
+      extra: { userId, limit },
+    });
     throw new Error('Manuscript fetch error: ' + error.message);
   }
 
   return data;
 };
 
-
-/**
- * 특정 원고(manuscript) 아이디로 상세 정보를 조회하는 함수
- *
- * - Supabase의 'manuscript' 테이블에서 id가 일치하는 단일 row를 가져옴
- * - 반환 항목: id, user_id, title, last_edited_at, episode_count
- *
- * @param {string} manuscriptId - 조회할 원고의 ID (필수)
- * @returns {Promise<Object>} 단일 원고 객체
- *
- * @throws {Error} 쿼리 실패 시 에러 메시지를 포함한 예외 발생
- *
- * @example
- * const manuscript = await fetchManuscriptById('manuscript_001');
- * console.log(manuscript.title); // "내 첫 번째 원고"
- */
+/** --- fetchManuscriptById --- */
 export const fetchManuscriptById = async (manuscriptId) => {
   const { data, error } = await supabase
     .from('manuscript')
     .select('id, user_id, title, last_edited_at, episode_count')
-    .eq('id', manuscriptId) // 특정 manuscriptId로 필터링
-    .single(); // 단일 원고만 반환
+    .eq('id', manuscriptId)
+    .single();
 
   if (error) {
+    Sentry.captureException(error, {
+      extra: { manuscriptId },
+    });
     throw new Error('Manuscript fetch error: ' + error.message);
   }
 
   return data;
 };
 
-/**
- * 원고를 조회하는 범용 함수
- *
- * - manuscriptId가 주어진 경우: 해당 ID의 단일 원고 조회 (fetchManuscriptById)
- * - manuscriptId가 없을 경우: 해당 userId의 모든 원고 목록 조회 (fetchManuscriptsByUserId)
- *
- * 내부적으로 두 개의 함수(fetchManuscriptById, fetchManuscriptsByUserId)를 래핑하여 상황에 따라 자동으로 분기 처리함.
- *
- * @param {string} userId - 조회할 사용자 ID (필수)
- * @param {string|null} [manuscriptId=null] - 조회할 단일 원고 ID (선택)
- * @returns {Promise<Object|Array<Object>>} 단일 원고 객체 또는 원고 리스트 배열
- *
- * @throws {Error} 내부 호출 함수 중 하나가 실패할 경우 예외 발생
- *
- * @example
- * 단일 원고 조회
- * const manuscript = await fetchManuscripts('abc123', 'm_001');
- *
- * 전체 원고 조회
- * const manuscripts = await fetchManuscripts('abc123');
- */
-
+/** --- fetchManuscripts --- */
 export const fetchManuscripts = async (userId, manuscriptId = null) => {
-  if (manuscriptId) {
-    // manuscriptId가 있을 경우 해당 원고를 가져옵니다.
-    return await fetchManuscriptById(manuscriptId);
+  try {
+    if (manuscriptId) {
+      return await fetchManuscriptById(manuscriptId);
+    }
+    return await fetchManuscriptsByUserId(userId);
+  } catch (error) {
+    Sentry.captureException(error, {
+      extra: { userId, manuscriptId },
+    });
+    throw error;
   }
-
-  // manuscriptId가 없을 경우 userId로 원고들을 가져옵니다.
-  return await fetchManuscriptsByUserId(userId);
 };
 
-
-/**
- * 원고(manuscript)의 에피소드 개수를 증감시키는 함수
- *
- * - 현재 episode_count 값을 불러온 후, delta 만큼 더하거나 빼서 다시 저장
- * - 결과적으로 episode_count는 최소 0 이상으로 유지됨
- * - 증가(delta > 0)나 감소(delta < 0) 모두 처리 가능
- *
- * @param {string} manuscriptId - 에피소드 수를 업데이트할 원고 ID (필수)
- * @param {number} [delta=1] - 변경할 에피소드 수 (기본값: +1, 음수 가능)
- * @returns {Promise<Object|null>} 업데이트된 원고 객체 또는 실패 시 null
- *
- * @throws {Error} 데이터 조회 또는 업데이트 중 오류가 발생할 수 있음 (내부 try-catch로 로그 처리됨)
- *
- * @example
- * await updateEpisodeCount('m_001');        // 에피소드 수 +1
- * await updateEpisodeCount('m_001', -1);    // 에피소드 수 -1 (단, 0 미만으로는 내려가지 않음)
- */
-
+/** --- updateEpisodeCount --- */
 export const updateEpisodeCount = async (manuscriptId, delta = 1) => {
   try {
-    // 현재 episode_count 가져오기
     const { data: currentData, error: fetchError } = await supabase
       .from('manuscript')
       .select('episode_count')
@@ -128,152 +68,118 @@ export const updateEpisodeCount = async (manuscriptId, delta = 1) => {
       .single();
 
     if (fetchError) {
-      console.error('📛 Fetch error:', fetchError);
+      Sentry.captureException(fetchError, {
+        extra: { manuscriptId, stage: 'fetch episode_count' },
+      });
       throw new Error('에피소드 수를 가져오는 중 오류가 발생했습니다.');
     }
 
-    const newCount = Math.max((currentData.episode_count || 0) + delta, 0); // 0 이하로 내려가지 않게
+    const newCount = Math.max((currentData.episode_count || 0) + delta, 0);
 
-    // episode_count 업데이트
     const { data, error: updateError } = await supabase
       .from('manuscript')
-      .update({
-        episode_count: newCount,
-      })
+      .update({ episode_count: newCount })
       .eq('id', manuscriptId)
       .select()
       .single();
 
     if (updateError) {
-      console.error('📛 Update error:', updateError);
+      Sentry.captureException(updateError, {
+        extra: { manuscriptId, delta, newCount, stage: 'update episode_count' },
+      });
       throw new Error('에피소드 수 업데이트 중 오류가 발생했습니다.');
     }
 
     return data;
 
   } catch (error) {
+    Sentry.captureException(error, {
+      extra: { manuscriptId, delta },
+    });
     console.error('❌ updateEpisodeCount 실패:', error.message);
     return null;
   }
 };
 
-
-/**
- * 원고(manuscript)의 마지막 수정 시각(`last_edited_at`)을 현재 시각으로 업데이트하는 함수
- *
- * - 현재 시각을 ISO 8601 문자열로 생성 후 DB에 저장
- * - 일반적으로 원고 수정 시 호출되어 변경 사항이 있음을 기록함
- *
- * @param {string} manuscriptId - 마지막 수정 시간을 갱신할 원고 ID (필수)
- * @returns {Promise<Object|null>} 업데이트된 원고 객체 또는 실패 시 null
- *
- * @throws {Error} DB 업데이트 중 오류 발생 가능 (내부 try-catch로 처리되어 로그 출력 및 null 반환)
- *
- * @example
- * await updateLastEditedAt('m_001');
- */
-
+/** --- updateLastEditedAt --- */
 export const updateLastEditedAt = async (manuscriptId) => {
   try {
-    const now = new Date().toISOString(); // 현재 시간 ISO 형식으로
+    const now = new Date().toISOString();
 
-    // last_edited_at 업데이트
     const { data, error: updateError } = await supabase
       .from('manuscript')
-      .update({
-        last_edited_at: now,
-      })
+      .update({ last_edited_at: now })
       .eq('id', manuscriptId)
       .select()
       .single();
 
     if (updateError) {
-      console.error('📛 Update error:', updateError);
+      Sentry.captureException(updateError, {
+        extra: { manuscriptId, now },
+      });
       throw new Error('마지막 수정 시간 업데이트 중 오류가 발생했습니다.');
     }
 
     return data;
 
   } catch (error) {
+    Sentry.captureException(error, {
+      extra: { manuscriptId },
+    });
     console.error('❌ updateLastEditedAt 실패:', error.message);
     return null;
   }
 };
 
-/**
- * 원고(manuscript)의 제목(title)을 수정하는 함수
- *
- * - 지정한 manuscriptId에 해당하는 원고의 title 필드를 새 값으로 갱신
- * - 주로 사용자 편집 화면에서 제목 변경 시 사용
- *
- * @param {string} manuscriptId - 제목을 수정할 원고의 ID (필수)
- * @param {string} newTitle - 새로 설정할 제목 문자열 (필수)
- * @returns {Promise<Object|null>} 업데이트된 원고 객체 또는 실패 시 null
- *
- * @throws {Error} DB 업데이트 중 오류 발생 가능 (내부 try-catch로 처리됨)
- *
- * @example
- * await updateManuscriptTitle('m_001', '새로운 이야기 제목');
- */
-
+/** --- updateManuscriptTitle --- */
 export const updateManuscriptTitle = async (manuscriptId, newTitle) => {
   try {
     const { data, error } = await supabase
       .from('manuscript')
-      .update({
-        title: newTitle,
-      })
+      .update({ title: newTitle })
       .eq('id', manuscriptId)
       .select()
       .single();
 
     if (error) {
-      console.error('📛 Update error:', error);
+      Sentry.captureException(error, {
+        extra: { manuscriptId, newTitle },
+      });
       throw new Error('제목 업데이트 중 오류가 발생했습니다.');
     }
 
     return data;
   } catch (error) {
+    Sentry.captureException(error, {
+      extra: { manuscriptId, newTitle },
+    });
     console.error('❌ updateManuscriptTitle 실패:', error.message);
     return null;
   }
 };
 
-
-/**
- * 원고(manuscript)를 ID 기준으로 삭제하는 함수
- *
- * - Supabase의 'manuscript' 테이블에서 지정한 manuscriptId에 해당하는 row를 삭제
- * - 삭제 후 삭제된 데이터를 반환 (예: title, id 등)
- *
- * @param {string} manuscriptId - 삭제할 원고의 ID (필수)
- * @returns {Promise<Object|null>} 삭제된 원고 데이터 또는 실패 시 null
- *
- * @throws {Error} 삭제 처리 중 오류 발생 시 예외 (내부 try-catch로 로그 출력 및 null 반환)
- *
- * @example
- * await deleteManuscriptById('m_001');
- */
-
+/** --- deleteManuscriptById --- */
 export const deleteManuscriptById = async (manuscriptId) => {
   try {
     const { data, error } = await supabase
       .from('manuscript')
       .delete()
-      .eq('id', manuscriptId) // id에 맞는 원고집을 삭제
-      .single(); // 삭제된 원고 데이터를 반환
+      .eq('id', manuscriptId)
+      .single();
 
     if (error) {
-      console.error('📛 Delete error:', error);
+      Sentry.captureException(error, {
+        extra: { manuscriptId },
+      });
       throw new Error('원고집 삭제 중 오류가 발생했습니다.');
     }
 
-    return data; // 삭제된 원고 데이터를 반환
+    return data;
   } catch (error) {
+    Sentry.captureException(error, {
+      extra: { manuscriptId },
+    });
     console.error('❌ deleteManuscriptById 실패:', error.message);
     return null;
   }
 };
-
-
-
